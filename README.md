@@ -4,22 +4,6 @@ We are NoName Bros, a small team of university students coursing a bachelors deg
 
 ***
 
-## Genre:
-
-Puzzle RPG Action Game
-
-Visit GDD Document for [more info](https://github.com/BooStarGamer/RPG_NoNameBros_Game/wiki/1.-Game-Design-Document)
-
-***
-
-## Target Audience: 
-
-* Regarding the Bartle Type, we can conclude this game is focussed in a mix of Achievers & Explorers. 
-* If you want to speedrun, this game allows you to overpass it without any restriction
-* It is also a game to relax and search for buffs, level up, and get better
-
-***
-
 ## Game Team:
 
 Product Owner: [Ramon Santamaria](https://github.com/raysan5)
