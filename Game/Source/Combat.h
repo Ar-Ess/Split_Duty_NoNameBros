@@ -42,6 +42,8 @@ public:
     int enemyTimeAttack = 0;
     int playerTimeAttack = 0;
 
+    bool playerResponseAble = true;
+
     bool playerAttack = false;
     bool playerScape = false;
 

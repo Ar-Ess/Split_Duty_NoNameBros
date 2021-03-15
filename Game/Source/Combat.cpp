@@ -22,6 +22,7 @@ void Combat::Start()
 	enemy->velocity = 20;
 
 	playerScape = false;
+	playerResponseAble = true;
 
 	FirstTurnLogic();
 }
@@ -39,6 +40,8 @@ void Combat::Update()
 		EnemyAttack();
 
 		PlayerResponse();
+
+		if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w) playerResponseAble = false;
 	}
 	else if (combatState == PLAYER_TURN)
 	{
@@ -62,6 +65,7 @@ void Combat::Update()
 				app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
 				combatState = ENEMY_TURN;
 				playerAttack = false;
+				playerResponseAble = true;
 			}
 		}
 	}
@@ -78,10 +82,12 @@ void Combat::FirstTurnLogic()
 
 void Combat::EnemyAttack()
 {
-	if (enemyTimeAttack < 200)
+	if (enemyTimeAttack < 268)
 	{
-		enemy->colliderCombat.x -= 4;
+		enemy->colliderCombat.x -= 5;
 		enemyTimeAttack++;
+
+		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0) enemy->colliderCombat.x = 1280;
 	}
 	else
 	{
@@ -93,7 +99,7 @@ void Combat::EnemyAttack()
 
 void Combat::PlayerResponse()
 {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump) app->scene->player1->jump = true;
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble) app->scene->player1->jump = true;
 
 	if (app->scene->player1->jump) app->scene->player1->Jump();
 }
