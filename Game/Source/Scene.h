@@ -8,12 +8,16 @@ class GuiSlider;
 class GuiCheckBox;
 class GuiString;
 struct SDL_Texture;
+class Enemy;
+class Player;
+class Combat;
 
 enum Scenes
 {
 	NONE = -1,
 	LOGO_SCENE,
-	MAIN_MENU
+	MAIN_MENU,
+	COMBAT
 };
 
 class Scene : public Module
@@ -41,20 +45,29 @@ public:
 		return currScene;
 	}
 
+private:
+	Player* player1;
+	Combat* combatScene;
+
 private: //Scene Manager
 	Scenes currScene = NONE;
 	Scenes prevScene = NONE;
 
 	void SetScene(Scenes scene);
+	void SetScene(Scenes scene, Enemy* enemy);
 
 	//Setters
 	void SetLogoScene();
 	void SetMainMenu();
+	void SetCombat(Enemy* enemy);
 
 	//Updaters
 	void UpdateLogoScene();
 	void UpdateMainMenu();
+	void UpdateCombat();
 
+private: //debug
+	void DebugSteps(); // Future Debug Module implementation
 
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);

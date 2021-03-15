@@ -10,40 +10,71 @@
 
 #include "SDL/include/SDL.h"
 
+#define INIT_COMBAT_POSX 225
+#define INIT_COMBAT_POSY 400
+
 enum class PlayerAnim
 {
     IDLE,
-    WALK,
-    JUMP,
-    CLIMB
+    STEP,
+    JUMP
 };
 
-class Player: public Entity
+class Player : public Entity
 {
 public:
 
     Player();
 
-    bool Update(Input* input, float dt);
+    bool Update(float dt);
 
-    bool Draw(Render* render);
+    bool Draw();
 
     void SetTexture(SDL_Texture *tex);
 
     SDL_Rect GetBounds();
 
+    int GetCombatWidth() const
+    {
+        return playerColliderCombat.w;
+    }
+
+    int GetCombatHeight() const
+    {
+        return playerColliderCombat.h;
+    }
+
+    int GetLiveWidth() const
+    {
+        return playerColliderLive.w;
+    }
+
+    int GetLiveHeight() const
+    {
+        return playerColliderLive.h;
+    }
+
 public:
 
-    SDL_Texture* texture;   // Player spritesheet
+    SDL_Texture* texture;
 
-    // TODO: Define all animation properties
     PlayerAnim currentAnim;
 
-    int width, height;
+private:
+    int health;
+    int defense;
+    int exp;
+    int strength;
+    int velocity;
+    int luck;
+    int stab;
 
-    float jumpSpeed = 0.0f;
-    bool readyToJump = true;
-    bool hitObstacle = false;
+public:
+    iPoint positionLive;
+    int positionCombat;
+
+    SDL_Rect playerColliderLive;
+    SDL_Rect playerColliderCombat;
 };
 
 #endif // __PLAYER_H__

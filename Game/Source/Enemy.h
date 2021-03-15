@@ -7,6 +7,8 @@
 #include "Point.h"
 #include "SString.h"
 
+class SDL_Rect;
+
 class Enemy : public Entity
 {
 public:
@@ -14,9 +16,13 @@ public:
     Enemy();
     virtual ~Enemy();
 
+public:
+    SDL_Rect collider;
+
 private:
 
     DynArray<iPoint>* path;
+
 };
 
 #endif // __ENEMY_H__

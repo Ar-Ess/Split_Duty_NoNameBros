@@ -43,7 +43,8 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		default: break;
 	}
 
-	if (ret != nullptr) entities.Add(ret);
+	if (ret != nullptr && type == EntityType::ENEMY) enemies.Add(ret);
+	else if (ret != nullptr && type == EntityType::ITEM) items.Add(ret);
 
 	return ret;
 }

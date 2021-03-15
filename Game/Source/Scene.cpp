@@ -10,6 +10,9 @@
 #include "Pathfinding.h"
 #include "EntityManager.h"
 #include "Entity.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Combat.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -43,6 +46,12 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	SetScene(LOGO_SCENE);
+
+	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+
+	combatScene = new Combat();
+
+	app->entityManager->CreateEntity(EntityType::ENEMY);
 
 	return true;
 }
@@ -96,6 +105,7 @@ bool Scene::Update(float dt)
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
+	else if (currScene == COMBAT) UpdateCombat();
 
 	return true;
 }
@@ -112,6 +122,8 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	combatScene->Restart();
 
 	return true;
 }
@@ -130,6 +142,18 @@ void Scene::SetScene(Scenes scene)
 
 }
 
+void Scene::SetScene(Scenes scene, Enemy* enemy)
+{
+	prevScene = currScene;
+	currScene = scene;
+
+	CleanUp();
+
+	if (scene == LOGO_SCENE) SetLogoScene();
+	else if (scene == MAIN_MENU) SetMainMenu();
+	else if (scene == COMBAT) SetCombat(enemy);
+}
+
 void Scene::SetLogoScene()
 {
 
@@ -140,14 +164,28 @@ void Scene::SetMainMenu()
 
 }
 
+void Scene::SetCombat(Enemy* enemySet)
+{
+	combatScene->enemy = enemySet;
+}
+
 void Scene::UpdateLogoScene()
 {
-
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 void Scene::UpdateMainMenu()
 {
+	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
+}
 
+void Scene::UpdateCombat()
+{
+	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 250});
+
+	app->render->DrawRectangle(combatScene->enemy., { 255, 0, 0 });
+
+	DebugSteps();
 }
 
 // GUI CONTROLS
@@ -164,4 +202,15 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	}
 
 	return true;
+}
+
+// Debug functions (future in debug module)
+
+void Scene::DebugSteps()
+{
+	app->render->DrawLine(249, 498, 249, 510, {255, 255, 255, 255});
+	app->render->DrawLine(419, 498, 419, 510, {255, 255, 255, 255});
+	app->render->DrawLine(589, 498, 589, 510, {255, 255, 255, 255});
+	app->render->DrawLine(759, 498, 759, 510, {255, 255, 255, 255});
+	app->render->DrawLine(1031, 498, 1031, 510, {255, 0, 0, 255});
 }
