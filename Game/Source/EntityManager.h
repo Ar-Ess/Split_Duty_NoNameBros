@@ -29,8 +29,8 @@ public:
 
 public:
 
-	List<Entity*> enemies;
-	List<Entity*> items;
+	List<Enemy*> enemies;
+	List<Item*> items;
 
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;

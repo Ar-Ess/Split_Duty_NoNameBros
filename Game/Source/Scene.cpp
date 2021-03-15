@@ -167,6 +167,7 @@ void Scene::SetMainMenu()
 void Scene::SetCombat(Enemy* enemySet)
 {
 	combatScene->enemy = enemySet;
+	combatScene->Start();
 }
 
 void Scene::UpdateLogoScene()
@@ -181,9 +182,11 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateCombat()
 {
-	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 250});
+	combatScene->Update();
 
-	app->render->DrawRectangle(combatScene->enemy., { 255, 0, 0 });
+	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 255});
+
+	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
 
 	DebugSteps();
 }

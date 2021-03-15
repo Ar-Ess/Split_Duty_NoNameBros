@@ -61,11 +61,13 @@ public:
     PlayerAnim currentAnim;
 
 private:
+    friend class Combat;
+
     int health;
     int defense;
     int exp;
     int strength;
-    int velocity;
+    int velocity = 0;
     int luck;
     int stab;
 

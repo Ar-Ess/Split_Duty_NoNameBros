@@ -7,17 +7,30 @@
 #include "Point.h"
 #include "SString.h"
 
-class SDL_Rect;
+#include "SDL/include/SDL.h"
+
+struct SDL_Rect;
 
 class Enemy : public Entity
 {
 public:
 
     Enemy();
+
     virtual ~Enemy();
 
+    void SetUp(SDL_Rect collider);
+
 public:
-    SDL_Rect collider;
+    SDL_Rect colliderCombat;
+
+private:
+    friend class Combat;
+
+    int health;
+    int defense;
+    int strength;
+    int velocity;
 
 private:
 

@@ -46,6 +46,8 @@ public:
 	}
 
 private:
+	friend class Combat;
+
 	Player* player1;
 	Combat* combatScene;
 

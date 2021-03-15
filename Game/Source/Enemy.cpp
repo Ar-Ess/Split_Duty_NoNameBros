@@ -12,3 +12,8 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
 Enemy::~Enemy()
 {
 }
+
+void Enemy::SetUp(SDL_Rect collider)
+{
+    colliderCombat = collider;
+}
