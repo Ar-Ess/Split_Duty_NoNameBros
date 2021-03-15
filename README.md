@@ -1,7 +1,7 @@
 ## Description:
 
 We are NoName Bros, a small team of university students coursing a bachelors degree in Game Design and Development in CITM. We aim to create *Split Duty*, a fully fledged turn based 2D RPG where the player is sent on an epic journey to uncover an ancient mistery and defeat all enemies that stand in its way. All this accompanied with diverse party members to approach each encounter no matter how difficult.
-
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/LOGO_NONAMEBROS.png)
 ***
 
 ## Game Team:
