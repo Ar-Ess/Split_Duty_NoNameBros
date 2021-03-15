@@ -20,33 +20,34 @@ void Combat::Start()
 	enemy->defense = 15;
 	enemy->strength = 40;
 	enemy->velocity = 20;
+
+	playerScape = false;
+
 	FirstTurnLogic();
 }
 
 void Combat::Restart()
 {
-
+	combatState = NULL_STATE;
+	enemy = nullptr;
 }
 
 void Combat::Update()
 {
 	if (combatState == ENEMY_TURN)
 	{
-		if (enemyTimeAttack < 200)
-		{
-			enemy->colliderCombat.x -= 4;
-			enemyTimeAttack++;
-		}
-		else
-		{
-			enemyTimeAttack = 0;
-			enemy->colliderCombat.x = INIT_ENEMY1_POSX;
-			combatState = PLAYER_TURN;
-		}
+		EnemyAttack();
+
+		PlayerResponse();
 	}
 	else if (combatState == PLAYER_TURN)
 	{
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) playerAttack = true;
+		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			playerScape = true;
+			return;
+		}
 
 		if (playerAttack)
 		{
@@ -73,4 +74,26 @@ void Combat::FirstTurnLogic()
 	{
 		combatState = PLAYER_TURN;
 	}
+}
+
+void Combat::EnemyAttack()
+{
+	if (enemyTimeAttack < 200)
+	{
+		enemy->colliderCombat.x -= 4;
+		enemyTimeAttack++;
+	}
+	else
+	{
+		enemyTimeAttack = 0;
+		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+		combatState = PLAYER_TURN;
+	}
+}
+
+void Combat::PlayerResponse()
+{
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump) app->scene->player1->jump = true;
+
+	if (app->scene->player1->jump) app->scene->player1->Jump();
 }

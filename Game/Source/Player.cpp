@@ -23,3 +23,19 @@ void Player::SetTexture(SDL_Texture *tex)
 {
     texture = tex;
 }
+
+void Player::Jump()
+{
+    if (jumpTime < 34)
+    {
+        playerColliderCombat.y -= 17;
+        playerColliderCombat.y += jumpTime;
+        jumpTime++;
+    }
+    else
+    {
+        playerColliderCombat.y = INIT_COMBAT_POSY;
+        jumpTime = 0;
+        jump = false;
+    }
+}

@@ -45,11 +45,12 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	SetScene(LOGO_SCENE);
 
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 
 	combatScene = new Combat();
+
+	SetScene(LOGO_SCENE);
 
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 
@@ -187,6 +188,8 @@ void Scene::UpdateCombat()
 	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 255});
 
 	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
+
+	if (combatScene->playerScape) SetScene(MAIN_MENU);
 
 	DebugSteps();
 }

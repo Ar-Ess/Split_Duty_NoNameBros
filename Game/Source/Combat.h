@@ -34,15 +34,20 @@ public:
 
     void FirstTurnLogic();
 
+    void EnemyAttack();
+
+    void PlayerResponse();
+
 public:
     int enemyTimeAttack = 0;
     int playerTimeAttack = 0;
 
     bool playerAttack = false;
+    bool playerScape = false;
 
 public:
 
-    Enemy* enemy;
+    Enemy* enemy = nullptr;
 
     CombatState combatState = NULL_STATE;
 };

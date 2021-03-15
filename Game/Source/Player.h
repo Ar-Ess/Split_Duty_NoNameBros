@@ -32,6 +32,8 @@ public:
 
     void SetTexture(SDL_Texture *tex);
 
+    void Jump();
+
     SDL_Rect GetBounds();
 
     int GetCombatWidth() const
@@ -59,6 +61,9 @@ public:
     SDL_Texture* texture;
 
     PlayerAnim currentAnim;
+
+    bool jump = false;
+    int jumpTime = 0;
 
 private:
     friend class Combat;
