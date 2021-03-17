@@ -28,11 +28,20 @@ void Combat::Start()
 	app->scene->player1->strength = 30;
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
-	app->scene->player1->velocity = 0;
+	app->scene->player1->velocity = 30;
 	app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->playerColliderCombat.y = INIT_COMBAT_POSY;
 
+	//Item quantity (hardcoded for the moment)
+	smallMeat = 1;
+	largeMeat = 1;
+	feather = 1;
+	mantisLeg = 1;
+
 	playerScape = false;
+	playerAttack = false;
+	playerItem = false;
+	playerStep = false;
 	playerResponseAble = true;
 	playerHitAble = true;
 	playerChoice = true;
@@ -94,6 +103,11 @@ void Combat::Update()
 		{
 			PlayerMove();
 		}
+
+		if (playerItem)
+		{
+			PlayerItemChoose();
+		}
 	}
 	else if (combatState == WIN)
 	{
@@ -122,17 +136,23 @@ void Combat::PlayerChoiceLogic()
 		playerAttack = true;
 		playerChoice = false;
 	}
-	else if (app->scene->scapePressed)
-	{
-		playerScape = true;
-		playerChoice = false;
-		return;
-	}
 	else if (app->scene->movePressed && steps < 3)
 	{
 		playerStep = true;
 		playerChoice = false;
 		steps++;
+		return;
+	}
+	else if (app->scene->itemPressed)
+	{
+		playerItem = true;
+		playerChoice = false;
+		return;
+	}
+	else if (app->scene->scapePressed)
+	{
+		playerScape = true;
+		playerChoice = false;
 		return;
 	}
 }
@@ -143,13 +163,18 @@ int Combat::PlayerDamageLogic()
 	int pDamage = app->scene->player1->strength - enemy->defense;
 	int pLuck = app->scene->player1->luck;
 
-	if (steps == 0) damage += floor(25 * pDamage / 100);
-	else if (steps == 1) damage += floor(50 * pDamage / 100);
-	else if (steps == 2) damage += floor(75 * pDamage / 100);
+	if (steps == 0) damage += floor(15 * pDamage / 100);
+	else if (steps == 1) damage += floor(35 * pDamage / 100);
+	else if (steps == 2) damage += floor(65 * pDamage / 100);
 	else if (steps == 3) damage += pDamage;
 
-	if (damage < 1) damage = 1;
+	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
+	{
+		damage = 0;
+		return damage;
+	}
 
+	//Set luck
 	if (pLuck == 0) return damage;
 	else if (pLuck > 0)
 	{
@@ -255,6 +280,11 @@ void Combat::PlayerMove()
 		playerResponseAble = true;
 		playerChoice = true;
 	}
+}
+
+void Combat : PlayerItemChoose()
+{
+
 }
 
 void Combat::PlayerResponse()

@@ -55,6 +55,9 @@ private: //Buttons
 	GuiButton* moveButton = nullptr;
 	bool movePressed = false;
 
+	GuiButton* itemButton = nullptr;
+	bool itemPressed = false;
+
 	GuiButton* scapeButton = nullptr;
 	bool scapePressed = false;
 
@@ -86,8 +89,6 @@ private: //debug
 
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);
-
-	GuiSlider* testSlider;
 };
 
 #endif // __SCENE_H__
