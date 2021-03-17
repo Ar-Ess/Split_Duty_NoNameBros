@@ -6,8 +6,8 @@
 
 #include "Collider.h"
 
-#define INIT_ENEMY1_POSX 1007
-#define INIT_ENEMY1_POSY 400
+#define INIT_ENEMY1_POSX 996
+#define INIT_ENEMY1_POSY 433
 
 class Enemy;
 class Player;

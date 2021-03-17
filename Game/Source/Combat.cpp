@@ -17,7 +17,7 @@ Combat::Combat()
 void Combat::Start()
 {
 	//Enemy HardCoded
-	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 48, 88 });
+	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 });
 	enemy->health = 30;
 	enemy->defense = 10;
 	enemy->strength = 30;
@@ -53,6 +53,9 @@ void Combat::Start()
 			else if (trufals >= 0) luckArray[i] = false;
 		}
 	}
+
+	LOG("PH: %d", app->scene->player1->health);
+	LOG("EH: %d", enemy->health);
 }
 
 void Combat::Restart()
@@ -152,7 +155,7 @@ int Combat::PlayerDamageLogic()
 	{
 		if (pLuck > 25) pLuck = 25;
 		int a = rand() % 100;
-		if (luckArray[a]) return damage + floor(25 * damage / 100);
+		if (luckArray[a]) return damage + floor(20 * (pDamage - enemy->defense) / 100);
 		else if (!luckArray[a]) return damage;
 	}
 }
@@ -169,9 +172,9 @@ int Combat::EnemyDamageLogic()
 
 void Combat::EnemyAttack()
 {
-	if (enemyTimeAttack < 268)
+	if (enemyTimeAttack < 225)
 	{
-		enemy->colliderCombat.x -= 5;
+		enemy->colliderCombat.x -= 6;
 		enemyTimeAttack++;
 
 		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0) enemy->colliderCombat.x = 1280;
@@ -180,6 +183,7 @@ void Combat::EnemyAttack()
 		{
 			playerHitAble = false;
 			app->scene->player1->health -= EnemyDamageLogic();
+			LOG("Player Hit - PH: %d", app->scene->player1->health);
 		}
 	}
 	else
@@ -189,8 +193,16 @@ void Combat::EnemyAttack()
 		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
 		playerHitAble = true;
 
-		if (app->scene->player1->health > 0) combatState = PLAYER_TURN;
-		else if (app->scene->player1->health <= 0) combatState = LOSE;
+		if (app->scene->player1->health > 0)
+		{
+			LOG("PLAYER TURN");
+			combatState = PLAYER_TURN;
+		}
+		else if (app->scene->player1->health <= 0)
+		{
+			LOG("PLAYER LOSE");
+			combatState = LOSE;
+		}
 	}
 }
 
@@ -204,7 +216,7 @@ void Combat::PlayerAttack()
 	else
 	{
 		enemy->health -= PlayerDamageLogic();
-		LOG("Enemy Health: %d", enemy->health);
+		LOG("Enemy Hit, EH: %d", enemy->health);
 
 		playerTimeAttack = 0;
 		app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
@@ -214,9 +226,14 @@ void Combat::PlayerAttack()
 		playerChoice = true;
 		steps = 0;
 
-		if (enemy->health > 0) combatState = ENEMY_TURN;
+		if (enemy->health > 0)
+		{
+			LOG("ENEMY TURN");
+			combatState = ENEMY_TURN;
+		}
 		else if (enemy->health <= 0)
 		{
+			LOG("PLAYER WIN");
 			combatState = WIN;
 		}
 	}
