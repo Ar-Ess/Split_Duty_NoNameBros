@@ -6,8 +6,8 @@
 
 #include "Collider.h"
 
-#define INIT_ENEMY1_POSX 1007
-#define INIT_ENEMY1_POSY 400
+#define INIT_ENEMY1_POSX 996
+#define INIT_ENEMY1_POSY 433
 
 class Enemy;
 class Player;
@@ -49,6 +49,8 @@ public:
 
     void PlayerMove();
 
+    void PlayerItemChoose();
+
     void PlayerResponse();
 
 public:
@@ -63,10 +65,18 @@ public:
     bool playerHitAble = true;
 
     bool playerAttack = false;
-    bool playerScape = false;
     bool playerStep = false;
+    bool playerItem = false;
+    bool playerScape = false;
 
     bool playerChoice = true;
+
+public:
+    int smallMeat = 0;
+    int largeMeat = 0;
+    int feather = 0;
+    int mantisLeg = 0;
+    int tamedEnemy = 0;
 
 public:
 

@@ -188,10 +188,18 @@ void Scene::SetCombat(Enemy* enemySet)
 		moveButton->SetObserver(this);
 	}
 
+	if (itemButton == nullptr)
+	{
+		itemButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		itemButton->bounds = { 400, 0, 105, 27 };
+		itemButton->text = "ItemButton";
+		itemButton->SetObserver(this);
+	}
+
 	if (scapeButton == nullptr)
 	{
 		scapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		scapeButton->bounds = { 400, 0, 105, 27 };
+		scapeButton->bounds = { 600, 0, 105, 27 };
 		scapeButton->text = "ScapeButton";
 		scapeButton->SetObserver(this);
 	}
@@ -211,10 +219,12 @@ void Scene::UpdateCombat()
 {
 	attackButton->Update(0.0f);
 	moveButton->Update(0.0f);
+	itemButton->Update(0.0f);
 	scapeButton->Update(0.0f);
 
 	attackButton->Draw();
 	moveButton->Draw();
+	itemButton->Draw();
 	scapeButton->Draw();
 
 	combatScene->Update();
@@ -246,6 +256,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
+		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
 
 		break;
@@ -258,6 +269,7 @@ void Scene::RestartPressState()
 {
 	attackPressed = false;
 	movePressed = false;
+	itemPressed = false;
 	scapePressed = false;
 }
 
