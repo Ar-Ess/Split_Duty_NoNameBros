@@ -16,17 +16,28 @@ Combat::Combat()
 
 void Combat::Start()
 {
+	//Enemy HardCoded
 	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 48, 88 });
 	enemy->health = 30;
 	enemy->defense = 10;
-	enemy->strength = 40;
+	enemy->strength = 30;
 	enemy->velocity = 20;
+
+	//Player HardCoded
+	app->scene->player1->health = 35;
+	app->scene->player1->strength = 30;
+	app->scene->player1->defense = 5;
+	app->scene->player1->luck = 0;
+	app->scene->player1->velocity = 0;
+	app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
+	app->scene->player1->playerColliderCombat.y = INIT_COMBAT_POSY;
 
 	playerScape = false;
 	playerResponseAble = true;
+	playerHitAble = true;
 	playerChoice = true;
-
 	steps = 0;
+
 
 	FirstTurnLogic();
 
@@ -85,6 +96,10 @@ void Combat::Update()
 	{
 		playerScape = true; //Provisional, will lead to win animation and level upgrade
 	}
+	else if (combatState == LOSE)
+	{
+		playerScape = true; //Provisional, will lead to lose animation and respawn
+	}
 }
 
 void Combat::FirstTurnLogic()
@@ -142,6 +157,16 @@ int Combat::PlayerDamageLogic()
 	}
 }
 
+int Combat::EnemyDamageLogic()
+{
+	int damage = 0;
+	damage += enemy->strength - app->scene->player1->defense;
+
+	if (damage < 1) damage = 1;
+
+	return damage;
+}
+
 void Combat::EnemyAttack()
 {
 	if (enemyTimeAttack < 268)
@@ -151,13 +176,21 @@ void Combat::EnemyAttack()
 
 		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0) enemy->colliderCombat.x = 1280;
 
+		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->playerColliderCombat, enemy->colliderCombat))
+		{
+			playerHitAble = false;
+			app->scene->player1->health -= EnemyDamageLogic();
+		}
 	}
 	else
 	{
 		enemyTimeAttack = 0;
 		enemyTimeWait = 0;
 		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
-		combatState = PLAYER_TURN;
+		playerHitAble = true;
+
+		if (app->scene->player1->health > 0) combatState = PLAYER_TURN;
+		else if (app->scene->player1->health <= 0) combatState = LOSE;
 	}
 }
 

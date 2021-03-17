@@ -4,12 +4,15 @@
 #include "Point.h"
 #include "SString.h"
 
+#include "Collider.h"
+
 #define INIT_ENEMY1_POSX 1007
 #define INIT_ENEMY1_POSY 400
 
 class Enemy;
 class Player;
 class Scene;
+class Collision;
 
 enum CombatState
 {
@@ -38,6 +41,8 @@ public:
 
     int PlayerDamageLogic();
 
+    int EnemyDamageLogic();
+
     void EnemyAttack();
 
     void PlayerAttack();
@@ -55,6 +60,7 @@ public:
     int steps = 0;
 
     bool playerResponseAble = true;
+    bool playerHitAble = true;
 
     bool playerAttack = false;
     bool playerScape = false;
@@ -65,6 +71,8 @@ public:
 public:
 
     bool luckArray[100];
+
+    Collision collisionUtils;
 
     Enemy* enemy = nullptr;
 

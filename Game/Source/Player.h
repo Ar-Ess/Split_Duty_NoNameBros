@@ -68,13 +68,13 @@ public:
 private:
     friend class Combat;
 
-    int health;
-    int defense;
-    int exp;
+    int health = 35;
+    int defense = 5;
     int strength = 30;
     int velocity = 0;
-    int luck;
+    int luck = 0;
     int stab;
+    int exp;
 
 public:
     iPoint positionLive;
