@@ -39,3 +39,23 @@ void Player::Jump()
         jump = false;
     }
 }
+
+void Player::Crouch()
+{
+    if (crouchTime < 40)
+    {
+        if (crouchTime == 0)
+        {
+            playerColliderCombat.y += 40;
+            playerColliderCombat.h = 48;
+        }
+        crouchTime++;
+    }
+    else
+    {
+        playerColliderCombat.y = INIT_COMBAT_POSY;
+        playerColliderCombat.h = 88;
+        crouchTime = 0;
+        crouch = false;
+    }
+}

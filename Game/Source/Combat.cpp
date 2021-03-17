@@ -87,10 +87,7 @@ void Combat::Update()
 
 			PlayerResponse();
 
-			if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w - 50)
-			{
-				playerResponseAble = false;
-			}
+			if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w - 50) playerResponseAble = false;
 		}
 	}
 	else if (combatState == PLAYER_TURN)
@@ -208,16 +205,7 @@ void Combat::EnemyAttack()
 		enemy->colliderCombat.x -= 6;
 		enemyTimeAttack++;
 
-		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0)
-		{
-			enemy->colliderCombat.x = 1280;
-			if (app->scene->player1->crouch)
-			{
-				app->scene->player1->playerColliderCombat.y -= 40; //NO ESTA BÉ perquè pots estar saltant
-				app->scene->player1->playerColliderCombat.h = 88;
-				app->scene->player1->crouch = false;
-			}
-		}
+		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0)enemy->colliderCombat.x = 1280;
 
 		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->playerColliderCombat, enemy->colliderCombat))
 		{
@@ -323,26 +311,13 @@ void Combat::PlayerItemChoose()
 
 void Combat::PlayerResponse()
 {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble) app->scene->player1->jump = true;
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch) app->scene->player1->jump = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && playerResponseAble)
-	{
-		app->scene->player1->playerColliderCombat.y += 40;
-		app->scene->player1->playerColliderCombat.h = 48;
-		app->scene->player1->crouch = true;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT && playerResponseAble)
-	{
-		app->scene->player1->playerColliderCombat.h = 48;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP && playerResponseAble)
-	{
-		app->scene->player1->playerColliderCombat.y -= 40;
-		app->scene->player1->playerColliderCombat.h = 88;
-		app->scene->player1->crouch = false;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump) app->scene->player1->crouch = true;
 
 	if (app->scene->player1->jump) app->scene->player1->Jump();
+
+	if (app->scene->player1->crouch) app->scene->player1->Crouch();
 }
 
 void Combat::ItemUsage()

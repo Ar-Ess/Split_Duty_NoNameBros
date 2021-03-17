@@ -34,6 +34,8 @@ public:
 
     void Jump();
 
+    void Crouch();
+
     SDL_Rect GetBounds();
 
     int GetCombatWidth() const
@@ -65,6 +67,7 @@ public:
     bool jump = false;
     bool crouch = false;
     int jumpTime = 0;
+    int crouchTime = 0;
 
 private:
     friend class Combat;
