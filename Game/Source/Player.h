@@ -63,15 +63,17 @@ public:
     PlayerAnim currentAnim;
 
     bool jump = false;
+    bool crouch = false;
     int jumpTime = 0;
 
 private:
     friend class Combat;
 
     int health = 35;
+    int maxHealth = 35;
     int defense = 5;
     int strength = 30;
-    int velocity = 30;
+    int velocity = 0;
     int luck = 0;
     int stab;
     int exp;
