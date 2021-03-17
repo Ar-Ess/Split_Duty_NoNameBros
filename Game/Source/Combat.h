@@ -34,18 +34,30 @@ public:
 
     void FirstTurnLogic();
 
+    void PlayerChoiceLogic();
+
     void EnemyAttack();
+
+    void PlayerAttack();
+
+    void PlayerMove();
 
     void PlayerResponse();
 
 public:
     int enemyTimeAttack = 0;
     int playerTimeAttack = 0;
+    int playerTimeMove = 0;
+
+    int steps = 0;
 
     bool playerResponseAble = true;
 
     bool playerAttack = false;
     bool playerScape = false;
+    bool playerStep = false;
+
+    bool playerChoice = true;
 
 public:
 

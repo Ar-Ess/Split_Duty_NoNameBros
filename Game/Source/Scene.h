@@ -45,6 +45,19 @@ public:
 		return currScene;
 	}
 
+private: //Buttons
+
+	void RestartPressState();
+
+	GuiButton* attackButton = nullptr;
+	bool attackPressed = false;
+
+	GuiButton* moveButton = nullptr;
+	bool movePressed = false;
+
+	GuiButton* scapeButton = nullptr;
+	bool scapePressed = false;
+
 private:
 	friend class Combat;
 

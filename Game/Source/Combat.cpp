@@ -6,8 +6,6 @@
 #include "Enemy.h"
 #include "Player.h"
 
-
-
 Combat::Combat()
 {
 
@@ -23,6 +21,9 @@ void Combat::Start()
 
 	playerScape = false;
 	playerResponseAble = true;
+	playerChoice = true;
+
+	steps = 0;
 
 	FirstTurnLogic();
 }
@@ -45,28 +46,19 @@ void Combat::Update()
 	}
 	else if (combatState == PLAYER_TURN)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN) playerAttack = true;
-		else if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		if (playerChoice)
 		{
-			playerScape = true;
-			return;
+			PlayerChoiceLogic();
 		}
 
 		if (playerAttack)
 		{
-			if (playerTimeAttack < 125)
-			{
-				app->scene->player1->playerColliderCombat.x += 7;
-				playerTimeAttack++;
-			}
-			else
-			{
-				playerTimeAttack = 0;
-				app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
-				combatState = ENEMY_TURN;
-				playerAttack = false;
-				playerResponseAble = true;
-			}
+			PlayerAttack();
+		}
+
+		if (playerStep)
+		{
+			PlayerMove();
 		}
 	}
 }
@@ -76,7 +68,30 @@ void Combat::FirstTurnLogic()
 	if (app->scene->player1->velocity <= enemy->velocity) combatState = ENEMY_TURN;
 	else
 	{
+		playerChoice = true;
 		combatState = PLAYER_TURN;
+	}
+}
+
+void Combat::PlayerChoiceLogic()
+{
+	if (app->scene->attackPressed)
+	{
+		playerAttack = true;
+		playerChoice = false;
+	}
+	else if (app->scene->scapePressed)
+	{
+		playerScape = true;
+		playerChoice = false;
+		return;
+	}
+	else if (app->scene->movePressed && steps < 3)
+	{
+		playerStep = true;
+		playerChoice = false;
+		steps++;
+		return;
 	}
 }
 
@@ -94,6 +109,43 @@ void Combat::EnemyAttack()
 		enemyTimeAttack = 0;
 		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
 		combatState = PLAYER_TURN;
+	}
+}
+
+void Combat::PlayerAttack()
+{
+	if (playerTimeAttack < 125)
+	{
+		app->scene->player1->playerColliderCombat.x += 7;
+		playerTimeAttack++;
+	}
+	else
+	{
+		playerTimeAttack = 0;
+		app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
+		combatState = ENEMY_TURN;
+		playerAttack = false;
+		playerResponseAble = true;
+		playerChoice = true;
+		steps = 0;
+	}
+}
+
+void Combat::PlayerMove()
+{
+	if (playerTimeMove < 57)
+	{
+		app->scene->player1->playerColliderCombat.x += 3;
+		playerTimeMove++;
+	}
+	else
+	{
+		playerTimeMove = 0;
+		//app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
+		combatState = ENEMY_TURN;
+		playerStep = false;
+		playerResponseAble = true;
+		playerChoice = true;
 	}
 }
 

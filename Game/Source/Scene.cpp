@@ -169,6 +169,32 @@ void Scene::SetCombat(Enemy* enemySet)
 {
 	combatScene->enemy = enemySet;
 	combatScene->Start();
+
+	app->guiManager->debugGui = true;
+
+	if (attackButton == nullptr)
+	{
+		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		attackButton->bounds = { 0, 0, 105, 27 };
+		attackButton->text = "AttackButton";
+		attackButton->SetObserver(this);
+	}
+
+	if (moveButton == nullptr)
+	{
+		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		moveButton->bounds = { 200, 0, 105, 27 };
+		moveButton->text = "MoveButton";
+		moveButton->SetObserver(this);
+	}
+
+	if (scapeButton == nullptr)
+	{
+		scapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		scapeButton->bounds = { 400, 0, 105, 27 };
+		scapeButton->text = "ScapeButton";
+		scapeButton->SetObserver(this);
+	}
 }
 
 void Scene::UpdateLogoScene()
@@ -183,6 +209,14 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateCombat()
 {
+	attackButton->Update(0.0f);
+	moveButton->Update(0.0f);
+	scapeButton->Update(0.0f);
+
+	attackButton->Draw();
+	moveButton->Draw();
+	scapeButton->Draw();
+
 	combatScene->Update();
 
 	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 255});
@@ -190,6 +224,8 @@ void Scene::UpdateCombat()
 	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
 
 	if (combatScene->playerScape) SetScene(MAIN_MENU);
+
+	RestartPressState();
 
 	DebugSteps();
 }
@@ -205,9 +241,24 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 	case MAIN_MENU:
 		break;
+
+	case COMBAT:
+
+		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
+		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
+		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
+
+		break;
 	}
 
 	return true;
+}
+
+void Scene::RestartPressState()
+{
+	attackPressed = false;
+	movePressed = false;
+	scapePressed = false;
 }
 
 // Debug functions (future in debug module)
