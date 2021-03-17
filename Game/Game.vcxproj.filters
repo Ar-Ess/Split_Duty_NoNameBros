@@ -183,6 +183,9 @@
     <ClInclude Include="Source\Combat.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

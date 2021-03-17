@@ -5,6 +5,7 @@
 #include "Combat.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Collider.h"
 
 #include "Log.h"
 
@@ -149,6 +150,7 @@ void Combat::EnemyAttack()
 		enemyTimeAttack++;
 
 		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0) enemy->colliderCombat.x = 1280;
+
 	}
 	else
 	{
