@@ -53,11 +53,16 @@ public:
 
     void PlayerResponse();
 
+    void ItemUsage();
+
+    int HealPlayer(int typeOfHeal);
+
 public:
     int enemyTimeAttack = 0;
     int enemyTimeWait = 0;
     int playerTimeAttack = 0;
     int playerTimeMove = 0;
+    int playerTimeHeal = 0;
 
     int steps = 0;
 
@@ -68,8 +73,10 @@ public:
     bool playerStep = false;
     bool playerItem = false;
     bool playerScape = false;
-
     bool playerChoice = true;
+
+    bool itemChoice = true;
+    bool healPlayerSmall = false;
 
 public:
     int smallMeat = 0;
@@ -87,6 +94,8 @@ public:
     Enemy* enemy = nullptr;
 
     CombatState combatState = NULL_STATE;
+
+    SDL_Rect inventorySimulation = {192, 108, 896, 504};
 };
 
 #endif // __COMBAT_H__
