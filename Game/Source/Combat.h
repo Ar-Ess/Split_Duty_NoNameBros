@@ -57,12 +57,15 @@ public:
 
     int HealPlayer(int typeOfHeal);
 
+    int EnemyItemDamage();
+
 public:
     int enemyTimeAttack = 0;
     int enemyTimeWait = 0;
     int playerTimeAttack = 0;
     int playerTimeMove = 0;
     int playerTimeHeal = 0;
+    int playerTimeEnemyThrow = 0;
 
     int steps = 0;
 
@@ -78,6 +81,7 @@ public:
     bool itemChoice = true;
     bool healPlayerSmall = false;
     bool healPlayerLarge = false;
+    bool enemyThrow = false;
 
 public:
     int smallMeat = 0;

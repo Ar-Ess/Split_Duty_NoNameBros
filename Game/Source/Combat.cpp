@@ -28,7 +28,7 @@ void Combat::Start()
 	app->scene->player1->strength = 30;
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
-	app->scene->player1->velocity = 30;
+	app->scene->player1->velocity = 0;
 	app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->playerColliderCombat.y = INIT_COMBAT_POSY;
 
@@ -37,6 +37,7 @@ void Combat::Start()
 	largeMeat = 1;
 	feather = 1;
 	mantisLeg = 1;
+	tamedEnemy = 1;
 
 	playerScape = false;
 	playerAttack = false;
@@ -49,7 +50,8 @@ void Combat::Start()
 
 	itemChoice = true;
 	healPlayerSmall = false;
-
+	healPlayerLarge = false;
+	enemyThrow = false;
 
 	FirstTurnLogic();
 
@@ -312,6 +314,12 @@ void Combat::PlayerItemChoose()
 			healPlayerLarge = true;
 			largeMeat--;
 		}
+		else if (itemChoice && tamedEnemy > 0 && app->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
+		{
+			itemChoice = false;
+			enemyThrow = true;
+			tamedEnemy--;
+		}
 	}
 	else
 	{
@@ -365,6 +373,36 @@ void Combat::ItemUsage()
 			LOG("Enemy Health: %d", enemy->health);
 		}
 	}
+	else if (enemyThrow)
+	{
+		if (playerTimeEnemyThrow < 120)
+		{
+			playerTimeEnemyThrow++;
+		}
+		else
+		{
+			playerTimeEnemyThrow = 0;
+			playerChoice = true;
+			playerItem = false;
+			itemChoice = true;
+			enemyThrow = false;
+			playerResponseAble = true;
+
+			enemy->health -= EnemyItemDamage();
+
+			if (enemy->health > 0)
+			{
+				LOG("ENEMY TURN");
+				LOG("Enemy Health: %d", enemy->health);
+				combatState = ENEMY_TURN;
+			}
+			else if (enemy->health <= 0)
+			{
+				LOG("PLAYER WIN");
+				combatState = WIN;
+			}
+		}
+	}
 }
 
 int Combat::HealPlayer(int typeOfHeal)
@@ -376,6 +414,19 @@ int Combat::HealPlayer(int typeOfHeal)
 
 	if (healthLeft <= healthRestored) return healthLeft;
 	else if (healthLeft > healthRestored) return healthRestored;
+}
+
+int Combat::EnemyItemDamage()
+{
+	int itemDamage = 25;
+	int damage = itemDamage + floor(app->scene->player1->strength / 5) - enemy->defense;
+
+	int damagePlus = rand() % 4;
+	int negOrPos = rand() % 1;
+
+	if (negOrPos == 0) damagePlus = -damagePlus;
+
+	return damage + damagePlus;
 }
 
 void Combat::PlayerResponse()

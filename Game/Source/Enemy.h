@@ -31,6 +31,8 @@ private:
     int defense;
     int strength;
     int velocity;
+    int lvl;
+    int exp;
 
 private:
 
