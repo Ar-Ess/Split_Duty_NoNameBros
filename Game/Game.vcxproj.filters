@@ -72,7 +72,9 @@
     <ClCompile Include="Source\FontTTF.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Combat.cpp" />
+    <ClCompile Include="Source\Combat.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />

@@ -6,6 +6,8 @@
 #include "Enemy.h"
 #include "Player.h"
 
+#include "Log.h"
+
 Combat::Combat()
 {
 
@@ -15,7 +17,7 @@ void Combat::Start()
 {
 	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 48, 88 });
 	enemy->health = 30;
-	enemy->defense = 15;
+	enemy->defense = 10;
 	enemy->strength = 40;
 	enemy->velocity = 20;
 
@@ -26,6 +28,19 @@ void Combat::Start()
 	steps = 0;
 
 	FirstTurnLogic();
+
+	// LuckArray fill
+	int pLuck = app->scene->player1->luck;
+	if (pLuck > 0)
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			int trufals = i - pLuck;
+
+			if (trufals < 0) luckArray[i] = true;
+			else if (trufals >= 0) luckArray[i] = false;
+		}
+	}
 }
 
 void Combat::Restart()
@@ -38,11 +53,15 @@ void Combat::Update()
 {
 	if (combatState == ENEMY_TURN)
 	{
-		EnemyAttack();
+		if (enemyTimeWait < 60) enemyTimeWait++; // Make enemy wait so it does not atack directly
+		else
+		{
+			EnemyAttack();
 
-		PlayerResponse();
+			PlayerResponse();
 
-		if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w) playerResponseAble = false;
+			if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w) playerResponseAble = false;
+		}
 	}
 	else if (combatState == PLAYER_TURN)
 	{
@@ -60,6 +79,10 @@ void Combat::Update()
 		{
 			PlayerMove();
 		}
+	}
+	else if (combatState == WIN)
+	{
+		playerScape = true; //Provisional, will lead to win animation and level upgrade
 	}
 }
 
@@ -95,6 +118,29 @@ void Combat::PlayerChoiceLogic()
 	}
 }
 
+int Combat::PlayerDamageLogic()
+{
+	int damage = 0;
+	int pDamage = app->scene->player1->strength - enemy->defense;
+	int pLuck = app->scene->player1->luck;
+
+	if (steps == 0) damage += floor(25 * pDamage / 100);
+	else if (steps == 1) damage += floor(50 * pDamage / 100);
+	else if (steps == 2) damage += floor(75 * pDamage / 100);
+	else if (steps == 3) damage += pDamage;
+
+	if (damage < 1) damage = 1;
+
+	if (pLuck == 0) return damage;
+	else if (pLuck > 0)
+	{
+		if (pLuck > 25) pLuck = 25;
+		int a = rand() % 100;
+		if (luckArray[a]) return damage + floor(25 * damage / 100);
+		else if (!luckArray[a]) return damage;
+	}
+}
+
 void Combat::EnemyAttack()
 {
 	if (enemyTimeAttack < 268)
@@ -107,6 +153,7 @@ void Combat::EnemyAttack()
 	else
 	{
 		enemyTimeAttack = 0;
+		enemyTimeWait = 0;
 		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
 		combatState = PLAYER_TURN;
 	}
@@ -121,13 +168,22 @@ void Combat::PlayerAttack()
 	}
 	else
 	{
+		enemy->health -= PlayerDamageLogic();
+		LOG("Enemy Health: %d", enemy->health);
+
 		playerTimeAttack = 0;
 		app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
-		combatState = ENEMY_TURN;
+
 		playerAttack = false;
 		playerResponseAble = true;
 		playerChoice = true;
 		steps = 0;
+
+		if (enemy->health > 0) combatState = ENEMY_TURN;
+		else if (enemy->health <= 0)
+		{
+			combatState = WIN;
+		}
 	}
 }
 

@@ -71,7 +71,7 @@ private:
     int health;
     int defense;
     int exp;
-    int strength;
+    int strength = 30;
     int velocity = 0;
     int luck;
     int stab;

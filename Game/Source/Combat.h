@@ -36,6 +36,8 @@ public:
 
     void PlayerChoiceLogic();
 
+    int PlayerDamageLogic();
+
     void EnemyAttack();
 
     void PlayerAttack();
@@ -46,6 +48,7 @@ public:
 
 public:
     int enemyTimeAttack = 0;
+    int enemyTimeWait = 0;
     int playerTimeAttack = 0;
     int playerTimeMove = 0;
 
@@ -60,6 +63,8 @@ public:
     bool playerChoice = true;
 
 public:
+
+    bool luckArray[100];
 
     Enemy* enemy = nullptr;
 
