@@ -28,7 +28,7 @@ void Combat::Start()
 	app->scene->player1->strength = 30;
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
-	app->scene->player1->velocity = 0;
+	app->scene->player1->velocity = 30;
 	app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->playerColliderCombat.y = INIT_COMBAT_POSY;
 
@@ -224,6 +224,7 @@ void Combat::EnemyAttack()
 		if (app->scene->player1->health > 0)
 		{
 			LOG("PLAYER TURN");
+			LOG("Player Health: %d", app->scene->player1->health);
 			combatState = PLAYER_TURN;
 		}
 		else if (app->scene->player1->health <= 0)
@@ -257,6 +258,7 @@ void Combat::PlayerAttack()
 		if (enemy->health > 0)
 		{
 			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
 			combatState = ENEMY_TURN;
 		}
 		else if (enemy->health <= 0)
@@ -276,6 +278,8 @@ void Combat::PlayerMove()
 	}
 	else
 	{
+		LOG("ENEMY TURN");
+		LOG("Enemy Health: %d", enemy->health);
 		playerTimeMove = 0;
 		//app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
 		combatState = ENEMY_TURN;
@@ -302,22 +306,17 @@ void Combat::PlayerItemChoose()
 			healPlayerSmall = true;
 			smallMeat--;
 		}
+		else if (itemChoice && largeMeat > 0 && app->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+		{
+			itemChoice = false;
+			healPlayerLarge = true;
+			largeMeat--;
+		}
 	}
 	else
 	{
 		ItemUsage();
 	}
-}
-
-void Combat::PlayerResponse()
-{
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch) app->scene->player1->jump = true;
-
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump) app->scene->player1->crouch = true;
-
-	if (app->scene->player1->jump) app->scene->player1->Jump();
-
-	if (app->scene->player1->crouch) app->scene->player1->Crouch();
 }
 
 void Combat::ItemUsage()
@@ -340,6 +339,30 @@ void Combat::ItemUsage()
 			app->scene->player1->health += HealPlayer(1);
 
 			combatState = ENEMY_TURN;
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+		}
+	}
+	else if (healPlayerLarge)
+	{
+		if (playerTimeHeal < 100)
+		{
+			playerTimeHeal++;
+		}
+		else
+		{
+			playerTimeHeal = 0;
+			playerChoice = true;
+			playerItem = false;
+			itemChoice = true;
+			healPlayerLarge = false;
+			playerResponseAble = true;
+
+			app->scene->player1->health += HealPlayer(2);
+
+			combatState = ENEMY_TURN;
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
 		}
 	}
 }
@@ -347,5 +370,21 @@ void Combat::ItemUsage()
 int Combat::HealPlayer(int typeOfHeal)
 {
 	int healthLeft = app->scene->player1->maxHealth - app->scene->player1->health;
-	return 0;
+	int healthRestored = 0;
+	if (typeOfHeal == 1) healthRestored = ceil(app->scene->player1->maxHealth * 25 / 100);
+	else if (typeOfHeal == 2) healthRestored = ceil(app->scene->player1->maxHealth * 50 / 100);
+
+	if (healthLeft <= healthRestored) return healthLeft;
+	else if (healthLeft > healthRestored) return healthRestored;
+}
+
+void Combat::PlayerResponse()
+{
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch) app->scene->player1->jump = true;
+
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump) app->scene->player1->crouch = true;
+
+	if (app->scene->player1->jump) app->scene->player1->Jump();
+
+	if (app->scene->player1->crouch) app->scene->player1->Crouch();
 }

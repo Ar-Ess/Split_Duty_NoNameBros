@@ -77,6 +77,7 @@ public:
 
     bool itemChoice = true;
     bool healPlayerSmall = false;
+    bool healPlayerLarge = false;
 
 public:
     int smallMeat = 0;
