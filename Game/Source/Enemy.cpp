@@ -19,6 +19,7 @@ void Enemy::SetUp(SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstren
     lvl = xlvl;
     exp = xexp;
     health = xhealth;
+    maxHealth = xhealth;
     strength = xstrength;
     defense = xdefense;
     velocity = xvelocity;
