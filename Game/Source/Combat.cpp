@@ -94,7 +94,7 @@ void Combat::Update()
 
 			PlayerResponse();
 
-			if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 50) playerResponseAble = false;
+			if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 30) playerResponseAble = false;
 		}
 	}
 	else if (combatState == PLAYER_TURN)

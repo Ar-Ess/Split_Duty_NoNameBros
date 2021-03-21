@@ -48,9 +48,10 @@ void Player::FeatherJump()
         colliderCombat.y += jumpFeatherTime;
         jumpFeatherTime++;
     }
-    else if (jumpFeatherTime > 17 && jumpFeatherTime < 37)
+    else if (jumpFeatherTime > 17 && jumpFeatherTime < 70)
     {
-        colliderCombat.y -= 18;
+        colliderCombat.y -= (17 + jumpFeatherTime - 20);
+        colliderCombat.y += jumpFeatherTime;
         jumpFeatherTime++;
     }
     else
