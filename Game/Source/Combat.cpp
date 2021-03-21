@@ -17,11 +17,7 @@ Combat::Combat()
 void Combat::Start()
 {
 	//Enemy HardCoded
-	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 });
-	enemy->health = 30;
-	enemy->defense = 10;
-	enemy->strength = 30;
-	enemy->velocity = 20;
+	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 13, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -29,15 +25,12 @@ void Combat::Start()
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
 	app->scene->player1->velocity = 0;
+	app->scene->player1->lvl = 8;
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
 	//Item quantity (hardcoded for the moment)
-	smallMeat = 1;
-	largeMeat = 1;
-	feather = 1;
-	mantisLeg = 1;
-	tamedEnemy = 1;
+	ItemSetup(1, 1, 1, 1, 1);
 
 	playerScape = false;
 	playerAttack = false;
@@ -161,8 +154,69 @@ void Combat::PlayerChoiceLogic()
 	}
 	else if (app->scene->scapePressed)
 	{
-		playerScape = true;
 		playerChoice = false;
+		int probabilityRange = enemy->lvl - app->scene->player1->lvl;
+
+		if (probabilityRange <= -8) playerScape = true;
+		else if (probabilityRange >= -7 && probabilityRange <= -4)
+		{
+			int random = rand() % 3;
+
+			if (random != 0) playerScape = true;
+			else
+			{
+				playerAttack = false;
+				playerResponseAble = true;
+				playerChoice = true;
+
+				LOG("ENEMY TURN");
+				LOG("Enemy Health: %d", enemy->health);
+				combatState = ENEMY_TURN;
+			}
+		}
+		else if (probabilityRange >= -3 && probabilityRange <= 3)
+		{
+			int random = rand() % 1;
+
+			if (random == 0) playerScape = true;
+			else
+			{
+				playerAttack = false;
+				playerResponseAble = true;
+				playerChoice = true;
+
+				LOG("ENEMY TURN");
+				LOG("Enemy Health: %d", enemy->health);
+				combatState = ENEMY_TURN;
+			}
+		}
+		else if (probabilityRange >= 4 && probabilityRange <= 7)
+		{
+			int random = rand() % 3;
+
+			if (random == 0) playerScape = true;
+			else
+			{
+				playerAttack = false;
+				playerResponseAble = true;
+				playerChoice = true;
+
+				LOG("ENEMY TURN");
+				LOG("Enemy Health: %d", enemy->health);
+				combatState = ENEMY_TURN;
+			}
+		}
+		else if (probabilityRange >= 8)
+		{
+			playerAttack = false;
+			playerResponseAble = true;
+			playerChoice = true;
+
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+			combatState = ENEMY_TURN;
+		}
+
 		return;
 	}
 }
@@ -237,6 +291,7 @@ void Combat::EnemyAttack()
 			LOG("PLAYER TURN");
 			LOG("Player Health: %d", app->scene->player1->health);
 			if (wearFeather) wearFeather = false;
+			if (wearMantisLeg) wearMantisLeg = false;
 			combatState = PLAYER_TURN;
 		}
 		else if (app->scene->player1->health <= 0)
@@ -411,6 +466,7 @@ void Combat::ItemUsage()
 			playerResponseAble = true;
 
 			wearFeather = true;
+			app->scene->player1->health += HealPlayer(3);
 
 			combatState = ENEMY_TURN;
 			LOG("ENEMY TURN");
@@ -475,8 +531,16 @@ int Combat::HealPlayer(int typeOfHeal)
 {
 	int healthLeft = app->scene->player1->maxHealth - app->scene->player1->health;
 	int healthRestored = 0;
-	if (typeOfHeal == 1) healthRestored = ceil(app->scene->player1->maxHealth * 25 / 100);
-	else if (typeOfHeal == 2) healthRestored = ceil(app->scene->player1->maxHealth * 50 / 100);
+
+	if (typeOfHeal == 1) healthRestored = ceil(app->scene->player1->maxHealth * 30 / 100);
+	else if (typeOfHeal == 2) healthRestored = ceil(app->scene->player1->maxHealth * 60 / 100);
+	else if (typeOfHeal == 3)
+	{
+		int random = rand() % 5;
+		int neg = rand() % 2;
+		if (neg == 0) random = -random;
+		healthRestored = ceil(app->scene->player1->maxHealth * (15 + random) / 100);
+	}
 
 	if (healthLeft <= healthRestored) return healthLeft;
 	else if (healthLeft > healthRestored) return healthRestored;
@@ -511,4 +575,13 @@ void Combat::PlayerResponse()
 	}
 
 	if (app->scene->player1->crouch) app->scene->player1->Crouch();
+}
+
+void Combat::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy)
+{
+	smallMeat = xsmallMeat;
+	largeMeat = xlargeMeat;
+	feather = xfeather;
+	mantisLeg = xmantisLeg;
+	tamedEnemy = xtamedEnemy;
 }

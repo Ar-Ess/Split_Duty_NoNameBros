@@ -59,6 +59,8 @@ public:
 
     int EnemyItemDamage();
 
+    void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy);
+
 public:
     int enemyTimeAttack = 0;
     int enemyTimeWait = 0;

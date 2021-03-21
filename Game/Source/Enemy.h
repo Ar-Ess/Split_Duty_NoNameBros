@@ -19,7 +19,7 @@ public:
 
     virtual ~Enemy();
 
-    void SetUp(SDL_Rect collider);
+    void SetUp(SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
 
 public:
     SDL_Rect colliderCombat;

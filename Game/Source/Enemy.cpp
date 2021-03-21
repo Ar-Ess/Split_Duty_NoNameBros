@@ -13,7 +13,13 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::SetUp(SDL_Rect collider)
+void Enemy::SetUp(SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {
     colliderCombat = collider;
+    lvl = xlvl;
+    exp = xexp;
+    health = xhealth;
+    strength = xstrength;
+    defense = xdefense;
+    velocity = xvelocity;
 }

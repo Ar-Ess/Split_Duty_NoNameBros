@@ -85,7 +85,10 @@ private:
     int velocity = 0;
     int luck = 0;
     int stab;
+    
+    int lvl;
     int exp;
+    int money;
 
 public:
     iPoint positionLive;
