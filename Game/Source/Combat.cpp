@@ -31,7 +31,7 @@ void Combat::Start()
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
-	app->scene->player1->currentAnim = &app->scene->player1->cIdleAnim;
+	currPlayerAnim = &app->scene->player1->cIdleAnim;
 
 	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);
@@ -88,8 +88,9 @@ void Combat::Update()
 	app->scene->moveButton->Update(0.0f);
 	app->scene->itemButton->Update(0.0f);
 	app->scene->scapeButton->Update(0.0f);
-	app->scene->player1->currentAnim->Update(0.020f);
 	if (steps == 3) app->scene->reapButton->Update(0.0f);
+
+	currPlayerAnim->Update(1.0f);
 
 	CombatLogic();
 }
@@ -103,7 +104,8 @@ void Combat::Draw()
 	if (steps == 3) app->scene->reapButton->Draw();
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
-	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y, &app->scene->player1->currentAnim->GetCurrentFrame());
+
+	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y, &currPlayerAnim->GetCurrentFrame());
 
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 

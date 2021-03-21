@@ -10,11 +10,9 @@ Player::Player() : Entity(EntityType::PLAYER)
     for (int i = 0; i < 6; i++)
     {
         cIdleAnim.PushBack(spriteSize);
-        spriteSize.x += SPRITE_TILE_SIZE;
+        spriteSize.x += SPRITE_TILE_SIZE + 23; //No tinc ni idea perquè sumant 23 funciona
     }
-    
-
-   
+    cIdleAnim.speed = 0.125;
 }
 
 bool Player::Update(float dt)

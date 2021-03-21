@@ -67,7 +67,6 @@ public:
     SDL_Rect spriteSize = { 52,52,70,88 };
     SDL_Texture* texture;
 
-    Animation* currentAnim;
     Animation cIdleAnim;
     Animation cCloseAttackAnim;
     Animation cStepAnim;

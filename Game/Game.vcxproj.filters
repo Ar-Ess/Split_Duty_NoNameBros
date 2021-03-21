@@ -201,7 +201,9 @@
     <ClInclude Include="Source\DialogueOption.h">
       <Filter>Dialogues</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Animation.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

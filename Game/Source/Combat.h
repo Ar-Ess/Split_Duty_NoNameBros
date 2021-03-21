@@ -117,7 +117,7 @@ private:
 
     const SDL_Rect test = {52, 52, 70, 88};
 
-    Animation* currentAnim;
+    Animation* currPlayerAnim;
 public:
 
     bool luckArray[100];
