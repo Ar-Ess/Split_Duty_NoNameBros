@@ -124,7 +124,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	combatScene->Restart();
+	if (currScene == COMBAT) combatScene->Restart();
 
 	return true;
 }
@@ -133,10 +133,10 @@ bool Scene::CleanUp()
 
 void Scene::SetScene(Scenes scene)
 {
+	CleanUp();
+
 	prevScene = currScene;
 	currScene = scene;
-
-	CleanUp();
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
@@ -203,6 +203,8 @@ void Scene::SetCombat(Enemy* enemySet)
 		scapeButton->text = "ScapeButton";
 		scapeButton->SetObserver(this);
 	}
+
+	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Main_Character_02/female_character_spritesheet.png");
 }
 
 void Scene::UpdateLogoScene()

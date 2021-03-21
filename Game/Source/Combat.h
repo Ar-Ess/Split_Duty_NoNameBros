@@ -110,6 +110,8 @@ private:
 
     SDL_Texture* character1Spritesheet = nullptr;
 
+    const SDL_Rect test = {18, 9, 19, 32};
+
 public:
 
     bool luckArray[100];

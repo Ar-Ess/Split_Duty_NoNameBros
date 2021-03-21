@@ -1,6 +1,7 @@
 #include "App.h"
 
 #include "Scene.h"
+#include "Textures.h"
 #include "GuiButton.h"
 
 #include "Combat.h"
@@ -75,6 +76,7 @@ void Combat::Restart()
 {
 	combatState = NULL_STATE;
 	enemy = nullptr;
+	app->tex->UnLoad(character1Spritesheet);
 }
 
 void Combat::Update()
@@ -94,7 +96,8 @@ void Combat::Draw()
 	app->scene->itemButton->Draw();
 	app->scene->scapeButton->Draw();
 
-	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 255 });
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
+	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y, &test);
 
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
