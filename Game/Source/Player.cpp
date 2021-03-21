@@ -4,7 +4,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 {
     texture = NULL;
 
-    playerColliderCombat = {INIT_COMBAT_POSX, INIT_COMBAT_POSY, 48, 88};
+    colliderCombat = {INIT_COMBAT_POSX, INIT_COMBAT_POSY, 48, 88};
 
     // Define Player animations
 }
@@ -28,14 +28,35 @@ void Player::Jump()
 {
     if (jumpTime < 34)
     {
-        playerColliderCombat.y -= 17;
-        playerColliderCombat.y += jumpTime;
+        colliderCombat.y -= 17;
+        colliderCombat.y += jumpTime;
         jumpTime++;
     }
     else
     {
-        playerColliderCombat.y = INIT_COMBAT_POSY;
+        colliderCombat.y = INIT_COMBAT_POSY;
         jumpTime = 0;
+        jump = false;
+    }
+}
+
+void Player::FeatherJump()
+{
+    if (jumpFeatherTime <= 17)
+    {
+        colliderCombat.y -= 17;
+        colliderCombat.y += jumpFeatherTime;
+        jumpFeatherTime++;
+    }
+    else if (jumpFeatherTime > 17 && jumpFeatherTime < 37)
+    {
+        colliderCombat.y -= 18;
+        jumpFeatherTime++;
+    }
+    else
+    {
+        colliderCombat.y = INIT_COMBAT_POSY;
+        jumpFeatherTime = 0;
         jump = false;
     }
 }
@@ -46,15 +67,15 @@ void Player::Crouch()
     {
         if (crouchTime == 0)
         {
-            playerColliderCombat.y += 40;
-            playerColliderCombat.h = 48;
+            colliderCombat.y += 40;
+            colliderCombat.h = 48;
         }
         crouchTime++;
     }
     else
     {
-        playerColliderCombat.y = INIT_COMBAT_POSY;
-        playerColliderCombat.h = 88;
+        colliderCombat.y = INIT_COMBAT_POSY;
+        colliderCombat.h = 88;
         crouchTime = 0;
         crouch = false;
     }

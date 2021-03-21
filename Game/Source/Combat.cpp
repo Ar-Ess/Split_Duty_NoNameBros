@@ -29,8 +29,8 @@ void Combat::Start()
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
 	app->scene->player1->velocity = 0;
-	app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
-	app->scene->player1->playerColliderCombat.y = INIT_COMBAT_POSY;
+	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
+	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
 	//Item quantity (hardcoded for the moment)
 	smallMeat = 1;
@@ -51,7 +51,12 @@ void Combat::Start()
 	itemChoice = true;
 	healPlayerSmall = false;
 	healPlayerLarge = false;
+	featherPlayerTurn = false;
+	protectPlayerTurn = false;
 	enemyThrow = false;
+
+	wearFeather = false;
+	wearMantisLeg = false;
 
 	FirstTurnLogic();
 
@@ -89,7 +94,7 @@ void Combat::Update()
 
 			PlayerResponse();
 
-			if (enemy->colliderCombat.x < app->scene->player1->playerColliderCombat.x - enemy->colliderCombat.w - 50) playerResponseAble = false;
+			if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 50) playerResponseAble = false;
 		}
 	}
 	else if (combatState == PLAYER_TURN)
@@ -209,11 +214,15 @@ void Combat::EnemyAttack()
 
 		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0)enemy->colliderCombat.x = 1280;
 
-		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->playerColliderCombat, enemy->colliderCombat))
+		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
 		{
 			playerHitAble = false;
-			app->scene->player1->health -= EnemyDamageLogic();
-			LOG("Player Hit - PH: %d", app->scene->player1->health);
+			if (!wearMantisLeg)
+			{
+				app->scene->player1->health -= EnemyDamageLogic();
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
 		}
 	}
 	else
@@ -227,6 +236,7 @@ void Combat::EnemyAttack()
 		{
 			LOG("PLAYER TURN");
 			LOG("Player Health: %d", app->scene->player1->health);
+			if (wearFeather) wearFeather = false;
 			combatState = PLAYER_TURN;
 		}
 		else if (app->scene->player1->health <= 0)
@@ -241,7 +251,7 @@ void Combat::PlayerAttack()
 {
 	if (playerTimeAttack < 125)
 	{
-		app->scene->player1->playerColliderCombat.x += 7;
+		app->scene->player1->colliderCombat.x += 7;
 		playerTimeAttack++;
 	}
 	else
@@ -250,7 +260,7 @@ void Combat::PlayerAttack()
 		LOG("Enemy Hit, EH: %d", enemy->health);
 
 		playerTimeAttack = 0;
-		app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
+		app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 
 		playerAttack = false;
 		playerResponseAble = true;
@@ -275,7 +285,7 @@ void Combat::PlayerMove()
 {
 	if (playerTimeMove < 57)
 	{
-		app->scene->player1->playerColliderCombat.x += 3;
+		app->scene->player1->colliderCombat.x += 3;
 		playerTimeMove++;
 	}
 	else
@@ -283,7 +293,7 @@ void Combat::PlayerMove()
 		LOG("ENEMY TURN");
 		LOG("Enemy Health: %d", enemy->health);
 		playerTimeMove = 0;
-		//app->scene->player1->playerColliderCombat.x = INIT_COMBAT_POSX;
+		//app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 		combatState = ENEMY_TURN;
 		playerStep = false;
 		playerResponseAble = true;
@@ -313,6 +323,18 @@ void Combat::PlayerItemChoose()
 			itemChoice = false;
 			healPlayerLarge = true;
 			largeMeat--;
+		}
+		else if (itemChoice && feather > 0 && app->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
+		{
+			itemChoice = false;
+			featherPlayerTurn = true;
+			feather--;
+		}
+		else if (itemChoice && mantisLeg > 0 && app->input->GetKey(SDL_SCANCODE_KP_4) == KEY_DOWN)
+		{
+			itemChoice = false;
+			protectPlayerTurn = true;
+			mantisLeg--;
 		}
 		else if (itemChoice && tamedEnemy > 0 && app->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
 		{
@@ -367,6 +389,50 @@ void Combat::ItemUsage()
 			playerResponseAble = true;
 
 			app->scene->player1->health += HealPlayer(2);
+
+			combatState = ENEMY_TURN;
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+		}
+	}
+	else if (featherPlayerTurn)
+	{
+		if (playerTimeWearFeather < 200)
+		{
+			playerTimeWearFeather++;
+		}
+		else
+		{
+			playerTimeWearFeather = 0;
+			playerChoice = true;
+			playerItem = false;
+			itemChoice = true;
+			featherPlayerTurn = false;
+			playerResponseAble = true;
+
+			wearFeather = true;
+
+			combatState = ENEMY_TURN;
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+		}
+	}
+	else if (protectPlayerTurn)
+	{
+		if (playerTimeWearLeg < 200)
+		{
+			playerTimeWearLeg++;
+		}
+		else
+		{
+			playerTimeWearLeg = 0;
+			playerChoice = true;
+			playerItem = false;
+			itemChoice = true;
+			protectPlayerTurn = false;
+			playerResponseAble = true;
+
+			wearMantisLeg = true;
 
 			combatState = ENEMY_TURN;
 			LOG("ENEMY TURN");
@@ -435,7 +501,14 @@ void Combat::PlayerResponse()
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump) app->scene->player1->crouch = true;
 
-	if (app->scene->player1->jump) app->scene->player1->Jump();
+	if (app->scene->player1->jump)
+	{
+		if (wearFeather) app->scene->player1->FeatherJump();
+		else
+		{
+			app->scene->player1->Jump();
+		}
+	}
 
 	if (app->scene->player1->crouch) app->scene->player1->Crouch();
 }

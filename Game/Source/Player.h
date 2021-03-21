@@ -34,28 +34,33 @@ public:
 
     void Jump();
 
+    void FeatherJump();
+
     void Crouch();
 
-    SDL_Rect GetBounds();
+    SDL_Rect GetCombatBounds()
+    {
+        return colliderCombat;
+    }
 
     int GetCombatWidth() const
     {
-        return playerColliderCombat.w;
+        return colliderCombat.w;
     }
 
     int GetCombatHeight() const
     {
-        return playerColliderCombat.h;
+        return colliderCombat.h;
     }
 
     int GetLiveWidth() const
     {
-        return playerColliderLive.w;
+        return colliderLive.w;
     }
 
     int GetLiveHeight() const
     {
-        return playerColliderLive.h;
+        return colliderLive.h;
     }
 
 public:
@@ -67,6 +72,7 @@ public:
     bool jump = false;
     bool crouch = false;
     int jumpTime = 0;
+    int jumpFeatherTime = 0;
     int crouchTime = 0;
 
 private:
@@ -85,8 +91,8 @@ public:
     iPoint positionLive;
     int positionCombat;
 
-    SDL_Rect playerColliderLive;
-    SDL_Rect playerColliderCombat;
+    SDL_Rect colliderLive;
+    SDL_Rect colliderCombat;
 };
 
 #endif // __PLAYER_H__

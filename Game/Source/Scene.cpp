@@ -229,7 +229,7 @@ void Scene::UpdateCombat()
 
 	combatScene->Update();
 
-	app->render->DrawRectangle(player1->playerColliderCombat, {100, 3, 56, 255});
+	app->render->DrawRectangle(player1->colliderCombat, {100, 3, 56, 255});
 
 	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
 
