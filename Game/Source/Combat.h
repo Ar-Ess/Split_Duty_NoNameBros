@@ -56,6 +56,8 @@ public:
 
     void PlayerItemChoose();
 
+    void PlayerReap();
+
     void PlayerResponse();
 
     void ItemUsage();
@@ -85,6 +87,7 @@ public:
     bool playerStep = false;
     bool playerItem = false;
     bool playerScape = false;
+    bool playerReap = false;
     bool playerChoice = true;
 
     bool itemChoice = true;
@@ -109,6 +112,8 @@ private:
     friend class Scene;
 
     SDL_Texture* character1Spritesheet = nullptr;
+
+    const SDL_Rect test = {18, 9, 19, 32};
 
 public:
 

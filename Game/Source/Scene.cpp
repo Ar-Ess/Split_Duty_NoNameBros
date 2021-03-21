@@ -124,7 +124,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	combatScene->Restart();
+	if (currScene == COMBAT) combatScene->Restart();
 
 	return true;
 }
@@ -133,10 +133,10 @@ bool Scene::CleanUp()
 
 void Scene::SetScene(Scenes scene)
 {
+	CleanUp();
+
 	prevScene = currScene;
 	currScene = scene;
-
-	CleanUp();
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
@@ -203,6 +203,16 @@ void Scene::SetCombat(Enemy* enemySet)
 		scapeButton->text = "ScapeButton";
 		scapeButton->SetObserver(this);
 	}
+
+	if (reapButton == nullptr)
+	{
+		reapButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		reapButton->bounds = { 800, 0, 135, 67 };
+		reapButton->text = "ReapButton";
+		reapButton->SetObserver(this);
+	}
+
+	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Main_Character_02/female_character_spritesheet.png");
 }
 
 void Scene::UpdateLogoScene()
@@ -246,6 +256,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
+		else if (strcmp(control->text.GetString(), "ReapButton") == 0) reapPressed = true;
 
 		break;
 	}
@@ -259,6 +270,7 @@ void Scene::RestartPressState()
 	movePressed = false;
 	itemPressed = false;
 	scapePressed = false;
+	reapPressed = false;
 }
 
 // Debug functions (future in debug module)
