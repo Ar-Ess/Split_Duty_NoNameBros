@@ -18,8 +18,8 @@ Combat::Combat()
 
 void Combat::Start()
 {
-	//HardCode ENEMY ------------------RECT------------------    LVL EXP  HP STR DEF VEL
-	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 15, 200, 30, 30, 10, 20);
+	//HardCode ENEMY ------------------RECT------------------   LVL EXP  HP STR DEF VEL
+	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -38,6 +38,7 @@ void Combat::Start()
 	playerAttack = false;
 	playerItem = false;
 	playerStep = false;
+	playerReap = false;
 	playerResponseAble = true;
 	playerHitAble = true;
 	playerChoice = true;
@@ -85,6 +86,7 @@ void Combat::Update()
 	app->scene->moveButton->Update(0.0f);
 	app->scene->itemButton->Update(0.0f);
 	app->scene->scapeButton->Update(0.0f);
+	if (steps == 3) app->scene->reapButton->Update(0.0f);
 
 	CombatLogic();
 }
@@ -95,6 +97,7 @@ void Combat::Draw()
 	app->scene->moveButton->Draw();
 	app->scene->itemButton->Draw();
 	app->scene->scapeButton->Draw();
+	if (steps == 3) app->scene->reapButton->Draw();
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y, &test);
@@ -149,6 +152,11 @@ void Combat::CombatLogic()
 		{
 			PlayerItemChoose();
 		}
+
+		if (playerReap)
+		{
+			PlayerReap();
+		}
 	}
 	else if (combatState == WIN)
 	{
@@ -173,7 +181,6 @@ void Combat::PlayerChoiceLogic()
 	{
 		playerStep = true;
 		playerChoice = false;
-		steps++;
 		return;
 	}
 	else if (app->scene->itemPressed)
@@ -249,6 +256,11 @@ void Combat::PlayerChoiceLogic()
 		}
 
 		return;
+	}
+	else if (app->scene->reapPressed)
+	{
+		playerChoice = false;
+		playerReap = true;
 	}
 }
 
@@ -383,6 +395,7 @@ void Combat::PlayerMove()
 		playerStep = false;
 		playerResponseAble = true;
 		playerChoice = true;
+		steps++;
 	}
 }
 
@@ -432,6 +445,11 @@ void Combat::PlayerItemChoose()
 		drawInventory = false;
 		ItemUsage();
 	}
+}
+
+void Combat::PlayerReap()
+{
+
 }
 
 void Combat::ItemUsage()
