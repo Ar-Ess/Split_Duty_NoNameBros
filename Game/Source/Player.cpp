@@ -7,6 +7,14 @@ Player::Player() : Entity(EntityType::PLAYER)
     colliderCombat = {INIT_COMBAT_POSX, INIT_COMBAT_POSY, 48, 88};
 
     // Define Player animations
+    for (int i = 0; i < 6; i++)
+    {
+        cIdleAnim.PushBack(spriteSize);
+        spriteSize.x += SPRITE_TILE_SIZE;
+    }
+    
+
+   
 }
 
 bool Player::Update(float dt)

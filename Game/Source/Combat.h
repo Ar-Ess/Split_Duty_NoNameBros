@@ -3,6 +3,7 @@
 
 #include "Point.h"
 #include "SString.h"
+#include "Animation.h"
 
 #include "Collider.h"
 
@@ -13,6 +14,7 @@ class Enemy;
 class Player;
 class Scene;
 class Collision;
+class Animation;
 struct SDL_Texture;
 
 enum CombatState
@@ -113,8 +115,9 @@ private:
 
     SDL_Texture* character1Spritesheet = nullptr;
 
-    const SDL_Rect test = {18, 9, 19, 32};
+    const SDL_Rect test = {52, 52, 70, 88};
 
+    Animation* currentAnim;
 public:
 
     bool luckArray[100];
