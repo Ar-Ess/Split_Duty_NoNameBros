@@ -13,6 +13,7 @@ class Enemy;
 class Player;
 class Scene;
 class Collision;
+struct SDL_Texture;
 
 enum CombatState
 {
@@ -35,7 +36,11 @@ public:
 
     void Update();
 
+    void Draw();
+
     void FirstTurnLogic();
+
+    void CombatLogic();
 
     void PlayerChoiceLogic();
 
@@ -99,6 +104,11 @@ public:
     int feather = 0;
     int mantisLeg = 0;
     int tamedEnemy = 0;
+
+private:
+    friend class Scene;
+
+    SDL_Texture* character1Spritesheet = nullptr;
 
 public:
 

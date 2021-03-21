@@ -217,23 +217,9 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateCombat()
 {
-	attackButton->Update(0.0f);
-	moveButton->Update(0.0f);
-	itemButton->Update(0.0f);
-	scapeButton->Update(0.0f);
-
-	attackButton->Draw();
-	moveButton->Draw();
-	itemButton->Draw();
-	scapeButton->Draw();
-
 	combatScene->Update();
 
-	app->render->DrawRectangle(player1->colliderCombat, {100, 3, 56, 255});
-
-	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
-
-	if (combatScene->drawInventory) app->render->DrawRectangle(combatScene->inventorySimulation, {0, 255, 100, 50});
+	combatScene->Draw();
 
 	if (combatScene->playerScape) SetScene(MAIN_MENU);
 

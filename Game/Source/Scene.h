@@ -45,7 +45,7 @@ public:
 		return currScene;
 	}
 
-private: //Buttons
+private: //Combat Buttons
 
 	void RestartPressState();
 

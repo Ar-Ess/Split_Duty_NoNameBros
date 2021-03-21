@@ -1,6 +1,7 @@
 #include "App.h"
 
 #include "Scene.h"
+#include "GuiButton.h"
 
 #include "Combat.h"
 #include "Enemy.h"
@@ -78,6 +79,40 @@ void Combat::Restart()
 
 void Combat::Update()
 {
+	app->scene->attackButton->Update(0.0f);
+	app->scene->moveButton->Update(0.0f);
+	app->scene->itemButton->Update(0.0f);
+	app->scene->scapeButton->Update(0.0f);
+
+	CombatLogic();
+}
+
+void Combat::Draw()
+{
+	app->scene->attackButton->Draw();
+	app->scene->moveButton->Draw();
+	app->scene->itemButton->Draw();
+	app->scene->scapeButton->Draw();
+
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 255 });
+
+	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
+
+	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
+}
+
+void Combat::FirstTurnLogic()
+{
+	if (app->scene->player1->velocity <= enemy->velocity) combatState = ENEMY_TURN;
+	else
+	{
+		playerChoice = true;
+		combatState = PLAYER_TURN;
+	}
+}
+
+void Combat::CombatLogic()
+{
 	if (combatState == ENEMY_TURN)
 	{
 		if (enemyTimeWait < 60) enemyTimeWait++; // Make enemy wait so it does not atack directly
@@ -122,15 +157,7 @@ void Combat::Update()
 	}
 }
 
-void Combat::FirstTurnLogic()
-{
-	if (app->scene->player1->velocity <= enemy->velocity) combatState = ENEMY_TURN;
-	else
-	{
-		playerChoice = true;
-		combatState = PLAYER_TURN;
-	}
-}
+//---------------------------------------------------
 
 void Combat::PlayerChoiceLogic()
 {
