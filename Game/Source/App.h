@@ -22,6 +22,7 @@ class EntityManager;
 class GuiManager;
 class FontTTF;
 class Scene;
+class DialogueManager;
 
 class App
 {
@@ -86,6 +87,7 @@ public:
 	GuiManager* guiManager;
 	FontTTF* fontTTF;
 	Scene* scene;
+	DialogueManager* dialogueManager;
 
 private:
 
