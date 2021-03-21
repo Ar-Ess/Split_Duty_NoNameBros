@@ -83,6 +83,7 @@ public:
     bool playerChoice = true;
 
     bool itemChoice = true;
+    bool drawInventory = false;
     bool healPlayerSmall = false;
     bool healPlayerLarge = false;
     bool featherPlayerTurn = false;

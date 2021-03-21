@@ -233,6 +233,8 @@ void Scene::UpdateCombat()
 
 	app->render->DrawRectangle(combatScene->enemy->colliderCombat, {255, 0, 0 , 255});
 
+	if (combatScene->drawInventory) app->render->DrawRectangle(combatScene->inventorySimulation, {0, 255, 100, 50});
+
 	if (combatScene->playerScape) SetScene(MAIN_MENU);
 
 	RestartPressState();

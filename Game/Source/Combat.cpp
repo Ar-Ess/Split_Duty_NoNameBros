@@ -29,7 +29,7 @@ void Combat::Start()
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
-	//Item quantity (hardcoded for the moment)
+	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);
 
 	playerScape = false;
@@ -150,6 +150,7 @@ void Combat::PlayerChoiceLogic()
 	{
 		playerItem = true;
 		playerChoice = false;
+		drawInventory = true;
 		return;
 	}
 	else if (app->scene->scapePressed)
@@ -348,7 +349,6 @@ void Combat::PlayerMove()
 		LOG("ENEMY TURN");
 		LOG("Enemy Health: %d", enemy->health);
 		playerTimeMove = 0;
-		//app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 		combatState = ENEMY_TURN;
 		playerStep = false;
 		playerResponseAble = true;
@@ -360,11 +360,10 @@ void Combat::PlayerItemChoose()
 {
 	if (itemChoice)
 	{
-		app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 70 });
-
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			playerChoice = true;
+			drawInventory = false;
 			playerItem = false;
 		}
 		else if (itemChoice && smallMeat > 0 && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
@@ -400,6 +399,7 @@ void Combat::PlayerItemChoose()
 	}
 	else
 	{
+		drawInventory = false;
 		ItemUsage();
 	}
 }
