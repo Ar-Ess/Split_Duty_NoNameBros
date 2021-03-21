@@ -16,8 +16,8 @@ Combat::Combat()
 
 void Combat::Start()
 {
-	//Enemy HardCoded
-	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 13, 200, 30, 30, 10, 20);
+	//HardCode ENEMY ------------------RECT------------------    LVL EXP  HP STR DEF VEL
+	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 15, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -25,7 +25,7 @@ void Combat::Start()
 	app->scene->player1->defense = 5;
 	app->scene->player1->luck = 0;
 	app->scene->player1->velocity = 0;
-	app->scene->player1->lvl = 8;
+	app->scene->player1->lvl = 10;
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
@@ -160,7 +160,7 @@ void Combat::PlayerChoiceLogic()
 		if (probabilityRange <= -8) playerScape = true;
 		else if (probabilityRange >= -7 && probabilityRange <= -4)
 		{
-			int random = rand() % 3;
+			int random = rand() % 4;
 
 			if (random != 0) playerScape = true;
 			else
@@ -176,7 +176,7 @@ void Combat::PlayerChoiceLogic()
 		}
 		else if (probabilityRange >= -3 && probabilityRange <= 3)
 		{
-			int random = rand() % 1;
+			int random = rand() % 2;
 
 			if (random == 0) playerScape = true;
 			else
@@ -192,7 +192,7 @@ void Combat::PlayerChoiceLogic()
 		}
 		else if (probabilityRange >= 4 && probabilityRange <= 7)
 		{
-			int random = rand() % 3;
+			int random = rand() % 4;
 
 			if (random == 0) playerScape = true;
 			else
@@ -551,8 +551,8 @@ int Combat::EnemyItemDamage()
 	int itemDamage = 25;
 	int damage = itemDamage + floor(app->scene->player1->strength / 5) - enemy->defense;
 
-	int damagePlus = rand() % 4;
-	int negOrPos = rand() % 1;
+	int damagePlus = rand() % 5;
+	int negOrPos = rand() % 2;
 
 	if (negOrPos == 0) damagePlus = -damagePlus;
 
