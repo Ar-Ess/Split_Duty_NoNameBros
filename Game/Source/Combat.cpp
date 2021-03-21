@@ -449,7 +449,7 @@ void Combat::PlayerItemChoose()
 
 void Combat::PlayerReap()
 {
-
+	//No pots reapear si l'enemy no està a menys del 20% de vida
 }
 
 void Combat::ItemUsage()
