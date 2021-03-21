@@ -75,6 +75,9 @@
     <ClCompile Include="Source\Combat.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DialogueManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -186,6 +189,18 @@
     <ClInclude Include="Source\Collider.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DialogueManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Dialogue.h">
+      <Filter>Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueNode.h">
+      <Filter>Dialogues</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DialogueOption.h">
+      <Filter>Dialogues</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -208,6 +223,9 @@
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{3ed4a5d6-0e62-404d-b40b-cef602e825fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogues">
+      <UniqueIdentifier>{6329c039-5b8d-48bf-918f-b77e499cc6c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

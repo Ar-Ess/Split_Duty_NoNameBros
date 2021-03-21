@@ -8,6 +8,7 @@
 #include "EntityManager.h"
 #include "GuiManager.h"
 #include "FontTTF.h"
+#include "DialogueManager.h"
 #include "Scene.h"
 
 #include "Defs.h"
@@ -33,6 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	guiManager = new GuiManager();
 	fontTTF = new FontTTF();
 	scene = new Scene();
+	dialogueManager = new DialogueManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(guiManager);
 	AddModule(fontTTF);
 	AddModule(scene);
+	AddModule(dialogueManager);
 
 	// Render last to swap buffer
 	AddModule(render);
