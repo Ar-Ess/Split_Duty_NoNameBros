@@ -89,7 +89,7 @@ void Combat::Update()
 	app->scene->itemButton->Update(0.0f);
 	app->scene->scapeButton->Update(0.0f);
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->reapButton->Update(0.0f);
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
 	currPlayerAnim->Update(1.0f);
 
@@ -102,7 +102,7 @@ void Combat::Draw()
 	app->scene->moveButton->Draw();
 	app->scene->itemButton->Draw();
 	app->scene->scapeButton->Draw();
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->reapButton->Draw();
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Draw();
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 

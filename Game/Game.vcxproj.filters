@@ -78,6 +78,7 @@
     <ClCompile Include="Source\DialogueManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Dialogue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />

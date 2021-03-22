@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Combat.cpp" />
+    <ClCompile Include="Source\Dialogue.cpp" />
     <ClCompile Include="Source\DialogueManager.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
