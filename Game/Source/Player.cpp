@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "Log.h"
+
 Player::Player() : Entity(EntityType::PLAYER)
 {
     texture = NULL;
@@ -9,10 +11,24 @@ Player::Player() : Entity(EntityType::PLAYER)
     // Define Player animations
     for (int i = 0; i < 6; i++)
     {
-        cIdleAnim.PushBack(spriteSize);
-        spriteSize.x += SPRITE_TILE_SIZE + 23; //No tinc ni idea perquè sumant 23 funciona
+        cIdleAnim.PushBack({ (i* SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_MARGIN ,70,88 });
     }
-    cIdleAnim.speed = 0.125;
+    cIdleAnim.speed = 0.100f;
+
+    for (int i = 0; i < 6; i++)
+    {
+        cStepAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT ,70,88 });
+        
+    }
+    cStepAnim.speed = 0.100f;
+
+    for (int i = 0; i < 8; i++)
+    {
+        cJumpAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT ,70,88 });
+        int y = SPRITE_TILE_HEIGHT + SPRITE_MARGIN;
+        LOG("y : %d", y);
+    }
+    cJumpAnim.speed = 0.1f;
 }
 
 bool Player::Update(float dt)

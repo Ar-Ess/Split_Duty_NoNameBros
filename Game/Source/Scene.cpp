@@ -212,7 +212,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		reapButton->SetObserver(this);
 	}
 
-	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Main_Character_02/female_character_spritesheet.png");
+	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female Main Character/female_character_spritesheet.png");
 }
 
 void Scene::UpdateLogoScene()

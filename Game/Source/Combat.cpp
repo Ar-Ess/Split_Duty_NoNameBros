@@ -387,6 +387,7 @@ void Combat::PlayerAttack()
 
 void Combat::PlayerMove()
 {
+	currPlayerAnim = &app->scene->player1->cStepAnim;
 	if (playerTimeMove < 57)
 	{
 		app->scene->player1->colliderCombat.x += 3;
@@ -402,6 +403,7 @@ void Combat::PlayerMove()
 		playerResponseAble = true;
 		playerChoice = true;
 		steps++;
+		currPlayerAnim = &app->scene->player1->cIdleAnim;
 	}
 }
 

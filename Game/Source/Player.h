@@ -13,9 +13,9 @@
 
 #define INIT_COMBAT_POSX 225
 #define INIT_COMBAT_POSY 400
-#define SPRITE_TILE_SIZE 153
-#define SPRITE_x_MARGIN 52
-#define SPRITE_Y_MARGIN 52
+#define SPRITE_TILE_WIDTH 152
+#define SPRITE_TILE_HEIGHT 190
+#define SPRITE_MARGIN 52
 
 class Animation;
 
@@ -64,12 +64,13 @@ public:
 
 public:
 
-    SDL_Rect spriteSize = { 52,52,70,88 };
+    
     SDL_Texture* texture;
 
     Animation cIdleAnim;
     Animation cCloseAttackAnim;
     Animation cStepAnim;
+    Animation cJumpAnim;
 
     bool jump = false;
     bool crouch = false;
