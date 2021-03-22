@@ -4,7 +4,6 @@
 #include "GuiControl.h"
 
 #include "Point.h"
-#include "SString.h"
 
 class GuiButton : public GuiControl
 {

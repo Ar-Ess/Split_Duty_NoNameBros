@@ -13,7 +13,7 @@
 
 Combat::Combat()
 {
-
+	currPlayerAnim = nullptr;
 }
 
 void Combat::Start()
@@ -40,7 +40,7 @@ void Combat::Start()
 	playerAttack = false;
 	playerItem = false;
 	playerStep = false;
-	playerReap = false;
+	playerSplit = false;
 	playerResponseAble = true;
 	playerHitAble = true;
 	playerChoice = true;
@@ -159,7 +159,7 @@ void Combat::CombatLogic()
 			PlayerItemChoose();
 		}
 
-		if (playerReap)
+		if (playerSplit)
 		{
 			PlayerSplit();
 		}
@@ -266,7 +266,7 @@ void Combat::PlayerChoiceLogic()
 	else if (app->scene->splitPressed)
 	{
 		playerChoice = false;
-		playerReap = true;
+		playerSplit = true;
 	}
 }
 
@@ -296,6 +296,8 @@ int Combat::PlayerDamageLogic()
 		if (luckArray[a]) return damage + floor(20 * (pDamage - enemy->defense) / 100);
 		else if (!luckArray[a]) return damage;
 	}
+
+	return 0;
 }
 
 int Combat::EnemyDamageLogic()
@@ -457,13 +459,83 @@ void Combat::PlayerItemChoose()
 
 void Combat::PlayerSplit()
 {
-	//No pots reapear si l'enemy no està a menys del 20% de vida
-	//Tamejar et dona exp? si, no, no, no
-	//Probabilitat de fallar del 60%
-	//Luck intervé en reduir el % de split? si
-	//Màxim d'enemics spliteats? 3
+	if (playerTimeSplit < 200)
+	{
+		playerTimeSplit++;
+	}
+	else
+	{
+		playerTimeSplit = 0;
+		playerSplit = false;
+		playerResponseAble = true;
+		playerChoice = true;
 
-	//En cas d'èxit, 7EH, PH - 7.
+		int random = rand() % 5;
+
+		// USING LUCK
+		if (app->scene->player1->luck > 0)
+		{
+			int luck = rand() % 100;
+
+			if (luckArray[luck]) //40% to lose
+			{
+				random = 1;
+				if (random < 2)
+				{
+					LOG("ENEMY TURN");
+					LOG("Enemy Health: %d", enemy->health);
+					combatState = ENEMY_TURN;
+					currPlayerAnim = &app->scene->player1->cIdleAnim;
+					return;
+				}
+				else if (random >= 2)
+				{
+					app->scene->player1->health -= enemy->health;
+
+					if (app->scene->player1->health <= 0)
+					{
+						LOG("PLAYER LOSE");
+						combatState = LOSE;
+					}
+					else if (app->scene->player1->health > 0)
+					{
+						LOG("ENEMY SPLITED");
+						tamedEnemy++;
+						combatState = WIN;
+					}
+					return;
+				}
+			}
+		}
+
+		// WITHOUT LUCK
+		if (random < 3) //60% to lose
+		{
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+			combatState = ENEMY_TURN;
+			currPlayerAnim = &app->scene->player1->cIdleAnim;
+		}
+		else if (random >= 3)
+		{
+			app->scene->player1->health -= enemy->health;
+
+			if (app->scene->player1->health <= 0)
+			{
+				LOG("PLAYER LOSE");
+				combatState = LOSE;
+			}
+			else if (app->scene->player1->health > 0)
+			{
+				tamedEnemy++;
+				LOG("ENEMY SPLITED");
+				combatState = WIN;
+			}
+		}
+	}
+
+	//Tamejar et dona exp? no
+	//Màxim d'enemics spliteats? 3
 }
 
 void Combat::ItemUsage()
@@ -606,6 +678,8 @@ int Combat::HealPlayer(int typeOfHeal)
 
 	if (healthLeft <= healthRestored) return healthLeft;
 	else if (healthLeft > healthRestored) return healthRestored;
+
+	return 0;
 }
 
 int Combat::EnemyItemDamage()

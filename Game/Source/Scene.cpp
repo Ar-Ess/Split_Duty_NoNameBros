@@ -29,7 +29,7 @@
 
 Scene::Scene() : Module()
 {
-	name.Create("scene");
+
 }
 
 Scene::~Scene()

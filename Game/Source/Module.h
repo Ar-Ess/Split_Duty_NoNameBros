@@ -1,9 +1,9 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include "SString.h"
-
 #include "PugiXml/src/pugixml.hpp"
+
+#include "SString.h"
 
 class App;
 class GuiControl;

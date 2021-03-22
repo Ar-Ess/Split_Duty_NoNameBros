@@ -4,7 +4,6 @@
 #include "Entity.h"
 
 #include "Point.h"
-#include "SString.h"
 
 class Item : public Entity
 {

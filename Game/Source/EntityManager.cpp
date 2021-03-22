@@ -10,7 +10,7 @@
 
 EntityManager::EntityManager() : Module()
 {
-	name.Create("entitymanager");
+
 }
 
 EntityManager::~EntityManager()

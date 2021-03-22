@@ -5,7 +5,6 @@
 #include "GuiControl.h"
 
 #include "Point.h"
-#include "SString.h"
 
 class GuiCheckBox : public GuiControl
 {

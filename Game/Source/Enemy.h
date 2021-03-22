@@ -5,7 +5,6 @@
 
 #include "DynArray.h"
 #include "Point.h"
-#include "SString.h"
 
 #include "SDL/include/SDL.h"
 
