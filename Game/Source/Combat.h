@@ -58,7 +58,7 @@ public:
 
     void PlayerItemChoose();
 
-    void PlayerReap();
+    void PlayerSplit();
 
     void PlayerResponse();
 
@@ -118,6 +118,10 @@ private:
     const SDL_Rect test = {52, 52, 70, 88};
 
     Animation* currPlayerAnim;
+
+private:
+    List<int*> a;
+
 public:
 
     bool luckArray[100];

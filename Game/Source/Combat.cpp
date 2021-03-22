@@ -161,7 +161,7 @@ void Combat::CombatLogic()
 
 		if (playerReap)
 		{
-			PlayerReap();
+			PlayerSplit();
 		}
 	}
 	else if (combatState == WIN)
@@ -263,7 +263,7 @@ void Combat::PlayerChoiceLogic()
 
 		return;
 	}
-	else if (app->scene->reapPressed)
+	else if (app->scene->splitPressed)
 	{
 		playerChoice = false;
 		playerReap = true;
@@ -455,9 +455,15 @@ void Combat::PlayerItemChoose()
 	}
 }
 
-void Combat::PlayerReap()
+void Combat::PlayerSplit()
 {
 	//No pots reapear si l'enemy no està a menys del 20% de vida
+	//Tamejar et dona exp? si, no, no, no
+	//Probabilitat de fallar del 60%
+	//Luck intervé en reduir el % de split? si
+	//Màxim d'enemics spliteats? 3
+
+	//En cas d'èxit, 7EH, PH - 7.
 }
 
 void Combat::ItemUsage()

@@ -204,12 +204,12 @@ void Scene::SetCombat(Enemy* enemySet)
 		scapeButton->SetObserver(this);
 	}
 
-	if (reapButton == nullptr)
+	if (splitButton == nullptr)
 	{
-		reapButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		reapButton->bounds = { 800, 0, 135, 67 };
-		reapButton->text = "ReapButton";
-		reapButton->SetObserver(this);
+		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		splitButton->bounds = { 800, 0, 135, 67 };
+		splitButton->text = "SplitButton";
+		splitButton->SetObserver(this);
 	}
 
 	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female Main Character/female_character_spritesheet.png");
@@ -256,7 +256,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
-		else if (strcmp(control->text.GetString(), "ReapButton") == 0) reapPressed = true;
+		else if (strcmp(control->text.GetString(), "SplitButton") == 0) splitPressed = true;
 
 		break;
 	}
@@ -270,7 +270,7 @@ void Scene::RestartPressState()
 	movePressed = false;
 	itemPressed = false;
 	scapePressed = false;
-	reapPressed = false;
+	splitPressed = false;
 }
 
 // Debug functions (future in debug module)

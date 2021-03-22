@@ -61,8 +61,8 @@ private: //Combat Buttons
 	GuiButton* scapeButton = nullptr;
 	bool scapePressed = false;
 
-	GuiButton* reapButton = nullptr;
-	bool reapPressed = false;
+	GuiButton* splitButton = nullptr;
+	bool splitPressed = false;
 
 private:
 	friend class Combat;
