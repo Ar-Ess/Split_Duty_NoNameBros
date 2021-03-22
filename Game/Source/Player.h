@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Input.h"
 #include "Render.h"
+#include "Animation.h"
 
 #include "Point.h"
 #include "SString.h"
@@ -12,13 +13,11 @@
 
 #define INIT_COMBAT_POSX 225
 #define INIT_COMBAT_POSY 400
+#define SPRITE_TILE_SIZE 153
+#define SPRITE_x_MARGIN 52
+#define SPRITE_Y_MARGIN 52
 
-enum class PlayerAnim
-{
-    IDLE,
-    STEP,
-    JUMP
-};
+class Animation;
 
 class Player : public Entity
 {
@@ -65,9 +64,12 @@ public:
 
 public:
 
+    SDL_Rect spriteSize = { 52,52,70,88 };
     SDL_Texture* texture;
 
-    PlayerAnim currentAnim;
+    Animation cIdleAnim;
+    Animation cCloseAttackAnim;
+    Animation cStepAnim;
 
     bool jump = false;
     bool crouch = false;

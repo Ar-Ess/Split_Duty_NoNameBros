@@ -28,6 +28,7 @@ private:
     friend class Combat;
 
     int health;
+    int maxHealth;
     int defense;
     int strength;
     int velocity;
