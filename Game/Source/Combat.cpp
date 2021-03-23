@@ -19,7 +19,7 @@ Combat::Combat()
 void Combat::Start()
 {
 	//HardCode ENEMY ------------------RECT------------------   LVL EXP  HP STR DEF VEL
-	enemy->SetUp({ INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -127,7 +127,11 @@ void Combat::CombatLogic()
 {
 	if (combatState == ENEMY_TURN)
 	{
-		if (enemyTimeWait < 60) enemyTimeWait++; // Make enemy wait so it does not atack directly
+		if (enemyTimeWait < 60)
+		{
+			enemyTimeWait++; // Make enemy wait so it does not atack directly
+			if (enemyTimeWait == 59) EnemyAttackProbability();
+		}
 		else
 		{
 			EnemyAttack();
@@ -312,43 +316,85 @@ int Combat::EnemyDamageLogic()
 
 void Combat::EnemyAttack()
 {
-	if (enemyTimeAttack < 225)
+	if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
 	{
-		enemy->colliderCombat.x -= 6;
-		enemyTimeAttack++;
-
-		if (enemy->colliderCombat.x + enemy->colliderCombat.w < 0)enemy->colliderCombat.x = 1280;
-
-		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+		if (enemy->attack == 1)
 		{
-			playerHitAble = false;
-			if (!wearMantisLeg)
+			if (enemy->smallWolfTimeAttack1 < 225)
 			{
-				app->scene->player1->health -= EnemyDamageLogic();
-				LOG("Player Hit - PH: %d", app->scene->player1->health);
-			}
-			else if (wearMantisLeg) wearMantisLeg = false;
-		}
-	}
-	else
-	{
-		enemyTimeAttack = 0;
-		enemyTimeWait = 0;
-		enemy->colliderCombat.x = INIT_ENEMY1_POSX;
-		playerHitAble = true;
+				enemy->SmallWolfAttack(enemy->attack);
 
-		if (app->scene->player1->health > 0)
-		{
-			LOG("PLAYER TURN");
-			LOG("Player Health: %d", app->scene->player1->health);
-			if (wearFeather) wearFeather = false;
-			if (wearMantisLeg) wearMantisLeg = false;
-			combatState = PLAYER_TURN;
+				if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+				{
+					playerHitAble = false;
+					if (!wearMantisLeg)
+					{
+						app->scene->player1->health -= EnemyDamageLogic();
+						LOG("Player Hit - PH: %d", app->scene->player1->health);
+					}
+					else if (wearMantisLeg) wearMantisLeg = false;
+				}
+			}
+			else
+			{
+				enemy->smallWolfTimeAttack1 = 0;
+				enemyTimeWait = 0;
+				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					LOG("PLAYER TURN");
+					LOG("Player Health: %d", app->scene->player1->health);
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+					combatState = PLAYER_TURN;
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					LOG("PLAYER LOSE");
+					combatState = LOSE;
+				}
+			}
 		}
-		else if (app->scene->player1->health <= 0)
+		else if (enemy->attack == 2)
 		{
-			LOG("PLAYER LOSE");
-			combatState = LOSE;
+			if (enemy->smallWolfTimeAttack2 < 274)
+			{
+				enemy->SmallWolfAttack(enemy->attack);
+
+				if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+				{
+					playerHitAble = false;
+					if (!wearMantisLeg)
+					{
+						app->scene->player1->health -= EnemyDamageLogic();
+						LOG("Player Hit - PH: %d", app->scene->player1->health);
+					}
+					else if (wearMantisLeg) wearMantisLeg = false;
+				}
+			}
+			else
+			{
+				enemy->smallWolfTimeAttack2 = 0;
+				enemyTimeWait = 0;
+				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					LOG("PLAYER TURN");
+					LOG("Player Health: %d", app->scene->player1->health);
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+					combatState = PLAYER_TURN;
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					LOG("PLAYER LOSE");
+					combatState = LOSE;
+				}
+			}
 		}
 	}
 }
@@ -720,4 +766,14 @@ void Combat::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantis
 	feather = xfeather;
 	mantisLeg = xmantisLeg;
 	tamedEnemy = xtamedEnemy;
+}
+
+void Combat::EnemyAttackProbability()
+{
+	if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
+	{
+		int random = rand() % 7;
+		if (random < 5) enemy->attack = 1;
+		else if (random >= 5) enemy->attack = 2;
+	}
 }

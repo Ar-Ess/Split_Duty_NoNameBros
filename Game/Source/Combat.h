@@ -70,8 +70,9 @@ public:
 
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy);
 
+    void EnemyAttackProbability();
+
 public:
-    short int enemyTimeAttack = 0;
     short int enemyTimeWait = 0;
     short int playerTimeAttack = 0;
     short int playerTimeMove = 0;
@@ -113,6 +114,7 @@ public:
 
 private:
     friend class Scene;
+    friend class Enemy;
 
     SDL_Texture* character1Spritesheet = nullptr;
 

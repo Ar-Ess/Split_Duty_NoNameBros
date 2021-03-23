@@ -8,7 +8,17 @@
 
 #include "SDL/include/SDL.h"
 
+#define INIT_SMALL_WOLF_POSY 433
+
 struct SDL_Rect;
+
+enum EnemyClass
+{
+    SMALL_WOLF,
+    BIG_WOLF,
+    MANTIS,
+    BIRD
+};
 
 class Enemy : public Entity
 {
@@ -18,7 +28,18 @@ public:
 
     virtual ~Enemy();
 
-    void SetUp(SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
+    void SetUp(EnemyClass xenemyClass, SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
+
+    void Jump();
+
+    void SmallWolfAttack(unsigned short int typeOfAttack);
+
+private: //Attack Time
+    short int attack = 0;
+    short int jumpTime = 0;
+
+    short int smallWolfTimeAttack1 = 0;
+    short int smallWolfTimeAttack2 = 0;
 
 public:
     SDL_Rect colliderCombat;
@@ -37,6 +58,8 @@ private:
 private:
 
     DynArray<iPoint>* path;
+
+    EnemyClass enemyClass;
 
 };
 
