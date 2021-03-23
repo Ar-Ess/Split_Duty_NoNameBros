@@ -29,6 +29,16 @@ Player::Player() : Entity(EntityType::PLAYER)
         LOG("y : %d", y);*/
     }
     cJumpAnim.speed = 0.1f;
+
+    for (int i = 0; i < 10; i++)
+    {
+
+        cDieAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , 310,70,88 });
+        int y = SPRITE_TILE_HEIGHT * 2;
+        LOG("y : %d", y);
+    }
+    cDieAnim.speed = 0.08f;
+    cDieAnim.loop = true;
 }
 
 bool Player::Update(float dt)

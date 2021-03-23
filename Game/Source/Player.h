@@ -70,6 +70,7 @@ public:
     Animation cCloseAttackAnim;
     Animation cStepAnim;
     Animation cJumpAnim;
+    Animation cDieAnim;
 
     bool jump = false;
     bool crouch = false;

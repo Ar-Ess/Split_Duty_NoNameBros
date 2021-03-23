@@ -352,8 +352,13 @@ void Combat::EnemyAttack()
 				}
 				else if (app->scene->player1->health <= 0)
 				{
-					LOG("PLAYER LOSE");
-					combatState = LOSE;
+					currPlayerAnim = &app->scene->player1->cDieAnim;
+					if (currPlayerAnim->HasFinished())
+					{
+						LOG("PLAYER LOSE");
+						combatState = LOSE;
+					}
+					
 				}
 			}
 		}
