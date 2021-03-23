@@ -196,7 +196,6 @@ void Combat::BoolStart()
 
 //---------------------------------------------------
 
-
 void Combat::PlayerChoiceLogic()
 {
 	if (app->scene->attackPressed)
@@ -768,6 +767,7 @@ void Combat::PlayerPosReset()
 }
 
 // State Changing Functions
+
 void Combat::EnemyTurn()
 {
 	LOG("ENEMY TURN");
