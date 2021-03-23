@@ -80,6 +80,15 @@ public:
 		}
 	}
 
+	int GetTotalFrames() const
+	{
+		return totalFrames;
+	}
+
+	const SDL_Rect GetLastFrame() const
+	{
+		return frames[totalFrames - 1];
+	}
 };
 
 #endif

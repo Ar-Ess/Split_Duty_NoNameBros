@@ -16,6 +16,7 @@ class Scene;
 class Collision;
 class Animation;
 struct SDL_Texture;
+struct SDL_Rect;
 
 enum CombatState
 {
@@ -23,7 +24,8 @@ enum CombatState
     ENEMY_TURN,
     PLAYER_TURN,
     WIN,
-    LOSE
+    LOSE,
+    SPLIT
 };
 
 class Combat
@@ -43,6 +45,8 @@ public:
     void FirstTurnLogic();
 
     void CombatLogic();
+
+    void BoolStart();
 
     void PlayerChoiceLogic();
 
@@ -71,6 +75,26 @@ public:
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy);
 
     void EnemyAttackProbability();
+
+    void PlayerMoneyLose();
+
+    void EscapeProbability(short int probabilityRange);
+
+    void PlayerHitLogic(); // No oblidar
+
+    void PlayerPosReset();
+
+private: //STATE CHANGING FUNCTIONS
+
+    void EnemyTurn();
+
+    void PlayerTurn();
+
+    void PlayerWin();
+
+    void PlayerDie();
+
+    void PlayerSplitWin();
 
 public:
     short int enemyTimeWait = 0;
@@ -121,6 +145,14 @@ private:
     const SDL_Rect test = {52, 52, 70, 88};
 
     Animation* currPlayerAnim = nullptr;
+
+    bool CompareFrames(SDL_Rect a, SDL_Rect b)
+    {
+        int x = (a.x - b.x) + (a.y - b.y) + (a.w - b.w) + (a.h - b.h);
+        if (x == 0) return true;
+
+        return false;
+    }
 
 public:
 
