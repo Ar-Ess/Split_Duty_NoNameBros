@@ -17,16 +17,16 @@ Player::Player() : Entity(EntityType::PLAYER)
 
     for (int i = 0; i < 6; i++)
     {
-        cStepAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT ,70,88 });
+        cStepAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT * 1,70,88 });
         
     }
     cStepAnim.speed = 0.100f;
 
     for (int i = 0; i < 8; i++)
     {
-        cJumpAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT ,70,88 });
-        int y = SPRITE_TILE_HEIGHT + SPRITE_MARGIN;
-        LOG("y : %d", y);
+        cJumpAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT * 5,70,88 });
+       /* int y = SPRITE_TILE_HEIGHT + SPRITE_MARGIN;
+        LOG("y : %d", y);*/
     }
     cJumpAnim.speed = 0.1f;
 }
