@@ -7,10 +7,16 @@
 
 #include "Collider.h"
 
-#define INIT_ENEMY1_POSX 996
-#define INIT_ENEMY1_POSY 433
+#define INIT_SMALLWOLF_POSX 996
+#define INIT_SMALLWOLF_POSY 433
+#define INIT_BIRD_POSX 996
+#define INIT_BIRD_POSY 433
+
+#define MAX_MEAT 10
+#define MAX_COMBATITEM 5
 
 class Enemy;
+enum EnemyClass;
 class Player;
 class Scene;
 class Collision;
@@ -80,9 +86,11 @@ public:
 
     void EscapeProbability(short int probabilityRange);
 
-    void PlayerHitLogic(); // No oblidar
+    void PlayerHitLogic();
 
     void PlayerPosReset();
+
+    void ItemDrop(EnemyClass enemy);
 
 private: //STATE CHANGING FUNCTIONS
 

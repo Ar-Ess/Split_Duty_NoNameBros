@@ -11,16 +11,15 @@ Player::Player() : Entity(EntityType::PLAYER)
     // Define Player animations
     for (int i = 0; i < 6; i++)
     {
-        cIdleAnim.PushBack({ (i* SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_MARGIN ,70,88 });
+        cIdleAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN /*+ (i * 2)*/, SPRITE_MARGIN ,70,88 }); // Si li sumes (i * 2) a la x, l'idle s'estabilitza
     }
-    cIdleAnim.speed = 0.100f;
+    cIdleAnim.speed = 0.120f;
 
     for (int i = 0; i < 6; i++)
     {
         cStepAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT * 1,70,88 });
-        
     }
-    cStepAnim.speed = 0.100f;
+    cStepAnim.speed = 0.190f;
 
     for (int i = 0; i < 8; i++)
     {

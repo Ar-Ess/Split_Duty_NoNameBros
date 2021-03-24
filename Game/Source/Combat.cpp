@@ -18,8 +18,9 @@ Combat::Combat()
 
 void Combat::Start()
 {
-	//HardCode ENEMY ------------------RECT------------------   LVL EXP  HP STR DEF VEL
-	enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
+	enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -291,7 +292,7 @@ void Combat::EnemyAttack()
 			{
 				enemy->smallWolfTimeAttack1 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
 				if (app->scene->player1->health > 0)
@@ -319,7 +320,7 @@ void Combat::EnemyAttack()
 			{
 				enemy->smallWolfTimeAttack2 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
 				if (app->scene->player1->health > 0)
@@ -764,6 +765,65 @@ void Combat::PlayerPosReset()
 {
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	steps = 0;
+}
+
+void Combat::ItemDrop(EnemyClass enemy)
+{
+	int random = rand() % 20;
+	int a = rand() % 100;
+
+	if (enemy == EnemyClass::SMALL_WOLF)
+	{
+		if (random < 9)
+		{
+			if (luckArray[a]) smallMeat += 2;
+			else if (!luckArray[a]) smallMeat++;
+
+			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;
+		}
+	}
+	else if (enemy == EnemyClass::BIG_WOLF)
+	{
+		if (random < 6)
+		{
+			if (luckArray[a]) largeMeat += 2;
+			else if (!luckArray[a])
+			{
+				largeMeat++;
+				random = rand() % 20;
+				if (random < 3)
+				{
+					a = rand() % 100;
+					if (luckArray[a]) smallMeat += 2;
+					else if (!luckArray[a]) smallMeat++;
+				}
+			}
+
+			if (largeMeat > MAX_MEAT) largeMeat = MAX_MEAT;
+			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;
+		}
+	}
+	else if (enemy == EnemyClass::BIRD)
+	{
+		int probability = 3;
+		if (luckArray[a]) probability = 10;
+
+		if (random < probability) feather++;
+
+		if (feather > MAX_COMBATITEM) feather = MAX_COMBATITEM;
+	}
+	else if (enemy == EnemyClass::MANTIS)
+	{
+		if (random < 2)
+		{
+			int probability = 2;
+			if (luckArray[a]) probability = 8;
+
+			if (random < probability) mantisLeg++;
+
+			if (mantisLeg > MAX_COMBATITEM) mantisLeg = MAX_COMBATITEM;
+		}
+	}
 }
 
 // State Changing Functions
