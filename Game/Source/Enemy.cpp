@@ -105,4 +105,68 @@ void Enemy::SmallWolfAttack(unsigned short int typeOfAttack)
     }
 }
 
+void Enemy::BirdAttack(unsigned short int typeOfAttack)
+{
+    if (typeOfAttack == 1)
+    {
+        if (app->scene->combatScene->steps == 0)
+        {
+            if (birdTimeAttack1 < 95)
+            {
+                colliderCombat.x -= 8;
+            }
+            else if (birdTimeAttack1 < 110)
+            {
+                colliderCombat.x -= 6;
+                colliderCombat.y -= 6;
+            }
+            else if (birdTimeAttack1 < 125)
+            {
+                colliderCombat.x += 6;
+                colliderCombat.y -= 6;
+            }
+            else if (birdTimeAttack1 < 140)
+            {
+                colliderCombat.x += 6;
+                colliderCombat.y += 6;
+            }
+            else if (birdTimeAttack1 < 155)
+            {
+                colliderCombat.x -= 6;
+                colliderCombat.y += 6;
+            }
+
+            birdTimeAttack1++;
+        }
+        if (app->scene->combatScene->steps == 1)
+        {
+            if (birdTimeAttack1 < 75)
+            {
+                colliderCombat.x -= 8;
+            }
+            birdTimeAttack1++;
+        }
+        if (app->scene->combatScene->steps == 2)
+        {
+            if (birdTimeAttack1 < 51)
+            {
+                colliderCombat.x -= 8;
+            }
+            birdTimeAttack1++;
+        }
+        if (app->scene->combatScene->steps == 3)
+        {
+            if (birdTimeAttack1 < 29)
+            {
+                colliderCombat.x -= 8;
+            }
+            birdTimeAttack1++;
+        }
+    }
+    else if (typeOfAttack == 2)
+    {
+
+    }
+}
+
 

@@ -212,7 +212,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitButton->SetObserver(this);
 	}
 
-	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female Main Character/female_character_spritesheet.png");
+	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/female_character_spritesheet.png");
 }
 
 void Scene::UpdateLogoScene()

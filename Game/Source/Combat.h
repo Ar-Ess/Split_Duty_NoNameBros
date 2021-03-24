@@ -7,15 +7,22 @@
 
 #include "Collider.h"
 
-#define INIT_ENEMY1_POSX 996
-#define INIT_ENEMY1_POSY 433
+#define INIT_SMALLWOLF_POSX 996
+#define INIT_SMALLWOLF_POSY 433
+#define INIT_BIRD_POSX 1011
+#define INIT_BIRD_POSY 360
+
+#define MAX_MEAT 10
+#define MAX_COMBATITEM 5
 
 class Enemy;
+enum EnemyClass;
 class Player;
 class Scene;
 class Collision;
 class Animation;
 struct SDL_Texture;
+struct SDL_Rect;
 
 enum CombatState
 {
@@ -23,7 +30,8 @@ enum CombatState
     ENEMY_TURN,
     PLAYER_TURN,
     WIN,
-    LOSE
+    LOSE,
+    SPLIT
 };
 
 class Combat
@@ -44,13 +52,15 @@ public:
 
     void CombatLogic();
 
+    void BoolStart();
+
     void PlayerChoiceLogic();
 
     int PlayerDamageLogic();
 
     int EnemyDamageLogic();
 
-    void EnemyAttack();
+    void EnemyAttack(EnemyClass enemy);
 
     void PlayerAttack();
 
@@ -71,6 +81,28 @@ public:
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy);
 
     void EnemyAttackProbability();
+
+    void PlayerMoneyLose();
+
+    void EscapeProbability(short int probabilityRange);
+
+    void PlayerHitLogic();
+
+    void PlayerPosReset();
+
+    void ItemDrop(EnemyClass enemy);
+
+private: //STATE CHANGING FUNCTIONS
+
+    void EnemyTurn();
+
+    void PlayerTurn();
+
+    void PlayerWin();
+
+    void PlayerDie();
+
+    void PlayerSplitWin();
 
 public:
     short int enemyTimeWait = 0;
@@ -121,6 +153,14 @@ private:
     const SDL_Rect test = {52, 52, 70, 88};
 
     Animation* currPlayerAnim = nullptr;
+
+    bool CompareFrames(SDL_Rect a, SDL_Rect b)
+    {
+        int x = (a.x - b.x) + (a.y - b.y) + (a.w - b.w) + (a.h - b.h);
+        if (x == 0) return true;
+
+        return false;
+    }
 
 public:
 

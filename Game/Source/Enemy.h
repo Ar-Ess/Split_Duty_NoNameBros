@@ -34,12 +34,17 @@ public:
 
     void SmallWolfAttack(unsigned short int typeOfAttack);
 
+    void BirdAttack(unsigned short int typeOfAttack);
+
 private: //Attack Time
     short int attack = 0;
     short int jumpTime = 0;
 
     short int smallWolfTimeAttack1 = 0;
     short int smallWolfTimeAttack2 = 0;
+
+    short int birdTimeAttack1 = 0;
+    short int birdTimeAttack2 = 0;
 
 public:
     SDL_Rect colliderCombat;

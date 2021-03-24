@@ -18,8 +18,9 @@ Combat::Combat()
 
 void Combat::Start()
 {
-	//HardCode ENEMY ------------------RECT------------------   LVL EXP  HP STR DEF VEL
-	enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_ENEMY1_POSX, INIT_ENEMY1_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
+	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -31,34 +32,19 @@ void Combat::Start()
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
+	//Idle Animation Set
 	currPlayerAnim = &app->scene->player1->cIdleAnim;
 
 	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);
 
-	playerScape = false;
-	playerAttack = false;
-	playerItem = false;
-	playerStep = false;
-	playerSplit = false;
-	playerResponseAble = true;
-	playerHitAble = true;
-	playerChoice = true;
-	steps = 0;
+	//Bool preparation for combat
+	BoolStart();
 
-	itemChoice = true;
-	healPlayerSmall = false;
-	healPlayerLarge = false;
-	featherPlayerTurn = false;
-	protectPlayerTurn = false;
-	enemyThrow = false;
-
-	wearFeather = false;
-	wearMantisLeg = false;
-
+	//Firts turn decision
 	FirstTurnLogic();
 
-	// LuckArray fill
+	//LuckArray fill
 	int pLuck = app->scene->player1->luck;
 	if (pLuck > 0)
 	{
@@ -102,6 +88,7 @@ void Combat::Draw()
 	app->scene->moveButton->Draw();
 	app->scene->itemButton->Draw();
 	app->scene->scapeButton->Draw();
+
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Draw();
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
@@ -134,7 +121,7 @@ void Combat::CombatLogic()
 		}
 		else
 		{
-			EnemyAttack();
+			EnemyAttack(enemy->enemyClass);
 
 			PlayerResponse();
 
@@ -170,12 +157,43 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == WIN)
 	{
+		ItemDrop(enemy->enemyClass);
 		playerScape = true; //Provisional, will lead to win animation and level upgrade
 	}
 	else if (combatState == LOSE)
 	{
-		playerScape = true; //Provisional, will lead to lose animation and respawn
+		if (CompareFrames(currPlayerAnim->GetCurrentFrame(), app->scene->player1->cDieAnim.GetLastFrame()))
+		{
+			playerScape = true; //Provisional, will lead to lose animation and respawn
+		}
 	}
+	else if (combatState == SPLIT)
+	{
+		playerScape = true; //Provisional, will lead to win animation
+	}
+}
+
+void Combat::BoolStart()
+{
+	playerScape = false;
+	playerAttack = false;
+	playerItem = false;
+	playerStep = false;
+	playerSplit = false;
+	playerResponseAble = true;
+	playerHitAble = true;
+	playerChoice = true;
+	steps = 0;
+
+	itemChoice = true;
+	healPlayerSmall = false;
+	healPlayerLarge = false;
+	featherPlayerTurn = false;
+	protectPlayerTurn = false;
+	enemyThrow = false;
+
+	wearFeather = false;
+	wearMantisLeg = false;
 }
 
 //---------------------------------------------------
@@ -186,11 +204,15 @@ void Combat::PlayerChoiceLogic()
 	{
 		playerAttack = true;
 		playerChoice = false;
+		return;
 	}
 	else if (app->scene->movePressed && steps < 3)
 	{
 		playerStep = true;
 		playerChoice = false;
+
+		currPlayerAnim = &app->scene->player1->cStepAnim;
+		currPlayerAnim->Reset();
 		return;
 	}
 	else if (app->scene->itemPressed)
@@ -203,74 +225,15 @@ void Combat::PlayerChoiceLogic()
 	else if (app->scene->scapePressed)
 	{
 		playerChoice = false;
-		int probabilityRange = enemy->lvl - app->scene->player1->lvl;
-
-		if (probabilityRange <= -8) playerScape = true;
-		else if (probabilityRange >= -7 && probabilityRange <= -4)
-		{
-			int random = rand() % 4;
-
-			if (random != 0) playerScape = true;
-			else
-			{
-				playerAttack = false;
-				playerResponseAble = true;
-				playerChoice = true;
-
-				LOG("ENEMY TURN");
-				LOG("Enemy Health: %d", enemy->health);
-				combatState = ENEMY_TURN;
-			}
-		}
-		else if (probabilityRange >= -3 && probabilityRange <= 3)
-		{
-			int random = rand() % 2;
-
-			if (random == 0) playerScape = true;
-			else
-			{
-				playerAttack = false;
-				playerResponseAble = true;
-				playerChoice = true;
-
-				LOG("ENEMY TURN");
-				LOG("Enemy Health: %d", enemy->health);
-				combatState = ENEMY_TURN;
-			}
-		}
-		else if (probabilityRange >= 4 && probabilityRange <= 7)
-		{
-			int random = rand() % 4;
-
-			if (random == 0) playerScape = true;
-			else
-			{
-				playerAttack = false;
-				playerResponseAble = true;
-				playerChoice = true;
-
-				LOG("ENEMY TURN");
-				LOG("Enemy Health: %d", enemy->health);
-				combatState = ENEMY_TURN;
-			}
-		}
-		else if (probabilityRange >= 8)
-		{
-			playerAttack = false;
-			playerResponseAble = true;
-			playerChoice = true;
-
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-			combatState = ENEMY_TURN;
-		}
-
+		short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
+		EscapeProbability(probabilityRange);
 		return;
 	}
 	else if (app->scene->splitPressed)
 	{
 		playerChoice = false;
 		playerSplit = true;
+		return;
 	}
 }
 
@@ -314,9 +277,9 @@ int Combat::EnemyDamageLogic()
 	return damage;
 }
 
-void Combat::EnemyAttack()
+void Combat::EnemyAttack(EnemyClass enemyc)
 {
-	if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
+	if (enemyc == EnemyClass::SMALL_WOLF)
 	{
 		if (enemy->attack == 1)
 		{
@@ -324,41 +287,25 @@ void Combat::EnemyAttack()
 			{
 				enemy->SmallWolfAttack(enemy->attack);
 
-				if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
-				{
-					playerHitAble = false;
-					if (!wearMantisLeg)
-					{
-						app->scene->player1->health -= EnemyDamageLogic();
-						LOG("Player Hit - PH: %d", app->scene->player1->health);
-					}
-					else if (wearMantisLeg) wearMantisLeg = false;
-				}
+				PlayerHitLogic();
 			}
 			else
 			{
 				enemy->smallWolfTimeAttack1 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
 				if (app->scene->player1->health > 0)
 				{
-					LOG("PLAYER TURN");
-					LOG("Player Health: %d", app->scene->player1->health);
 					if (wearFeather) wearFeather = false;
 					if (wearMantisLeg) wearMantisLeg = false;
-					combatState = PLAYER_TURN;
+
+					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
 				{
-					currPlayerAnim = &app->scene->player1->cDieAnim;
-					if (currPlayerAnim->HasFinished())
-					{
-						LOG("PLAYER LOSE");
-						combatState = LOSE;
-					}
-					
+					PlayerDie();
 				}
 			}
 		}
@@ -368,36 +315,58 @@ void Combat::EnemyAttack()
 			{
 				enemy->SmallWolfAttack(enemy->attack);
 
-				if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
-				{
-					playerHitAble = false;
-					if (!wearMantisLeg)
-					{
-						app->scene->player1->health -= EnemyDamageLogic();
-						LOG("Player Hit - PH: %d", app->scene->player1->health);
-					}
-					else if (wearMantisLeg) wearMantisLeg = false;
-				}
+				PlayerHitLogic();
 			}
 			else
 			{
 				enemy->smallWolfTimeAttack2 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_ENEMY1_POSX;
+				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
 				if (app->scene->player1->health > 0)
 				{
-					LOG("PLAYER TURN");
-					LOG("Player Health: %d", app->scene->player1->health);
 					if (wearFeather) wearFeather = false;
 					if (wearMantisLeg) wearMantisLeg = false;
-					combatState = PLAYER_TURN;
+
+					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
 				{
-					LOG("PLAYER LOSE");
-					combatState = LOSE;
+					PlayerDie();
+				}
+			}
+		}
+	}
+	else if (enemyc == EnemyClass::BIRD)
+	{
+		enemy->attack = 1;
+		if (enemy->attack == 1)
+		{
+			if (enemy->birdTimeAttack1 < 155)
+			{
+				enemy->BirdAttack(enemy->attack);
+
+				PlayerHitLogic();
+			}
+			else
+			{
+				enemy->birdTimeAttack1 = 0;
+				enemyTimeWait = 0;
+				enemy->colliderCombat.x = INIT_BIRD_POSX;
+				enemy->colliderCombat.y = INIT_BIRD_POSY;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
 				}
 			}
 		}
@@ -417,30 +386,23 @@ void Combat::PlayerAttack()
 		LOG("Enemy Hit, EH: %d", enemy->health);
 
 		playerTimeAttack = 0;
-		app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
-
 		playerAttack = false;
-		playerResponseAble = true;
-		playerChoice = true;
-		steps = 0;
+
+		PlayerPosReset();
 
 		if (enemy->health > 0)
 		{
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-			combatState = ENEMY_TURN;
+			EnemyTurn();
 		}
 		else if (enemy->health <= 0)
 		{
-			LOG("PLAYER WIN");
-			combatState = WIN;
+			PlayerWin();
 		}
 	}
 }
 
 void Combat::PlayerMove()
 {
-	currPlayerAnim = &app->scene->player1->cStepAnim;
 	if (playerTimeMove < 57)
 	{
 		app->scene->player1->colliderCombat.x += 3;
@@ -448,15 +410,11 @@ void Combat::PlayerMove()
 	}
 	else
 	{
-		LOG("ENEMY TURN");
-		LOG("Enemy Health: %d", enemy->health);
 		playerTimeMove = 0;
-		combatState = ENEMY_TURN;
 		playerStep = false;
-		playerResponseAble = true;
-		playerChoice = true;
 		steps++;
-		currPlayerAnim = &app->scene->player1->cIdleAnim;
+
+		EnemyTurn();
 	}
 }
 
@@ -508,87 +466,6 @@ void Combat::PlayerItemChoose()
 	}
 }
 
-void Combat::PlayerSplit()
-{
-	if (playerTimeSplit < 200)
-	{
-		playerTimeSplit++;
-	}
-	else
-	{
-		playerTimeSplit = 0;
-		playerSplit = false;
-		playerResponseAble = true;
-		playerChoice = true;
-
-		int random = rand() % 5;
-
-		// USING LUCK
-		if (app->scene->player1->luck > 0)
-		{
-			int luck = rand() % 100;
-
-			if (luckArray[luck]) //40% to lose
-			{
-				random = 1;
-				if (random < 2)
-				{
-					LOG("ENEMY TURN");
-					LOG("Enemy Health: %d", enemy->health);
-					combatState = ENEMY_TURN;
-					currPlayerAnim = &app->scene->player1->cIdleAnim;
-					return;
-				}
-				else if (random >= 2)
-				{
-					app->scene->player1->health -= enemy->health;
-
-					if (app->scene->player1->health <= 0)
-					{
-						LOG("PLAYER LOSE");
-						combatState = LOSE;
-					}
-					else if (app->scene->player1->health > 0)
-					{
-						LOG("ENEMY SPLITED");
-						tamedEnemy++;
-						combatState = WIN;
-					}
-					return;
-				}
-			}
-		}
-
-		// WITHOUT LUCK
-		if (random < 3) //60% to lose
-		{
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-			combatState = ENEMY_TURN;
-			currPlayerAnim = &app->scene->player1->cIdleAnim;
-		}
-		else if (random >= 3)
-		{
-			app->scene->player1->health -= enemy->health;
-
-			if (app->scene->player1->health <= 0)
-			{
-				LOG("PLAYER LOSE");
-				combatState = LOSE;
-			}
-			else if (app->scene->player1->health > 0)
-			{
-				tamedEnemy++;
-				LOG("ENEMY SPLITED");
-				combatState = WIN;
-			}
-		}
-	}
-
-	//Tamejar et dona exp? no
-	//Màxim d'enemics spliteats? 3
-}
-
 void Combat::ItemUsage()
 {
 	if (healPlayerSmall)
@@ -600,17 +477,13 @@ void Combat::ItemUsage()
 		else
 		{
 			playerTimeHeal = 0;
-			playerChoice = true;
 			playerItem = false;
 			itemChoice = true;
 			healPlayerSmall = false;
-			playerResponseAble = true;
 
 			app->scene->player1->health += HealPlayer(1);
 
-			combatState = ENEMY_TURN;
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
+			EnemyTurn();
 		}
 	}
 	else if (healPlayerLarge)
@@ -622,17 +495,13 @@ void Combat::ItemUsage()
 		else
 		{
 			playerTimeHeal = 0;
-			playerChoice = true;
 			playerItem = false;
 			itemChoice = true;
 			healPlayerLarge = false;
-			playerResponseAble = true;
 
 			app->scene->player1->health += HealPlayer(2);
 
-			combatState = ENEMY_TURN;
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
+			EnemyTurn();
 		}
 	}
 	else if (featherPlayerTurn)
@@ -644,18 +513,14 @@ void Combat::ItemUsage()
 		else
 		{
 			playerTimeWearFeather = 0;
-			playerChoice = true;
 			playerItem = false;
 			itemChoice = true;
 			featherPlayerTurn = false;
-			playerResponseAble = true;
 
 			wearFeather = true;
 			app->scene->player1->health += HealPlayer(3);
 
-			combatState = ENEMY_TURN;
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
+			EnemyTurn();
 		}
 	}
 	else if (protectPlayerTurn)
@@ -667,17 +532,13 @@ void Combat::ItemUsage()
 		else
 		{
 			playerTimeWearLeg = 0;
-			playerChoice = true;
 			playerItem = false;
 			itemChoice = true;
 			protectPlayerTurn = false;
-			playerResponseAble = true;
 
 			wearMantisLeg = true;
 
-			combatState = ENEMY_TURN;
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
+			EnemyTurn();
 		}
 	}
 	else if (enemyThrow)
@@ -689,27 +550,90 @@ void Combat::ItemUsage()
 		else
 		{
 			playerTimeEnemyThrow = 0;
-			playerChoice = true;
 			playerItem = false;
 			itemChoice = true;
 			enemyThrow = false;
-			playerResponseAble = true;
 
 			enemy->health -= EnemyItemDamage();
 
 			if (enemy->health > 0)
 			{
-				LOG("ENEMY TURN");
-				LOG("Enemy Health: %d", enemy->health);
-				combatState = ENEMY_TURN;
+				EnemyTurn();
 			}
 			else if (enemy->health <= 0)
 			{
-				LOG("PLAYER WIN");
-				combatState = WIN;
+				PlayerWin();
 			}
 		}
 	}
+}
+
+void Combat::PlayerSplit()
+{
+	if (playerTimeSplit < 200)
+	{
+		playerTimeSplit++;
+	}
+	else
+	{
+		playerTimeSplit = 0;
+		playerSplit = false;
+
+		int random = rand() % 5;
+
+		// USING LUCK
+		if (app->scene->player1->luck > 0)
+		{
+			int luck = rand() % 100;
+
+			if (luckArray[luck]) //40% to lose
+			{
+				if (random < 2)
+				{
+					PlayerPosReset();
+					EnemyTurn();
+					return;
+				}
+				else if (random >= 2)
+				{
+					app->scene->player1->health -= enemy->health;
+
+					if (app->scene->player1->health <= 0)
+					{
+						PlayerDie();
+					}
+					else if (app->scene->player1->health > 0)
+					{
+						PlayerSplitWin();
+					}
+					return;
+				}
+			}
+		}
+
+		// WITHOUT LUCK
+		if (random < 3) //60% to lose
+		{
+			PlayerPosReset();
+			EnemyTurn();
+			return;
+		}
+		else if (random >= 3)
+		{
+			app->scene->player1->health -= enemy->health;
+
+			if (app->scene->player1->health <= 0)
+			{
+				PlayerDie();
+			}
+			else if (app->scene->player1->health > 0)
+			{
+				PlayerSplitWin();
+			}
+		}
+	}
+
+	//Màxim d'enemics spliteats? 3
 }
 
 int Combat::HealPlayer(int typeOfHeal)
@@ -777,8 +701,205 @@ void Combat::EnemyAttackProbability()
 {
 	if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
 	{
-		int random = rand() % 7;
-		if (random < 5) enemy->attack = 1;
-		else if (random >= 5) enemy->attack = 2;
+		int random = rand() % 8;
+		if (random < 6) enemy->attack = 1;
+		else if (random >= 6) enemy->attack = 2;
 	}
+}
+
+void Combat::PlayerMoneyLose()
+{
+	int lostMoney = ceil(app->scene->player1->lvl / 10);
+	app->scene->player1->money -= lostMoney;
+
+	if (app->scene->player1->money < 0) app->scene->player1->money = 0;
+}
+
+void Combat::EscapeProbability(short int probabilityRange)
+{
+	if (probabilityRange <= -8) playerScape = true;
+	else if (probabilityRange >= -7 && probabilityRange <= -4)
+	{
+		int random = rand() % 4;
+
+		if (random != 0) playerScape = true;
+		else
+		{
+			playerAttack = false;
+			playerResponseAble = true;
+			playerChoice = true;
+
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+
+			PlayerMoneyLose();
+
+			combatState = ENEMY_TURN;
+		}
+	}
+	else if (probabilityRange >= -3 && probabilityRange <= 3)
+	{
+		int random = rand() % 2;
+
+		if (random == 0) playerScape = true;
+		else
+		{
+			playerAttack = false;
+			playerResponseAble = true;
+			playerChoice = true;
+
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+			combatState = ENEMY_TURN;
+		}
+	}
+	else if (probabilityRange >= 4 && probabilityRange <= 7)
+	{
+		int random = rand() % 4;
+
+		if (random == 0) playerScape = true;
+		else
+		{
+			playerAttack = false;
+			playerResponseAble = true;
+			playerChoice = true;
+
+			LOG("ENEMY TURN");
+			LOG("Enemy Health: %d", enemy->health);
+			combatState = ENEMY_TURN;
+		}
+	}
+	else if (probabilityRange >= 8)
+	{
+		playerAttack = false;
+		playerResponseAble = true;
+		playerChoice = true;
+
+		LOG("ENEMY TURN");
+		LOG("Enemy Health: %d", enemy->health);
+		combatState = ENEMY_TURN;
+	}
+}
+
+void Combat::PlayerHitLogic()
+{
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+	{
+		playerHitAble = false;
+		if (!wearMantisLeg)
+		{
+			app->scene->player1->health -= EnemyDamageLogic();
+			LOG("Player Hit - PH: %d", app->scene->player1->health);
+		}
+		else if (wearMantisLeg) wearMantisLeg = false;
+	}
+}
+
+void Combat::PlayerPosReset()
+{
+	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
+	steps = 0;
+}
+
+void Combat::ItemDrop(EnemyClass enemy)
+{
+	int random = rand() % 20;
+	int a = rand() % 100;
+
+	if (enemy == EnemyClass::SMALL_WOLF)
+	{
+		if (random < 9)
+		{
+			if (luckArray[a]) smallMeat += 2;
+			else if (!luckArray[a]) smallMeat++;
+
+			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;
+		}
+	}
+	else if (enemy == EnemyClass::BIG_WOLF)
+	{
+		if (random < 6)
+		{
+			if (luckArray[a]) largeMeat += 2;
+			else if (!luckArray[a])
+			{
+				largeMeat++;
+				random = rand() % 20;
+				if (random < 3)
+				{
+					a = rand() % 100;
+					if (luckArray[a]) smallMeat += 2;
+					else if (!luckArray[a]) smallMeat++;
+				}
+			}
+
+			if (largeMeat > MAX_MEAT) largeMeat = MAX_MEAT;
+			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;
+		}
+	}
+	else if (enemy == EnemyClass::BIRD)
+	{
+		int probability = 3;
+		if (luckArray[a]) probability = 10;
+
+		if (random < probability) feather++;
+
+		if (feather > MAX_COMBATITEM) feather = MAX_COMBATITEM;
+	}
+	else if (enemy == EnemyClass::MANTIS)
+	{
+		if (random < 2)
+		{
+			int probability = 2;
+			if (luckArray[a]) probability = 8;
+
+			if (random < probability) mantisLeg++;
+
+			if (mantisLeg > MAX_COMBATITEM) mantisLeg = MAX_COMBATITEM;
+		}
+	}
+}
+
+// State Changing Functions
+
+void Combat::EnemyTurn()
+{
+	LOG("ENEMY TURN");
+	LOG("Enemy Health: %d", enemy->health);
+
+	combatState = ENEMY_TURN;
+
+	currPlayerAnim = &app->scene->player1->cIdleAnim;
+	currPlayerAnim->Reset();
+
+	playerResponseAble = true;
+	playerChoice = true;
+}
+
+void Combat::PlayerTurn()
+{
+	combatState = PLAYER_TURN;
+	LOG("PLAYER TURN");
+	LOG("Player Health: %d", app->scene->player1->health);
+}
+
+void Combat::PlayerWin()
+{
+	LOG("PLAYER WIN");
+	combatState = WIN;
+}
+
+void Combat::PlayerDie()
+{
+	currPlayerAnim = &app->scene->player1->cDieAnim;
+	currPlayerAnim->Reset();
+	LOG("PLAYER LOSE");
+	combatState = LOSE;
+}
+
+void Combat::PlayerSplitWin()
+{
+	LOG("ENEMY SPLITED");
+	tamedEnemy++;
+	combatState = SPLIT;
 }
