@@ -53,6 +53,10 @@ bool Scene::Start()
 	SetScene(LOGO_SCENE);
 
 	app->entityManager->CreateEntity(EntityType::ENEMY);
+	app->entityManager->CreateEntity(EntityType::ENEMY);
+
+	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	return true;
 }
@@ -223,6 +227,7 @@ void Scene::UpdateLogoScene()
 void Scene::UpdateMainMenu()
 {
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
+	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 }
 
 void Scene::UpdateCombat()

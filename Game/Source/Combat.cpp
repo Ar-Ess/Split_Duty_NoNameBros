@@ -20,7 +20,7 @@ void Combat::Start()
 {
 	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
 	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
-	enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
+	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -79,7 +79,7 @@ void Combat::Update()
 
 	currPlayerAnim->Update(1.0f);
 
-	LOG("PX: %d", app->scene->player1->colliderCombat.x);
+	//LOG("PX: %d", app->scene->player1->colliderCombat.x);
 
 	CombatLogic();
 }
@@ -414,7 +414,6 @@ void Combat::PlayerAttack()
 {
 	if (playerTimeAttack < 125)
 	{
-		app->scene->player1->colliderCombat.x += 7;
 		playerTimeAttack++;
 	}
 	else
