@@ -55,7 +55,7 @@ bool Scene::Start()
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 
-	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, 2, 200, 30, 30, 10, 20);
 	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	return true;

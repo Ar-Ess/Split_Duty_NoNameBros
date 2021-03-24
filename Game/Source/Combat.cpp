@@ -79,7 +79,8 @@ void Combat::Update()
 
 	currPlayerAnim->Update(1.0f);
 
-	//LOG("PX: %d", app->scene->player1->colliderCombat.x);
+	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
+	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
 
 	CombatLogic();
 }
@@ -292,7 +293,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	{
 		if (enemy->attack == 1)
 		{
-			if (enemy->smallWolfTimeAttack1 < 225)
+			if (enemy->smallWolfTimeAttack1 < 170)
 			{
 				enemy->SmallWolfAttack(enemy->attack);
 
@@ -320,11 +321,12 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 		}
 		else if (enemy->attack == 2)
 		{
-			if (enemy->smallWolfTimeAttack2 < 274)
+			if (enemy->smallWolfTimeAttack2 < 220)
 			{
 				enemy->SmallWolfAttack(enemy->attack);
 
 				PlayerHitLogic();
+				enemy->smallWolfTimeAttack2++;
 			}
 			else
 			{
@@ -382,7 +384,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 		{
 			if (enemy->birdTimeAttack2 < 200)
 			{
-				enemy->BirdAttack(enemy->attack);
+				enemy->birdTimeAttack2++;
 
 				if (enemy->birdTimeAttack2 >= 60 && enemy->birdTimeAttack2 < 145)
 				{

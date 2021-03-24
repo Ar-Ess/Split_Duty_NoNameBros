@@ -8,7 +8,7 @@
 
 #include "SDL/include/SDL.h"
 
-#define INIT_SMALL_WOLF_POSY 433
+#define INIT_SMALL_WOLF_POSY 444
 
 struct SDL_Rect;
 
