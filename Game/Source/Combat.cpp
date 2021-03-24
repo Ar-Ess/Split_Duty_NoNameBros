@@ -20,7 +20,7 @@ void Combat::Start()
 {
 	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
 	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
-	enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
+	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -79,6 +79,8 @@ void Combat::Update()
 
 	currPlayerAnim->Update(1.0f);
 
+	//LOG("PX: %d", app->scene->player1->colliderCombat.x);
+
 	CombatLogic();
 }
 
@@ -125,7 +127,14 @@ void Combat::CombatLogic()
 
 			PlayerResponse();
 
-			if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 30) playerResponseAble = false;
+			if (enemy->enemyClass == SMALL_WOLF || enemy->enemyClass == BIG_WOLF)
+			{
+				if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 30) playerResponseAble = false;
+			}
+			else if (enemy->enemyClass == BIRD)
+			{
+				if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 60 - (steps * 20)) playerResponseAble = false;
+			}
 		}
 	}
 	else if (combatState == PLAYER_TURN)
@@ -340,10 +349,9 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	}
 	else if (enemyc == EnemyClass::BIRD)
 	{
-		enemy->attack = 1;
 		if (enemy->attack == 1)
 		{
-			if (enemy->birdTimeAttack1 < 155)
+			if (enemy->birdTimeAttack1 < 280)
 			{
 				enemy->BirdAttack(enemy->attack);
 
@@ -370,6 +378,35 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				}
 			}
 		}
+		else if (enemy->attack == 2)
+		{
+			if (enemy->birdTimeAttack2 < 200)
+			{
+				enemy->BirdAttack(enemy->attack);
+
+				if (enemy->birdTimeAttack2 >= 60 && enemy->birdTimeAttack2 < 145)
+				{
+					app->scene->player1->colliderCombat.x -= 2;
+				}
+				else if (enemy->birdTimeAttack2 == 145)
+				{
+					app->scene->player1->colliderCombat.x -= 1;
+					steps--;
+				}
+			}
+			else
+			{
+				enemy->birdTimeAttack2 = 0;
+				enemyTimeWait = 0;
+				playerHitAble = true;
+
+
+				if (wearFeather) wearFeather = false;
+				if (wearMantisLeg) wearMantisLeg = false;
+
+				PlayerTurn();
+			}
+		}
 	}
 }
 
@@ -377,7 +414,6 @@ void Combat::PlayerAttack()
 {
 	if (playerTimeAttack < 125)
 	{
-		app->scene->player1->colliderCombat.x += 7;
 		playerTimeAttack++;
 	}
 	else
@@ -672,9 +708,17 @@ int Combat::EnemyItemDamage()
 
 void Combat::PlayerResponse()
 {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch) app->scene->player1->jump = true;
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch)
+	{
+		app->scene->player1->jump = true;
+		currPlayerAnim = &app->scene->player1->cJumpAnim;
+	}
 
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump) app->scene->player1->crouch = true;
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
+	{
+		app->scene->player1->crouch = true;
+		//currPlayerAnim = &app->scene->player1->cCrouchAnim;
+	}
 
 	if (app->scene->player1->jump)
 	{
@@ -704,6 +748,17 @@ void Combat::EnemyAttackProbability()
 		int random = rand() % 8;
 		if (random < 6) enemy->attack = 1;
 		else if (random >= 6) enemy->attack = 2;
+	}
+	else if (enemy->enemyClass == EnemyClass::BIRD)
+	{
+		if (steps > 0)
+		{
+			int random = rand() % 6;
+			if (random < 1) enemy->attack = 2;
+			return;
+		}
+
+		enemy->attack = 1;
 	}
 }
 

@@ -10,7 +10,7 @@
 #define INIT_SMALLWOLF_POSX 996
 #define INIT_SMALLWOLF_POSY 433
 #define INIT_BIRD_POSX 1011
-#define INIT_BIRD_POSY 360
+#define INIT_BIRD_POSY 350
 
 #define MAX_MEAT 10
 #define MAX_COMBATITEM 5
@@ -147,6 +147,7 @@ public:
 private:
     friend class Scene;
     friend class Enemy;
+    friend class Player;
 
     SDL_Texture* character1Spritesheet = nullptr;
 

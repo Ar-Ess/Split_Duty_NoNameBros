@@ -68,6 +68,7 @@ private: //Combat Buttons
 private:
 	friend class Combat;
 	friend class Enemy;
+	friend class Player;
 
 	Player* player1;
 	Combat* combatScene;

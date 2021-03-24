@@ -1,4 +1,8 @@
 #include "Player.h"
+#include "App.h"
+
+#include "Scene.h"
+#include "Combat.h"
 
 #include "Log.h"
 
@@ -11,7 +15,7 @@ Player::Player() : Entity(EntityType::PLAYER)
     // Define Player animations
     for (int i = 0; i < 6; i++)
     {
-        cIdleAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN /*+ (i * 2)*/, SPRITE_MARGIN ,70,88 }); // Si li sumes (i * 2) a la x, l'idle s'estabilitza
+        cIdleAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN + (i * 2), SPRITE_MARGIN ,70,88 });
     }
     cIdleAnim.speed = 0.120f;
 
@@ -68,6 +72,7 @@ void Player::Jump()
         colliderCombat.y = INIT_COMBAT_POSY;
         jumpTime = 0;
         jump = false;
+        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
     }
 }
 
@@ -90,6 +95,7 @@ void Player::FeatherJump()
         colliderCombat.y = INIT_COMBAT_POSY;
         jumpFeatherTime = 0;
         jump = false;
+        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
     }
 }
 
@@ -110,5 +116,6 @@ void Player::Crouch()
         colliderCombat.h = 88;
         crouchTime = 0;
         crouch = false;
+        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
     }
 }
