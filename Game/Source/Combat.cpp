@@ -19,8 +19,8 @@ Combat::Combat()
 void Combat::Start()
 {
 	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
-	enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
-	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
+	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
+	enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
 	//Player HardCoded
 	app->scene->player1->health = 35;
@@ -121,7 +121,7 @@ void Combat::CombatLogic()
 		}
 		else
 		{
-			EnemyAttack();
+			EnemyAttack(enemy->enemyClass);
 
 			PlayerResponse();
 
@@ -157,6 +157,7 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == WIN)
 	{
+		ItemDrop(enemy->enemyClass);
 		playerScape = true; //Provisional, will lead to win animation and level upgrade
 	}
 	else if (combatState == LOSE)
@@ -276,9 +277,9 @@ int Combat::EnemyDamageLogic()
 	return damage;
 }
 
-void Combat::EnemyAttack()
+void Combat::EnemyAttack(EnemyClass enemyc)
 {
-	if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
+	if (enemyc == EnemyClass::SMALL_WOLF)
 	{
 		if (enemy->attack == 1)
 		{
@@ -321,6 +322,39 @@ void Combat::EnemyAttack()
 				enemy->smallWolfTimeAttack2 = 0;
 				enemyTimeWait = 0;
 				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
+				}
+			}
+		}
+	}
+	else if (enemyc == EnemyClass::BIRD)
+	{
+		enemy->attack = 1;
+		if (enemy->attack == 1)
+		{
+			if (enemy->birdTimeAttack1 < 155)
+			{
+				enemy->BirdAttack(enemy->attack);
+
+				PlayerHitLogic();
+			}
+			else
+			{
+				enemy->birdTimeAttack1 = 0;
+				enemyTimeWait = 0;
+				enemy->colliderCombat.x = INIT_BIRD_POSX;
+				enemy->colliderCombat.y = INIT_BIRD_POSY;
 				playerHitAble = true;
 
 				if (app->scene->player1->health > 0)

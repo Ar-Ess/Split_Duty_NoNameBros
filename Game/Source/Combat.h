@@ -9,8 +9,8 @@
 
 #define INIT_SMALLWOLF_POSX 996
 #define INIT_SMALLWOLF_POSY 433
-#define INIT_BIRD_POSX 996
-#define INIT_BIRD_POSY 433
+#define INIT_BIRD_POSX 1011
+#define INIT_BIRD_POSY 360
 
 #define MAX_MEAT 10
 #define MAX_COMBATITEM 5
@@ -60,7 +60,7 @@ public:
 
     int EnemyDamageLogic();
 
-    void EnemyAttack();
+    void EnemyAttack(EnemyClass enemy);
 
     void PlayerAttack();
 
