@@ -49,7 +49,7 @@ void Enemy::SmallWolfAttack(unsigned short int typeOfAttack)
 {
     if (typeOfAttack == 1)
     {
-        colliderCombat.x -= 6;
+        colliderCombat.x -= 8;
         smallWolfTimeAttack1++;
 
         if (colliderCombat.x + colliderCombat.w < 0) colliderCombat.x = 1280;
@@ -59,48 +59,45 @@ void Enemy::SmallWolfAttack(unsigned short int typeOfAttack)
         if (smallWolfTimeAttack2 < 29)
         {
             Jump();
-            smallWolfTimeAttack2++;
         }
         else if (smallWolfTimeAttack2 < 50)
         {
-            smallWolfTimeAttack2++;
+            int a = 0;
         }
-        else if (smallWolfTimeAttack2 < 274)
+        else if (smallWolfTimeAttack2 < 220)
         {
             if (app->scene->combatScene->steps == 0)
             {
-                colliderCombat.x -= 6;
+                colliderCombat.x -= 8;
 
                 if (colliderCombat.x + colliderCombat.w < 0) colliderCombat.x = 1280;
 
-                if (smallWolfTimeAttack2 > 165 && smallWolfTimeAttack2 < 195) Jump();
+                if (smallWolfTimeAttack2 > 135 && smallWolfTimeAttack2 < 165) Jump();
             }
             else if (app->scene->combatScene->steps == 1)
             {
-                colliderCombat.x -= 6;
+                colliderCombat.x -= 8;
 
                 if (colliderCombat.x + colliderCombat.w < 0) colliderCombat.x = 1280;
 
-                if (smallWolfTimeAttack2 > 136 && smallWolfTimeAttack2 < 166) Jump();
+                if (smallWolfTimeAttack2 > 113 && smallWolfTimeAttack2 < 143) Jump();
             }
             else if (app->scene->combatScene->steps == 2)
             {
-                colliderCombat.x -= 6;
+                colliderCombat.x -= 8;
 
                 if (colliderCombat.x + colliderCombat.w < 0) colliderCombat.x = 1280;
 
-                if (smallWolfTimeAttack2 > 107 && smallWolfTimeAttack2 < 137) Jump();
+                if (smallWolfTimeAttack2 > 90 && smallWolfTimeAttack2 < 120) Jump();
             }
             else if (app->scene->combatScene->steps == 3)
             {
-                colliderCombat.x -= 6;
+                colliderCombat.x -= 8;
 
                 if (colliderCombat.x + colliderCombat.w < 0) colliderCombat.x = 1280;
 
-                if (smallWolfTimeAttack2 > 78 && smallWolfTimeAttack2 < 108) Jump();
+                if (smallWolfTimeAttack2 > 68 && smallWolfTimeAttack2 < 98) Jump();
             }
-
-            smallWolfTimeAttack2++;
         }
     }
 }
@@ -264,13 +261,6 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
         {
             colliderCombat.x = 1280;
             colliderCombat.y = INIT_BIRD_POSY;
-        }
-    }
-    else if (typeOfAttack == 2)
-    {
-        if (birdTimeAttack2 < 200)
-        {
-            birdTimeAttack2++;
         }
     }
 }
