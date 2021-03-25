@@ -118,6 +118,11 @@ bool GuiManager::Update(float dt)
 		accumulatedTime = 0.0f;
 		doLogic = false;
 	}
+
+	if (currentButton2Anim == nullptr)
+	{
+		int a = 0;
+	}
 	
 	currentButton1Anim->Update(1.0f);
 	currentButton2Anim->Update(1.0f);
@@ -208,9 +213,9 @@ void GuiManager::DrawCombatInterface()
 	const SDL_Rect guiRect = { 0,0,1280,720 };
 	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
 
-	app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
+	//app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
 	const SDL_Rect faceRect = { 0,0,70,69 };
-	app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
+	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 }
 
 bool GuiManager::CleanUp()

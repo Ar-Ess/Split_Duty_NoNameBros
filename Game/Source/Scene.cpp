@@ -173,6 +173,7 @@ void Scene::SetCombat(Enemy* enemySet)
 {
 	combatScene->littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
 
+
 	combatScene->enemy = enemySet;
 	combatScene->Start();
 

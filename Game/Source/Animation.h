@@ -40,6 +40,12 @@ public:
 
 	void Update(float dt)
 	{
+		if (this == nullptr)
+		{
+			int a = 0;
+		}
+
+		this->GetLastFrame();
 		currentFrame += speed * dt;
 		if (currentFrame >= totalFrames)
 		{
