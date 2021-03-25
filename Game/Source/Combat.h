@@ -48,6 +48,8 @@ public:
 
     void Draw();
 
+    void DrawPlayer();
+
     void FirstTurnLogic();
 
     void CombatLogic();
@@ -150,10 +152,12 @@ private:
     friend class Player;
 
     SDL_Texture* character1Spritesheet = nullptr;
+    SDL_Texture* littleWolfSpritesheet = nullptr;
 
     const SDL_Rect test = {52, 52, 70, 88};
 
-    Animation* currPlayerAnim = nullptr;
+    Animation* currentPlayerAnim = nullptr;
+    Animation* currentEnemyAnim = nullptr;
 
     bool CompareFrames(SDL_Rect a, SDL_Rect b)
     {

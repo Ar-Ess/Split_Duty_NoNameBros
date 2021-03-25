@@ -13,7 +13,7 @@
 
 Combat::Combat()
 {
-	currPlayerAnim = nullptr;
+	currentPlayerAnim = nullptr;
 }
 
 void Combat::Start()
@@ -33,7 +33,8 @@ void Combat::Start()
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
 	//Idle Animation Set
-	currPlayerAnim = &app->scene->player1->cIdleAnim;
+	currentPlayerAnim = &app->scene->player1->cIdleAnim;
+	
 
 	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);
@@ -77,7 +78,7 @@ void Combat::Update()
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
-	currPlayerAnim->Update(1.0f);
+	currentPlayerAnim->Update(1.0f);
 
 	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
 	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
@@ -96,11 +97,21 @@ void Combat::Draw()
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
-	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x-52, app->scene->player1->colliderCombat.y-52, &currPlayerAnim->GetCurrentFrame());
-
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
+	DrawPlayer();
+
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
+}
+
+void Combat::DrawPlayer()
+{
+	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
+	{
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
 
 void Combat::FirstTurnLogic()
@@ -172,7 +183,7 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == LOSE)
 	{
-		if (CompareFrames(currPlayerAnim->GetCurrentFrame(), app->scene->player1->cDieAnim.GetLastFrame()))
+		if (CompareFrames(currentPlayerAnim->GetCurrentFrame(), app->scene->player1->cDieAnim.GetLastFrame()))
 		{
 			playerScape = true; //Provisional, will lead to lose animation and respawn
 		}
@@ -221,8 +232,8 @@ void Combat::PlayerChoiceLogic()
 		playerStep = true;
 		playerChoice = false;
 
-		currPlayerAnim = &app->scene->player1->cStepAnim;
-		currPlayerAnim->Reset();
+		currentPlayerAnim = &app->scene->player1->cStepAnim;
+		currentPlayerAnim->Reset();
 		return;
 	}
 	else if (app->scene->itemPressed)
@@ -713,13 +724,13 @@ void Combat::PlayerResponse()
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch)
 	{
 		app->scene->player1->jump = true;
-		currPlayerAnim = &app->scene->player1->cJumpAnim;
+		currentPlayerAnim = &app->scene->player1->cJumpAnim;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
 	{
 		app->scene->player1->crouch = true;
-		currPlayerAnim = &app->scene->player1->cCrouchAnim;
+		currentPlayerAnim = &app->scene->player1->cCrouchAnim;
 	}
 
 	if (app->scene->player1->jump)
@@ -926,8 +937,8 @@ void Combat::EnemyTurn()
 
 	combatState = ENEMY_TURN;
 
-	currPlayerAnim = &app->scene->player1->cIdleAnim;
-	currPlayerAnim->Reset();
+	currentPlayerAnim = &app->scene->player1->cIdleAnim;
+	currentPlayerAnim->Reset();
 
 	playerResponseAble = true;
 	playerChoice = true;
@@ -948,8 +959,8 @@ void Combat::PlayerWin()
 
 void Combat::PlayerDie()
 {
-	currPlayerAnim = &app->scene->player1->cDieAnim;
-	currPlayerAnim->Reset();
+	currentPlayerAnim = &app->scene->player1->cDieAnim;
+	currentPlayerAnim->Reset();
 	LOG("PLAYER LOSE");
 	combatState = LOSE;
 }

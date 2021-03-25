@@ -6,16 +6,39 @@
 
 #include "Pathfinding.h"
 
+#include "Log.h"
+
 #define DEFAULT_PATH_LENGTH 50
 
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
     path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
+
+    //Load enemies textures
+    for (int i = 8; i >=0 ; i--)
+    {
+        cLittleWolfAwakeAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+    }
+    cLittleWolfAwakeAnim.speed = 0.120f;
+
+    for (int i = 0; i < 5; i++)
+    {
+        cLittleWolfIdleAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+    }
+    cLittleWolfIdleAnim.speed = 0.120f;
+
+    for (int i = 0; i < 5; i++)
+    {
+        cLittleWolfRunAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+    }
+    cLittleWolfRunAnim.speed = 0.120f;
 }
 
 Enemy::~Enemy()
 {
 }
+
+
 
 void Enemy::SetUp(EnemyClass xenemyClass, SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {

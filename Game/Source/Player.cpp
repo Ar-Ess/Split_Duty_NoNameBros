@@ -21,9 +21,9 @@ Player::Player() : Entity(EntityType::PLAYER)
 
     for (int i = 0; i < 6; i++)
     {
-        cStepAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+        cAttackAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
     }
-    cStepAnim.speed = 0.190f;
+    cAttackAnim.speed = 0.190f;
 
     for (int i = 0; i < 8; i++)
     {
@@ -31,6 +31,12 @@ Player::Player() : Entity(EntityType::PLAYER)
        
     }
     cJumpAnim.speed = 0.1f;
+
+    for (int i = 0; i < 6; i++)
+    {
+        cStepAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+    }
+    cStepAnim.speed = 0.190f;
 
     for (int i = 0; i < 10; i++)
     {
@@ -79,7 +85,7 @@ void Player::Jump()
         colliderCombat.y = INIT_COMBAT_POSY;
         jumpTime = 0;
         jump = false;
-        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
+        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
     }
 }
 
@@ -102,7 +108,7 @@ void Player::FeatherJump()
         colliderCombat.y = INIT_COMBAT_POSY;
         jumpFeatherTime = 0;
         jump = false;
-        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
+        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
     }
 }
 
@@ -123,6 +129,6 @@ void Player::Crouch()
         colliderCombat.h = 88;
         crouchTime = 0;
         crouch = false;
-        app->scene->combatScene->currPlayerAnim = &cIdleAnim;
+        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
     }
 }

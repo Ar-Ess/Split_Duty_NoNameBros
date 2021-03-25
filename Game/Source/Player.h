@@ -14,7 +14,7 @@
 #define INIT_COMBAT_POSY 400
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
-#define SPRITE_MARGIN 52
+
 
 class Animation;
 
@@ -67,6 +67,7 @@ public:
     SDL_Texture* texture;
 
     Animation cIdleAnim;
+    Animation cAttackAnim;
     Animation cCloseAttackAnim;
     Animation cStepAnim;
     Animation cJumpAnim;

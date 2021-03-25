@@ -2,6 +2,7 @@
 #define __ENEMY_H__
 
 #include "Entity.h"
+#include "Animation.h"
 
 #include "DynArray.h"
 #include "Point.h"
@@ -10,7 +11,11 @@
 
 #define INIT_SMALL_WOLF_POSY 444
 
+#define SPRITE_TILE_WIDTH 154
+#define SPRITE_TILE_HEIGHT 141
+
 struct SDL_Rect;
+struct Animation;
 
 enum EnemyClass
 {
@@ -66,6 +71,11 @@ private:
 
     EnemyClass enemyClass;
 
+public:
+    
+    Animation cLittleWolfAwakeAnim;
+    Animation cLittleWolfIdleAnim;
+    Animation cLittleWolfRunAnim;
 };
 
 #endif // __ENEMY_H__
