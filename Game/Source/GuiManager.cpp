@@ -52,6 +52,10 @@ bool GuiManager::Start()
 	checkBoxSpriteSheet = nullptr;
 	sliderSpriteSheet = nullptr;
 
+	cursorTexture = app->tex->Load("Assets/Textures/UI/grab_hand.png");
+
+	idleCursorAnim.PushBack({ 0,0,30,30});
+
 	return true;
 }
 
@@ -72,6 +76,14 @@ bool GuiManager::Update(float dt)
 	}
 
 	return true;
+}
+
+void GuiManager::DrawCursor()
+{
+	currentCursorAnim = &idleCursorAnim;
+
+	app->render->DrawTexture(cursorTexture, 30, 30, &currentCursorAnim->GetCurrentFrame());
+
 }
 
 bool GuiManager::CleanUp()

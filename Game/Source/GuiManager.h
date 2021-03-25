@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "GuiControl.h"
 
+#include "Animation.h"
 #include "List.h"
 
 struct SDL_Texture;
@@ -29,6 +30,8 @@ public:
 
 	void AddGuiControl(GuiControl* entity);
 
+	void DrawCursor();
+
 public:
 
 	List<GuiControl*> controls;
@@ -44,6 +47,15 @@ public: //Others
 	float accumulatedTime = 0.0f;
 	float updateMsCycle = 0.0f;
 	bool doLogic = false;
+	
+private:
+	SDL_Texture* cursorTexture;
+
+	Animation* currentCursorAnim;
+	Animation idleCursorAnim;
+	Animation clickCursorAnim;
+
+
 };
 
 #endif // __GUIMANAGER_H__

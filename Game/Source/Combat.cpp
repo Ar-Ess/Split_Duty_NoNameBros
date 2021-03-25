@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "Textures.h"
+#include "GuiManager.h"
 #include "GuiButton.h"
 
 #include "Combat.h"
@@ -101,6 +102,8 @@ void Combat::Draw()
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
 	DrawPlayer();
+
+	app->guiManager->DrawCursor();
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 }
