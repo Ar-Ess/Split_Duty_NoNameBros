@@ -14,6 +14,7 @@
 Combat::Combat()
 {
 	currentPlayerAnim = nullptr;
+	currentEnemyAnim = nullptr;
 }
 
 void Combat::Start()
