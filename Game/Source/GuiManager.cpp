@@ -119,6 +119,11 @@ bool GuiManager::Update(float dt)
 		doLogic = false;
 	}
 	
+	currentButton1Anim->Update(1.0f);
+	currentButton2Anim->Update(1.0f);
+	currentButton3Anim->Update(1.0f);
+	currentButton4Anim->Update(1.0f);
+	currentButton5Anim->Update(1.0f);
 	
 
 	return true;
@@ -198,16 +203,12 @@ void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)
 void GuiManager::DrawCombatInterface()
 {
 	
-	/*currentButton1Anim->Update(1.0f);
-	currentButton2Anim->Update(1.0f);
-	currentButton3Anim->Update(1.0f);
-	currentButton4Anim->Update(1.0f);
-	currentButton5Anim->Update(1.0f);*/
+	
 
 	const SDL_Rect guiRect = { 0,0,1280,720 };
 	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
 
-	//app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
+	app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
 	const SDL_Rect faceRect = { 0,0,70,69 };
 	app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 }

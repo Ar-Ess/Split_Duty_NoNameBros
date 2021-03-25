@@ -171,6 +171,8 @@ void Scene::SetMainMenu()
 
 void Scene::SetCombat(Enemy* enemySet)
 {
+	combatScene->littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
+
 	combatScene->enemy = enemySet;
 	combatScene->Start();
 
@@ -219,7 +221,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	}
 
 	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	combatScene->littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
+	
 }
 
 void Scene::UpdateLogoScene()
@@ -235,9 +237,15 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateCombat()
 {
+	
+
 	combatScene->Update();
 
 	combatScene->Draw();
+
+	app->guiManager->Update(1.0f);
+
+	app->guiManager->DrawCombatInterface();
 
 	if (combatScene->playerScape) SetScene(MAIN_MENU);
 

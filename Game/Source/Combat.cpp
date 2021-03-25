@@ -94,7 +94,7 @@ void Combat::Update()
 
 void Combat::Draw()
 {
-	app->guiManager->DrawCombatInterface();
+	
 
 	app->scene->attackButton->Draw();
 	app->scene->moveButton->Draw();

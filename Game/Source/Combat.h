@@ -159,6 +159,8 @@ private:
     Animation* currentPlayerAnim = nullptr;
     Animation* currentEnemyAnim = nullptr;
 
+
+
     bool CompareFrames(SDL_Rect a, SDL_Rect b)
     {
         int x = (a.x - b.x) + (a.y - b.y) + (a.w - b.w) + (a.h - b.h);
