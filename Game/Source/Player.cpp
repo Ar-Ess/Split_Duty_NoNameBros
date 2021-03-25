@@ -15,33 +15,40 @@ Player::Player() : Entity(EntityType::PLAYER)
     // Define Player animations
     for (int i = 0; i < 6; i++)
     {
-        cIdleAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN + (i * 2), SPRITE_MARGIN ,70,88 });
+        cIdleAnim.PushBack({ SPRITE_TILE_WIDTH*i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
     }
     cIdleAnim.speed = 0.120f;
 
     for (int i = 0; i < 6; i++)
     {
-        cStepAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT * 1,70,88 });
+        cStepAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
     }
     cStepAnim.speed = 0.190f;
 
     for (int i = 0; i < 8; i++)
     {
-        cJumpAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , SPRITE_TILE_HEIGHT * 5,70,88 });
-       /* int y = SPRITE_TILE_HEIGHT + SPRITE_MARGIN;
-        LOG("y : %d", y);*/
+        cJumpAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT*5 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+       
     }
     cJumpAnim.speed = 0.1f;
 
     for (int i = 0; i < 10; i++)
     {
 
-        cDieAnim.PushBack({ (i * SPRITE_TILE_WIDTH) + SPRITE_MARGIN , 310,70,88 });
-        int y = SPRITE_TILE_HEIGHT * 2;
-        LOG("y : %d", y);
+        cDieAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT *2,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+        
     }
     cDieAnim.speed = 0.08f;
-    cDieAnim.loop = true;
+    cDieAnim.loop = false;
+
+    for (int i = 0; i < 6; i++)
+    {
+
+        cCrouchAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT * 6,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+
+    }
+    cCrouchAnim.speed = 0.1f;
+    cCrouchAnim.loop = false;
 }
 
 bool Player::Update(float dt)

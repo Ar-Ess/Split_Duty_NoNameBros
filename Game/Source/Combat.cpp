@@ -96,7 +96,7 @@ void Combat::Draw()
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
-	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y, &currPlayerAnim->GetCurrentFrame());
+	app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x-52, app->scene->player1->colliderCombat.y-52, &currPlayerAnim->GetCurrentFrame());
 
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
@@ -719,7 +719,7 @@ void Combat::PlayerResponse()
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
 	{
 		app->scene->player1->crouch = true;
-		//currPlayerAnim = &app->scene->player1->cCrouchAnim;
+		currPlayerAnim = &app->scene->player1->cCrouchAnim;
 	}
 
 	if (app->scene->player1->jump)

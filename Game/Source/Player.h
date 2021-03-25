@@ -12,8 +12,8 @@
 
 #define INIT_COMBAT_POSX 225
 #define INIT_COMBAT_POSY 400
-#define SPRITE_TILE_WIDTH 152
-#define SPRITE_TILE_HEIGHT 190
+#define SPRITE_TILE_WIDTH 154
+#define SPRITE_TILE_HEIGHT 141
 #define SPRITE_MARGIN 52
 
 class Animation;
@@ -71,6 +71,7 @@ public:
     Animation cStepAnim;
     Animation cJumpAnim;
     Animation cDieAnim;
+    Animation cCrouchAnim;
 
     bool jump = false;
     bool crouch = false;
