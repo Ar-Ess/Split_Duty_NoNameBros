@@ -69,7 +69,7 @@ private:
 private:
 	SDL_Rect maxLifeBar;
 	SDL_Rect lifeBar;
-private:
+public:
 	SDL_Texture* GuiTexture;
 
 	Animation *currentButton1Anim;

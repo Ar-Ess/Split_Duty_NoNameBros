@@ -124,11 +124,7 @@ bool GuiManager::Update(float dt)
 		int a = 0;
 	}
 	
-	currentButton1Anim->Update(1.0f);
-	currentButton2Anim->Update(1.0f);
-	currentButton3Anim->Update(1.0f);
-	currentButton4Anim->Update(1.0f);
-	currentButton5Anim->Update(1.0f);
+
 	
 
 	return true;
