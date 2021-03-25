@@ -28,6 +28,12 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 
 	if (control != nullptr) controls.Add(control);
 
+	currentButton1Anim = nullptr;
+	currentButton2Anim = nullptr;
+	currentButton3Anim = nullptr;
+	currentButton4Anim = nullptr;
+	currentButton5Anim = nullptr;
+
 	return control;
 }
 
@@ -52,11 +58,15 @@ bool GuiManager::Awake(pugi::xml_node&)
 
 bool GuiManager::Start()
 {
+	secondsCounter = 0;
+	frameCounter = 0;
+
 	buttonSpriteSheet = nullptr;
 	checkBoxSpriteSheet = nullptr;
 	sliderSpriteSheet = nullptr;
 
 	cursorTexture = app->tex->Load("Assets/Textures/UI/grab_hand.png");
+	GuiTexture = app->tex->Load("Assets/Textures/UI/GUI.png");
 
 	idleCursorAnim.PushBack({ 0,0,30,30});
 
@@ -70,12 +80,24 @@ bool GuiManager::Start()
 
 	currentCursorAnim = &idleCursorAnim;
 
+	//Buttons
+	idleButtonAnim.PushBack({ 0,720,162,61 });
+
+	currentButton1Anim = &idleButtonAnim;
+	currentButton2Anim = &idleButtonAnim;
+	currentButton3Anim = &idleButtonAnim;
+	currentButton4Anim = &idleButtonAnim;
+	currentButton5Anim = &idleButtonAnim;
 
 	return true;
 }
 
 bool GuiManager::Update(float dt)
 {
+	frameCounter++;
+	if (frameCounter % 25 == 0)
+		secondsCounter++;
+
 	accumulatedTime += dt;
 	if (accumulatedTime >= updateMsCycle) doLogic = true;
 
@@ -89,6 +111,8 @@ bool GuiManager::Update(float dt)
 		accumulatedTime = 0.0f;
 		doLogic = false;
 	}
+	
+	
 
 	return true;
 }
@@ -119,15 +143,64 @@ void GuiManager::DrawCursor()
 
 }
 
-void GuiManager::DrawLifeBar(int life,int maxLife,int x,int y)
+void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 {
 	int size = 4;
 	int thickness = 20;
 	maxLifeBar = { x,y,maxLife*size,thickness };
 	app->render->DrawRectangle(maxLifeBar, MAGENTA);
 	lifeBar = { x,y,life*size,thickness };
-	app->render->DrawRectangle(lifeBar, RED);
 	
+	//if life is critical blinks
+	if (life <= maxLife / 3)
+	{
+		BlinkLifeBar(life, RED, SOFT_RED);
+		
+	}
+	else
+		app->render->DrawRectangle(lifeBar, RED);
+}
+
+void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
+{
+	int size = 4;
+	int thickness = 20;
+	int offset = maxLife * size;
+	app->render->DrawRectangle({x - offset,y,maxLife*size,thickness }, MAGENTA);
+	lifeBar = { x-life*4,y,life * size,thickness };
+
+	//if life is critical blinks
+	if (life <= maxLife / 3)
+	{
+		BlinkLifeBar(life, RED, SOFT_RED);
+
+	}
+	else
+		app->render->DrawRectangle(lifeBar, RED);
+}
+
+void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)
+{
+	
+	if(secondsCounter % 2 ==0)
+		app->render->DrawRectangle(lifeBar, color1);
+	else
+		app->render->DrawRectangle(lifeBar, color2);
+}
+
+void GuiManager::DrawCombatInterface()
+{
+	
+	/*currentButton1Anim->Update(1.0f);
+	currentButton2Anim->Update(1.0f);
+	currentButton3Anim->Update(1.0f);
+	currentButton4Anim->Update(1.0f);
+	currentButton5Anim->Update(1.0f);*/
+
+	const SDL_Rect GuiRect = { 0,0,1280,720 };
+	app->render->DrawTexture(GuiTexture, 0, 0, &GuiRect);
+
+	//app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
 }
 
 bool GuiManager::CleanUp()

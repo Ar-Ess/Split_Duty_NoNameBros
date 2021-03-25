@@ -175,7 +175,9 @@ void Scene::SetCombat(Enemy* enemySet)
 	combatScene->Start();
 
 	app->guiManager->debugGui = true;
-	SDL_Rect buttonPrefab = { 200,620,130,40 };
+
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+	
 	if (attackButton == nullptr)
 	{
 		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);

@@ -7,8 +7,9 @@
 #include "Animation.h"
 #include "List.h"
 
-#define MAGENTA {190,0,0,100}
-#define RED {255,0,0,100}
+#define MAGENTA {190,0,0,150}
+#define RED {255,0,0,255}
+#define SOFT_RED {240,80,0,255}
 
 struct SDL_Texture;
 
@@ -35,7 +36,13 @@ public:
 
 	void DrawCursor();
 
-	void DrawLifeBar(int life,int maxLife,int x,int y);
+	void DrawPlayerLifeBar(int life, int maxLife, int x, int y);
+
+	void DrawEnemyLifeBar(int life, int maxLife, int x, int y);
+
+	void BlinkLifeBar(int life,SDL_Color color1 , SDL_Color color2);
+
+	void DrawCombatInterface();
 
 public:
 
@@ -62,7 +69,25 @@ private:
 private:
 	SDL_Rect maxLifeBar;
 	SDL_Rect lifeBar;
+private:
+	SDL_Texture* GuiTexture;
 
+	Animation *currentButton1Anim;
+	Animation* currentButton2Anim;
+	Animation* currentButton3Anim;
+	Animation* currentButton4Anim;
+	Animation* currentButton5Anim;
+
+	Animation idleButtonAnim;
+	Animation pushButton;
+	Animation emergeButton;
+public:
+	SDL_Rect buttonPrefab = { 200,580,161,62 };
+	int buttonMargin = 45;
+
+private:
+	int secondsCounter;
+	int frameCounter;
 };
 
 #endif // __GUIMANAGER_H__

@@ -78,7 +78,11 @@ void Combat::Update()
 	app->scene->itemButton->Update(0.0f);
 	app->scene->scapeButton->Update(0.0f);
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100))
+	{
+		app->scene->splitButton->Update(0.0f);
+	}
+	
 
 	currentPlayerAnim->Update(1.0f);
 
@@ -90,6 +94,8 @@ void Combat::Update()
 
 void Combat::Draw()
 {
+	app->guiManager->DrawCombatInterface();
+
 	app->scene->attackButton->Draw();
 	app->scene->moveButton->Draw();
 	app->scene->itemButton->Draw();
@@ -105,7 +111,9 @@ void Combat::Draw()
 
 	app->guiManager->DrawCursor();
 
-	app->guiManager->DrawLifeBar(app->scene->player1->health, 35, 30, 30);
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, 35, 182, 30);
+
+	app->guiManager->DrawEnemyLifeBar(27, 35, 1086, 30);
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 }
