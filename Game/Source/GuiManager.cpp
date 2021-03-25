@@ -107,7 +107,7 @@ void GuiManager::DrawCursor()
 		currentCursorAnim = &clickCursorAnim;
 		LOG("Clicked");
 	}
-	if (currentCursorAnim->HasFinished() )// && currentCursorAnim == &clickCursorAnim)
+	if (currentCursorAnim->HasFinished() )
 	{
 		currentCursorAnim = &idleCursorAnim;
 		clickCursorAnim.Reset();
