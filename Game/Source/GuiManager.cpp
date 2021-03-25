@@ -122,9 +122,10 @@ void GuiManager::DrawCursor()
 void GuiManager::DrawLifeBar(int life,int maxLife,int x,int y)
 {
 	int size = 4;
-	maxLifeBar = { x,y,maxLife*size,20 };
+	int thickness = 20;
+	maxLifeBar = { x,y,maxLife*size,thickness };
 	app->render->DrawRectangle(maxLifeBar, MAGENTA);
-	lifeBar = { x,y,life*size,20 };
+	lifeBar = { x,y,life*size,thickness };
 	app->render->DrawRectangle(lifeBar, RED);
 	
 }

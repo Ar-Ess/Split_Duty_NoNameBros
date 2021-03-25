@@ -8,7 +8,7 @@
 #include "List.h"
 
 #define MAGENTA {190,0,0,100}
-#define RED {255,100,0,100}
+#define RED {255,0,0,100}
 
 struct SDL_Texture;
 

@@ -175,11 +175,11 @@ void Scene::SetCombat(Enemy* enemySet)
 	combatScene->Start();
 
 	app->guiManager->debugGui = true;
-
+	SDL_Rect buttonPrefab = { 200,620,130,40 };
 	if (attackButton == nullptr)
 	{
 		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		attackButton->bounds = { 0, 0, 105, 27 };
+		attackButton->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		attackButton->text = "AttackButton";
 		attackButton->SetObserver(this);
 	}
@@ -187,7 +187,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (moveButton == nullptr)
 	{
 		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		moveButton->bounds = { 200, 0, 105, 27 };
+		moveButton->bounds = { buttonPrefab.x * 2,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
 	}
@@ -195,7 +195,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (itemButton == nullptr)
 	{
 		itemButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		itemButton->bounds = { 400, 0, 105, 27 };
+		itemButton->bounds = { buttonPrefab.x * 3,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
 	}
@@ -203,7 +203,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (scapeButton == nullptr)
 	{
 		scapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		scapeButton->bounds = { 600, 0, 105, 27 };
+		scapeButton->bounds = { buttonPrefab.x * 4,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		scapeButton->text = "ScapeButton";
 		scapeButton->SetObserver(this);
 	}
@@ -211,7 +211,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (splitButton == nullptr)
 	{
 		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		splitButton->bounds = { 800, 0, 135, 67 };
+		splitButton->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
 	}
