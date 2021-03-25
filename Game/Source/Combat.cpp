@@ -105,6 +105,8 @@ void Combat::Draw()
 
 	app->guiManager->DrawCursor();
 
+	app->guiManager->DrawLifeBar(app->scene->player1->health, 35, 30, 30);
+
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 }
 

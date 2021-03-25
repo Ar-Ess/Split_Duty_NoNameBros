@@ -7,6 +7,9 @@
 #include "Animation.h"
 #include "List.h"
 
+#define MAGENTA {190,0,0,100}
+#define RED {255,100,0,100}
+
 struct SDL_Texture;
 
 class GuiManager : public Module
@@ -32,6 +35,8 @@ public:
 
 	void DrawCursor();
 
+	void DrawLifeBar(int life,int maxLife,int x,int y);
+
 public:
 
 	List<GuiControl*> controls;
@@ -54,7 +59,9 @@ private:
 	Animation* currentCursorAnim;
 	Animation idleCursorAnim;
 	Animation clickCursorAnim;
-
+private:
+	SDL_Rect maxLifeBar;
+	SDL_Rect lifeBar;
 
 };
 
