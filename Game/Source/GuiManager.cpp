@@ -3,11 +3,15 @@
 
 #include "GuiManager.h"
 
+#include "Log.h"
+
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
 #include "GuiSlider.h"
 #include "GuiString.h"
 #include "FontTTF.h"
+
+
 
 GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 {
@@ -56,6 +60,17 @@ bool GuiManager::Start()
 
 	idleCursorAnim.PushBack({ 0,0,30,30});
 
+	//clickCursorAnim.PushBack({ 0,0,30,30 });
+	clickCursorAnim.PushBack({ 32,0,30,30 });
+	clickCursorAnim.PushBack({ 64,0,30,30 });
+	clickCursorAnim.PushBack({ 32,0,30,30 });
+	clickCursorAnim.PushBack({ 0,0,30,30 });
+	clickCursorAnim.loop = false;
+	clickCursorAnim.speed = 0.5f;
+
+	currentCursorAnim = &idleCursorAnim;
+
+
 	return true;
 }
 
@@ -80,9 +95,27 @@ bool GuiManager::Update(float dt)
 
 void GuiManager::DrawCursor()
 {
-	currentCursorAnim = &idleCursorAnim;
+	currentCursorAnim->Update(1.0f);
 
-	app->render->DrawTexture(cursorTexture, 30, 30, &currentCursorAnim->GetCurrentFrame());
+	int mouseX, mouseY;
+	app->input->GetMousePosition(mouseX, mouseY);
+
+	app->render->DrawTexture(cursorTexture, mouseX, mouseY, &currentCursorAnim->GetCurrentFrame());
+
+	if(app->input->GetMouseButtonDown(1) && currentCursorAnim != &clickCursorAnim)
+	{
+		currentCursorAnim = &clickCursorAnim;
+		LOG("Clicked");
+	}
+	if (currentCursorAnim->HasFinished() )// && currentCursorAnim == &clickCursorAnim)
+	{
+		currentCursorAnim = &idleCursorAnim;
+		clickCursorAnim.Reset();
+		LOG("change cursor anim");
+		
+	}
+	
+
 
 }
 
