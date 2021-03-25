@@ -81,6 +81,12 @@ private:
 	Animation idleButtonAnim;
 	Animation pushButton;
 	Animation emergeButton;
+private:
+	SDL_Texture* faceAnimationsTexture;
+
+	Animation* currentPlayerFaceAnim;
+	Animation idleFaceAnim;
+	Animation hurtFaceAnim;
 public:
 	SDL_Rect buttonPrefab = { 200,580,161,62 };
 	int buttonMargin = 45;

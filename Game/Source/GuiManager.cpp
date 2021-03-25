@@ -67,6 +67,7 @@ bool GuiManager::Start()
 
 	cursorTexture = app->tex->Load("Assets/Textures/UI/grab_hand.png");
 	GuiTexture = app->tex->Load("Assets/Textures/UI/GUI.png");
+	faceAnimationsTexture = app->tex->Load("Assets/Textures/UI/face_animations.png");
 
 	idleCursorAnim.PushBack({ 0,0,30,30});
 
@@ -89,6 +90,12 @@ bool GuiManager::Start()
 	currentButton4Anim = &idleButtonAnim;
 	currentButton5Anim = &idleButtonAnim;
 
+	//face
+	idleFaceAnim.PushBack({ 0,0,70,69 });
+	idleFaceAnim.PushBack({ 70,0,70,69 });
+
+
+	currentPlayerFaceAnim = &idleFaceAnim;
 	return true;
 }
 
@@ -197,10 +204,12 @@ void GuiManager::DrawCombatInterface()
 	currentButton4Anim->Update(1.0f);
 	currentButton5Anim->Update(1.0f);*/
 
-	const SDL_Rect GuiRect = { 0,0,1280,720 };
-	app->render->DrawTexture(GuiTexture, 0, 0, &GuiRect);
+	const SDL_Rect guiRect = { 0,0,1280,720 };
+	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
 
 	//app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
+	const SDL_Rect faceRect = { 0,0,70,69 };
+	app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 }
 
 bool GuiManager::CleanUp()
