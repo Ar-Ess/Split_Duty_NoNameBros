@@ -62,6 +62,9 @@ void Combat::Start()
 
 	LOG("PH: %d", app->scene->player1->health);
 	LOG("EH: %d", enemy->health);
+
+	//Load backgrounds
+	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 }
 
 void Combat::Restart()
@@ -95,11 +98,7 @@ void Combat::Update()
 void Combat::Draw()
 {
 	
-
-	app->scene->attackButton->Draw();
-	app->scene->moveButton->Draw();
-	app->scene->itemButton->Draw();
-	app->scene->scapeButton->Draw();
+	DrawBakcground(GRASSY_LANDS);
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Draw();
 
@@ -116,6 +115,11 @@ void Combat::Draw()
 	app->guiManager->DrawEnemyLifeBar(27, 35, 1086, 30);
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
+
+	app->scene->attackButton->Draw();
+	app->scene->moveButton->Draw();
+	app->scene->itemButton->Draw();
+	app->scene->scapeButton->Draw();
 }
 
 void Combat::DrawPlayer()
@@ -126,6 +130,26 @@ void Combat::DrawPlayer()
 	}
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+}
+
+void Combat::DrawBakcground(Environment env)
+{
+	
+	switch (env)
+	{
+		case GRASSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+		break;
+
+		case AUTUMM_FALLS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
+		case MOSSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
+	}
 }
 
 void Combat::FirstTurnLogic()
