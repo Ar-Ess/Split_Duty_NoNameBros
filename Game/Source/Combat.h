@@ -8,9 +8,10 @@
 #include "Collider.h"
 
 #define INIT_SMALLWOLF_POSX 988
-#define INIT_SMALLWOLF_POSY 444
+#define INIT_SMALLWOLF_POSY 444 
 #define INIT_BIRD_POSX 1011
 #define INIT_BIRD_POSY 350
+#define INIT_GROUND_POSY 444
 
 #define MAX_MEAT 10
 #define MAX_COMBATITEM 5
@@ -34,6 +35,13 @@ enum CombatState
     SPLIT
 };
 
+enum Environment
+{
+    GRASSY_LANDS,
+    AUTUMM_FALLS,
+    MOSSY_LANDS
+};
+
 class Combat
 {
 public:
@@ -49,6 +57,8 @@ public:
     void Draw();
 
     void DrawPlayer();
+
+    void DrawBakcground(Environment env);
 
     void FirstTurnLogic();
 
@@ -180,6 +190,14 @@ public:
     CombatState combatState = NULL_STATE;
 
     SDL_Rect inventorySimulation = {192, 108, 896, 504};
+
+private:
+    const SDL_Rect backgroundRect = { 0,0,1280,720 };
+
+    SDL_Texture* grassyLandsBackground;
+    SDL_Texture* autummFallsBackground;
+    SDL_Texture* mossyLandsBackground;
+
 };
 
 #endif // __COMBAT_H__
