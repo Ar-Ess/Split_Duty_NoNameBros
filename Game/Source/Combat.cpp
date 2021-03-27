@@ -141,6 +141,14 @@ void Combat::DrawBakcground(Environment env)
 			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
 		break;
 
+		case AUTUMM_FALLS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
+		case MOSSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
 	}
 }
 

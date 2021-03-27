@@ -48,20 +48,24 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
+    SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
     
     switch (state)
     {
-    case GuiControlState::DISABLED: app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Disabled);
+    case GuiControlState::DISABLED: 
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Disabled);
         break;
-    case GuiControlState::NORMAL: app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &Normal);
+    case GuiControlState::NORMAL: 
+        app->render->DrawTexture(app->guiManager->GuiTexture, 100,300, &Normal);
         break;
     case GuiControlState::FOCUSED: 
-        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &Focused);
-            
+        app->render->DrawTexture(app->guiManager->GuiTexture, 100, 300, &Focused);
         break;
-    case GuiControlState::PRESSED: app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &Pressed);
+    case GuiControlState::PRESSED: 
+        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, 100, 300, &Pressed);
         break;
-    case GuiControlState::SELECTED: app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y);
+    case GuiControlState::SELECTED: 
+        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y);
         break;
     default:
         break;
