@@ -128,6 +128,10 @@ void Combat::DrawPlayer()
 	{
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
+	if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack, 0,0, &currentPlayerAnim->GetCurrentFrame());
+	}
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
@@ -463,6 +467,8 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 void Combat::PlayerAttack()
 {
+	currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
+
 	if (playerTimeAttack < 125)
 	{
 		playerTimeAttack++;

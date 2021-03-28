@@ -162,6 +162,7 @@ private:
     friend class Player;
 
     SDL_Texture* character1Spritesheet = nullptr;
+    SDL_Texture* fullscreenAttack = nullptr;
     SDL_Texture* littleWolfSpritesheet = nullptr;
 
     const SDL_Rect test = {52, 52, 70, 88};
