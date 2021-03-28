@@ -21,9 +21,9 @@ Player::Player() : Entity(EntityType::PLAYER)
 
     for (int i = 0; i < 6; i++)
     {
-        cAttackAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+        cPos0AttackAnim.PushBack({ 0,2256 + (i*720),1280,720 });
     }
-    cAttackAnim.speed = 0.190f;
+    cPos0AttackAnim.speed = 0.190f;
 
     for (int i = 0; i < 8; i++)
     {

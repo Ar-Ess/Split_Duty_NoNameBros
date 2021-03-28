@@ -67,8 +67,7 @@ public:
     SDL_Texture* texture;
 
     Animation cIdleAnim;
-    Animation cAttackAnim;
-    Animation cCloseAttackAnim;
+    Animation cPos0AttackAnim;
     Animation cStepAnim;
     Animation cJumpAnim;
     Animation cDieAnim;
