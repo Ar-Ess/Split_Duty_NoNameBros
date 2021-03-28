@@ -74,15 +74,7 @@ private:
 public:
 	SDL_Texture* GuiTexture;
 
-	Animation *currentButton1Anim;
-	Animation* currentButton2Anim;
-	Animation* currentButton3Anim;
-	Animation* currentButton4Anim;
-	Animation* currentButton5Anim;
-
-	Animation idleButtonAnim;
-	Animation pushButton;
-	Animation emergeButton;
+	
 private:
 	SDL_Texture* faceAnimationsTexture;
 

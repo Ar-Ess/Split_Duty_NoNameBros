@@ -54,7 +54,7 @@ private: //Attack Time
 public:
     SDL_Rect colliderCombat;
 
-private:
+public:
     friend class Combat;
 
     int health;

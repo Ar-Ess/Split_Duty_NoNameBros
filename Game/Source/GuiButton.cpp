@@ -16,31 +16,41 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(float dt)
 {
+
+
     if (state != GuiControlState::DISABLED)
     {
-        int mouseX, mouseY;
-        app->input->GetMousePosition(mouseX, mouseY);
-
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+        if (state == GuiControlState::LOCKED)
         {
-            if (state == GuiControlState::NORMAL)
-            {
-                //app->audio->PlayFx(Focus Mouse Sound);
-            }
-            state = GuiControlState::FOCUSED;
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-            {
-                state = GuiControlState::PRESSED;
-            }
 
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-            {
-                //app->audio->PlayFx(Click Sound);
-                NotifyObserver();
-            }
         }
-        else state = GuiControlState::NORMAL;
+        else
+        {
+            int mouseX, mouseY;
+            app->input->GetMousePosition(mouseX, mouseY);
+
+            if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+                (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+            {
+                if (state == GuiControlState::NORMAL)
+                {
+                    //app->audio->PlayFx(Focus Mouse Sound);
+                }
+                state = GuiControlState::FOCUSED;
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+                {
+                    state = GuiControlState::PRESSED;
+                }
+
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+                {
+                    //app->audio->PlayFx(Click Sound);
+                    NotifyObserver();
+                }
+            }
+            else state = GuiControlState::NORMAL;
+        }
+        
     }
 
     return false;

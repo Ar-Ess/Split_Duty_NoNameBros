@@ -3,6 +3,7 @@
 
 #include "GuiManager.h"
 #include "Player.h"
+#include "Combat.h"
 
 #include "Log.h"
 
@@ -29,11 +30,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 
 	if (control != nullptr) controls.Add(control);
 
-	currentButton1Anim = nullptr;
-	currentButton2Anim = nullptr;
-	currentButton3Anim = nullptr;
-	currentButton4Anim = nullptr;
-	currentButton5Anim = nullptr;
+	
 
 	return control;
 }
@@ -83,13 +80,7 @@ bool GuiManager::Start()
 	currentCursorAnim = &idleCursorAnim;
 
 	//Buttons
-	idleButtonAnim.PushBack({ 0,720,162,61 });
-
-	currentButton1Anim = &idleButtonAnim;
-	currentButton2Anim = &idleButtonAnim;
-	currentButton3Anim = &idleButtonAnim;
-	currentButton4Anim = &idleButtonAnim;
-	currentButton5Anim = &idleButtonAnim;
+	
 
 	//face
 	idleFaceAnim.PushBack({ 0,0,70,69 });
@@ -120,10 +111,7 @@ bool GuiManager::Update(float dt)
 		doLogic = false;
 	}
 
-	if (currentButton2Anim == nullptr)
-	{
-		int a = 0;
-	}
+	
 	
 
 	
@@ -163,6 +151,7 @@ void GuiManager::DrawCombatButtons()
 	app->scene->moveButton->Draw();
 	app->scene->itemButton->Draw();
 	app->scene->scapeButton->Draw();
+	app->scene->splitButton->Draw();
 }
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
@@ -221,9 +210,10 @@ void GuiManager::DrawCombatInterface()
 	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 
 	
-	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, 35, 182, 30);
 
-	app->guiManager->DrawEnemyLifeBar(27, 35, 1086, 30);
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
+
+	app->guiManager->DrawEnemyLifeBar(30, 35, 1086, 30);
 
 	DrawCombatButtons();
 

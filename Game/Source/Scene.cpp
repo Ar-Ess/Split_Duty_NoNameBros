@@ -216,7 +216,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (splitButton == nullptr)
 	{
 		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		splitButton->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		splitButton->bounds = { buttonPrefab.x * 5,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
 	}

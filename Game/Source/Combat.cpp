@@ -80,6 +80,7 @@ void Combat::Update()
 	app->scene->moveButton->Update(0.0f);
 	app->scene->itemButton->Update(0.0f);
 	app->scene->scapeButton->Update(0.0f);
+	app->scene->splitButton->Update(0.0f);
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100))
 	{
@@ -100,7 +101,7 @@ void Combat::Draw()
 	
 	DrawBakcground(GRASSY_LANDS);
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Draw();
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
