@@ -122,7 +122,7 @@ void Combat::DrawPlayer()
 	{
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
-	if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
+	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
 	{
 		app->render->DrawTexture(fullscreenAttack, 0,0, &currentPlayerAnim->GetCurrentFrame());
 	}

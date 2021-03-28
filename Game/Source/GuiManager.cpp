@@ -88,6 +88,8 @@ bool GuiManager::Start()
 
 
 	currentPlayerFaceAnim = &idleFaceAnim;
+
+
 	return true;
 }
 

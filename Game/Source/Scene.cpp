@@ -58,6 +58,8 @@ bool Scene::Start()
 	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, 2, 200, 30, 30, 10, 20);
 	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 
+	splitButton->state == GuiControlState::LOCKED;
+
 	return true;
 }
 
@@ -184,7 +186,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (attackButton == nullptr)
 	{
 		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		attackButton->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		attackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		attackButton->text = "AttackButton";
 		attackButton->SetObserver(this);
 	}
@@ -192,7 +194,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (moveButton == nullptr)
 	{
 		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		moveButton->bounds = { buttonPrefab.x * 2,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding)* 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
 	}
@@ -200,7 +202,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (itemButton == nullptr)
 	{
 		itemButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		itemButton->bounds = { buttonPrefab.x * 3,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
 	}
@@ -208,7 +210,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (scapeButton == nullptr)
 	{
 		scapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		scapeButton->bounds = { buttonPrefab.x * 4,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		scapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		scapeButton->text = "ScapeButton";
 		scapeButton->SetObserver(this);
 	}
@@ -216,7 +218,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (splitButton == nullptr)
 	{
 		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		splitButton->bounds = { buttonPrefab.x * 5,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		splitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
 	}

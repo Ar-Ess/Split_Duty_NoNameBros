@@ -83,7 +83,8 @@ private:
 	Animation hurtFaceAnim;
 public:
 	SDL_Rect buttonPrefab = { 200,580,161,62 };
-	int buttonMargin = 45;
+	int margin = 108;
+	int padding = 26;
 
 private:
 	int secondsCounter;
