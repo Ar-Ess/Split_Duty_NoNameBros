@@ -247,7 +247,7 @@ void Scene::UpdateCombat()
 
 	app->guiManager->Update(1.0f);
 
-	app->guiManager->DrawCombatInterface();
+	//app->guiManager->DrawCombatInterface();
 
 	if (combatScene->playerScape) SetScene(MAIN_MENU);
 

@@ -48,7 +48,7 @@ bool GuiButton::Update(float dt)
 
 bool GuiButton::Draw()
 {
-    SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+    
     
     switch (state)
     {
@@ -56,13 +56,13 @@ bool GuiButton::Draw()
         app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Disabled);
         break;
     case GuiControlState::NORMAL: 
-        app->render->DrawTexture(app->guiManager->GuiTexture, 100,300, &Normal);
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Normal);
         break;
     case GuiControlState::FOCUSED: 
-        app->render->DrawTexture(app->guiManager->GuiTexture, 100, 300, &Focused);
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Focused);
         break;
     case GuiControlState::PRESSED: 
-        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, 100, 300, &Pressed);
+        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &Pressed);
         break;
     case GuiControlState::SELECTED: 
         app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y);
