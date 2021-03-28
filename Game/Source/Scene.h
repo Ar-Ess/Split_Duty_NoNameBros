@@ -46,7 +46,7 @@ public:
 		return currScene;
 	}
 
-private: //Combat Buttons
+public: //Combat Buttons
 
 	void RestartPressState();
 
@@ -65,7 +65,7 @@ private: //Combat Buttons
 	GuiButton* splitButton = nullptr;
 	bool splitPressed = false;
 
-private:
+public:
 	friend class Combat;
 	friend class Enemy;
 	friend class Player;

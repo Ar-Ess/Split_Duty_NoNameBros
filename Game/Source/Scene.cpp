@@ -253,6 +253,8 @@ void Scene::UpdateCombat()
 
 	RestartPressState();
 
+	app->guiManager->DrawCombatInterface();
+
 	DebugSteps();
 }
 

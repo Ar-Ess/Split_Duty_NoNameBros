@@ -79,7 +79,7 @@ public:
     int jumpFeatherTime = 0;
     int crouchTime = 0;
 
-private:
+public:
     friend class Combat;
 
     int health = 35;

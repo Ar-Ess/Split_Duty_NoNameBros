@@ -43,6 +43,8 @@ public:
 	void BlinkLifeBar(int life,SDL_Color color1 , SDL_Color color2);
 
 	void DrawCombatInterface();
+	
+	void DrawCombatButtons();
 
 public:
 

@@ -67,6 +67,9 @@ bool GuiButton::Draw()
     case GuiControlState::SELECTED: 
         app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Pressed);
         break;
+    case GuiControlState::LOCKED:
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Locked);
+        break;
     default:
         break;
     }
@@ -84,6 +87,8 @@ bool GuiButton::Draw()
         case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, { 0, 255, 255, 80 });
             break;
         case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, { 0, 255, 0, 80 });
+            break;
+        case GuiControlState::LOCKED: app->render->DrawRectangle(bounds, { 220, 155, 0, 80 });
             break;
         default:
             break;

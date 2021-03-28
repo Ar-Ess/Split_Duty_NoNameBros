@@ -108,18 +108,11 @@ void Combat::Draw()
 
 	DrawPlayer();
 
-	app->guiManager->DrawCursor();
-
-	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, 35, 182, 30);
-
-	app->guiManager->DrawEnemyLifeBar(27, 35, 1086, 30);
+	
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
-	app->scene->attackButton->Draw();
-	app->scene->moveButton->Draw();
-	app->scene->itemButton->Draw();
-	app->scene->scapeButton->Draw();
+	
 }
 
 void Combat::DrawPlayer()

@@ -2,6 +2,7 @@
 #include "Textures.h"
 
 #include "GuiManager.h"
+#include "Player.h"
 
 #include "Log.h"
 
@@ -144,7 +145,7 @@ void GuiManager::DrawCursor()
 		currentCursorAnim = &clickCursorAnim;
 		LOG("Clicked");
 	}
-	if (currentCursorAnim->HasFinished() )
+	if (currentCursorAnim->HasFinished() && app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP )
 	{
 		currentCursorAnim = &idleCursorAnim;
 		clickCursorAnim.Reset();
@@ -154,6 +155,14 @@ void GuiManager::DrawCursor()
 	
 
 
+}
+
+void GuiManager::DrawCombatButtons()
+{
+	app->scene->attackButton->Draw();
+	app->scene->moveButton->Draw();
+	app->scene->itemButton->Draw();
+	app->scene->scapeButton->Draw();
 }
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
@@ -204,14 +213,21 @@ void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)
 void GuiManager::DrawCombatInterface()
 {
 	
-	
-
 	const SDL_Rect guiRect = { 0,0,1280,720 };
 	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
 
-	//app->render->DrawTexture(GuiTexture, 0, 0, &currentButton1Anim->GetCurrentFrame());
-	const SDL_Rect faceRect = { 0,0,70,69 };
+	
+	//const SDL_Rect faceRect = { 0,0,70,69 };
 	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
+
+	
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, 35, 182, 30);
+
+	app->guiManager->DrawEnemyLifeBar(27, 35, 1086, 30);
+
+	DrawCombatButtons();
+
+	app->guiManager->DrawCursor();
 }
 
 bool GuiManager::CleanUp()
