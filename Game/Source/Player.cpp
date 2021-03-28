@@ -19,7 +19,7 @@ Player::Player() : Entity(EntityType::PLAYER)
     }
     cIdleAnim.speed = 0.120f;
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 17; i++)
     {
         cPos0AttackAnim.PushBack({ 0,2256 + (i*720),1280,720 });
     }

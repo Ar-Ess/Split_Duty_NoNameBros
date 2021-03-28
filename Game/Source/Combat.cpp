@@ -36,7 +36,7 @@ void Combat::Start()
 
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
-	
+	//currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
 
 	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);

@@ -223,6 +223,7 @@ void Scene::SetCombat(Enemy* enemySet)
 
 	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
 	combatScene->fullscreenAttack = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack.png");
+	if (combatScene->fullscreenAttack == nullptr) LOG("error loading");
 }
 
 void Scene::UpdateLogoScene()
