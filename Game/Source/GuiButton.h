@@ -17,10 +17,11 @@ public:
 
 private:
     //Texture sections
-    const SDL_Rect Disabled = { 0, 0, 0, 0 };
+    const SDL_Rect Disabled = { 162 * 3, 720, 162, 60 };
     const SDL_Rect Normal = { 0, 720, 162, 60 };
     const SDL_Rect Focused = { 162, 720, 162, 60 };
-    const SDL_Rect Pressed = { 162 * 2, 720, 162, 60 };
+    const SDL_Rect Pressed = { 162 *2, 720, 162, 60 };
+    
 };
 
 #endif // __GUIBUTTON_H__

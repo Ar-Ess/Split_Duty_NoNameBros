@@ -62,10 +62,10 @@ bool GuiButton::Draw()
         app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Focused);
         break;
     case GuiControlState::PRESSED: 
-        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &Pressed);
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Pressed);
         break;
     case GuiControlState::SELECTED: 
-        app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y);
+        app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Pressed);
         break;
     default:
         break;
