@@ -133,7 +133,7 @@ public:
     // Called each loop iteration
     void Draw();
 
-	void DrawLayer(Render* render, int num);
+	void DrawLayer(int num);
 
     // Called before quitting
     bool CleanUp();

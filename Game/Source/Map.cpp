@@ -205,17 +205,17 @@ void Map::Draw()
 	// L06: DONE 4: Make sure we draw all the layers and not just the first one
 	for (int i = 0; i < data.layers.Count(); i++)
 	{
-		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(app->render, i);
+		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
 	}
 }
 
-void Map::DrawLayer(Render* render, int num)
+void Map::DrawLayer(int num)
 {
 	if (num < data.layers.Count())
 	{
 		MapLayer* layer = data.layers[num];
 
-		render->scale = scale;
+		app->render->scale = scale;
 
 		// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 		for (int y = 0; y < data.height; ++y)
@@ -232,12 +232,12 @@ void Map::DrawLayer(Render* render, int num)
 					SDL_Rect rec = tileset->GetTileRect(tileId);
 					iPoint pos = MapToWorld(x, y);
 
-					render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, &rec);
+					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, &rec);
 				}
 			}
 		}
 
-		render->scale = 1;
+		app->render->scale = 1;
 	}
 }
 
