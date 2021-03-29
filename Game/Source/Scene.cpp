@@ -47,6 +47,7 @@ bool Scene::Start()
 {
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 
+	map = new Map();
 	combatScene = new Combat();
 
 	enviroment = GRASSY_LANDS;
@@ -117,6 +118,7 @@ bool Scene::Update(float dt)
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == COMBAT) UpdateCombat();
+	else if (currScene == VILLAGE) UpdateVillage();
 
 	return true;
 }
@@ -150,7 +152,8 @@ void Scene::SetScene(Scenes scene)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
-
+	//else if (scene == COMBAT) SetCombat();
+	else if (scene == VILLAGE) SetVillage();
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
@@ -163,6 +166,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == COMBAT) SetCombat(enemy);
+	else if (scene == VILLAGE) SetVillage();
 }
 
 void Scene::SetLogoScene()
@@ -225,6 +229,11 @@ void Scene::SetCombat(Enemy* enemySet)
 	}
 }
 
+void Scene::SetVillage()
+{
+	map->Load("Prueba.tmx");
+}
+
 void Scene::UpdateLogoScene()
 {
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(MAIN_MENU);
@@ -235,6 +244,7 @@ void Scene::UpdateMainMenu()
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
+	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) SetScene(VILLAGE);
 
 }
 
@@ -255,6 +265,11 @@ void Scene::UpdateCombat()
 	app->guiManager->DrawCombatInterface();
 
 	DebugSteps();
+}
+
+void Scene::UpdateVillage()
+{
+	map->Draw();
 }
 
 // GUI CONTROLS

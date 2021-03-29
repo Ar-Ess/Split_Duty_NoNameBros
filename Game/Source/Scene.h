@@ -12,13 +12,15 @@ struct SDL_Texture;
 class Enemy;
 class Player;
 class Combat;
+class Map;
 
 enum Scenes
 {
 	NONE = -1,
 	LOGO_SCENE,
 	MAIN_MENU,
-	COMBAT
+	COMBAT,
+	VILLAGE
 };
 
 enum Environments
@@ -79,6 +81,7 @@ public:
 
 	Player* player1;
 	Combat* combatScene;
+	Map* map;
 	Environments enviroment;
 
 private: //Scene Manager
@@ -92,11 +95,13 @@ private: //Scene Manager
 	void SetLogoScene();
 	void SetMainMenu();
 	void SetCombat(Enemy* enemy);
+	void SetVillage();
 
 	//Updaters
 	void UpdateLogoScene();
 	void UpdateMainMenu();
 	void UpdateCombat();
+	void UpdateVillage();
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

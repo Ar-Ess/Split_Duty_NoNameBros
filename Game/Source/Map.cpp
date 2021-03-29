@@ -1,16 +1,18 @@
 #include "Map.h"
+#include "App.h"
+#include "Render.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #include <math.h>
 
-Map::Map(Textures* texture) : Entity(EntityType::MAP)
+Map::Map() : Entity(EntityType::MAP)
 {
 	mapLoaded = false;
 	folder.Create("Assets/Maps/");
 
-	tex = texture;
+	//tex = texture;
 	scale = 2;
 }
 
@@ -193,17 +195,17 @@ void Map::PropagateAStar(int heuristic)
 */
 
 // Draw the map (all requried layers)
-void Map::Draw(Render* render)
+void Map::Draw()
 {
 	if (mapLoaded == false) return;
 
-	camOffset.x = render->camera.x;
-	camOffset.y = render->camera.y;
+	camOffset.x = app->render->camera.x;
+	camOffset.y = app->render->camera.y;
 
 	// L06: DONE 4: Make sure we draw all the layers and not just the first one
 	for (int i = 0; i < data.layers.Count(); i++)
 	{
-		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(render, i);
+		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(app->render, i);
 	}
 }
 
