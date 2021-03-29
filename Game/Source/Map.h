@@ -195,8 +195,6 @@ public:
 
 private:
 
-	Textures* tex;
-
     pugi::xml_document mapFile;
     SString folder;
     bool mapLoaded;
