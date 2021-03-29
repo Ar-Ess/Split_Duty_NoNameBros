@@ -20,6 +20,13 @@ Combat::Combat()
 
 void Combat::Start()
 {
+	//Texture loading
+	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
+	fullscreenAttack = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack.png");
+	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
+	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
+	if (fullscreenAttack == nullptr) LOG("error loading");
+
 	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
 	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
 	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
@@ -62,9 +69,6 @@ void Combat::Start()
 
 	LOG("PH: %d", app->scene->player1->health);
 	LOG("EH: %d", enemy->health);
-
-	//Load backgrounds
-	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 }
 
 void Combat::Restart()
@@ -72,6 +76,9 @@ void Combat::Restart()
 	combatState = NULL_STATE;
 	enemy = nullptr;
 	app->tex->UnLoad(character1Spritesheet);
+	app->tex->UnLoad(fullscreenAttack);
+	app->tex->UnLoad(littleWolfSpritesheet);
+	app->tex->UnLoad(grassyLandsBackground);
 }
 
 void Combat::Update()
@@ -98,8 +105,7 @@ void Combat::Update()
 
 void Combat::Draw()
 {
-	
-	DrawBakcground(GRASSY_LANDS);
+	DrawBakcground();
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 
@@ -108,8 +114,6 @@ void Combat::Draw()
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
 	DrawPlayer();
-
-	
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
@@ -130,10 +134,9 @@ void Combat::DrawPlayer()
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
 
-void Combat::DrawBakcground(Environment env)
+void Combat::DrawBakcground()
 {
-	
-	switch (env)
+	switch (app->scene->enviroment)
 	{
 		case GRASSY_LANDS:
 			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
@@ -455,6 +458,13 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				PlayerTurn();
 			}
+		}
+	}
+	else if (enemyc == EnemyClass::MANTIS)
+	{
+		if (enemy->attack == 1)
+		{
+
 		}
 	}
 }

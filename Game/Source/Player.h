@@ -62,10 +62,6 @@ public:
     }
 
 public:
-
-    
-    SDL_Texture* texture;
-
     Animation cIdleAnim;
     Animation cPos0AttackAnim;
     Animation cStepAnim;
@@ -95,6 +91,8 @@ public:
     int money;
 
 public:
+    SDL_Texture* texture;
+
     iPoint positionLive;
     int positionCombat;
 

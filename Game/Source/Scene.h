@@ -21,6 +21,13 @@ enum Scenes
 	COMBAT
 };
 
+enum Environments
+{
+	GRASSY_LANDS,
+	AUTUMM_FALLS,
+	MOSSY_LANDS
+};
+
 class Scene : public Module
 {
 public:
@@ -72,6 +79,7 @@ public:
 
 	Player* player1;
 	Combat* combatScene;
+	Environments enviroment;
 
 private: //Scene Manager
 	Scenes currScene = NONE;

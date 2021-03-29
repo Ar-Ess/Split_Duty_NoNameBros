@@ -45,18 +45,22 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 
 	combatScene = new Combat();
+
+	enviroment = GRASSY_LANDS;
 
 	SetScene(LOGO_SCENE);
 
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 	app->entityManager->CreateEntity(EntityType::ENEMY);
+	app->entityManager->CreateEntity(EntityType::ENEMY);
 
+	//ENEMY SET                                          ENEMY CLASS           ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
 	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, 2, 200, 30, 30, 10, 20);
 	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, 2, 200, 30, 30, 10, 20);
 
 	splitButton->state == GuiControlState::LOCKED;
 
@@ -173,9 +177,6 @@ void Scene::SetMainMenu()
 
 void Scene::SetCombat(Enemy* enemySet)
 {
-	combatScene->littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
-
-
 	combatScene->enemy = enemySet;
 	combatScene->Start();
 
@@ -222,10 +223,6 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
 	}
-
-	combatScene->character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	combatScene->fullscreenAttack = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack.png");
-	if (combatScene->fullscreenAttack == nullptr) LOG("error loading");
 }
 
 void Scene::UpdateLogoScene()
@@ -237,12 +234,12 @@ void Scene::UpdateMainMenu()
 {
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
+	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
+
 }
 
 void Scene::UpdateCombat()
 {
-	
-
 	combatScene->Update();
 
 	combatScene->Draw();

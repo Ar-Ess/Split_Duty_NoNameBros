@@ -4,6 +4,7 @@
 #include "Point.h"
 #include "SString.h"
 #include "Animation.h"
+#include "Scene.h"
 
 #include "Collider.h"
 
@@ -11,6 +12,8 @@
 #define INIT_SMALLWOLF_POSY 444 
 #define INIT_BIRD_POSX 1011
 #define INIT_BIRD_POSY 350
+#define INIT_MANTIS_POSX 1004
+#define INIT_MANTIS_POSY 350
 #define INIT_GROUND_POSY 444
 
 #define MAX_MEAT 10
@@ -35,13 +38,6 @@ enum CombatState
     SPLIT
 };
 
-enum Environment
-{
-    GRASSY_LANDS,
-    AUTUMM_FALLS,
-    MOSSY_LANDS
-};
-
 class Combat
 {
 public:
@@ -58,7 +54,7 @@ public:
 
     void DrawPlayer();
 
-    void DrawBakcground(Environment env);
+    void DrawBakcground();
 
     void FirstTurnLogic();
 
@@ -161,16 +157,10 @@ private:
     friend class Enemy;
     friend class Player;
 
-    SDL_Texture* character1Spritesheet = nullptr;
-    SDL_Texture* fullscreenAttack = nullptr;
-    SDL_Texture* littleWolfSpritesheet = nullptr;
-
     const SDL_Rect test = {52, 52, 70, 88};
 
     Animation* currentPlayerAnim = nullptr;
     Animation* currentEnemyAnim = nullptr;
-
-
 
     bool CompareFrames(SDL_Rect a, SDL_Rect b)
     {
@@ -195,9 +185,12 @@ public:
 private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };
 
-    SDL_Texture* grassyLandsBackground;
-    SDL_Texture* autummFallsBackground;
-    SDL_Texture* mossyLandsBackground;
+    SDL_Texture* character1Spritesheet = nullptr;
+    SDL_Texture* fullscreenAttack = nullptr;
+    SDL_Texture* littleWolfSpritesheet = nullptr;
+    SDL_Texture* grassyLandsBackground = nullptr;
+    SDL_Texture* autummFallsBackground = nullptr;
+    SDL_Texture* mossyLandsBackground = nullptr;
 
 };
 

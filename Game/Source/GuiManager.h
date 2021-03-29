@@ -73,7 +73,6 @@ private:
 	SDL_Rect lifeBar;
 public:
 	SDL_Texture* GuiTexture;
-
 	
 private:
 	SDL_Texture* faceAnimationsTexture;
