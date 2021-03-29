@@ -89,11 +89,7 @@ void Combat::Update()
 	app->scene->scapeButton->Update(0.0f);
 	app->scene->splitButton->Update(0.0f);
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100))
-	{
-		app->scene->splitButton->Update(0.0f);
-	}
-	
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
 	currentPlayerAnim->Update(1.0f);
 
@@ -108,6 +104,10 @@ void Combat::Draw()
 	DrawBakcground();
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
+	else
+	{
+		app->scene->splitButton->state == GuiControlState::DISABLED;
+	}
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
@@ -291,6 +291,7 @@ void Combat::PlayerChoiceLogic()
 	}
 	else if (app->scene->splitPressed)
 	{
+		//if ()
 		playerChoice = false;
 		playerSplit = true;
 		return;

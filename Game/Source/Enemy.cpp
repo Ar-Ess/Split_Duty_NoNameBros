@@ -38,8 +38,6 @@ Enemy::~Enemy()
 {
 }
 
-
-
 void Enemy::SetUp(EnemyClass xenemyClass, SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {
     enemyClass = xenemyClass;
