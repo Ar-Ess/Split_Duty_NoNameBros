@@ -231,7 +231,7 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetVillage()
 {
-	map->Load("Prueba.tmx");
+	map->Load("SplitDuty1.tmx");
 }
 
 void Scene::UpdateLogoScene()

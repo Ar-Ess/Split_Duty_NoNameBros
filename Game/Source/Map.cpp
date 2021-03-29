@@ -10,7 +10,7 @@
 Map::Map() : Entity(EntityType::MAP)
 {
 	mapLoaded = false;
-	folder.Create("Assets/Maps/");
+	folder.Create("Assets/Maps");
 
 	//tex = texture;
 	scale = 2;
@@ -378,7 +378,7 @@ bool Map::CleanUp()
 bool Map::Load(const char* filename)
 {
     bool ret = true;
-    SString tmp("%s%s", folder.GetString(), filename);
+    SString tmp("%s/%s", folder.GetString(), filename);
 
     pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
@@ -554,7 +554,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	else
 	{
 		// L03: DONE: Load Tileset image
-		set->texture = tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = app->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->texWidth = image.attribute("width").as_int();
