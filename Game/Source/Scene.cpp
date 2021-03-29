@@ -244,7 +244,7 @@ void Scene::UpdateMainMenu()
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
-	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) SetScene(VILLAGE);
+	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(VILLAGE);
 
 }
 
@@ -270,6 +270,8 @@ void Scene::UpdateCombat()
 void Scene::UpdateVillage()
 {
 	map->Draw();
+
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 // GUI CONTROLS
