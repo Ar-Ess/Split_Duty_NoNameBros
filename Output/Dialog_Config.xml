@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?> 
+
+<!-- Settup Dialog for the game -->
+<DialogSettup>
+    <SettupOptions speed="0.5" scale ="2" YMargin="15" > <!--The Y margin is the space from the top of the chart-->
+      <DialogueChartTexture path="textures/dialogueTextures/Elements_To_Demo2.png"/>
+      <Characters> 
+        <Character ID="0" x="0" y="61" w="59" h="81"/>
+        <Character ID="1" x="62" y="0" w="45" h="56"/>
+        <Character ID="2" x="0" y="0" w="62" h="61"/>
+      </Characters>
+      <DialogChart>
+       <MainPart x="108" y="0" w="78" h="54"/>
+       <EndingPart x="187" y="0" w="23" h="54"/>
+      </DialogChart>
+    </SettupOptions>
+  <Dialogs>
+    <Dialog ID="0">
+      <Node ID="0" CharacterID="2" NPC_Position="0"> <!--NPC_POSITION -> TOP_LEFT=0 TOP_RIGHT=1 DOWN_LEFT=2 DOWN_RIGHT=3-->
+        <NPCTalk>Hola Akram! Com estas?</NPCTalk>
+        <Option ID="0" NextNode="0" /><!--This node is used to no have an option-->
+        <Option ID="1" NextNode="1">Be!</Option>
+        <Option ID="2" NextNode="-1" startAgain="true">"..."</Option><!--When a node returns -1 the dialog will finish-->
+      </Node>
+      <Node ID="1" CharacterID="2" NPC_Position="0">
+        <NPCTalk>Els teus pares diuen que vols marxar a viure a Barcelona. Es veritat?</NPCTalk>
+        <Option ID="0" NextNode="0" /><!--This node is used to no have an option-->
+        <Option ID="1" NextNode="2">Si!</Option>
+        <Option ID="2" NextNode="-1" startAgain="true">"..."</Option><!--When a node returns -1 the dialog will finish-->
+      </Node>
+      <Node ID="2" CharacterID="2" NPC_Position="0">
+        <NPCTalk>Doncs necessitaras menjar per emportar-te en el trajecte que emprendras. Pero abans et fare una pregunta... Perque has decidit marxar?</NPCTalk>
+        <Option ID="0" NextNode="0"/>
+        <Option ID="1" NextNode="3">No em porto be amb la meva familia...</Option>
+        <Option ID="2" NextNode="4">Vull arribar lluny i ajudar a la familia, crec que a Marroc no ho aconseguire</Option>
+        <Option ID="3" NextNode="3">Perque tinc amics...</Option>
+      </Node>
+      <Node ID="4" CharacterID="2" NPC_Position="0">
+        <NPCTalk>D'acord! Doncs et donare alguna cosa per emportar-te</NPCTalk>
+        <Option ID="0" NextNode="-1"/>
+      </Node>
+      <Node ID="3" CharacterID="2" NPC_Position="0">
+        <NPCTalk>Estas segur?</NPCTalk>
+        <Option ID="0" NextNode="0"/>
+        <Option ID="1" NextNode="-1" startAgain ="true">"..."</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="1">                                                        
+      <Node ID="0" CharacterID="1" NPC_Position="0"> 
+        <NPCTalk>Hola Akram, com esta la teva la teva familia?</NPCTalk>                                                
+        <Option ID="0" NextNode="0"/>                                     
+        <Option ID="1" NextNode="1">Be, ara estan treballant</Option>                              
+        <Option ID="2" NextNode="-1" startAgain="true">"..."</Option>       
+      </Node>                                                              
+      <Node ID="1" CharacterID="1" NPC_Position="0"> 
+         <NPCTalk>I tu que fas mentre treballen?</NPCTalk>                                               
+         <Option ID="0" NextNode="0"/>                                    
+         <Option ID="1" NextNode="2">Cuido dels meus germans i avis</Option>
+         <Option ID="2" NextNode="3" startAgain="true">Jugo a futbol</Option>
+         <Option ID="3" NextNode="3" startAgain="true">Doncs quedo amb els amics</Option>           
+      </Node>                                                              
+      <Node ID="2" CharacterID="1" NPC_Position="0"> 
+        <NPCTalk>Ets un noi molt responsable!</NPCTalk>                                                
+        <Option ID="0" NextNode="-1"/>                                    
+      </Node>                                                              
+       <Node ID="3" CharacterID="1" NPC_Position="0">
+        <NPCTalk>Diria que m'has mentit</NPCTalk>                                                
+        <Option ID="0" NextNode="-1" startAgain="true"/>                                    
+      </Node>                                                              
+    </Dialog>                                                              
+  </Dialogs>
+</DialogSettup>
