@@ -4,53 +4,25 @@
 <DialogSettup>
   <Dialogs>
     <Dialog ID="1">
-      <Node ID="0" CharacterID="2">
-        <NPCTalk></NPCTalk>
-        <Option ID="0" NextNode="0"></Option>
-        <Option ID="1" NextNode="-1"></Option><!--When a node returns -1 the dialog will finish-->
+      <Node ID="0">
+        <NPCTalk>This is just a dummy dialogue</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">For what?</Option>
+        <Option NextNode="2" ReturnCode="1">Shut up!</Option><!--When a node returns -1 the dialog will finish-->
       </Node>
       <Node ID="1">
-        <NPCTalk></NPCTalk>
-        <Option ID="0" NextNode="0"></Option>
-        <Option ID="1" NextNode="-1"></Option>
+        <NPCTalk>For testing purposes</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">And why are you doing this?</Option>
+        <Option NextNode="4" ReturnCode="1">Right, that's cool</Option>
       </Node>
       <Node ID="2">
-        <NPCTalk></NPCTalk>
-        <Option ID="0" NextNode="0"></Option>
-        <Option ID="1" NextNode="-1"></Option>
+        <NPCTalk>Ok. Dw</NPCTalk>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>For my project</NPCTalk>
       </Node>
       <Node ID="4">
-        <NPCTalk></NPCTalk>
-        <Option ID="0" NextNode="0"></Option>
-        <Option ID="0" NextNode="-1"/>
+        <NPCTalk>Nice!</NPCTalk>
       </Node>
-      <Node ID="3">
-        <NPCTalk></NPCTalk>
-        <Option ID="0" NextNode="0"></Option>
-        <Option ID="1" NextNode="-1"></Option>
-      </Node>
-    </Dialog>
-    <Dialog ID="2">                                                        
-      <Node ID="0"> 
-        <NPCTalk></NPCTalk>                                                
-        <Option ID="0" NextNode="0"></Option>                            
-        <Option ID="1" NextNode="-1"></Option>                
-      </Node>                                                              
-      <Node ID="1"> 
-         <NPCTalk></NPCTalk>                                               
-         <Option ID="0" NextNode="0"></Option>                            
-         <Option ID="1" NextNode="-1"></Option>
-      </Node>                                                              
-      <Node ID="2"> 
-        <NPCTalk></NPCTalk>                                                
-        <Option ID="0" NextNode="0"></Option>                                   
-      <Option ID="1" NextNode="-1"></Option>
-      </Node>
-      <Node ID="3">
-        <NPCTalk></NPCTalk>                                                
-        <Option ID="0" NextNode="0"></Option>                                  
-        <Option ID="1" NextNode="-1"></Option>
-      </Node>                                                              
-    </Dialog>                                                              
+    </Dialog>                                       
   </Dialogs>
 </DialogSettup>

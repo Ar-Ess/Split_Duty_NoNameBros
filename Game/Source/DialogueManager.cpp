@@ -16,8 +16,16 @@ bool DialogueManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
 	// HARDCODED DIALOGUE
-	CreateDialogue(1);
+	pugi::xml_document dConfigFile;
+	pugi::xml_node configDial;
 
+	configDial = LoadDialogueConfig(dConfigFile);
+
+	if (configDial.empty() == false)
+	{
+		pugi::xml_node dSetUp = configDial.child("Dialogs");
+		CreateDialogue(dSetUp);
+	}
 	return ret;
 }
 
@@ -57,61 +65,45 @@ bool DialogueManager::CleanUp()
 	return true;
 }
 
-DialogueOption* DialogueManager::CreateOptions(SString text, int nextNodeId, int retCode)
-{
-	DialogueOption* option = new DialogueOption(nextNodeId, retCode, text.GetString());
-	LOG("OPTION nextnodeID %d and text: %s", nextNodeId, text.GetString());
+DialogueOption* DialogueManager::CreateOptions(pugi::xml_node& setter)
+{	
+	DialogueOption* option = new DialogueOption(setter.attribute("NextNode").as_int(),
+		setter.attribute("ReturnCode").as_int(),SString(setter.child_value()));
 
 	return option;
 }
 
-DialogueNode* DialogueManager::CreateNode(SString text, int nodeId)
+DialogueNode* DialogueManager::CreateNode(pugi::xml_node& setter)
 {
-	DialogueNode* node = new DialogueNode(text, nodeId);
-	LOG("NODE %d and text: %s", nodeId, text.GetString());
+	pugi::xml_node nd = setter.child("NPCTalk");
 
-	DialogueOption* option1 = nullptr;
-	DialogueOption* option2 = nullptr;
+	DialogueNode* node = new DialogueNode(SString(nd.child_value()), setter.attribute("ID").as_int());
 
-	switch (nodeId)
-	{
-	case 0:
-		option1 = CreateOptions("for what?", 1, 1);
-		node->optionsList.Add(option1);		
-
-		option2 = CreateOptions("shut up!", 2, 1);
-		node->optionsList.Add(option2);
-		break;
-	case 1:
-		option1 = CreateOptions("And why are you doing this?", 3, 1);
-		node->optionsList.Add(option1);
-
-		option2 = CreateOptions("Right, that's cool", 4, 1);
-		node->optionsList.Add(option2);
-		break;
-	default:
-		int i = 0;
-		break;
-	}	
+	for (pugi::xml_node optionSetter = setter.child("Option"); optionSetter != nullptr;
+		optionSetter = optionSetter.next_sibling("Option"))
+	{	
+		node->optionsList.Add(CreateOptions(optionSetter));
+	}
 	return node;
 }
 
-void DialogueManager::CreateDialogue(int dialogueID)
+void DialogueManager::CreateDialogue(pugi::xml_node& setter)
 {
-	Dialogue* dialogue = new Dialogue(dialogueID);	
+	for (pugi::xml_node dlg = setter.child("Dialog"); dlg != nullptr; dlg = dlg.next_sibling("Dialog"))
+	{	
+		Dialogue* dialogue = new Dialogue(dlg.attribute("ID").as_int());	
+		LOG("MY DIALOGUE TREE NUMBER %d", dialogue->dialogueID);
 
-	LOG("MY DIALOGUE TREE NUMBER %d", dialogueID);
-
-	dialogue->nodeList.Add(CreateNode("this is just a dummy dialogue", 0));
-	dialogue->nodeList.Add(CreateNode("for testing purposes", 1));
-	dialogue->nodeList.Add(CreateNode("ok. dw", 2));
-	dialogue->nodeList.Add(CreateNode("for my project", 3));
-	dialogue->nodeList.Add(CreateNode("nice", 4));
-
-	dialogue->AssignOptions();
-	dialogue->currentNode = dialogue->nodeList.start->data;
-
-	dialoguesList.Add(dialogue);
+		for (pugi::xml_node nodeSetter = dlg.child("Node"); nodeSetter != nullptr; 
+			 nodeSetter = nodeSetter.next_sibling("Node"))
+		{
+			dialogue->nodeList.Add(CreateNode(nodeSetter));
+		}
+		dialogue->AssignOptions();
+		dialogue->currentNode = dialogue->nodeList.start->data;
+	
+		dialoguesList.Add(dialogue);
+	}
 }
 
 void DialogueManager::EndDialogue()
@@ -133,9 +125,9 @@ void DialogueManager::EndDialogue()
 			app->tex->UnLoad(itemNode->data->nodeTexture);
 			if (itemNode->data->nodeTexture != nullptr) LOG("NODE TEXTURE NOT DELETED");
 		}
+		currentDialogue->currentNode = currentDialogue->nodeList.start->data;
+		currentDialogue = nullptr;
 	}
-	currentDialogue->currentNode = currentDialogue->nodeList.start->data;
-	currentDialogue = nullptr;
 }
 
 void DialogueManager::StartDialogue(int dialogueID)
@@ -280,5 +272,18 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 	}
 
 	return ret;
+}
+
+pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFile) const
+{
+	pugi::xml_node ret;
+
+	pugi::xml_parse_result result = configFile.load_file(DIALOGUE_CONFIG_FILENAME);
+
+	if (result == NULL) LOG("Could not load xml file: %s. pugi error: %s", DIALOGUE_CONFIG_FILENAME, result.description());
+	else ret = configFile.child("DialogSettup");
+
+	return ret;
+	
 }
 

@@ -15,6 +15,8 @@
 #include "Log.h"
 #include "List.h"
 
+#define DIALOGUE_CONFIG_FILENAME		"Dialog_Config.xml"
+
 struct SDL_Texture;
 struct SDL_Color;
 struct SDL_Rect;
@@ -45,15 +47,17 @@ private: //functions
 
 	//////CREATORS//////
 	/*Dialogue CreateDialogue(pugi::xml_node&);*/
-	DialogueOption* CreateOptions(SString text, int nextNodeId, int retCode);
-	DialogueNode* CreateNode(SString text, int id);
-	void CreateDialogue(int dialogueID);
+	DialogueOption* CreateOptions(pugi::xml_node& setter);
+	DialogueNode* CreateNode(pugi::xml_node& setter);
+	void CreateDialogue(pugi::xml_node& setter);
 	void EndDialogue();
 
 	void Draw();
 	void Input();
 
 	bool OnGuiMouseClickEvent(GuiControl* option);
+
+	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
 public: //variables
 
 private: // variables
