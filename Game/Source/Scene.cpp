@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Combat.h"
+#include "DialogueManager.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -243,8 +244,16 @@ void Scene::UpdateMainMenu()
 {
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
+//<<<<<<< Updated upstream
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(VILLAGE);
+
+//=======
+	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	{
+		app->dialogueManager->StartDialogue(1); 
+		app->guiManager->debugGui = true;
+	}
 
 }
 

@@ -5,7 +5,7 @@
 #include "SDL/include/SDL_pixels.h"
 #include "List.h"
 
-#define DEFAULT_FONT ""
+#define DEFAULT_FONT "Assets/Fonts/kenvector_future_thin.ttf"
 #define DEFAULT_FONT_SIZE 12
 
 struct SDL_Texture;

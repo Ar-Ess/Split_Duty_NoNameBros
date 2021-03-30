@@ -4,15 +4,19 @@
 #include "List.h"
 #include "Sstring.h"
 
+//#include "SDL/include/SDL.h"
+
 class DialogueNode;
 class DialogueOption;
+
+struct SDL_Texture;
 
 class Dialogue
 {
 public:
 	//default constructor
 	Dialogue() {};
-	Dialogue(int id) : dialogueID(id) {};
+	Dialogue(int id) : dialogueID(id), currentNode(nullptr) {};
 	virtual ~Dialogue() {}
 
 	void AssignOptions();
@@ -20,6 +24,7 @@ public:
 public: 
 	int						dialogueID = NULL;
 
+	DialogueNode*			currentNode;
 	List<DialogueNode*>		nodeList;
 };
 
