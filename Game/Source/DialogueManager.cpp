@@ -110,6 +110,7 @@ void DialogueManager::EndDialogue()
 {
 	if (currentDialogue != nullptr)
 	{
+		currentDialogue->currentNode = currentDialogue->nodeList.start->data;
 		for (ListItem<DialogueNode*>* itemNode = currentDialogue->nodeList.start;
 			itemNode != nullptr; itemNode = itemNode->next)
 		{
@@ -125,7 +126,7 @@ void DialogueManager::EndDialogue()
 			app->tex->UnLoad(itemNode->data->nodeTexture);
 			if (itemNode->data->nodeTexture != nullptr) LOG("NODE TEXTURE NOT DELETED");
 		}
-		currentDialogue->currentNode = currentDialogue->nodeList.start->data;
+		currentDialogue->currentNode->optionsActive = false;
 		currentDialogue = nullptr;
 	}
 }
@@ -286,4 +287,3 @@ pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFil
 	return ret;
 	
 }
-
