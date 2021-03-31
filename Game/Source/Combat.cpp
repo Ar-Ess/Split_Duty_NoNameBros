@@ -270,7 +270,7 @@ void Combat::BoolStart()
 	wearMantisLeg = false;
 }
 
-//---------------------------------------------------
+// ---------------------------------------------------
 
 void Combat::PlayerChoiceLogic()
 {
@@ -287,6 +287,7 @@ void Combat::PlayerChoiceLogic()
 
 		currentPlayerAnim = &app->scene->player1->cStepAnim;
 		currentPlayerAnim->Reset();
+
 		return;
 	}
 	else if (app->scene->itemPressed)
@@ -507,7 +508,23 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	{
 		if (enemy->attack == 1)
 		{
+			if (enemy->mantisTimeAttack1 < 350)
+			{
+				enemy->MantisAttack(enemy->attack);
 
+				enemy->mantisTimeAttack1++;
+			}
+			else
+			{
+				enemy->mantisTimeAttack1 = 0;
+				enemyTimeWait = 0;
+				playerHitAble = true;
+
+				if (wearFeather) wearFeather = false;
+				if (wearMantisLeg) wearMantisLeg = false;
+
+				PlayerTurn();
+			}
 		}
 	}
 }
@@ -871,7 +888,7 @@ void Combat::EnemyAttackProbability()
 	}
 	else if (enemy->enemyClass == EnemyClass::MANTIS)
 	{
-
+		enemy->attack = 1;
 	}
 }
 
@@ -1051,6 +1068,9 @@ void Combat::PlayerEscape()
 	combatState = ESCAPE;
 
 	PlayerMoneyLose();
+
+	currentPlayerAnim = &app->scene->player1->cStepAnim;
+	currentPlayerAnim->Reset();
 }
 
 void Combat::PlayerSplitWin()

@@ -9,8 +9,6 @@
 
 #include "SDL/include/SDL.h"
 
-#define INIT_SMALL_WOLF_POSY 444
-
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
 
@@ -28,7 +26,6 @@ enum EnemyClass
 class Enemy : public Entity
 {
 public:
-
     Enemy();
 
     virtual ~Enemy();
@@ -37,11 +34,15 @@ public:
 
     void Jump();
 
+    void HighJump();
+
     void SmallWolfAttack(unsigned short int typeOfAttack);
 
     void BirdAttack(unsigned short int typeOfAttack);
 
-private: //Attack Time
+    void MantisAttack(unsigned short int typeOfAttack);
+
+private: // Attack Time
     short int attack = 0;
     short int jumpTime = 0;
 
@@ -51,6 +52,11 @@ private: //Attack Time
     short int birdTimeAttack1 = 0;
     short int birdTimeAttack2 = 0;
     short int birdTimeAttack3 = 0;
+
+    short int mantisTimeAttack1 = 0;
+    short int mantisTimeAttack1bis = 0;
+    short int mantisTimeAttack2 = 0;
+    short int mantisTimeAttack3 = 0;
 
 public:
     SDL_Rect colliderCombat;
@@ -67,13 +73,11 @@ public:
     int exp;
 
 private:
-
     DynArray<iPoint>* path;
 
     EnemyClass enemyClass;
 
 public:
-    
     Animation cLittleWolfAwakeAnim;
     Animation cLittleWolfIdleAnim;
     Animation cLittleWolfRunAnim;

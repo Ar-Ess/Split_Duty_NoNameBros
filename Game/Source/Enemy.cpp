@@ -61,7 +61,22 @@ void Enemy::Jump()
     }
     else
     {
-        colliderCombat.y = INIT_SMALL_WOLF_POSY;
+        colliderCombat.y = INIT_SMALLWOLF_POSY;
+        jumpTime = 0;
+    }
+}
+
+void Enemy::HighJump()
+{
+    if (jumpTime < 34)
+    {
+        colliderCombat.y -= 17;
+        colliderCombat.y += jumpTime;
+        jumpTime++;
+    }
+    else
+    {
+        colliderCombat.y = INIT_MANTIS_POSY;
         jumpTime = 0;
     }
 }
@@ -328,4 +343,59 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
     }
 }
 
+void Enemy::MantisAttack(unsigned short int typeOfAttack)
+{
+    if (typeOfAttack == 1)
+    {
 
+
+        if (mantisTimeAttack1 < 35)
+        {
+            HighJump();
+        }
+        else if (mantisTimeAttack1 < 70)
+        {
+            jumpTime = 0;
+        }
+        else if (mantisTimeAttack1 < 105)
+        {
+            HighJump();
+        }
+        else if (mantisTimeAttack1 < 140)
+        {
+            jumpTime = 0;
+        }
+        else if (mantisTimeAttack1 < 175)
+        {
+            HighJump();
+        }
+        else if (mantisTimeAttack1 < 210)
+        {
+            jumpTime = 0;
+        }
+        else if (mantisTimeAttack1 < 245)
+        {
+            HighJump();
+        }
+        else if (mantisTimeAttack1 < 280)
+        {
+            jumpTime = 0;
+        }
+        else if (mantisTimeAttack1 < 315)
+        {
+            HighJump();
+        }
+        else if (mantisTimeAttack1 < 350)
+        {
+            jumpTime = 0;
+        }
+    }
+    else if (typeOfAttack == 2)
+    {
+
+    }
+    else if (typeOfAttack == 3)
+    {
+
+    }
+}
