@@ -9,6 +9,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Collider.h"
+#include "Player.h"
 
 #include "Log.h"
 
@@ -218,24 +219,37 @@ void Combat::CombatLogic()
 	else if (combatState == WIN)
 	{
 		ItemDrop(enemy->enemyClass);
-		playerScape = true; //Provisional, will lead to win animation and level upgrade
+		playerEscape = true; //Provisional, will lead to win animation and level upgrade
 	}
 	else if (combatState == LOSE)
 	{
 		if (CompareFrames(currentPlayerAnim->GetCurrentFrame(), app->scene->player1->cDieAnim.GetLastFrame()))
 		{
-			playerScape = true; //Provisional, will lead to lose animation and respawn
+			playerEscape = true; //Provisional, will lead to lose animation and respawn
 		}
 	}
 	else if (combatState == SPLIT)
 	{
-		playerScape = true; //Provisional, will lead to win animation
+		playerEscape = true; //Provisional, will lead to win animation
+	}
+	else if (combatState == ESCAPE)
+	{
+		if (playerTimeEscape < 99)
+		{
+			playerTimeEscape++;
+			app->scene->player1->colliderCombat.x -= 3;
+		}
+		else
+		{
+			playerTimeEscape = 0;
+			playerEscape = true;
+		}
 	}
 }
 
 void Combat::BoolStart()
 {
-	playerScape = false;
+	playerEscape = false;
 	playerAttack = false;
 	playerItem = false;
 	playerStep = false;
@@ -291,7 +305,6 @@ void Combat::PlayerChoiceLogic()
 	}
 	else if (app->scene->splitPressed)
 	{
-		//if ()
 		playerChoice = false;
 		playerSplit = true;
 		return;
@@ -872,67 +885,48 @@ void Combat::PlayerMoneyLose()
 
 void Combat::EscapeProbability(short int probabilityRange)
 {
-	if (probabilityRange <= -8) playerScape = true;
+	if (probabilityRange <= -8) PlayerEscape();
 	else if (probabilityRange >= -7 && probabilityRange <= -4)
 	{
 		int random = rand() % 4;
 
-		if (random != 0) playerScape = true;
+		if (random != 0) PlayerEscape();
 		else
 		{
 			playerAttack = false;
-			playerResponseAble = true;
-			playerChoice = true;
 
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-
-			PlayerMoneyLose();
-
-			combatState = ENEMY_TURN;
+			EnemyTurn();
 		}
 	}
 	else if (probabilityRange >= -3 && probabilityRange <= 3)
 	{
 		int random = rand() % 2;
 
-		if (random == 0) playerScape = true;
+		if (random == 0) PlayerEscape();
 		else
 		{
 			playerAttack = false;
-			playerResponseAble = true;
-			playerChoice = true;
 
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-			combatState = ENEMY_TURN;
+			EnemyTurn();
 		}
 	}
 	else if (probabilityRange >= 4 && probabilityRange <= 7)
 	{
 		int random = rand() % 4;
 
-		if (random == 0) playerScape = true;
+		if (random == 0) PlayerEscape();
 		else
 		{
 			playerAttack = false;
-			playerResponseAble = true;
-			playerChoice = true;
 
-			LOG("ENEMY TURN");
-			LOG("Enemy Health: %d", enemy->health);
-			combatState = ENEMY_TURN;
+			EnemyTurn();
 		}
 	}
 	else if (probabilityRange >= 8)
 	{
 		playerAttack = false;
-		playerResponseAble = true;
-		playerChoice = true;
 
-		LOG("ENEMY TURN");
-		LOG("Enemy Health: %d", enemy->health);
-		combatState = ENEMY_TURN;
+		EnemyTurn();
 	}
 }
 
@@ -1050,6 +1044,13 @@ void Combat::PlayerDie()
 	currentPlayerAnim->Reset();
 	LOG("PLAYER LOSE");
 	combatState = LOSE;
+}
+
+void Combat::PlayerEscape()
+{
+	combatState = ESCAPE;
+
+	PlayerMoneyLose();
 }
 
 void Combat::PlayerSplitWin()

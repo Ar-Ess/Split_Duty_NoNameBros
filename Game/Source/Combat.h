@@ -35,7 +35,8 @@ enum CombatState
     PLAYER_TURN,
     WIN,
     LOSE,
-    SPLIT
+    SPLIT,
+    ESCAPE
 };
 
 class Combat
@@ -110,6 +111,8 @@ private: //STATE CHANGING FUNCTIONS
 
     void PlayerDie();
 
+    void PlayerEscape();
+
     void PlayerSplitWin();
 
 public:
@@ -121,6 +124,7 @@ public:
     short int playerTimeWearLeg = 0;
     short int playerTimeEnemyThrow = 0;
     short int playerTimeSplit = 0;
+    short int playerTimeEscape = 0;
 
     short int steps = 0;
 
@@ -130,7 +134,7 @@ public:
     bool playerAttack = false;
     bool playerStep = false;
     bool playerItem = false;
-    bool playerScape = false;
+    bool playerEscape = false;
     bool playerSplit = false;
     bool playerChoice = true;
 

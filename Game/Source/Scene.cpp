@@ -267,7 +267,7 @@ void Scene::UpdateCombat()
 
 	//app->guiManager->DrawCombatInterface();
 
-	if (combatScene->playerScape) SetScene(MAIN_MENU);
+	if (combatScene->playerEscape) SetScene(MAIN_MENU);
 
 	RestartPressState();
 
