@@ -347,47 +347,37 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
 {
     if (typeOfAttack == 1)
     {
-
-
         if (mantisTimeAttack1 < 35)
         {
-            HighJump();
+            MantisAttack1Logic(35);
         }
         else if (mantisTimeAttack1 < 70)
         {
-            jumpTime = 0;
+            MantisAttack1Logic(70);
         }
         else if (mantisTimeAttack1 < 105)
         {
-            HighJump();
+            MantisAttack1Logic(105);
         }
         else if (mantisTimeAttack1 < 140)
         {
-            jumpTime = 0;
+            MantisAttack1Logic(140);
         }
         else if (mantisTimeAttack1 < 175)
         {
-            HighJump();
+            MantisAttack1Logic(175);
         }
         else if (mantisTimeAttack1 < 210)
         {
-            jumpTime = 0;
+            MantisAttack1Logic(210);
         }
         else if (mantisTimeAttack1 < 245)
         {
-            HighJump();
+            MantisAttack1Logic(245);
         }
         else if (mantisTimeAttack1 < 280)
         {
-            jumpTime = 0;
-        }
-        else if (mantisTimeAttack1 < 315)
-        {
-            HighJump();
-        }
-        else if (mantisTimeAttack1 < 350)
-        {
-            jumpTime = 0;
+            MantisAttack1Logic(280);
         }
     }
     else if (typeOfAttack == 2)
@@ -398,4 +388,16 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
     {
 
     }
+}
+
+void Enemy::MantisAttack1Logic(unsigned short int timer)
+{
+    if (mantisTimeAttack1 == (timer - 35))
+    {
+        int random = rand() % 2;
+        jumping = bool(random);
+    }
+
+    if (jumping) HighJump();
+    else if (jumping) jumpTime = 0;
 }

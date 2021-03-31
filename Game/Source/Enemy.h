@@ -42,6 +42,10 @@ public:
 
     void MantisAttack(unsigned short int typeOfAttack);
 
+    void MantisAttack1Logic(unsigned short int timer);
+
+    void MantisBulletShoot();
+
 private: // Attack Time
     short int attack = 0;
     short int jumpTime = 0;
@@ -54,12 +58,12 @@ private: // Attack Time
     short int birdTimeAttack3 = 0;
 
     short int mantisTimeAttack1 = 0;
-    short int mantisTimeAttack1bis = 0;
     short int mantisTimeAttack2 = 0;
     short int mantisTimeAttack3 = 0;
 
 public:
     SDL_Rect colliderCombat;
+    bool jumping = false;
 
 public:
     friend class Combat;

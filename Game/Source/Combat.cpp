@@ -508,7 +508,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	{
 		if (enemy->attack == 1)
 		{
-			if (enemy->mantisTimeAttack1 < 350)
+			if (enemy->mantisTimeAttack1 < 280)
 			{
 				enemy->MantisAttack(enemy->attack);
 
