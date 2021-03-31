@@ -240,32 +240,32 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
         }
         if (app->scene->combatScene->steps == 3)
         {
-            if (birdTimeAttack1 < 29)
+            if (birdTimeAttack1 < 31)
             {
                 colliderCombat.x -= 8;
             }
-            else if (birdTimeAttack1 < 54) // \*
+            else if (birdTimeAttack1 < 56) // \*
             {
                 colliderCombat.x -= 5;
                 colliderCombat.y -= 5;
             }
-            else if (birdTimeAttack1 < 89) // /*
+            else if (birdTimeAttack1 < 91) // /*
             {
                 colliderCombat.x += 9;
                 colliderCombat.y -= 2;
             }
-            else if (birdTimeAttack1 < 114) // \_
+            else if (birdTimeAttack1 < 116) // \_
             {
                 colliderCombat.x += 5;
                 colliderCombat.y += 5;
-                if (birdTimeAttack1 == 113) app->scene->combatScene->playerHitAble = true;
+                if (birdTimeAttack1 == 115) app->scene->combatScene->playerHitAble = true;
             }
-            else if (birdTimeAttack1 < 159) // _/
+            else if (birdTimeAttack1 < 151) // _/
             {
                 colliderCombat.x -= 9;
                 colliderCombat.y += 4;
             }
-            else if (birdTimeAttack1 < 182)
+            else if (birdTimeAttack1 < 184)
             {
                 colliderCombat.x -= 9;
                 colliderCombat.y -= 4;

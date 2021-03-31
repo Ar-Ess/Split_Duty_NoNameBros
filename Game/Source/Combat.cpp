@@ -816,8 +816,11 @@ void Combat::EnemyAttackProbability()
 		if (steps > 0)
 		{
 			int random = rand() % 6;
-			if (random < 1) enemy->attack = 2;
-			return;
+			if (random < 1)
+			{
+				enemy->attack = 2;
+				return;
+			}
 		}
 
 		enemy->attack = 1;
