@@ -284,6 +284,48 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
             colliderCombat.y = INIT_BIRD_POSY;
         }
     }
+    else if (typeOfAttack == 2)
+    {
+        if (birdTimeAttack2 < 30)
+        {
+            colliderCombat.x += 3;
+        }
+        else if (birdTimeAttack2 < 50)
+        {
+            colliderCombat.x += 0;
+        }
+        else if (birdTimeAttack2 < 75)
+        {
+            colliderCombat.x -= 12;
+            colliderCombat.y += 3;
+        }
+        else if (birdTimeAttack2 < 150)
+        {
+            colliderCombat.x -= 12;
+            if (birdTimeAttack2 == 149)
+            {
+                app->scene->combatScene->playerResponseAble = true;
+                app->scene->combatScene->playerHitAble = true;
+            }
+        }
+        else if (birdTimeAttack2 < 168)
+        {
+            colliderCombat.y--;
+            colliderCombat.x -= 12;
+        }
+        else if (birdTimeAttack2 < 280)
+        {
+            colliderCombat.x -= 12;
+        }
+
+        birdTimeAttack2++;
+
+        if (colliderCombat.x + colliderCombat.w < 0)
+        {
+            colliderCombat.x = 1280;
+            colliderCombat.y = INIT_BIRD_POSY;
+        }
+    }
 }
 
 

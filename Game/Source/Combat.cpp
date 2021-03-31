@@ -433,15 +433,44 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 		}
 		else if (enemy->attack == 2)
 		{
-			if (enemy->birdTimeAttack2 < 200)
+			if (enemy->birdTimeAttack2 < 280)
 			{
-				enemy->birdTimeAttack2++;
+				enemy->BirdAttack(enemy->attack);
 
-				if (enemy->birdTimeAttack2 >= 60 && enemy->birdTimeAttack2 < 145)
+				PlayerHitLogic();
+			}
+			else
+			{
+				enemy->birdTimeAttack2 = 0;
+				enemyTimeWait = 0;
+				enemy->colliderCombat.x = INIT_BIRD_POSX;
+				enemy->colliderCombat.y = INIT_BIRD_POSY;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
+				}
+			}
+		}
+		else if (enemy->attack == 3)
+		{
+			if (enemy->birdTimeAttack3 < 200)
+			{
+				enemy->birdTimeAttack3++;
+
+				if (enemy->birdTimeAttack3 >= 60 && enemy->birdTimeAttack3 < 145)
 				{
 					app->scene->player1->colliderCombat.x -= 2;
 				}
-				else if (enemy->birdTimeAttack2 == 145)
+				else if (enemy->birdTimeAttack3 == 145)
 				{
 					app->scene->player1->colliderCombat.x -= 1;
 					steps--;
@@ -449,7 +478,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			}
 			else
 			{
-				enemy->birdTimeAttack2 = 0;
+				enemy->birdTimeAttack3 = 0;
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
@@ -816,14 +845,20 @@ void Combat::EnemyAttackProbability()
 		if (steps > 0)
 		{
 			int random = rand() % 6;
-			if (random < 1)
+			if (random < 1 && enemy->attack != 3)
 			{
-				enemy->attack = 2;
+				enemy->attack = 3;
 				return;
 			}
 		}
 
-		enemy->attack = 1;
+		int randomx = rand() % 4;
+		if (randomx == 3) enemy->attack = 2;
+		else if (randomx != 3) enemy->attack = 1;
+	}
+	else if (enemy->enemyClass == EnemyClass::MANTIS)
+	{
+
 	}
 }
 

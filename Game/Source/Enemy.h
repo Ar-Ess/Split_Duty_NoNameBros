@@ -50,6 +50,7 @@ private: //Attack Time
 
     short int birdTimeAttack1 = 0;
     short int birdTimeAttack2 = 0;
+    short int birdTimeAttack3 = 0;
 
 public:
     SDL_Rect colliderCombat;
