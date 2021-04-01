@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Animation.h"
+#include "Render.h"
 
 #include "DynArray.h"
 #include "Point.h"
@@ -21,6 +22,35 @@ enum EnemyClass
     BIG_WOLF,
     MANTIS,
     BIRD
+};
+
+struct MantisBullet
+{
+    MantisBullet()
+    {
+        bulletRect = { 413, 1004, 10, 4 };
+        bulletSpritesheet = nullptr;
+    }
+
+    SDL_Rect bulletRect;
+    SDL_Texture* bulletSpritesheet;
+    bool active = false;
+
+    void BulletReset()
+    {
+        bulletRect = { 413, 1004, 10, 4 };
+        active = false;
+    }
+
+    void Update()
+    {
+        if (active) bulletRect.x -= 3;
+    }
+
+    void Draw()
+    {
+        if (active) app->render->DrawRectangle(bulletRect, { 55, 111, 53, 255 });
+    }
 };
 
 class Enemy : public Entity
@@ -78,8 +108,8 @@ public:
 
 private:
     DynArray<iPoint>* path;
-
     EnemyClass enemyClass;
+    MantisBullet bullet[5];
 
 public:
     Animation cLittleWolfAwakeAnim;

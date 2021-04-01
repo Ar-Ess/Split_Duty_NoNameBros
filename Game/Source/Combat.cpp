@@ -116,6 +116,11 @@ void Combat::Draw()
 
 	DrawPlayer();
 
+	for (int i = 0; i < 5; i++)
+	{
+		enemy->bullet[i].Draw();
+	}
+
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
 	

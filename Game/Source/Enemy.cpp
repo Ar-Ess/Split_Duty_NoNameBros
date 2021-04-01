@@ -347,6 +347,8 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
 {
     if (typeOfAttack == 1)
     {
+        if (mantisTimeAttack1 == 0) for (int i = 0; i < 5; i++) bullet[i].BulletReset();
+
         if (mantisTimeAttack1 < 35)
         {
             MantisAttack1Logic(35);
@@ -367,18 +369,13 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
         {
             MantisAttack1Logic(175);
         }
-        else if (mantisTimeAttack1 < 210)
-        {
-            MantisAttack1Logic(210);
-        }
-        else if (mantisTimeAttack1 < 245)
-        {
-            MantisAttack1Logic(245);
-        }
         else if (mantisTimeAttack1 < 280)
         {
-            MantisAttack1Logic(280);
+            if (mantisTimeAttack1 == 279) for (int i = 0; i < 5; i++) bullet[i].BulletReset();
         }
+
+        //DRAW & UPDATE OF BULLETS
+        for (int i = 0; i < 5; i++) bullet[i].Update();
     }
     else if (typeOfAttack == 2)
     {
@@ -396,6 +393,8 @@ void Enemy::MantisAttack1Logic(unsigned short int timer)
     {
         int random = rand() % 2;
         jumping = bool(random);
+
+        bullet[timer - 35].active = true;
     }
 
     if (jumping) HighJump();
