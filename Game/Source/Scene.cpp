@@ -281,6 +281,11 @@ void Scene::UpdateVillage()
 	map->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += 10;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= 10;
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += 10;
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= 10;
 }
 
 // GUI CONTROLS
