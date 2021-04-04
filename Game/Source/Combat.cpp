@@ -122,8 +122,6 @@ void Combat::Draw()
 	}
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
-
-	
 }
 
 void Combat::DrawPlayer()
@@ -517,11 +515,14 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->MantisAttack(enemy->attack);
 
+				PlayerHitLogic();
+
 				enemy->mantisTimeAttack1++;
 			}
 			else
 			{
 				enemy->mantisTimeAttack1 = 0;
+				enemy->jumpTime = 0;
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
@@ -964,6 +965,11 @@ void Combat::PlayerHitLogic()
 		}
 		else if (wearMantisLeg) wearMantisLeg = false;
 	}
+}
+
+void Combat::PlayerBulletHitLogic()
+{
+
 }
 
 void Combat::PlayerPosReset()

@@ -53,7 +53,7 @@ Player::Player() : Entity(EntityType::PLAYER)
         cCrouchAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT * 6,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
 
     }
-    cCrouchAnim.speed = 0.1f;
+    cCrouchAnim.speed = 0.5f;
     cCrouchAnim.loop = false;
 }
 
@@ -114,7 +114,7 @@ void Player::FeatherJump()
 
 void Player::Crouch()
 {
-    if (crouchTime < 40)
+   if (crouchTime < 18)
     {
         if (crouchTime == 0)
         {

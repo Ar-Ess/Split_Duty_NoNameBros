@@ -97,6 +97,8 @@ public:
 
     void PlayerHitLogic();
 
+    void PlayerBulletHitLogic();
+
     void PlayerPosReset();
 
     void ItemDrop(EnemyClass enemy);

@@ -28,7 +28,7 @@ struct MantisBullet
 {
     MantisBullet()
     {
-        bulletRect = { 413, 1004, 10, 4 };
+        bulletRect = { 1004, 440, 40, 65 };
         bulletSpritesheet = nullptr;
     }
 
@@ -38,18 +38,21 @@ struct MantisBullet
 
     void BulletReset()
     {
-        bulletRect = { 413, 1004, 10, 4 };
+        bulletRect = { 1004, 440, 40, 65 };
         active = false;
     }
 
     void Update()
     {
-        if (active) bulletRect.x -= 3;
+        if (active) bulletRect.x -= 9;
     }
 
     void Draw()
     {
-        if (active) app->render->DrawRectangle(bulletRect, { 55, 111, 53, 255 });
+        if (active)
+        {
+            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 255 });
+        }
     }
 };
 
