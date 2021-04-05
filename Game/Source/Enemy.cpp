@@ -393,8 +393,13 @@ void Enemy::MantisAttack1Logic(unsigned short int timer)
     {
         int random = rand() % 2;
         jumping = bool(random);
+    }
 
-        bullet[timer - 35].active = true;
+    if (mantisTimeAttack1 == (timer - 25))
+    {
+        int i = (timer / 35) - 1;
+        bullet[i].active = true;
+        if (jumping) bullet[i].bulletRect.y = 338;
     }
 
     if (jumping) HighJump();
