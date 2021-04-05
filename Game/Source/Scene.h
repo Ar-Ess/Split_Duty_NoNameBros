@@ -74,6 +74,9 @@ public: //Combat Buttons
 	GuiButton* splitButton = nullptr;
 	bool splitPressed = false;
 
+private: // Textures
+	SDL_Texture* logo = nullptr;
+
 public:
 	friend class Combat;
 	friend class Enemy;

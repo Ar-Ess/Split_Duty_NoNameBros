@@ -49,6 +49,7 @@ bool Scene::Start()
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 
 	map = new Map();
+
 	combatScene = new Combat();
 
 	enviroment = GRASSY_LANDS;
@@ -137,7 +138,15 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	if (currScene == COMBAT) combatScene->Restart();
+	if (currScene == LOGO_SCENE)
+	{
+		app->tex->UnLoad(logo);
+	}
+	else if (currScene == MAIN_MENU)
+	{
+
+	}
+	else if (currScene == COMBAT) combatScene->Restart();
 
 	return true;
 }
@@ -172,7 +181,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 
 void Scene::SetLogoScene()
 {
-
+	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
 }
 
 void Scene::SetMainMenu()
@@ -238,7 +247,8 @@ void Scene::SetVillage()
 
 void Scene::UpdateLogoScene()
 {
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(MAIN_MENU);
+	app->render->DrawTexture(logo, 0, 0);
+	//if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 void Scene::UpdateMainMenu()
