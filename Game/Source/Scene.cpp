@@ -14,6 +14,7 @@
 #include "Enemy.h"
 #include "Combat.h"
 #include "DialogueManager.h"
+#include "Transition.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -182,6 +183,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 void Scene::SetLogoScene()
 {
 	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
+	timer = 0;
 }
 
 void Scene::SetMainMenu()
@@ -247,8 +249,30 @@ void Scene::SetVillage()
 
 void Scene::UpdateLogoScene()
 {
-	app->render->DrawTexture(logo, 0, 0);
-	//if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(MAIN_MENU);
+	if (timer >= 50) app->render->DrawTexture(logo, 0, 0);
+
+	if (timer < 50)
+	{
+		timer++;
+	}
+	else if (timer < 80)
+	{
+		app->transition->FadeToBlackEffect(true, 30.0f);
+		timer++;
+	}
+	else if (timer < 250)
+	{
+		timer++;
+	}
+	else if (timer >= 250 && timer < 280)
+	{
+		app->transition->FadeToBlackEffect(false, 30.0f);
+		timer++;
+	}
+	else
+	{
+		SetScene(MAIN_MENU);
+	}
 }
 
 void Scene::UpdateMainMenu()

@@ -23,6 +23,7 @@ class GuiManager;
 class FontTTF;
 class Scene;
 class DialogueManager;
+class Transition;
 
 class App
 {
@@ -88,6 +89,7 @@ public:
 	FontTTF* fontTTF;
 	Scene* scene;
 	DialogueManager* dialogueManager;
+	Transition* transition;
 
 private:
 

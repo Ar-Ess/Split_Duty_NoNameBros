@@ -81,6 +81,9 @@
     <ClCompile Include="Source\Dialogue.cpp">
       <Filter>Dialogues</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Transition.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -205,6 +208,9 @@
       <Filter>Dialogues</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transition.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

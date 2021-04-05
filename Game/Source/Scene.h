@@ -109,6 +109,8 @@ private: //Scene Manager
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation
 
+	unsigned short int timer = 0;
+
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 };
