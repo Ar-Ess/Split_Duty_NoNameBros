@@ -355,6 +355,17 @@ int Combat::EnemyDamageLogic()
 	return damage;
 }
 
+int Combat::BulletDamageLogic()
+{
+	int damage = 0;
+	damage += enemy->strength - app->scene->player1->defense;
+
+	if (damage != 0) damage = ceil(damage / 5);
+	if (damage < 1) damage = 1;
+
+	return damage;
+}
+
 void Combat::EnemyAttack(EnemyClass enemyc)
 {
 	if (enemyc == EnemyClass::SMALL_WOLF)
@@ -515,7 +526,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->MantisAttack(enemy->attack);
 
-				PlayerHitLogic();
+				PlayerBulletHitLogic();
 
 				enemy->mantisTimeAttack1++;
 			}
@@ -526,10 +537,19 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
-				if (wearFeather) wearFeather = false;
-				if (wearMantisLeg) wearMantisLeg = false;
+				bulletHitted = -1;
 
-				PlayerTurn();
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
+				}
 			}
 		}
 	}
@@ -969,7 +989,26 @@ void Combat::PlayerHitLogic()
 
 void Combat::PlayerBulletHitLogic()
 {
+	for (int i = 0; i < 5; i++)
+	{
+		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->bullet[i].bulletRect))
+		{
+			playerHitAble = false;
+			if (!wearMantisLeg)
+			{
+				app->scene->player1->health -= BulletDamageLogic();
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
 
+			bulletHitted = i;
+		}
+	}
+
+	if (bulletHitted != -1 && enemy->bullet[bulletHitted].bulletRect.x < app->scene->player1->colliderCombat.x - 42)
+	{
+		playerHitAble = true;
+	}
 }
 
 void Combat::PlayerPosReset()

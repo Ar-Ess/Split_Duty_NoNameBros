@@ -243,8 +243,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetVillage()
 {
-	//map->Load("SplitDuty1.tmx");
-	map->Load("try40x40.tmx");
+	map->Load("SplitDuty1.tmx");
+	//map->Load("try40x40.tmx");
 }
 
 void Scene::UpdateLogoScene()

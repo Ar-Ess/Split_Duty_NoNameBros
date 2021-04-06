@@ -69,6 +69,8 @@ public:
 
     int EnemyDamageLogic();
 
+    int BulletDamageLogic();
+
     void EnemyAttack(EnemyClass enemy);
 
     void PlayerAttack();
@@ -127,6 +129,7 @@ public:
     short int playerTimeEnemyThrow = 0;
     short int playerTimeSplit = 0;
     short int playerTimeEscape = 0;
+    short int bulletHitted = -1;
 
     short int steps = 0;
 
