@@ -135,6 +135,7 @@ public:
 
     bool playerResponseAble = true;
     bool playerHitAble = true;
+    bool playerStepDenied = false;
 
     bool playerAttack = false;
     bool playerStep = false;

@@ -552,6 +552,63 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				}
 			}
 		}
+		else if (enemy->attack == 2)
+		{
+			if (enemy->mantisTimeAttack2 < 280)
+			{
+				enemy->MantisAttack(enemy->attack);
+
+				PlayerHitLogic();
+
+				enemy->mantisTimeAttack2++;
+			}
+			else
+			{
+				enemy->mantisTimeAttack2 = 0;
+				enemyTimeWait = 0;
+				playerHitAble = true;
+
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
+				}
+			}
+		}
+		else if (enemy->attack == 3)
+		{
+			if (enemy->mantisTimeAttack3 < 250)
+			{
+				enemy->MantisAttack(enemy->attack);
+
+				enemy->mantisTimeAttack3++;
+			}
+			else
+			{
+				enemy->mantisTimeAttack3 = 0;
+				enemyTimeWait = 0;
+
+				if (app->scene->player1->health > 0)
+				{
+					if (wearFeather) wearFeather = false;
+					if (wearMantisLeg) wearMantisLeg = false;
+
+					playerStepDenied = true;
+
+					PlayerTurn();
+				}
+				else if (app->scene->player1->health <= 0)
+				{
+					PlayerDie();
+				}
+			}
+		}
 	}
 }
 
@@ -914,7 +971,13 @@ void Combat::EnemyAttackProbability()
 	}
 	else if (enemy->enemyClass == EnemyClass::MANTIS)
 	{
-		enemy->attack = 1;
+		int random = rand() % 10;
+
+		if (random < 5) enemy->attack = 1;
+		else if (random > 4 && random < 9) enemy->attack = 2;
+		else if (random > 8) enemy->attack = 3;
+
+		enemy->attack = 2;
 	}
 }
 
@@ -1090,6 +1153,7 @@ void Combat::EnemyTurn()
 
 	playerResponseAble = true;
 	playerChoice = true;
+	playerStepDenied = false;
 }
 
 void Combat::PlayerTurn()

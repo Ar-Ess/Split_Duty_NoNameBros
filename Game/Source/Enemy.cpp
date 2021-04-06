@@ -379,11 +379,58 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
     }
     else if (typeOfAttack == 2)
     {
+        if (mantisTimeAttack2 < 92)
+        {
+            colliderCombat.x += 3;
+        }
+        else if (mantisTimeAttack2 > 140 && mantisTimeAttack2 < 202)
+        {
+            colliderCombat.x -= 22;
+        }
+        else if (mantisTimeAttack2 >= 202 && mantisTimeAttack2 < 220)
+        {
+            colliderCombat.x = 325;
+            colliderCombat.y = -75;
+            app->scene->combatScene->playerHitAble = true;
+        }
+        else if (mantisTimeAttack2 >= 220 && mantisTimeAttack2 < 242)
+        {
+            colliderCombat.x += 24;
+            colliderCombat.y += 22;
+        }
+        else if (mantisTimeAttack2 == 242)
+        {
+            colliderCombat.y = INIT_MANTIS_POSY;
+            colliderCombat.x += 22;
+        }
+        else if (mantisTimeAttack2 > 242 && mantisTimeAttack2 < 270)
+        {
+            int move = (20 - ((mantisTimeAttack2 - 242) * 2));
 
+            if (move <= 0) move = 2;
+
+            colliderCombat.x += move;
+        }
+        else if (mantisTimeAttack2 == 270) colliderCombat.x = INIT_MANTIS_POSX;
     }
     else if (typeOfAttack == 3)
     {
-
+        if (mantisTimeAttack3 < 5)
+        {
+            colliderCombat.x -= 2;
+        }
+        else if (mantisTimeAttack3 < 10)
+        {
+            colliderCombat.x += 2;
+        }
+        else if (mantisTimeAttack3 < 15)
+        {
+            colliderCombat.x -= 2;
+        }
+        else if (mantisTimeAttack3 < 20)
+        {
+            colliderCombat.x += 2;
+        }
     }
 }
 
