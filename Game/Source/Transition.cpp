@@ -78,7 +78,7 @@ bool Transition::FadeToBlackEffect(bool fadeIn, float frames)
 	// If we are already in a fade process, ignore this call
 	if (currentStep == FadeToBlackStep::NONE)
 	{
-		if (fadeInOnly == false)
+		if (fadeIn == false)
 		{
 			isFading = true;
 			currentStep = FadeToBlackStep::TO_BLACK;

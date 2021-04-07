@@ -243,8 +243,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetVillage()
 {
-	//map->Load("SplitDuty1.tmx");
-	map->Load("try40x40.tmx");
+	map->Load("SplitDuty1.tmx");
+	//map->Load("try40x40.tmx");
 }
 
 void Scene::UpdateLogoScene()
@@ -338,7 +338,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case COMBAT:
 
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
-		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
+		else if (strcmp(control->text.GetString(), "MoveButton") == 0 && !combatScene->playerStepDenied) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
 		else if (strcmp(control->text.GetString(), "SplitButton") == 0) splitPressed = true;
