@@ -20,14 +20,17 @@ Player::Player() : Entity(EntityType::PLAYER)
     cIdleAnim.speed = 0.120f;
 
     int j = 0;
-    for (int i = 0; i < 17; i++)
+    for (int i = 0; i < 10; i++)
     {
-        cPos0AttackAnim.PushBack({ 0,j + (i*720),1280,720 });
-        if (i == 11) j += 1280;
+        cPos0AttackAnim.PushBack({ 0, 0 + (i*720),1280,720 });
     }
-    cPos0AttackAnim.speed = 0.190f;
+    for (int i = 0; i < 7; i++)
+    {
+        cPos0AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
+    }
+    cPos0AttackAnim.speed = 0.240f;
     cPos0AttackAnim.loop = false;
-    cPos0AttackAnim.pingpong = true;
+    cPos0AttackAnim.pingpong = false;
 
     for (int i = 0; i < 8; i++)
     {

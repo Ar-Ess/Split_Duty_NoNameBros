@@ -615,11 +615,16 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 void Combat::PlayerAttack()
 {
+	//app->scene->player1->cPos0AttackAnim.Reset();
 	currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
 
-	if (playerTimeAttack < 125)
+	/*if (playerTimeAttack < 225)
 	{
 		playerTimeAttack++;
+	}*/
+	if (app->scene->player1->cPos0AttackAnim.HasFinished()==false )
+	{
+
 	}
 	else
 	{
