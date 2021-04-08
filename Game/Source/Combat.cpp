@@ -26,7 +26,7 @@ void Combat::Start()
 	fullscreenAttack = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack.png");
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
-	if (fullscreenAttack == nullptr) LOG("error loading");
+	
 
 	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
 	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
@@ -132,6 +132,7 @@ void Combat::DrawPlayer()
 	}
 	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
 	{
+		LOG("Attack anim");
 		app->render->DrawTexture(fullscreenAttack, 0,0, &currentPlayerAnim->GetCurrentFrame());
 	}
 	else
