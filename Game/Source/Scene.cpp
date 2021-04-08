@@ -188,7 +188,7 @@ void Scene::SetLogoScene()
 
 void Scene::SetMainMenu()
 {
-
+	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
 }
 
 void Scene::SetCombat(Enemy* enemySet)
