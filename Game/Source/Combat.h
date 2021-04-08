@@ -196,7 +196,10 @@ private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };
 
     SDL_Texture* character1Spritesheet = nullptr;
-    SDL_Texture* fullscreenAttack = nullptr;
+    SDL_Texture* fullscreenAttack_0 = nullptr;
+    SDL_Texture* fullscreenAttack_1 = nullptr;
+    SDL_Texture* fullscreenAttack_2 = nullptr;
+    SDL_Texture* fullscreenAttack_3 = nullptr;
     SDL_Texture* littleWolfSpritesheet = nullptr;
     SDL_Texture* grassyLandsBackground = nullptr;
     SDL_Texture* autummFallsBackground = nullptr;

@@ -23,7 +23,10 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	fullscreenAttack = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack.png");
+	fullscreenAttack_0 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_0.png");
+	fullscreenAttack_1 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_1.png");
+	fullscreenAttack_2 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_2.png");
+	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 	
@@ -77,7 +80,7 @@ void Combat::Restart()
 	combatState = NULL_STATE;
 	enemy = nullptr;
 	app->tex->UnLoad(character1Spritesheet);
-	app->tex->UnLoad(fullscreenAttack);
+	app->tex->UnLoad(fullscreenAttack_0);
 	app->tex->UnLoad(littleWolfSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 }
@@ -132,9 +135,21 @@ void Combat::DrawPlayer()
 	}
 	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
 	{
-		LOG("Attack anim");
-		app->render->DrawTexture(fullscreenAttack, 0,0, &currentPlayerAnim->GetCurrentFrame());
+		app->render->DrawTexture(fullscreenAttack_0, 0,0, &currentPlayerAnim->GetCurrentFrame());
 	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos1AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_1, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos2AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_2, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos3AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
