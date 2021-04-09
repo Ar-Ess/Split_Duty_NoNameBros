@@ -10,9 +10,25 @@
 struct _Mix_Music;
 struct Mix_Chunk;
 
+enum SoundTrack
+{
+	NO_TRACK = 0,
+	MAINMENU_TRACK,
+	MAINVILLAGE_TRACK
+};
+
+enum Effect
+{
+	NO_FX = 0,
+	RUN_FX,
+	JUMP_FX
+};
+
 class AudioManager : public Module
 {
 public:
+
+	//SoundTrack sc = NO_TRACK;
 
 	AudioManager();
 
@@ -22,13 +38,16 @@ public:
 
 	bool CleanUp();
 
-	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
+	void SetMusic(SoundTrack sc, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
+
+	void SetFx(Effect fx);
 
 	unsigned int LoadFx(const char* path);
 
-	bool PlayFx(unsigned int fx, int repeat = 0);
-
 private:
+	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
+
+	bool PlayFx(unsigned int fx, int repeat = 0);
 
 	_Mix_Music* music;
 	List<Mix_Chunk *> fx;

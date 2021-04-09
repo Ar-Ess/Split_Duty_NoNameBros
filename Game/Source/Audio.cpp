@@ -81,6 +81,22 @@ bool AudioManager::CleanUp()
 	return true;
 }
 
+void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
+{
+	if (sc == NO_TRACK)
+	{
+		return; //STOP MUSIC
+	}
+	else if (sc == MAINMENU_TRACK)
+	{
+		PlayMusic("Assets/Audio/Music/SplitDuty_MainMenu_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == MAINVILLAGE_TRACK)
+	{
+		PlayMusic("Assets/Audio/Music/SplitDuty_MainVillage_Soundtrack.mp3", fadeTime);
+	}
+}
+
 bool AudioManager::PlayMusic(const char* path, float fadeTime)
 {
 	bool ret = true;

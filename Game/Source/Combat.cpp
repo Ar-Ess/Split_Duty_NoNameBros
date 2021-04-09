@@ -998,7 +998,7 @@ void Combat::EnemyAttackProbability()
 		else if (random > 4 && random < 9) enemy->attack = 2;
 		else if (random > 8) enemy->attack = 3;
 
-		enemy->attack = 2;
+		//enemy->attack = 2;
 	}
 }
 
