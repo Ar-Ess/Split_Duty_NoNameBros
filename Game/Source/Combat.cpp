@@ -631,13 +631,31 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 void Combat::PlayerAttack()
 {
 	//app->scene->player1->cPos0AttackAnim.Reset();
-	currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
+	switch (steps)
+	{
+	case(0):
+		currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
+		break;
+	case(1):
+		currentPlayerAnim = &app->scene->player1->cPos1AttackAnim;
+		break;
+	case(2):
+		currentPlayerAnim = &app->scene->player1->cPos2AttackAnim;
+		break;
+	case(3):
+		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
+		break;
+	}
+	
 
 	/*if (playerTimeAttack < 225)
 	{
 		playerTimeAttack++;
 	}*/
-	if (app->scene->player1->cPos0AttackAnim.HasFinished()==false )
+	if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
+		app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
+		app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
+		app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
 	{
 
 	}
@@ -674,6 +692,7 @@ void Combat::PlayerMove()
 		playerTimeMove = 0;
 		playerStep = false;
 		steps++;
+		LOG("Player moved to position : %d", steps);
 
 		EnemyTurn();
 	}
@@ -1059,16 +1078,23 @@ void Combat::EscapeProbability(short int probabilityRange)
 
 void Combat::PlayerHitLogic()
 {
-	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
-	{
-		playerHitAble = false;
-		if (!wearMantisLeg)
+	
+		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
 		{
-			app->scene->player1->health -= EnemyDamageLogic();
-			LOG("Player Hit - PH: %d", app->scene->player1->health);
+			if (app->scene->player1->godMode)
+				LOG("Player is inmune");
+			else
+			{
+				playerHitAble = false;
+				if (!wearMantisLeg)
+				{
+					app->scene->player1->health -= EnemyDamageLogic();
+					LOG("Player Hit - PH: %d", app->scene->player1->health);
+				}
+				else if (wearMantisLeg) wearMantisLeg = false;
+			}
 		}
-		else if (wearMantisLeg) wearMantisLeg = false;
-	}
+	
 }
 
 void Combat::PlayerBulletHitLogic()

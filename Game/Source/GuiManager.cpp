@@ -158,20 +158,33 @@ void GuiManager::DrawCombatButtons()
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 {
-	int size = 4;
-	int thickness = 20;
-	maxLifeBar = { x,y,maxLife*size,thickness };
-	app->render->DrawRectangle(maxLifeBar, MAGENTA);
-	lifeBar = { x,y,life*size,thickness };
-	
-	//if life is critical blinks
-	if (life <= maxLife / 3)
+	if (app->scene->player1->godMode == false)
 	{
-		BlinkLifeBar(life, RED, SOFT_RED);
+		int size = 4;
+		int thickness = 20;
+		maxLifeBar = { x,y,maxLife * size,thickness };
+		app->render->DrawRectangle(maxLifeBar, MAGENTA);
+		if (life > 0)
+		{
+			lifeBar = { x,y,life * size,thickness };
+
+			//if life is critical blinks
+			if (life <= maxLife / 3)
+			{
+				BlinkLifeBar(life, RED, SOFT_RED);
+
+			}
+			else
+				app->render->DrawRectangle(lifeBar, RED);
+		}
 		
 	}
-	else
-		app->render->DrawRectangle(lifeBar, RED);
+
+	if (app->scene->player1->godMode)
+	{
+		app->render->DrawRectangle(maxLifeBar, BLUE);
+		BlinkLifeBar(life, BLUE, CYAN);
+	}
 }
 
 void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)

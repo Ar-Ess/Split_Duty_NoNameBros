@@ -73,6 +73,15 @@ bool Scene::Start()
 
 bool Scene::PreUpdate()
 {
+	if (app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		app->scene->player1->godMode = !app->scene->player1->godMode;
+
+		if (app->scene->player1->godMode)
+			LOG("God mode enabled");
+		else
+			LOG("God mode disabled");
+	}
 	/*
 	// L12b: Debug pathfing
 	static iPoint origin;

@@ -32,6 +32,45 @@ Player::Player() : Entity(EntityType::PLAYER)
     cPos0AttackAnim.loop = false;
     cPos0AttackAnim.pingpong = false;
 
+    j = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        cPos1AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
+    }
+    for (int i = 0; i < 7; i++)
+    {
+        cPos1AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
+    }
+    cPos1AttackAnim.speed = 0.240f;
+    cPos1AttackAnim.loop = false;
+    cPos1AttackAnim.pingpong = false;
+
+    j = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        cPos2AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
+    }
+    for (int i = 0; i < 7; i++)
+    {
+        cPos2AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
+    }
+    cPos2AttackAnim.speed = 0.240f;
+    cPos2AttackAnim.loop = false;
+    cPos2AttackAnim.pingpong = false;
+
+    j = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        cPos3AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
+    }
+    for (int i = 0; i < 7; i++)
+    {
+        cPos3AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
+    }
+    cPos3AttackAnim.speed = 0.240f;
+    cPos3AttackAnim.loop = false;
+    cPos3AttackAnim.pingpong = false;
+
     for (int i = 0; i < 8; i++)
     {
         cJumpAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT*5 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
@@ -66,6 +105,7 @@ Player::Player() : Entity(EntityType::PLAYER)
 
 bool Player::Update(float dt)
 {
+    
     return true;
 }
 

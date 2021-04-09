@@ -101,6 +101,8 @@ public:
 
     SDL_Rect colliderLive;
     SDL_Rect colliderCombat;
+public:
+    bool godMode = false;
 };
 
 #endif // __PLAYER_H__
