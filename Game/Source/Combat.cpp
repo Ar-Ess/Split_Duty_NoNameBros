@@ -648,17 +648,17 @@ void Combat::PlayerAttack()
 	}
 	
 
-	/*if (playerTimeAttack < 225)
+	if (playerTimeAttack < 200)
 	{
 		playerTimeAttack++;
-	}*/
-	if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
-		app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
-		app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
-		app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
-	{
-
 	}
+	//if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
+	//	app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
+	//	app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
+	//	app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
+	//{
+
+	//}
 	else
 	{
 		enemy->health -= PlayerDamageLogic();
@@ -1081,8 +1081,7 @@ void Combat::PlayerHitLogic()
 	
 		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
 		{
-			if (app->scene->player1->godMode)
-				LOG("Player is inmune");
+			if (app->scene->player1->godMode) LOG("Player is inmune");
 			else
 			{
 				playerHitAble = false;

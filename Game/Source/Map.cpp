@@ -232,7 +232,7 @@ void Map::DrawLayer(int num)
 					SDL_Rect rec = tileset->GetTileRect(tileId);
 					iPoint pos = MapToWorld(x, y);
 
-					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, &rec);
+					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, 1.75, &rec);
 				}
 			}
 		}

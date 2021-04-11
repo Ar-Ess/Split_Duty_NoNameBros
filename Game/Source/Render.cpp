@@ -180,6 +180,39 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	return ret;
 }
 
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, const SDL_Rect* section, double angle, SDL_RendererFlip flip) const
+{
+	bool ret = true;
+
+	SDL_Rect rect;
+	rect.x = (int)(camera.x) + x * scale;
+	rect.y = (int)(camera.y) + y * scale;
+
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
 bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled, bool useCamera) const
 {
 	bool ret = true;

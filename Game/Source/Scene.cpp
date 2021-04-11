@@ -73,15 +73,6 @@ bool Scene::Start()
 
 bool Scene::PreUpdate()
 {
-	if (app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-	{
-		app->scene->player1->godMode = !app->scene->player1->godMode;
-
-		if (app->scene->player1->godMode)
-			LOG("God mode enabled");
-		else
-			LOG("God mode disabled");
-	}
 	/*
 	// L12b: Debug pathfing
 	static iPoint origin;
@@ -198,6 +189,8 @@ void Scene::SetLogoScene()
 void Scene::SetMainMenu()
 {
 	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
+
+	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -253,7 +246,7 @@ void Scene::SetCombat(Enemy* enemySet)
 void Scene::SetVillage()
 {
 	map->Load("SplitDuty1.tmx");
-	//map->Load("try40x40.tmx");
+	app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 }
 
 void Scene::UpdateLogoScene()
@@ -288,17 +281,33 @@ void Scene::UpdateMainMenu()
 {
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
-//<<<<<<< Updated upstream
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(VILLAGE);
-
-//=======
 	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		app->dialogueManager->StartDialogue(1); 
 		app->guiManager->debugGui = true;
 	}
 
+// Other Options
+	if (app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	{
+		app->scene->player1->godMode = !app->scene->player1->godMode;
+
+		if (app->scene->player1->godMode)
+			LOG("God mode enabled");
+		else
+			LOG("God mode disabled");
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		app->scene->combatScene->secondPlayer = !app->scene->combatScene->secondPlayer;;
+
+		if (app->scene->combatScene->secondPlayer)
+			LOG("Second Player enabled");
+		else
+			LOG("Second Player disabled");
+	}
 }
 
 void Scene::UpdateCombat()

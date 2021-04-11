@@ -155,6 +155,8 @@ public:
     bool wearFeather = false;
     bool wearMantisLeg = false;
 
+    bool secondPlayer = false;
+
 public:
     short int smallMeat = 0;
     short int largeMeat = 0;
