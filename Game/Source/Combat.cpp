@@ -479,9 +479,17 @@ int Combat::PlayerDamageLogic()
 
 int Combat::SecondPlayerDamageLogic()
 {
+	int damage = app->scene->player2->strength - enemy->defense;
 
+	if (damage < 0) damage = 0;
 
-	return 0;
+	int variation = rand() % 3;
+	bool negative = (bool)(rand() % 2);
+
+	if (!negative) damage += variation;
+	else if (negative) damage -= variation;
+
+	return damage;
 }
 
 int Combat::EnemyDamageLogic()
@@ -785,7 +793,15 @@ void Combat::SecondPlayerAttack()
 	{
 		secondPlayerTimeAttack++;
 		
-		app->scene->player2->colliderCombat.x += 6;
+		if (enemy->enemyClass == SMALL_WOLF)
+		{
+			app->scene->player2->colliderCombat.x += 6;
+		}
+		else if (enemy->enemyClass == BIRD) app->scene->player2->colliderCombat.x += 6;
+		else if (enemy->enemyClass == MANTIS)
+		{
+			app->scene->player2->colliderCombat.x += 6;
+		}
 
 		if (app->scene->player2->colliderCombat.x > 1280) app->scene->player2->colliderCombat.x = 0;
 	}
@@ -1358,6 +1374,9 @@ void Combat::EnemyTurn()
 	playerStepDenied = false;
 
 	if (secondPlayer) secondPlayerChoice = true;
+
+	app->scene->scapeButton->state = GuiControlState::NORMAL;
+	app->scene->splitButton->state = GuiControlState::NORMAL;
 }
 
 void Combat::PlayerTurn()
@@ -1380,6 +1399,9 @@ void Combat::SecondPlayerTurn()
 
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 	currentPlayerAnim->Reset();
+
+	app->scene->scapeButton->state = GuiControlState::LOCKED;
+	app->scene->splitButton->state = GuiControlState::LOCKED;
 }
 
 void Combat::PlayerWin()
