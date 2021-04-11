@@ -101,11 +101,22 @@ void Combat::Restart()
 
 void Combat::Update()
 {
-	app->scene->attackButton->Update(0.0f);
-	app->scene->moveButton->Update(0.0f);
-	app->scene->itemButton->Update(0.0f);
+	if (combatState != SECOND_PLAYER_TURN)
+	{
+		app->scene->attackButton->Update(0.0f);
+		app->scene->moveButton->Update(0.0f);
+		app->scene->itemButton->Update(0.0f);
+	}
+
 	app->scene->scapeButton->Update(0.0f);
 	app->scene->splitButton->Update(0.0f);
+
+	if (combatState != PLAYER_TURN)
+	{
+		app->scene->secondAttackButton->Update(0.0f);
+		app->scene->protectButton->Update(0.0f);
+		app->scene->buffButton->Update(0.0f);
+	}
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
@@ -130,7 +141,7 @@ void Combat::Draw()
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
-	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 100 });
+	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
 
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
@@ -143,6 +154,27 @@ void Combat::Draw()
 	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
+
+	app->guiManager->DrawCombatInterface();
+
+	if (combatState != SECOND_PLAYER_TURN)
+	{
+		app->scene->attackButton->Draw();
+		app->scene->moveButton->Draw();
+		app->scene->itemButton->Draw();
+	}
+
+	app->scene->scapeButton->Draw();
+	app->scene->splitButton->Draw();
+
+	if (combatState != PLAYER_TURN)
+	{
+		app->scene->secondAttackButton->Draw();
+		app->scene->protectButton->Draw();
+		app->scene->buffButton->Draw();
+	}
+
+	app->guiManager->DrawCursor();
 }
 
 void Combat::DrawPlayer()
@@ -167,7 +199,6 @@ void Combat::DrawPlayer()
 	{
 		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
 	}
-	
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
@@ -197,7 +228,6 @@ void Combat::DrawBakcground()
 		case MOSSY_LANDS:
 			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
 			break;
-
 	}
 }
 
@@ -267,25 +297,23 @@ void Combat::CombatLogic()
 	{
 		if (secondPlayerChoice)
 		{
-			PlayerChoiceLogic();
+			SecondPlayerChoiceLogic();
 		}
 
 		if (secondPlayerAttack)
 		{
-			PlayerAttack();
+			SecondPlayerAttack();
 		}
 
 		if (secondPlayerProtect)
 		{
-			PlayerMove();
+			SecondPlayerProtect();
 		}
 
 		if (secondPlayerBuff)
 		{
-			PlayerItemChoose();
+			SecondPlayerBuff();
 		}
-
-
 	}
 	else if (combatState == WIN)
 	{
@@ -320,6 +348,7 @@ void Combat::CombatLogic()
 
 void Combat::BoolStart()
 {
+// Player 1
 	playerEscape = false;
 	playerAttack = false;
 	playerItem = false;
@@ -337,6 +366,18 @@ void Combat::BoolStart()
 	protectPlayerTurn = false;
 	enemyThrow = false;
 
+// Player 2
+	secondPlayerAttack = false;
+	secondPlayerProtect = false;
+	secondPlayerBuff = false;
+	secondPlayerChoice = true;
+
+	secondPlayerAttack = false;
+	secondPlayerProtect = false;
+	secondPlayerBuff = false;
+	drawBuffMenu = false;
+
+//Items
 	wearFeather = false;
 	wearMantisLeg = false;
 }
@@ -385,40 +426,23 @@ void Combat::PlayerChoiceLogic()
 
 void Combat::SecondPlayerChoiceLogic()
 {
-	if (app->scene->attackPressed)
+	if (app->scene->secondAttackPressed)
 	{
-		playerAttack = true;
-		playerChoice = false;
+		secondPlayerAttack = true;
+		secondPlayerChoice = false;
 		return;
 	}
-	else if (app->scene->movePressed && steps < 3)
+	else if (app->scene->protectPressed)
 	{
-		playerStep = true;
-		playerChoice = false;
-
-		currentPlayerAnim = &app->scene->player1->cStepAnim;
-		currentPlayerAnim->Reset();
-
+		secondPlayerProtect = true;
+		secondPlayerChoice = false;
 		return;
 	}
-	else if (app->scene->itemPressed)
+	else if (app->scene->buffPressed)
 	{
-		playerItem = true;
-		playerChoice = false;
-		drawInventory = true;
-		return;
-	}
-	else if (app->scene->scapePressed)
-	{
-		playerChoice = false;
-		short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
-		EscapeProbability(probabilityRange);
-		return;
-	}
-	else if (app->scene->splitPressed)
-	{
-		playerChoice = false;
-		playerSplit = true;
+		secondPlayerBuff = true;
+		secondPlayerChoice = false;
+		drawBuffMenu = true;
 		return;
 	}
 }
@@ -449,6 +473,13 @@ int Combat::PlayerDamageLogic()
 		if (luckArray[a]) return damage + floor(20 * (pDamage - enemy->defense) / 100);
 		else if (!luckArray[a]) return damage;
 	}
+
+	return 0;
+}
+
+int Combat::SecondPlayerDamageLogic()
+{
+
 
 	return 0;
 }
@@ -495,9 +526,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -524,9 +552,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -556,9 +581,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -585,9 +607,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -618,10 +637,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
-
-				if (wearFeather) wearFeather = false;
-				if (wearMantisLeg) wearMantisLeg = false;
-
 				PlayerTurn();
 			}
 		}
@@ -649,9 +664,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -678,9 +690,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					PlayerTurn();
 				}
 				else if (app->scene->player1->health <= 0)
@@ -704,9 +713,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				if (app->scene->player1->health > 0)
 				{
-					if (wearFeather) wearFeather = false;
-					if (wearMantisLeg) wearMantisLeg = false;
-
 					playerStepDenied = true;
 
 					PlayerTurn();
@@ -739,18 +745,18 @@ void Combat::PlayerAttack()
 		break;
 	}
 	
+	//if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
+//	app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
+//	app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
+//	app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
+//{
+
+//}
 
 	if (playerTimeAttack < 200)
 	{
 		playerTimeAttack++;
 	}
-	//if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
-	//	app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
-	//	app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
-	//	app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
-	//{
-
-	//}
 	else
 	{
 		enemy->health -= PlayerDamageLogic();
@@ -760,6 +766,39 @@ void Combat::PlayerAttack()
 		playerAttack = false;
 
 		PlayerPosReset();
+
+		if (enemy->health > 0)
+		{
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
+		}
+		else if (enemy->health <= 0)
+		{
+			PlayerWin();
+		}
+	}
+}
+
+void Combat::SecondPlayerAttack()
+{
+	if (secondPlayerTimeAttack < 215)
+	{
+		secondPlayerTimeAttack++;
+		
+		app->scene->player2->colliderCombat.x += 6;
+
+		if (app->scene->player2->colliderCombat.x > 1280) app->scene->player2->colliderCombat.x = 0;
+	}
+	else
+	{
+		enemy->health -= SecondPlayerDamageLogic();
+		LOG("Enemy Hit, EH: %d", enemy->health);
+
+		secondPlayerTimeAttack = 0;
+		secondPlayerAttack = false;
+
+		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 
 		if (enemy->health > 0)
 		{
@@ -786,7 +825,8 @@ void Combat::PlayerMove()
 		steps++;
 		LOG("Player moved to position : %d", steps);
 
-		EnemyTurn();
+		if (!secondPlayer) EnemyTurn();
+		else if (secondPlayer) SecondPlayerTurn();
 	}
 }
 
@@ -838,6 +878,18 @@ void Combat::PlayerItemChoose()
 	}
 }
 
+void Combat::SecondPlayerProtect()
+{
+	secondPlayerProtection = true;
+
+	EnemyTurn();
+}
+
+void Combat::SecondPlayerBuff()
+{
+	EnemyTurn();
+}
+
 void Combat::ItemUsage()
 {
 	if (healPlayerSmall)
@@ -855,7 +907,8 @@ void Combat::ItemUsage()
 
 			app->scene->player1->health += HealPlayer(1);
 
-			EnemyTurn();
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
 	else if (healPlayerLarge)
@@ -873,7 +926,8 @@ void Combat::ItemUsage()
 
 			app->scene->player1->health += HealPlayer(2);
 
-			EnemyTurn();
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
 	else if (featherPlayerTurn)
@@ -892,7 +946,8 @@ void Combat::ItemUsage()
 			wearFeather = true;
 			app->scene->player1->health += HealPlayer(3);
 
-			EnemyTurn();
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
 	else if (protectPlayerTurn)
@@ -910,7 +965,8 @@ void Combat::ItemUsage()
 
 			wearMantisLeg = true;
 
-			EnemyTurn();
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
 	else if (enemyThrow)
@@ -930,7 +986,8 @@ void Combat::ItemUsage()
 
 			if (enemy->health > 0)
 			{
-				EnemyTurn();
+				if (!secondPlayer) EnemyTurn();
+				else if (secondPlayer) SecondPlayerTurn();
 			}
 			else if (enemy->health <= 0)
 			{
@@ -963,7 +1020,10 @@ void Combat::PlayerSplit()
 				if (random < 2)
 				{
 					PlayerPosReset();
-					EnemyTurn();
+
+					if (!secondPlayer) EnemyTurn();
+					else if (secondPlayer) SecondPlayerTurn();
+
 					return;
 				}
 				else if (random >= 2)
@@ -987,7 +1047,10 @@ void Combat::PlayerSplit()
 		if (random < 3) //60% to lose
 		{
 			PlayerPosReset();
-			EnemyTurn();
+
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
+
 			return;
 		}
 		else if (random >= 3)
@@ -1097,9 +1160,9 @@ void Combat::EnemyAttackProbability()
 			}
 		}
 
-		int randomx = rand() % 4;
-		if (randomx == 3) enemy->attack = 2;
-		else if (randomx != 3) enemy->attack = 1;
+		int randomx = rand() % 3;
+		if (randomx == 2) enemy->attack = 2;
+		else if (randomx != 2) enemy->attack = 1;
 	}
 	else if (enemy->enemyClass == EnemyClass::MANTIS)
 	{
@@ -1291,7 +1354,10 @@ void Combat::EnemyTurn()
 
 	playerResponseAble = true;
 	playerChoice = true;
+	secondPlayerChoice = true;
 	playerStepDenied = false;
+
+	if (secondPlayer) secondPlayerChoice = true;
 }
 
 void Combat::PlayerTurn()
@@ -1299,6 +1365,21 @@ void Combat::PlayerTurn()
 	combatState = PLAYER_TURN;
 	LOG("PLAYER TURN");
 	LOG("Player Health: %d", app->scene->player1->health);
+
+	if (wearFeather) wearFeather = false;
+	if (wearMantisLeg) wearMantisLeg = false;
+	if (secondPlayerProtection) secondPlayerProtection = false;
+}
+
+void Combat::SecondPlayerTurn()
+{
+	LOG("SECOND PLAYER TURN");
+	LOG("Second Player Health: %d", app->scene->player2->health);
+
+	combatState = SECOND_PLAYER_TURN;
+
+	currentPlayerAnim = &app->scene->player1->cIdleAnim;
+	currentPlayerAnim->Reset();
 }
 
 void Combat::PlayerWin()

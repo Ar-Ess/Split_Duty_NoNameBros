@@ -74,6 +74,8 @@ public:
 
     int PlayerDamageLogic();
 
+    int SecondPlayerDamageLogic();
+
     int EnemyDamageLogic();
 
     int BulletDamageLogic();
@@ -82,6 +84,8 @@ public:
 
     void PlayerAttack();
 
+    void SecondPlayerAttack();
+
     void PlayerMove();
 
     void PlayerItemChoose();
@@ -89,6 +93,10 @@ public:
     void PlayerSplit();
 
     void PlayerResponse();
+
+    void SecondPlayerProtect();
+
+    void SecondPlayerBuff();
 
     void ItemUsage();
 
@@ -118,6 +126,8 @@ private: //STATE CHANGING FUNCTIONS
 
     void PlayerTurn();
 
+    void SecondPlayerTurn();
+
     void PlayerWin();
 
     void PlayerDie();
@@ -129,6 +139,7 @@ private: //STATE CHANGING FUNCTIONS
 public:
     short int enemyTimeWait = 0;
     short int playerTimeAttack = 0;
+    short int secondPlayerTimeAttack = 0;
     short int playerTimeMove = 0;
     short int playerTimeHeal = 0;
     short int playerTimeWearFeather = 0;
@@ -151,21 +162,25 @@ public:
     bool playerEscape = false;
     bool playerSplit = false;
     bool playerChoice = true;
-//Player 2 Choices
-    bool secondPlayerAttack = false;
-    bool secondPlayerProtect = false;
-    bool secondPlayerBuff = false;
-    bool secondPlayerChoice = true;
 
-//Other Choices
     bool itemChoice = true;
     bool drawInventory = false;
     bool healPlayerSmall = false;
     bool healPlayerLarge = false;
     bool featherPlayerTurn = false;
     bool protectPlayerTurn = false;
+    bool secondPlayerProtection = false;
     bool enemyThrow = false;
 
+//Player 2 Choices
+    bool secondPlayerAttack = false;
+    bool secondPlayerProtect = false;
+    bool secondPlayerBuff = false;
+    bool secondPlayerChoice = true;
+
+    bool drawBuffMenu = false;
+
+//Items
     bool wearFeather = false;
     bool wearMantisLeg = false;
 

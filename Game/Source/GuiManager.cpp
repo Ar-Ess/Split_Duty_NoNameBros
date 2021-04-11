@@ -113,11 +113,6 @@ bool GuiManager::Update(float dt)
 		doLogic = false;
 	}
 
-	
-	
-
-	
-
 	return true;
 }
 
@@ -142,18 +137,6 @@ void GuiManager::DrawCursor()
 		LOG("change cursor anim");
 		
 	}
-	
-
-
-}
-
-void GuiManager::DrawCombatButtons()
-{
-	app->scene->attackButton->Draw();
-	app->scene->moveButton->Draw();
-	app->scene->itemButton->Draw();
-	app->scene->scapeButton->Draw();
-	app->scene->splitButton->Draw();
 }
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
@@ -229,10 +212,6 @@ void GuiManager::DrawCombatInterface()
 	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
 
 	app->guiManager->DrawEnemyLifeBar(30, 35, 1086, 30);
-
-	DrawCombatButtons();
-
-	app->guiManager->DrawCursor();
 }
 
 bool GuiManager::CleanUp()

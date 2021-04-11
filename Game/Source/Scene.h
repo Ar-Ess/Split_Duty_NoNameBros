@@ -74,6 +74,15 @@ public: //Combat Buttons
 	GuiButton* splitButton = nullptr;
 	bool splitPressed = false;
 
+	GuiButton* secondAttackButton = nullptr;
+	bool secondAttackPressed = false;
+
+	GuiButton* protectButton = nullptr;
+	bool protectPressed = false;
+
+	GuiButton* buffButton = nullptr;
+	bool buffPressed = false;
+
 private: // Textures
 	SDL_Texture* logo = nullptr;
 

@@ -17,9 +17,9 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     type = enType;
 
     colliderCombat = collCombat;
-    colliderWorld = {60, 150, 56, 84}; //SPAWNPOINT X must be multiple of 12, and SPAWNPOINT Y must be multiple of 12 (+ 6). Ej: 60 = 12 * 6 || 150 = 12 * 12 + 6
+    colliderWorld = {60, 150, 56, 84};
 
-    playerSpeed = 18; //Don't modify it
+    playerSpeed = 12;
 
     if (enType == EntityType::PLAYER1)
     {
@@ -183,21 +183,21 @@ void Player::FeatherJump()
 
 void Player::Crouch()
 {
-   if (crouchTime < 18)
-    {
+   if (crouchTime < 22)
+   {
         if (crouchTime == 0)
         {
             colliderCombat.y += 40;
             colliderCombat.h = 48;
         }
         crouchTime++;
-    }
-    else
-    {
-        colliderCombat.y = INIT_COMBAT_POSY;
-        colliderCombat.h = 88;
-        crouchTime = 0;
-        crouch = false;
-        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
-    }
+   }
+   else
+   {
+       colliderCombat.y = INIT_COMBAT_POSY;
+       colliderCombat.h = 88;
+       crouchTime = 0;
+       crouch = false;
+       app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
+   }
 }

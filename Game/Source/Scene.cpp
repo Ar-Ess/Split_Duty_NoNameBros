@@ -247,6 +247,30 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
 	}
+
+	if (secondAttackButton == nullptr)
+	{
+		secondAttackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		secondAttackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		secondAttackButton->text = "SecondAttackButton";
+		secondAttackButton->SetObserver(this);
+	}
+
+	if (protectButton == nullptr)
+	{
+		protectButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		protectButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		protectButton->text = "ProtecteButton";
+		protectButton->SetObserver(this);
+	}
+
+	if (buffButton == nullptr)
+	{
+		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		buffButton->text = "BuffButton";
+		buffButton->SetObserver(this);
+	}
 }
 
 void Scene::SetVillage()
@@ -322,15 +346,11 @@ void Scene::UpdateCombat()
 
 	combatScene->Draw();
 
-	app->guiManager->Update(1.0f);
-
-	//app->guiManager->DrawCombatInterface();
+	app->guiManager->Update(1.0f); // NO USE
 
 	if (combatScene->playerEscape) SetScene(MAIN_MENU);
 
 	RestartPressState();
-
-	app->guiManager->DrawCombatInterface();
 
 	DebugSteps();
 }
@@ -363,6 +383,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
 		else if (strcmp(control->text.GetString(), "SplitButton") == 0) splitPressed = true;
+		else if (strcmp(control->text.GetString(), "SecondAttackButton") == 0) secondAttackPressed = true;
+		else if (strcmp(control->text.GetString(), "ProtectButton") == 0) protectPressed = true;
+		else if (strcmp(control->text.GetString(), "BuffButton") == 0) buffPressed = true;
 
 		break;
 	}
@@ -377,6 +400,10 @@ void Scene::RestartPressState()
 	itemPressed = false;
 	scapePressed = false;
 	splitPressed = false;
+	secondAttackPressed = false;
+	protectPressed = false;
+	buffPressed = false;
+
 }
 
 // Debug functions (future in debug module)
