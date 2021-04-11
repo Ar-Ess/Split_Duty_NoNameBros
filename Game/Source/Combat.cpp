@@ -47,12 +47,12 @@ void Combat::Start()
 
 	if (secondPlayer)
 	{
-		app->scene->player1->health = 15;
-		app->scene->player1->strength = 10;
-		app->scene->player1->defense = 5;
-		app->scene->player1->lvl = 10;
-		app->scene->player1->colliderCombat.x = INIT2_COMBAT_POSX;
-		app->scene->player1->colliderCombat.y = INIT2_COMBAT_POSY;
+		app->scene->player2->health = 15;
+		app->scene->player2->strength = 10;
+		app->scene->player2->defense = 5;
+		app->scene->player2->lvl = 10;
+		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 	}
 
 	//Idle Animation Set
@@ -110,7 +110,7 @@ void Combat::Update()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
 	currentPlayerAnim->Update(1.0f);
-	currentSecondPlayerAnim->Update(1.0f);
+	//currentSecondPlayerAnim->Update(1.0f);
 
 	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
 	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
