@@ -45,24 +45,29 @@ public:
         return colliderCombat;
     }
 
-    int GetCombatWidth() const
+    SDL_Rect GetWorldBounds()
+    {
+        return colliderWorld;
+    }
+
+    int GetCollCombatWidth() const
     {
         return colliderCombat.w;
     }
 
-    int GetCombatHeight() const
+    int GetCollCombatHeight() const
     {
         return colliderCombat.h;
     }
 
-    int GetLiveWidth() const
+    int GetCollWorldWidth() const
     {
-        return colliderLive.w;
+        return colliderWorld.w;
     }
 
-    int GetLiveHeight() const
+    int GetCollWorldHeight() const
     {
-        return colliderLive.h;
+        return colliderWorld.h;
     }
 
 public:
@@ -99,11 +104,12 @@ public:
 
 public:
     SDL_Texture* texture;
+    int playerSpeed;
 
     iPoint positionLive;
     int positionCombat;
 
-    SDL_Rect colliderLive;
+    SDL_Rect colliderWorld;
     SDL_Rect colliderCombat;
 public:
     bool godMode = false;

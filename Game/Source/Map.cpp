@@ -11,9 +11,6 @@ Map::Map() : Entity(EntityType::MAP)
 {
 	mapLoaded = false;
 	folder.Create("Assets/Maps");
-
-	//tex = texture;
-	scale = 2;
 }
 
 // Destructor
@@ -350,6 +347,7 @@ bool Map::CleanUp()
 
 	while (item != NULL)
 	{
+		app->tex->UnLoad(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}

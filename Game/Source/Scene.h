@@ -12,7 +12,7 @@ struct SDL_Texture;
 class Enemy;
 class Player;
 class Combat;
-class Map;
+class World;
 
 enum Scenes
 {
@@ -85,7 +85,7 @@ public:
 	Player* player1 = nullptr;
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
-	Map* map = nullptr;
+	World* world = nullptr;
 	Environments enviroment;
 
 private: //Scene Manager

@@ -6,7 +6,7 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "Map.h"
+#include "World.h"
 #include "Pathfinding.h"
 #include "EntityManager.h"
 #include "Entity.h"
@@ -50,7 +50,7 @@ bool Scene::Start()
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
-	map = new Map();
+	world = new World();
 
 	combatScene = new Combat();
 
@@ -148,7 +148,14 @@ bool Scene::CleanUp()
 	{
 
 	}
-	else if (currScene == COMBAT) combatScene->Restart();
+	else if (currScene == COMBAT)
+	{
+		combatScene->Restart();
+	}
+	else if (currScene == VILLAGE)
+	{
+		world->Restart();
+	}
 
 	return true;
 }
@@ -189,9 +196,7 @@ void Scene::SetLogoScene()
 
 void Scene::SetMainMenu()
 {
-	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
-
-	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
+	//app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -246,8 +251,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetVillage()
 {
-	map->Load("SplitDuty1.tmx");
-	app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+	world->Start("SplitDuty1.tmx");
+	//app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 }
 
 void Scene::UpdateLogoScene()
@@ -332,14 +337,11 @@ void Scene::UpdateCombat()
 
 void Scene::UpdateVillage()
 {
-	map->Draw();
+	world->Update();
+
+	world->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
-
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += 10;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= 10;
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += 10;
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= 10;
 }
 
 // GUI CONTROLS

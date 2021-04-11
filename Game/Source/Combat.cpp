@@ -57,7 +57,6 @@ void Combat::Start()
 
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
-	//currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
 
 	//Item Inventory amount
 	ItemSetup(1, 1, 1, 1, 1);
@@ -90,6 +89,7 @@ void Combat::Restart()
 {
 	combatState = NULL_STATE;
 	enemy = nullptr;
+
 	app->tex->UnLoad(character1Spritesheet);
 	app->tex->UnLoad(fullscreenAttack_0);
 	app->tex->UnLoad(fullscreenAttack_1);

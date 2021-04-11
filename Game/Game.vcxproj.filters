@@ -84,6 +84,9 @@
     <ClCompile Include="Source\Transition.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\World.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="Source\Transition.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

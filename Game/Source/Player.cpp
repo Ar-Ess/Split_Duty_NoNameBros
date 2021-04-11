@@ -14,10 +14,13 @@ Player::Player() : Entity(EntityType::PLAYER1)
 Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 {
     texture = NULL;
-
     type = enType;
 
     colliderCombat = collCombat;
+    colliderWorld = {60, 150, 56, 84}; //SPAWNPOINT X must be multiple of 12, and SPAWNPOINT Y must be multiple of 12 (+ 6). Ej: 60 = 12 * 6 || 150 = 12 * 12 + 6
+
+    playerSpeed = 18; //Don't modify it
+
     if (enType == EntityType::PLAYER1)
     {
         colliderCombat.x = INIT_COMBAT_POSX;
@@ -125,7 +128,6 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
 bool Player::Update(float dt)
 {
-    
     return true;
 }
 
