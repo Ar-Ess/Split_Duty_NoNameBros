@@ -37,7 +37,8 @@ Entity* EntityManager::CreateEntity(EntityType type)
 
 	switch (type)
 	{
-		case EntityType::PLAYER: ret = new Player();  break;
+		case EntityType::PLAYER1: ret = new Player({0, 0, 48, 88}, type);  break;
+		case EntityType::PLAYER2: ret = new Player({0, 0, 30, 30}, type); break;
 		case EntityType::ENEMY: ret = new Enemy();  break;
 		case EntityType::ITEM: ret = new Item();  break;
 		default: break;

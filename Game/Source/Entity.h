@@ -6,7 +6,8 @@ class Item;
 
 enum class EntityType
 {
-    PLAYER,
+    PLAYER1,
+    PLAYER2,
     ENEMY,
     ITEM,
     MAP,

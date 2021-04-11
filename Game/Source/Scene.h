@@ -82,9 +82,10 @@ public:
 	friend class Enemy;
 	friend class Player;
 
-	Player* player1;
-	Combat* combatScene;
-	Map* map;
+	Player* player1 = nullptr;
+	Player* player2 = nullptr;
+	Combat* combatScene = nullptr;
+	Map* map = nullptr;
 	Environments enviroment;
 
 private: //Scene Manager

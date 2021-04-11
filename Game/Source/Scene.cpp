@@ -47,7 +47,8 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
+	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
 	map = new Map();
 
@@ -66,7 +67,7 @@ bool Scene::Start()
 	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
 	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, 2, 200, 30, 30, 10, 20);
 
-	splitButton->state == GuiControlState::LOCKED;
+	//splitButton->state = GuiControlState::LOCKED;
 
 	return true;
 }

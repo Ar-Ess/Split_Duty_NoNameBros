@@ -12,6 +12,8 @@
 
 #define INIT_COMBAT_POSX 225
 #define INIT_COMBAT_POSY 400
+#define INIT2_COMBAT_POSX 275
+#define INIT2_COMBAT_POSY 350
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
 
@@ -23,6 +25,8 @@ class Player : public Entity
 public:
 
     Player();
+
+    Player(SDL_Rect, EntityType);
 
     bool Update(float dt);
 

@@ -33,6 +33,7 @@ enum CombatState
     NULL_STATE = -1,
     ENEMY_TURN,
     PLAYER_TURN,
+    SECOND_PLAYER_TURN,
     WIN,
     LOSE,
     SPLIT,
@@ -55,6 +56,10 @@ public:
 
     void DrawPlayer();
 
+    void DrawSecondPlayer();
+
+    void DrawEnemy();
+
     void DrawBakcground();
 
     void FirstTurnLogic();
@@ -64,6 +69,8 @@ public:
     void BoolStart();
 
     void PlayerChoiceLogic();
+
+    void SecondPlayerChoiceLogic();
 
     int PlayerDamageLogic();
 
@@ -137,13 +144,20 @@ public:
     bool playerHitAble = true;
     bool playerStepDenied = false;
 
+//Player 1 Choices
     bool playerAttack = false;
     bool playerStep = false;
     bool playerItem = false;
     bool playerEscape = false;
     bool playerSplit = false;
     bool playerChoice = true;
+//Player 2 Choices
+    bool secondPlayerAttack = false;
+    bool secondPlayerProtect = false;
+    bool secondPlayerBuff = false;
+    bool secondPlayerChoice = true;
 
+//Other Choices
     bool itemChoice = true;
     bool drawInventory = false;
     bool healPlayerSmall = false;
@@ -172,6 +186,7 @@ private:
     const SDL_Rect test = {52, 52, 70, 88};
 
     Animation* currentPlayerAnim = nullptr;
+    Animation* currentSecondPlayerAnim = nullptr;
     Animation* currentEnemyAnim = nullptr;
 
     bool CompareFrames(SDL_Rect a, SDL_Rect b)

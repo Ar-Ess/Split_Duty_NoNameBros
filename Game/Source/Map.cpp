@@ -236,7 +236,6 @@ void Map::DrawLayer(int num)
 				}
 			}
 		}
-
 		app->render->scale = 1;
 	}
 }

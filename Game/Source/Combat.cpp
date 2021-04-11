@@ -45,6 +45,16 @@ void Combat::Start()
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
+	if (secondPlayer)
+	{
+		app->scene->player1->health = 15;
+		app->scene->player1->strength = 10;
+		app->scene->player1->defense = 5;
+		app->scene->player1->lvl = 10;
+		app->scene->player1->colliderCombat.x = INIT2_COMBAT_POSX;
+		app->scene->player1->colliderCombat.y = INIT2_COMBAT_POSY;
+	}
+
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 	//currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
@@ -71,7 +81,8 @@ void Combat::Start()
 		}
 	}
 
-	LOG("PH: %d", app->scene->player1->health);
+	LOG("P1H: %d", app->scene->player1->health);
+	if (secondPlayer) LOG("P2H: %d", app->scene->player2->health);
 	LOG("EH: %d", enemy->health);
 }
 
@@ -81,6 +92,9 @@ void Combat::Restart()
 	enemy = nullptr;
 	app->tex->UnLoad(character1Spritesheet);
 	app->tex->UnLoad(fullscreenAttack_0);
+	app->tex->UnLoad(fullscreenAttack_1);
+	app->tex->UnLoad(fullscreenAttack_2);
+	app->tex->UnLoad(fullscreenAttack_3);
 	app->tex->UnLoad(littleWolfSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 }
@@ -96,6 +110,7 @@ void Combat::Update()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
 	currentPlayerAnim->Update(1.0f);
+	currentSecondPlayerAnim->Update(1.0f);
 
 	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
 	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
@@ -115,14 +130,17 @@ void Combat::Draw()
 
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
+	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 100 });
+
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
 	DrawPlayer();
 
-	for (int i = 0; i < 5; i++)
-	{
-		enemy->bullet[i].Draw();
-	}
+	if (secondPlayer) DrawSecondPlayer();
+
+	DrawEnemy();
+
+	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
 
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 }
@@ -152,6 +170,16 @@ void Combat::DrawPlayer()
 	
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+}
+
+void Combat::DrawSecondPlayer()
+{
+
+}
+
+void Combat::DrawEnemy()
+{
+
 }
 
 void Combat::DrawBakcground()
@@ -235,6 +263,30 @@ void Combat::CombatLogic()
 			PlayerSplit();
 		}
 	}
+	else if (combatState == SECOND_PLAYER_TURN)
+	{
+		if (secondPlayerChoice)
+		{
+			PlayerChoiceLogic();
+		}
+
+		if (secondPlayerAttack)
+		{
+			PlayerAttack();
+		}
+
+		if (secondPlayerProtect)
+		{
+			PlayerMove();
+		}
+
+		if (secondPlayerBuff)
+		{
+			PlayerItemChoose();
+		}
+
+
+	}
 	else if (combatState == WIN)
 	{
 		ItemDrop(enemy->enemyClass);
@@ -292,6 +344,46 @@ void Combat::BoolStart()
 // ---------------------------------------------------
 
 void Combat::PlayerChoiceLogic()
+{
+	if (app->scene->attackPressed)
+	{
+		playerAttack = true;
+		playerChoice = false;
+		return;
+	}
+	else if (app->scene->movePressed && steps < 3)
+	{
+		playerStep = true;
+		playerChoice = false;
+
+		currentPlayerAnim = &app->scene->player1->cStepAnim;
+		currentPlayerAnim->Reset();
+
+		return;
+	}
+	else if (app->scene->itemPressed)
+	{
+		playerItem = true;
+		playerChoice = false;
+		drawInventory = true;
+		return;
+	}
+	else if (app->scene->scapePressed)
+	{
+		playerChoice = false;
+		short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
+		EscapeProbability(probabilityRange);
+		return;
+	}
+	else if (app->scene->splitPressed)
+	{
+		playerChoice = false;
+		playerSplit = true;
+		return;
+	}
+}
+
+void Combat::SecondPlayerChoiceLogic()
 {
 	if (app->scene->attackPressed)
 	{
