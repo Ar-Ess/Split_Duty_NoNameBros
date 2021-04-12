@@ -18,6 +18,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     colliderCombat = collCombat;
     colliderWorld = {60, 150, 56, 84};
+    collisionRect = {60, 206, 56, 28};
 
     playerSpeed = 18;
 

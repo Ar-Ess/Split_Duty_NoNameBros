@@ -159,6 +159,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	void LoadColliders(MapLayer* layer);
 
 	// L06: TODO 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);

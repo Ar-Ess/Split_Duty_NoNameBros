@@ -39,15 +39,19 @@ private:
 
     void WorldMovement();
 
-    void PlayerMovement();
+    bool CollisionSolver(iPoint prevPos);
 
-    void CameraMovement();
+    bool PlayerMovement();
+
+    void CameraMovement(bool move);
 
     void RectifyCameraPosition();
 
     void UpdateWorldSpeed();
 
 private:
+
+    friend class Map;
 
     int worldSpeed;
 
@@ -56,6 +60,9 @@ private:
     Collision collisionUtils;
 
     Map* map = nullptr;
+
+    List<SDL_Rect> collisions;
+    List<SDL_Rect> changeMap;
 };
 
 #endif // __COMBAT_H__

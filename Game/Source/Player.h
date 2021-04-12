@@ -50,6 +50,11 @@ public:
         return colliderWorld;
     }
 
+    SDL_Rect GetCollisionBounds()
+    {
+        return collisionRect;
+    }
+
     int GetCollCombatWidth() const
     {
         return colliderCombat.w;
@@ -110,6 +115,7 @@ public:
     int positionCombat;
 
     SDL_Rect colliderWorld;
+    SDL_Rect collisionRect;
     SDL_Rect colliderCombat;
 public:
     bool godMode = false;
