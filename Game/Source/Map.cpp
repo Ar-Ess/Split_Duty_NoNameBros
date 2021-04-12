@@ -714,12 +714,24 @@ void Map::LoadColliders(MapLayer* layer)
 
 				switch (tileId)
 				{
+				case 5640: // HOUSES
+					app->scene->world->houses.Add(r);
+					break;
+
 				case 5639: // COLLIDER
 					app->scene->world->collisions.Add(r);
 					break;
 
-				case 5636: // CHANGE MAP
-					app->scene->world->changeMap.Add(r);
+				case 5638: // LOCATION 1
+					app->scene->world->location1.Add(r);
+					break;
+
+				case 5637: // LOCATION 2
+					app->scene->world->location2.Add(r);
+					break;
+
+				case 5636: // LOCATION 3
+					app->scene->world->location3.Add(r);
 					break;
 				}
 			}

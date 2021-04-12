@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Audio.h"
 #include "Render.h"
 
 #include "World.h"
@@ -10,11 +11,20 @@
 World::World()
 {
 	map = new Map();
+	place = NO_PLACE;
 }
 
-void World::Start(const char* mapName)
+void World::Start(Places placex)
 {
-	map->Load(mapName);
+	if (placex == MAIN_VILLAGE)
+	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+		map->Load("SplitDuty1.tmx");
+		place = placex;
+		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
+		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
+	}
+
 	UpdateWorldSpeed();
 }
 
@@ -22,14 +32,23 @@ void World::Restart()
 {
 	map->CleanUp();
 
+	houses.Clear();
+
 	collisions.Clear();
 
-	changeMap.Clear();
+	location1.Clear();
+
+	location2.Clear();
+
+	location2.Clear();
+
+	place = NO_PLACE;
 }
 
 void World::Update()
 {
 	WorldMovement();
+	WorldChange();
 }
 
 void World::Draw()
@@ -38,8 +57,11 @@ void World::Draw()
 	DrawPlayer();
 	DrawEnemy();
 
+	for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
 	for (int i = 0; i < collisions.Count(); i++) app->render->DrawRectangle(collisions[i], {255, 0, 0, 100});
-	for (int i = 0; i < changeMap.Count(); i++) app->render->DrawRectangle(changeMap[i], { 0, 0, 255, 100 });
+	for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
+	for (int i = 0; i < location2.Count(); i++) app->render->DrawRectangle(location2[i], { 0, 255, 0, 100 });
+	for (int i = 0; i < location3.Count(); i++) app->render->DrawRectangle(location3[i], { 0, 0, 255, 100 });
 }
 
 void World::DrawPlayer()
@@ -59,6 +81,48 @@ void World::WorldMovement()
 {
 	bool move = PlayerMovement();
 	CameraMovement(move);
+}
+
+void World::WorldChange()
+{
+	if (place == MAIN_VILLAGE)
+	{
+		for (int i = 0; i < location3.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
+			{
+				ChangeMap(ENEMY_FILD);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(MOSSY_ROCKS);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(GOLEM_STONES);
+				return;
+			}
+		}
+
+		for (int i = 0; i < houses.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, houses[i]))
+			{
+				ChangeMap(HOUSE);
+				return;
+			}
+		}
+	}
 }
 
 bool World::CollisionSolver(iPoint prevPos)
@@ -121,4 +185,10 @@ void World::RectifyCameraPosition()
 void World::UpdateWorldSpeed()
 {
 	worldSpeed = app->scene->player1->playerSpeed;
+}
+
+void World::ChangeMap(Places place)
+{
+	//app->scene->SetScene(WORLD, place);
+	app->scene->SetScene(Scenes::MAIN_MENU);
 }

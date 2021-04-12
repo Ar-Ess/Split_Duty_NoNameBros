@@ -122,7 +122,7 @@ bool Scene::Update(float dt)
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == COMBAT) UpdateCombat();
-	else if (currScene == VILLAGE) UpdateVillage();
+	else if (currScene == WORLD) UpdateWorld();
 
 	return true;
 }
@@ -152,7 +152,7 @@ bool Scene::CleanUp()
 	{
 		combatScene->Restart();
 	}
-	else if (currScene == VILLAGE)
+	else if (currScene == WORLD)
 	{
 		world->Restart();
 	}
@@ -172,7 +172,7 @@ void Scene::SetScene(Scenes scene)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	//else if (scene == COMBAT) SetCombat();
-	else if (scene == VILLAGE) SetVillage();
+	//else if (scene == WORLD) SetWorld();
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
@@ -185,7 +185,20 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == COMBAT) SetCombat(enemy);
-	else if (scene == VILLAGE) SetVillage();
+	//else if (scene == WORLD) SetWorld();
+}
+
+void Scene::SetScene(Scenes scene, Places place)
+{
+	CleanUp();
+
+	prevScene = currScene;
+	currScene = scene;
+
+	if (scene == LOGO_SCENE) SetLogoScene();
+	else if (scene == MAIN_MENU) SetMainMenu();
+	//else if (scene == COMBAT) SetCombat();
+	else if (scene == WORLD) SetWorld(place);
 }
 
 void Scene::SetLogoScene()
@@ -273,10 +286,9 @@ void Scene::SetCombat(Enemy* enemySet)
 	}
 }
 
-void Scene::SetVillage()
+void Scene::SetWorld(Places place)
 {
-	world->Start("SplitDuty1.tmx");
-	//app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+	world->Start(place);
 }
 
 void Scene::UpdateLogoScene()
@@ -312,7 +324,7 @@ void Scene::UpdateMainMenu()
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
-	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(VILLAGE);
+	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(WORLD, Places::MAIN_VILLAGE);
 	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		app->dialogueManager->StartDialogue(1); 
@@ -355,7 +367,7 @@ void Scene::UpdateCombat()
 	DebugSteps();
 }
 
-void Scene::UpdateVillage()
+void Scene::UpdateWorld()
 {
 	world->Update();
 
