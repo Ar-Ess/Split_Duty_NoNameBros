@@ -66,6 +66,8 @@ public:
 
     void CombatLogic();
 
+    void EndBattleSolving();
+
     void BoolStart();
 
     void PlayerChoiceLogic();
@@ -159,7 +161,6 @@ public:
     bool playerAttack = false;
     bool playerStep = false;
     bool playerItem = false;
-    bool playerEscape = false;
     bool playerSplit = false;
     bool playerChoice = true;
 
@@ -185,6 +186,12 @@ public:
     bool wearMantisLeg = false;
 
     bool secondPlayer = false;
+
+// END BATTLE BOOLS
+    bool playerEscaped = false;
+    bool playerWin = false;
+    bool playerLose = false;
+    bool playerSplitWin = false;
 
 public:
     short int smallMeat = 0;

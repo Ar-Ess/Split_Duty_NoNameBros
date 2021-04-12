@@ -63,7 +63,7 @@ public:
 
     virtual ~Enemy();
 
-    void SetUp(EnemyClass xenemyClass, SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
+    void SetUp(EnemyClass xenemyClass, SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
 
     void Jump();
 
@@ -96,6 +96,8 @@ private: // Attack Time
 
 public:
     SDL_Rect colliderCombat;
+    SDL_Rect colliderWorld;
+    SDL_Rect colliderRect;
     bool jumping = false;
 
 public:

@@ -1,6 +1,8 @@
 #include "Map.h"
 #include "App.h"
 #include "Render.h"
+#include "Scene.h"
+#include "World.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -202,7 +204,10 @@ void Map::Draw()
 	// L06: DONE 4: Make sure we draw all the layers and not just the first one
 	for (int i = 0; i < data.layers.Count(); i++)
 	{
-		if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+		if (strcmp(data.layers[i]->name.GetString(), "colliders") != 0)
+		{
+			if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+		}
 	}
 }
 
@@ -229,7 +234,7 @@ void Map::DrawLayer(int num)
 					SDL_Rect rec = tileset->GetTileRect(tileId);
 					iPoint pos = MapToWorld(x, y);
 
-					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, 1.75, &rec);
+					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, SCALE, &rec);
 				}
 			}
 		}
@@ -416,6 +421,11 @@ bool Map::Load(const char* filename)
 		ret = LoadLayer(layer, lay);
 
 		if (ret == true) data.layers.Add(lay);
+
+		if (strcmp(lay->name.GetString(), "colliders") == 0)
+		{
+			LoadColliders(lay);
+		}
 	}
     
     if(ret == true)
@@ -679,4 +689,52 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	}
 
 	return ret;
+}
+
+void Map::LoadColliders(MapLayer* layer)
+{
+	for (int y = 0; y < data.height; ++y)
+	{
+		for (int x = 0; x < data.width; ++x)
+		{
+			uint tileId = layer->Get(x, y);
+
+			if (tileId > 0)
+			{
+				TileSet* set = data.tilesets.end->data;
+
+				SDL_Rect r = set->GetTileRect(tileId);
+
+				iPoint pos = MapToWorld(x, y);
+
+				r.x = pos.x * SCALE;
+				r.y = pos.y * SCALE;
+				r.w *= SCALE;
+				r.h *= SCALE;
+
+				switch (tileId)
+				{
+				case 5640: // HOUSES
+					app->scene->world->houses.Add(r);
+					break;
+
+				case 5639: // COLLIDER
+					app->scene->world->collisions.Add(r);
+					break;
+
+				case 5638: // LOCATION 1
+					app->scene->world->location1.Add(r);
+					break;
+
+				case 5637: // LOCATION 2
+					app->scene->world->location2.Add(r);
+					break;
+
+				case 5636: // LOCATION 3
+					app->scene->world->location3.Add(r);
+					break;
+				}
+			}
+		}
+	}
 }

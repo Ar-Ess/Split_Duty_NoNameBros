@@ -17,13 +17,25 @@ class Map;
 struct SDL_Texture;
 struct SDL_Rect;
 
+enum Places
+{
+    NO_PLACE,
+    MAIN_VILLAGE,
+    ENEMY_FILD,
+    HOUSE,
+    GOLEM_STONES,
+    GRASSY_LAND,
+    AUTUM_FALLS,
+    MOSSY_ROCKS
+};
+
 class World
 {
 public:
 
     World();
 
-    void Start(const char*);
+    void Start(Places place);
 
     void Restart();
 
@@ -35,19 +47,34 @@ public:
 
     void DrawEnemy();
 
+    Places GetPlace() const
+    {
+        return place;
+    }
+
 private:
 
     void WorldMovement();
 
-    void PlayerMovement();
+    void WorldChange();
 
-    void CameraMovement();
+    void WorldEnemyDetection();
+
+    bool CollisionSolver(iPoint prevPos);
+
+    bool PlayerMovement();
+
+    void CameraMovement(bool move);
 
     void RectifyCameraPosition();
 
     void UpdateWorldSpeed();
 
+    void ChangeMap(Places place);
+
 private:
+
+    friend class Map;
 
     int worldSpeed;
 
@@ -56,6 +83,14 @@ private:
     Collision collisionUtils;
 
     Map* map = nullptr;
+
+    Places place;
+
+    List<SDL_Rect> houses;
+    List<SDL_Rect> collisions;
+    List<SDL_Rect> location1;
+    List<SDL_Rect> location2;
+    List<SDL_Rect> location3;
 };
 
 #endif // __COMBAT_H__

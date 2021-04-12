@@ -50,6 +50,8 @@ bool Scene::Start()
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
+	player1->SetUp(40, 40, 30, 10, 0, 0, 0, 10, 0, 0);
+
 	world = new World();
 
 	combatScene = new Combat();
@@ -62,12 +64,11 @@ bool Scene::Start()
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 
-	//ENEMY SET                                          ENEMY CLASS           ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
-	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, 2, 200, 30, 30, 10, 20);
-	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
-	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, 2, 200, 30, 30, 10, 20);
+	//ENEMY SET                                          ENEMY CLASS           -----------------COMBAT RECT----------------        ---WORLD RECT---  LVL EXP  HP STR DEF  VEL
+	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 30, 30, 10, 20);
 
-	//splitButton->state = GuiControlState::LOCKED;
+	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 200, 30, 30, 10, 20);
 
 	return true;
 }
@@ -122,7 +123,8 @@ bool Scene::Update(float dt)
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == COMBAT) UpdateCombat();
-	else if (currScene == VILLAGE) UpdateVillage();
+	else if (currScene == LEVEL_UP) UpdateLevelUp();
+	else if (currScene == WORLD) UpdateWorld();
 
 	return true;
 }
@@ -152,7 +154,11 @@ bool Scene::CleanUp()
 	{
 		combatScene->Restart();
 	}
-	else if (currScene == VILLAGE)
+	else if (currScene == LEVEL_UP)
+	{
+
+	}
+	else if (currScene == WORLD)
 	{
 		world->Restart();
 	}
@@ -172,20 +178,50 @@ void Scene::SetScene(Scenes scene)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	//else if (scene == COMBAT) SetCombat();
-	else if (scene == VILLAGE) SetVillage();
+	else if (scene == LEVEL_UP) SetLevelUp(0);
+	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
 {
+	CleanUp();
+
 	prevScene = currScene;
 	currScene = scene;
-
-	CleanUp();
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == COMBAT) SetCombat(enemy);
-	else if (scene == VILLAGE) SetVillage();
+	else if (scene == LEVEL_UP) SetLevelUp(0);
+	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
+}
+
+void Scene::SetScene(Scenes scene, Places place)
+{
+	CleanUp();
+
+	prevScene = currScene;
+	currScene = scene;
+
+	if (scene == LOGO_SCENE) SetLogoScene();
+	else if (scene == MAIN_MENU) SetMainMenu();
+	//else if (scene == COMBAT) SetCombat();
+	else if (scene == LEVEL_UP) SetLevelUp(0);
+	else if (scene == WORLD) SetWorld(place);
+}
+
+void Scene::SetScene(Scenes scene, unsigned short int exp)
+{
+	CleanUp();
+
+	prevScene = currScene;
+	currScene = scene;
+
+	if (scene == LOGO_SCENE) SetLogoScene();
+	else if (scene == MAIN_MENU) SetMainMenu();
+	//else if (scene == COMBAT) SetCombat();
+	else if (scene == LEVEL_UP) SetLevelUp(exp);
+	//else if (scene == WORLD) SetWorld(place);
 }
 
 void Scene::SetLogoScene()
@@ -273,10 +309,14 @@ void Scene::SetCombat(Enemy* enemySet)
 	}
 }
 
-void Scene::SetVillage()
+void Scene::SetLevelUp(unsigned short int exp)
 {
-	world->Start("SplitDuty1.tmx");
-	//app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+
+}
+
+void Scene::SetWorld(Places place)
+{
+	world->Start(place);
 }
 
 void Scene::UpdateLogoScene()
@@ -312,7 +352,7 @@ void Scene::UpdateMainMenu()
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
-	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(VILLAGE);
+	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(WORLD, Places::MAIN_VILLAGE);
 	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		app->dialogueManager->StartDialogue(1); 
@@ -348,14 +388,19 @@ void Scene::UpdateCombat()
 
 	app->guiManager->Update(1.0f); // NO USE
 
-	if (combatScene->playerEscape) SetScene(MAIN_MENU);
+	combatScene->EndBattleSolving();
 
 	RestartPressState();
 
 	DebugSteps();
 }
 
-void Scene::UpdateVillage()
+void Scene::UpdateLevelUp()
+{
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(WORLD, world->place);
+}
+
+void Scene::UpdateWorld()
 {
 	world->Update();
 

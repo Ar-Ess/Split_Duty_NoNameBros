@@ -18,6 +18,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     colliderCombat = collCombat;
     colliderWorld = {60, 150, 56, 84};
+    collisionRect = {60, 206, 56, 28};
 
     playerSpeed = 18;
 
@@ -136,6 +137,20 @@ bool Player::Draw()
     return false;
 }
 
+void Player::SetUp(short int healthx, short int maxHealthx, short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx, short int moneyx)
+{
+    health = healthx;
+    maxHealth = maxHealthx;
+    strength = strengthx;
+    defense = defensex;
+    luck = luckx;
+    velocity = velocityx;
+    stab = stabx;
+    lvl = lvlx;
+    exp = expx;
+    money = moneyx;
+}
+
 void Player::SetTexture(SDL_Texture *tex)
 {
     texture = tex;
@@ -200,4 +215,9 @@ void Player::Crouch()
        crouch = false;
        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
    }
+}
+
+void Player::Refill()
+{
+    health = maxHealth;
 }

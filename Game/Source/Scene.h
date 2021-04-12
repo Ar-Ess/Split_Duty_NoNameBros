@@ -13,6 +13,7 @@ class Enemy;
 class Player;
 class Combat;
 class World;
+enum Places;
 
 enum Scenes
 {
@@ -20,7 +21,8 @@ enum Scenes
 	LOGO_SCENE,
 	MAIN_MENU,
 	COMBAT,
-	VILLAGE
+	LEVEL_UP,
+	WORLD
 };
 
 enum Environments
@@ -98,23 +100,29 @@ public:
 	Environments enviroment;
 
 private: //Scene Manager
+	friend class World;
+
 	Scenes currScene = NONE;
 	Scenes prevScene = NONE;
 
 	void SetScene(Scenes scene);
 	void SetScene(Scenes scene, Enemy* enemy);
+	void SetScene(Scenes scene, Places place);
+	void SetScene(Scenes scene, unsigned short int exp);
 
 	//Setters
 	void SetLogoScene();
 	void SetMainMenu();
 	void SetCombat(Enemy* enemy);
-	void SetVillage();
+	void SetLevelUp(unsigned short int experience);
+	void SetWorld(Places place);
 
 	//Updaters
 	void UpdateLogoScene();
 	void UpdateMainMenu();
 	void UpdateCombat();
-	void UpdateVillage();
+	void UpdateLevelUp();
+	void UpdateWorld();
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

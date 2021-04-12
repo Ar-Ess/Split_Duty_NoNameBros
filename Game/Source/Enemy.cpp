@@ -38,10 +38,12 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::SetUp(EnemyClass xenemyClass, SDL_Rect collider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
+void Enemy::SetUp(EnemyClass xenemyClass, SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {
     enemyClass = xenemyClass;
-    colliderCombat = collider;
+    colliderCombat = combatCollider;
+    colliderWorld = worldCollider;
+    colliderRect = {worldCollider.x, worldCollider.y + worldCollider.h - 28, worldCollider.w, 28};
     lvl = xlvl;
     exp = xexp;
     health = xhealth;
