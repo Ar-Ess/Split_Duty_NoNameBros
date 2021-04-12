@@ -450,6 +450,8 @@ bool Map::Load(const char* filename)
 
     mapLoaded = ret;
 
+	tmp.Clear();
+
     return ret;
 }
 
