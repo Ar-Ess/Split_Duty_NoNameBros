@@ -180,13 +180,21 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	return ret;
 }
 
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, const SDL_Rect* section, double angle, SDL_RendererFlip flip) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, const SDL_Rect* section, bool scaleModifiesCoordinates, double angle, SDL_RendererFlip flip) const
 {
 	bool ret = true;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x) + x * scale;
-	rect.y = (int)(camera.y) + y * scale;
+	if (scaleModifiesCoordinates)
+	{
+		rect.x = (int)(camera.x) + x * scale;
+		rect.y = (int)(camera.y) + y * scale;
+	}
+	else if (!scaleModifiesCoordinates)
+	{
+		rect.x = (int)(camera.x) + x;
+		rect.y = (int)(camera.y) + y;
+	}
 
 	if (section != NULL)
 	{

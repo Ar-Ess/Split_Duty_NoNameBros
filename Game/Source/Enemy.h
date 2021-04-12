@@ -79,6 +79,11 @@ public:
 
     void MantisBulletShoot();
 
+    EnemyClass GetClass() const
+    {
+        return enemyClass;
+    }
+
 private: // Attack Time
     short int attack = 0;
     short int jumpTime = 0;
