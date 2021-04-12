@@ -27,6 +27,8 @@ void World::Start(Places placex)
 		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
 	}
 
+	wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
+
 	UpdateWorldSpeed();
 }
 
@@ -80,8 +82,16 @@ void World::DrawEnemy()
 {
 	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 	{
-		app->render->DrawRectangle(app->entityManager->enemies[i]->colliderWorld, { 100, 150, 240, 150 });
-		app->render->DrawRectangle(app->entityManager->enemies[i]->colliderRect, { 150, 150, 140, 200 });
+		Enemy* enemy = app->entityManager->enemies[i];
+		app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
+		app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
+
+		if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
+		{
+			app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+		}
+
+		enemy = nullptr;
 	}
 }
 

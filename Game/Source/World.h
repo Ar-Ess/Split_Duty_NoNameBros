@@ -91,6 +91,11 @@ private:
     List<SDL_Rect> location1;
     List<SDL_Rect> location2;
     List<SDL_Rect> location3;
+
+private: //Textures
+
+    SDL_Texture* wolfSpritesheet = nullptr;
+    const SDL_Rect wolfRect = {0, 166, 60, 35};
 };
 
 #endif // __COMBAT_H__
