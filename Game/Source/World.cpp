@@ -21,8 +21,16 @@ void World::Start(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		map->Load("SplitDuty1.tmx");
 		place = placex;
+		map->Load("SplitDuty1.tmx");
+		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
+		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
+	}
+	else if (placex == HOUSE)
+	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+		place = placex;
+		map->Load("house.tmx");
 		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
 		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
 	}
@@ -65,11 +73,11 @@ void World::Draw()
 	DrawPlayer();
 	DrawEnemy();
 
-	for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
+	if (houses.Count() > 0) for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
 	for (int i = 0; i < collisions.Count(); i++) app->render->DrawRectangle(collisions[i], {255, 0, 0, 100});
-	for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
-	for (int i = 0; i < location2.Count(); i++) app->render->DrawRectangle(location2[i], { 0, 255, 0, 100 });
-	for (int i = 0; i < location3.Count(); i++) app->render->DrawRectangle(location3[i], { 0, 0, 255, 100 });
+	if (location1.Count() > 0) for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
+	if (location2.Count() > 0) for (int i = 0; i < location2.Count(); i++) app->render->DrawRectangle(location2[i], { 0, 255, 0, 100 });
+	if (location3.Count() > 0) for (int i = 0; i < location3.Count(); i++) app->render->DrawRectangle(location3[i], { 0, 0, 255, 100 });
 }
 
 void World::DrawPlayer()
@@ -220,6 +228,9 @@ void World::UpdateWorldSpeed()
 
 void World::ChangeMap(Places place)
 {
-	//app->scene->SetScene(WORLD, place);
-	app->scene->SetScene(Scenes::MAIN_MENU);
+	if (place == HOUSE) app->scene->SetScene(WORLD, place);
+	else
+	{
+		app->scene->SetScene(Scenes::MAIN_MENU);
+	}
 }

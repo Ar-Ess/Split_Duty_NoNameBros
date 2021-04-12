@@ -712,27 +712,43 @@ void Map::LoadColliders(MapLayer* layer)
 				r.w *= SCALE;
 				r.h *= SCALE;
 
-				switch (tileId)
+				if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE)
 				{
-				case 5640: // HOUSES
-					app->scene->world->houses.Add(r);
-					break;
+					switch (tileId)
+					{
+					case 5640: // HOUSES
+						app->scene->world->houses.Add(r);
+						break;
 
-				case 5639: // COLLIDER
-					app->scene->world->collisions.Add(r);
-					break;
+					case 5639: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
 
-				case 5638: // LOCATION 1
-					app->scene->world->location1.Add(r);
-					break;
+					case 5638: // LOCATION 1
+						app->scene->world->location1.Add(r);
+						break;
 
-				case 5637: // LOCATION 2
-					app->scene->world->location2.Add(r);
-					break;
+					case 5637: // LOCATION 2
+						app->scene->world->location2.Add(r);
+						break;
 
-				case 5636: // LOCATION 3
-					app->scene->world->location3.Add(r);
-					break;
+					case 5636: // LOCATION 3
+						app->scene->world->location3.Add(r);
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::HOUSE)
+				{
+					switch (tileId)
+					{
+					case 527: // HOUSES
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 526: // COLLIDER
+						app->scene->world->location1.Add(r);
+						break;
+					}
 				}
 			}
 		}
