@@ -47,11 +47,18 @@ public:
 
     void DrawEnemy();
 
+    Places GetPlace() const
+    {
+        return place;
+    }
+
 private:
 
     void WorldMovement();
 
     void WorldChange();
+
+    void WorldEnemyDetection();
 
     bool CollisionSolver(iPoint prevPos);
 

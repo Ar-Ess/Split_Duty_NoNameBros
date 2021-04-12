@@ -21,6 +21,7 @@ enum Scenes
 	LOGO_SCENE,
 	MAIN_MENU,
 	COMBAT,
+	LEVEL_UP,
 	WORLD
 };
 
@@ -107,17 +108,20 @@ private: //Scene Manager
 	void SetScene(Scenes scene);
 	void SetScene(Scenes scene, Enemy* enemy);
 	void SetScene(Scenes scene, Places place);
+	void SetScene(Scenes scene, unsigned short int exp);
 
 	//Setters
 	void SetLogoScene();
 	void SetMainMenu();
 	void SetCombat(Enemy* enemy);
+	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
 
 	//Updaters
 	void UpdateLogoScene();
 	void UpdateMainMenu();
 	void UpdateCombat();
+	void UpdateLevelUp();
 	void UpdateWorld();
 
 private: //debug

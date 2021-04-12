@@ -32,6 +32,8 @@ public:
 
     bool Draw();
 
+    void SetUp(short int healthx, short int maxHealthx, short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx, short int moneyx);
+
     void SetTexture(SDL_Texture *tex);
 
     void Jump();
@@ -39,6 +41,8 @@ public:
     void FeatherJump();
 
     void Crouch();
+
+    void Refill();
 
     SDL_Rect GetCombatBounds()
     {
@@ -101,7 +105,7 @@ public:
     int strength = 30;
     int velocity = 0;
     int luck = 0;
-    int stab;
+    int stab = 0;
     
     int lvl;
     int exp;

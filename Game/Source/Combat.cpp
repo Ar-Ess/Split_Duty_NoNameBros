@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "GuiManager.h"
 #include "GuiButton.h"
+#include "World.h"
 
 #include "Combat.h"
 #include "Enemy.h"
@@ -29,22 +30,8 @@ void Combat::Start()
 	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
-	
 
-	//ENEMY SET       ENEMY CLASS            ---------------------RECT-------------------     LVL EXP  HP STR DEF VEL
-	//enemy->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 70, 55 }, 2, 200, 30, 30, 10, 20);
-	//enemy->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, 2, 200, 30, 30, 10, 20);
-
-	//Player HardCoded
-	app->scene->player1->health = 35;
-	app->scene->player1->strength = 30;
-	app->scene->player1->defense = 5;
-	app->scene->player1->luck = 0;
-	app->scene->player1->velocity = 0;
-	app->scene->player1->lvl = 10;
-	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
-	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
-
+	//Player 2 Harcoded
 	if (secondPlayer)
 	{
 		app->scene->player2->health = 15;
@@ -97,6 +84,8 @@ void Combat::Restart()
 	app->tex->UnLoad(fullscreenAttack_3);
 	app->tex->UnLoad(littleWolfSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
+
+	PlayerPosReset();
 }
 
 void Combat::Update()
@@ -333,18 +322,19 @@ void Combat::CombatLogic()
 	else if (combatState == WIN)
 	{
 		ItemDrop(enemy->enemyClass);
-		playerEscape = true; //Provisional, will lead to win animation and level upgrade
+		playerWin = true;
 	}
 	else if (combatState == LOSE)
 	{
 		if (CompareFrames(currentPlayerAnim->GetCurrentFrame(), app->scene->player1->cDieAnim.GetLastFrame()))
 		{
-			playerEscape = true; //Provisional, will lead to lose animation and respawn
+			playerLose = true;
+			app->scene->player1->Refill();
 		}
 	}
 	else if (combatState == SPLIT)
 	{
-		playerEscape = true; //Provisional, will lead to win animation
+		playerSplitWin = true;
 	}
 	else if (combatState == ESCAPE)
 	{
@@ -356,15 +346,22 @@ void Combat::CombatLogic()
 		else
 		{
 			playerTimeEscape = 0;
-			playerEscape = true;
+			playerEscaped = true;
 		}
 	}
+}
+
+void Combat::EndBattleSolving()
+{
+	if (playerWin) app->scene->SetScene(LEVEL_UP, enemy->exp);
+	else if (playerLose) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+	else if (playerSplitWin) app->scene->SetScene(LEVEL_UP);
+	else if (playerEscaped) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 }
 
 void Combat::BoolStart()
 {
 // Player 1
-	playerEscape = false;
 	playerAttack = false;
 	playerItem = false;
 	playerStep = false;
@@ -395,6 +392,12 @@ void Combat::BoolStart()
 //Items
 	wearFeather = false;
 	wearMantisLeg = false;
+
+// END BATTLE BOOLS
+	playerEscaped = false;
+	playerWin = false;
+	playerLose = false;
+	playerSplitWin = false;
 }
 
 // ---------------------------------------------------
@@ -1301,6 +1304,7 @@ void Combat::PlayerBulletHitLogic()
 void Combat::PlayerPosReset()
 {
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
+	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 	steps = 0;
 }
 

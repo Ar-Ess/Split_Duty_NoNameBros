@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Audio.h"
 #include "Render.h"
+#include "EntityManager.h"
+#include "Enemy.h"
 
 #include "World.h"
 #include "Map.h"
@@ -42,13 +44,17 @@ void World::Restart()
 
 	location2.Clear();
 
-	place = NO_PLACE;
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
+
+	//place = NO_PLACE;
 }
 
 void World::Update()
 {
 	WorldMovement();
 	WorldChange();
+	WorldEnemyDetection();
 }
 
 void World::Draw()
@@ -72,7 +78,11 @@ void World::DrawPlayer()
 
 void World::DrawEnemy()
 {
-
+	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
+	{
+		app->render->DrawRectangle(app->entityManager->enemies[i]->colliderWorld, { 100, 150, 240, 150 });
+		app->render->DrawRectangle(app->entityManager->enemies[i]->colliderRect, { 150, 150, 140, 200 });
+	}
 }
 
 //-------------------------------------------------------------------
@@ -121,6 +131,17 @@ void World::WorldChange()
 				ChangeMap(HOUSE);
 				return;
 			}
+		}
+	}
+}
+
+void World::WorldEnemyDetection()
+{
+	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
+	{
+		if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+		{
+			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
 		}
 	}
 }
