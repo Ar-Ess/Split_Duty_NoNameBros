@@ -136,23 +136,27 @@ void Combat::Draw()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 	else
 	{
-		app->scene->splitButton->state == GuiControlState::DISABLED;
+		app->scene->splitButton->state = GuiControlState::LOCKED;
 	}
 
+	// DEBUG COLLISIONS
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
 
 	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
 
 	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
 
+	//DRAW CHARACTERS
 	DrawPlayer();
 
 	if (secondPlayer) DrawSecondPlayer();
 
 	DrawEnemy();
 
+	//BULLETS
 	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
 
+	//INVENTORY
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
 	app->guiManager->DrawCombatInterface();
@@ -210,7 +214,18 @@ void Combat::DrawSecondPlayer()
 
 void Combat::DrawEnemy()
 {
+	if (enemy->enemyClass == SMALL_WOLF)
+	{
 
+	}
+	else if (enemy->enemyClass == BIRD)
+	{
+
+	}
+	else if (enemy->enemyClass == MANTIS)
+	{
+
+	}
 }
 
 void Combat::DrawBakcground()
@@ -752,14 +767,6 @@ void Combat::PlayerAttack()
 		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
 		break;
 	}
-	
-	//if (app->scene->player1->cPos0AttackAnim.HasFinished() == false || 
-//	app->scene->player1->cPos1AttackAnim.HasFinished() == false || 
-//	app->scene->player1->cPos2AttackAnim.HasFinished() == false || 
-//	app->scene->player1->cPos3AttackAnim.HasFinished() == false   )
-//{
-
-//}
 
 	if (playerTimeAttack < 200)
 	{

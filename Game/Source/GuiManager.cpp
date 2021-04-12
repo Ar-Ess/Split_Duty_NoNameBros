@@ -13,8 +13,6 @@
 #include "GuiString.h"
 #include "FontTTF.h"
 
-
-
 GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 {
 	GuiControl* control = nullptr;
@@ -199,15 +197,11 @@ void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)
 
 void GuiManager::DrawCombatInterface()
 {
-	
 	const SDL_Rect guiRect = { 0,0,1280,720 };
 	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
 
-	
 	//const SDL_Rect faceRect = { 0,0,70,69 };
 	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
-
-	
 
 	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
 
