@@ -14,6 +14,7 @@ World::World()
 {
 	map = new Map();
 	place = NO_PLACE;
+	prevPosition = {0, 0};
 }
 
 void World::Start(Places placex)
@@ -23,19 +24,40 @@ void World::Start(Places placex)
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("SplitDuty1.tmx");
+
+		//if (collisionUtils.CheckCollision({prevPosition.x, prevPosition.y}))
+
 		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
-		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
+		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56};
+
+		app->render->camera.x = 0;
+		app->render->camera.y = 0;
 	}
 	else if (placex == HOUSE)
 	{
-		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("house.tmx");
-		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
-		app->scene->player1->collisionRect = { 60, 206, 56, 28 };
-	}
+		app->scene->player1->colliderWorld = { 280, 350, 56, 84 };
+		app->scene->player1->collisionRect = { 280, 350 + 56, 56, 84 - 56 };
 
-	wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
+		app->render->camera.x = 332;
+		app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
+	}
+	else if (placex == TAVERN)
+	{
+		place = placex;
+		map->Load("tavern.tmx");
+		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
+		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56 };
+	}
+	else if (placex == ENEMY_FIELD)
+	{
+		place = placex;
+		map->Load("graveyard.tmx");
+		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
+		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56 };
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
+	}
 
 	UpdateWorldSpeed();
 }
@@ -46,16 +68,22 @@ void World::Restart()
 
 	houses.Clear();
 
+	tavern.Clear();
+
+	shop.Clear();
+
 	collisions.Clear();
 
 	location1.Clear();
 
 	location2.Clear();
 
-	location2.Clear();
+	location3.Clear();
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+
+	if (place == ENEMY_FIELD) app->tex->UnLoad(wolfSpritesheet);
 
 	//place = NO_PLACE;
 }
@@ -64,7 +92,7 @@ void World::Update()
 {
 	WorldMovement();
 	WorldChange();
-	WorldEnemyDetection();
+	if (place == ENEMY_FIELD) WorldEnemyDetection();
 }
 
 void World::Draw()
@@ -72,12 +100,7 @@ void World::Draw()
 	map->Draw();
 	DrawPlayer();
 	DrawEnemy();
-
-	if (houses.Count() > 0) for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
-	for (int i = 0; i < collisions.Count(); i++) app->render->DrawRectangle(collisions[i], {255, 0, 0, 100});
-	if (location1.Count() > 0) for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
-	if (location2.Count() > 0) for (int i = 0; i < location2.Count(); i++) app->render->DrawRectangle(location2[i], { 0, 255, 0, 100 });
-	if (location3.Count() > 0) for (int i = 0; i < location3.Count(); i++) app->render->DrawRectangle(location3[i], { 0, 0, 255, 100 });
+	DrawCollisions();
 }
 
 void World::DrawPlayer()
@@ -88,19 +111,33 @@ void World::DrawPlayer()
 
 void World::DrawEnemy()
 {
-	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
+	if (place == ENEMY_FIELD)
 	{
-		Enemy* enemy = app->entityManager->enemies[i];
-		app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
-		app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
-
-		if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
+		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
-			app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
-		}
+			Enemy* enemy = app->entityManager->enemies[i];
+			app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
+			app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
 
-		enemy = nullptr;
+			if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
+			{
+				app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+			}
+
+			enemy = nullptr;
+		}
 	}
+}
+
+void World::DrawCollisions()
+{
+	if (houses.Count() > 0) for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
+	for (int i = 0; i < collisions.Count(); i++) app->render->DrawRectangle(collisions[i], { 255, 0, 0, 100 });
+	if (location1.Count() > 0) for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
+	if (location2.Count() > 0) for (int i = 0; i < location2.Count(); i++) app->render->DrawRectangle(location2[i], { 0, 255, 0, 100 });
+	if (location3.Count() > 0) for (int i = 0; i < location3.Count(); i++) app->render->DrawRectangle(location3[i], { 0, 0, 255, 100 });
+	if (tavern.Count() > 0) for (int i = 0; i < tavern.Count(); i++) app->render->DrawRectangle(tavern[i], { 0, 0, 255, 100 });
+	if (shop.Count() > 0) for (int i = 0; i < shop.Count(); i++) app->render->DrawRectangle(shop[i], { 0, 0, 255, 100 });
 }
 
 //-------------------------------------------------------------------
@@ -108,7 +145,7 @@ void World::DrawEnemy()
 void World::WorldMovement()
 {
 	bool move = PlayerMovement();
-	CameraMovement(move);
+	if (place != HOUSE) CameraMovement(move);
 }
 
 void World::WorldChange()
@@ -119,7 +156,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
 			{
-				ChangeMap(ENEMY_FILD);
+				ChangeMap(ENEMY_FIELD);
 				return;
 			}
 		}
@@ -147,6 +184,66 @@ void World::WorldChange()
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, houses[i]))
 			{
 				ChangeMap(HOUSE);
+				return;
+			}
+		}
+
+		for (int i = 0; i < tavern.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, tavern[i]))
+			{
+				ChangeMap(TAVERN);
+				return;
+			}
+		}
+
+		for (int i = 0; i < shop.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, shop[i]))
+			{
+				ChangeMap(SHOP);
+				return;
+			}
+		}
+	}
+	else if (place == HOUSE || place == TAVERN || place == SHOP)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(MAIN_VILLAGE);
+				prevPosition = {app->scene->player1->colliderWorld.x, app->scene->player1->colliderWorld.y};
+				prevCam = {app->render->camera.x, app->render->camera.y};
+				return;
+			}
+		}
+	}
+	else if (place == ENEMY_FIELD)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(AUTUM_FALL);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(GRASSY_LAND);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location3.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
+			{
+				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
 		}
@@ -228,9 +325,11 @@ void World::UpdateWorldSpeed()
 
 void World::ChangeMap(Places place)
 {
-	if (place == HOUSE) app->scene->SetScene(WORLD, place);
+	if (place == HOUSE || place == TAVERN || place == SHOP || place == MAIN_VILLAGE || place == ENEMY_FIELD) app->scene->SetScene(WORLD, place);
 	else
 	{
 		app->scene->SetScene(Scenes::MAIN_MENU);
 	}
+
+	//QUAN ELS TINGUEM TOTS NO TINDRÀ SENTIT L'IF, SIMPLEMENT app->scene->SetScene(WORLD, place); i ja
 }

@@ -28,7 +28,7 @@ enum Scenes
 enum Environments
 {
 	GRASSY_LANDS,
-	AUTUMM_FALLS,
+	AUTUM_FALLS,
 	MOSSY_LANDS
 };
 

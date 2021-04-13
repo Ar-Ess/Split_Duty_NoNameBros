@@ -735,17 +735,54 @@ void Map::LoadColliders(MapLayer* layer)
 					case 5636: // LOCATION 3
 						app->scene->world->location3.Add(r);
 						break;
+					case 5635:
+						app->scene->world->tavern.Add(r);
+						break;
+					case 5634:
+						app->scene->world->shop.Add(r);
+						break;
 					}
 				}
 				else if (app->scene->world->GetPlace() == Places::HOUSE)
 				{
 					switch (tileId)
 					{
-					case 527: // HOUSES
+					case 527: // COLLIDER
 						app->scene->world->collisions.Add(r);
 						break;
 
-					case 526: // COLLIDER
+					case 526: // VILLAGE
+						app->scene->world->location1.Add(r);
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::ENEMY_FIELD)
+				{
+					switch (tileId)
+					{
+					case 1799: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+					case 1796: // MAIN VILLAGE
+						app->scene->world->location3.Add(r);
+						break;
+					case 1797: // GRASSY LANDS
+						app->scene->world->location2.Add(r);
+						break;
+					case 1798: // AUTUM FALLS
+						app->scene->world->location1.Add(r);
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::TAVERN)
+				{
+					switch (tileId)
+					{
+					case 591: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 590: // VILLAGE
 						app->scene->world->location1.Add(r);
 						break;
 					}

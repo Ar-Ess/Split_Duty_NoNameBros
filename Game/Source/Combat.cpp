@@ -225,7 +225,7 @@ void Combat::DrawBakcground()
 			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
 		break;
 
-		case AUTUMM_FALLS:
+		case AUTUM_FALLS:
 			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
 			break;
 

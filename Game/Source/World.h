@@ -21,11 +21,13 @@ enum Places
 {
     NO_PLACE,
     MAIN_VILLAGE,
-    ENEMY_FILD,
+    ENEMY_FIELD,
     HOUSE,
+    TAVERN,
+    SHOP,
     GOLEM_STONES,
     GRASSY_LAND,
-    AUTUM_FALLS,
+    AUTUM_FALL,
     MOSSY_ROCKS
 };
 
@@ -46,6 +48,8 @@ public:
     void DrawPlayer();
 
     void DrawEnemy();
+
+    void DrawCollisions();
 
     Places GetPlace() const
     {
@@ -86,11 +90,16 @@ private:
 
     Places place;
 
+    iPoint prevPosition = { 0, 0 };
+    iPoint prevCam = {0, 0};
+
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;
     List<SDL_Rect> location1;
     List<SDL_Rect> location2;
     List<SDL_Rect> location3;
+    List<SDL_Rect> tavern;
+    List<SDL_Rect> shop;
 
 private: //Textures
 
