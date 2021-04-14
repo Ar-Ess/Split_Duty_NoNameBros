@@ -237,7 +237,7 @@ void DialogueManager::Input()
 			itemOption->data->optionButton->Update(.0f);
 		}		
 	}
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) EndDialogue();
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) EndDialogue();
 }
 
 bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)

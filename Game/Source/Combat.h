@@ -56,6 +56,8 @@ public:
 
     void DrawPlayer();
 
+    void DebugDraw();
+
     void DrawSecondPlayer();
 
     void DrawEnemy();
@@ -83,6 +85,8 @@ public:
     int BulletDamageLogic();
 
     void EnemyAttack(EnemyClass enemy);
+
+    void AfterEnemyAttack();
 
     void PlayerAttack();
 
@@ -120,6 +124,8 @@ public:
 
     void PlayerPosReset();
 
+    void SecondPlayerPosReset();
+
     void ItemDrop(EnemyClass enemy);
 
 private: //STATE CHANGING FUNCTIONS
@@ -133,6 +139,8 @@ private: //STATE CHANGING FUNCTIONS
     void PlayerWin();
 
     void PlayerDie();
+
+    void SecondPlayerDie();
 
     void PlayerEscape();
 
@@ -149,6 +157,9 @@ public:
     short int playerTimeEnemyThrow = 0;
     short int playerTimeSplit = 0;
     short int playerTimeEscape = 0;
+
+    short int secondPlayerTimeProtection = 0;
+
     short int bulletHitted = -1;
 
     short int steps = 0;
@@ -156,6 +167,9 @@ public:
     bool playerResponseAble = true;
     bool playerHitAble = true;
     bool playerStepDenied = false;
+    bool secondPlayerReturning = false;
+
+    bool enemyAttack = true;
 
 //Player 1 Choices
     bool playerAttack = false;
@@ -230,6 +244,8 @@ public:
     CombatState combatState = NULL_STATE;
 
     SDL_Rect inventorySimulation = {192, 108, 896, 504};
+
+    bool debugCombat = false;
 
 private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };

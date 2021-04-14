@@ -93,11 +93,11 @@ void Combat::Update()
 {
 	if (combatState != SECOND_PLAYER_TURN)
 	{
-		app->scene->attackButton->Update(0.0f);
 		app->scene->moveButton->Update(0.0f);
 		app->scene->itemButton->Update(0.0f);
 	}
 
+	app->scene->attackButton->Update(0.0f);
 	app->scene->escapeButton->Update(0.0f);
 	app->scene->splitButton->Update(0.0f);
 
@@ -116,6 +116,8 @@ void Combat::Update()
 	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
 	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
 
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debugCombat = !debugCombat;
+
 	CombatLogic();
 }
 
@@ -130,11 +132,11 @@ void Combat::Draw()
 	}
 
 	// DEBUG COLLISIONS
-	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
+	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 }); //NEED TO BE IN FUNCTION DEBUGDRAW (when Animation Uploaded)
 
-	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
+	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 }); //NEED TO BE IN FUNCTION DEBUGDRAW (when Animation Uploaded)
 
-	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 });
+	if (debugCombat) DebugDraw();
 
 	//DRAW CHARACTERS
 	DrawPlayer();
@@ -229,6 +231,11 @@ void Combat::DrawPlayer()
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
 
+void Combat::DebugDraw()
+{
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
+}
+
 void Combat::DrawSecondPlayer()
 {
 
@@ -305,29 +312,47 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == PLAYER_TURN)
 	{
-		if (playerChoice)
+		if (!secondPlayerProtection)
 		{
-			PlayerChoiceLogic();
-		}
+			if (playerChoice)
+			{
+				PlayerChoiceLogic();
+			}
 
-		if (playerAttack)
-		{
-			PlayerAttack();
-		}
+			if (playerAttack)
+			{
+				PlayerAttack();
+			}
 
-		if (playerStep)
-		{
-			PlayerMove();
-		}
+			if (playerStep)
+			{
+				PlayerMove();
+			}
 
-		if (playerItem)
-		{
-			PlayerItemChoose();
-		}
+			if (playerItem)
+			{
+				PlayerItemChoose();
+			}
 
-		if (playerSplit)
+			if (playerSplit)
+			{
+				PlayerSplit();
+			}
+		}
+		else if (secondPlayerProtection)
 		{
-			PlayerSplit();
+			if (secondPlayerTimeProtection < 25)
+			{
+				app->scene->player2->colliderCombat.x -= 1;
+				app->scene->player2->colliderCombat.y -= 3;
+				secondPlayerTimeProtection++;
+			}
+			else
+			{
+				SecondPlayerPosReset();
+				secondPlayerTimeProtection = 0;
+				secondPlayerProtection = false;
+			}
 		}
 	}
 	else if (combatState == SECOND_PLAYER_TURN)
@@ -585,14 +610,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 		else if (enemy->attack == 2)
@@ -611,14 +629,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
 				playerHitAble = true;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 	}
@@ -640,14 +651,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemy->colliderCombat.y = INIT_BIRD_POSY;
 				playerHitAble = true;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 		else if (enemy->attack == 2)
@@ -666,14 +670,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemy->colliderCombat.y = INIT_BIRD_POSY;
 				playerHitAble = true;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 		else if (enemy->attack == 3)
@@ -698,7 +695,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
-				PlayerTurn();
+				AfterEnemyAttack();
 			}
 		}
 	}
@@ -723,14 +720,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 
 				bulletHitted = -1;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 		else if (enemy->attack == 2)
@@ -749,14 +739,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemyTimeWait = 0;
 				playerHitAble = true;
 
-				if (app->scene->player1->health > 0)
-				{
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
 		else if (enemy->attack == 3)
@@ -772,18 +755,22 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				enemy->mantisTimeAttack3 = 0;
 				enemyTimeWait = 0;
 
-				if (app->scene->player1->health > 0)
-				{
-					playerStepDenied = true;
-
-					PlayerTurn();
-				}
-				else if (app->scene->player1->health <= 0)
-				{
-					PlayerDie();
-				}
+				AfterEnemyAttack();
 			}
 		}
+	}
+}
+
+void Combat::AfterEnemyAttack()
+{
+	if (app->scene->player1->health > 0)
+	{
+		if (enemy->enemyClass == MANTIS && enemy->attack == 3) playerStepDenied = true;
+		PlayerTurn();
+	}
+	else if (app->scene->player1->health <= 0)
+	{
+		PlayerDie();
 	}
 }
 
@@ -794,15 +781,19 @@ void Combat::PlayerAttack()
 	{
 	case(0):
 		currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
+		currentPlayerAnim->Reset();
 		break;
 	case(1):
 		currentPlayerAnim = &app->scene->player1->cPos1AttackAnim;
+		currentPlayerAnim->Reset();
 		break;
 	case(2):
 		currentPlayerAnim = &app->scene->player1->cPos2AttackAnim;
+		currentPlayerAnim->Reset();
 		break;
 	case(3):
 		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
+		currentPlayerAnim->Reset();
 		break;
 	}
 
@@ -858,8 +849,7 @@ void Combat::SecondPlayerAttack()
 		secondPlayerTimeAttack = 0;
 		secondPlayerAttack = false;
 
-		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
-		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
+		SecondPlayerPosReset();
 
 		if (enemy->health > 0)
 		{
@@ -877,6 +867,7 @@ void Combat::PlayerMove()
 	if (playerTimeMove < 57)
 	{
 		app->scene->player1->colliderCombat.x += 3;
+		app->scene->player2->colliderCombat.x += 3;
 		playerTimeMove++;
 	}
 	else
@@ -941,9 +932,19 @@ void Combat::PlayerItemChoose()
 
 void Combat::SecondPlayerProtect()
 {
-	secondPlayerProtection = true;
-
-	EnemyTurn();
+	if (secondPlayerTimeProtection < 25)
+	{
+		app->scene->player2->colliderCombat.x += 1;
+		app->scene->player2->colliderCombat.y += 3;
+		secondPlayerTimeProtection++;
+	}
+	else
+	{
+		secondPlayerTimeProtection = 0;
+		secondPlayerProtect = false;
+		secondPlayerProtection = true;
+		EnemyTurn();
+	}
 }
 
 void Combat::SecondPlayerBuff()
@@ -1182,10 +1183,15 @@ void Combat::PlayerResponse()
 
 	if (app->scene->player1->jump)
 	{
-		if (wearFeather) app->scene->player1->FeatherJump();
+		if (wearFeather)
+		{
+			app->scene->player1->FeatherJump();
+			app->scene->player2->FeatherJump();
+		}
 		else
 		{
 			app->scene->player1->Jump();
+			app->scene->player2->Jump();
 		}
 	}
 
@@ -1294,22 +1300,27 @@ void Combat::EscapeProbability(short int probabilityRange)
 
 void Combat::PlayerHitLogic()
 {
-	
-		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+	{
+		if (app->scene->player1->godMode) LOG("Player is inmune");
+		else
 		{
-			if (app->scene->player1->godMode) LOG("Player is inmune");
-			else
+			playerHitAble = false;
+			if (!wearMantisLeg)
 			{
-				playerHitAble = false;
-				if (!wearMantisLeg)
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= EnemyDamageLogic();
-					LOG("Player Hit - PH: %d", app->scene->player1->health);
+					app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
+					app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
-				else if (wearMantisLeg) wearMantisLeg = false;
+
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
 			}
+			else if (wearMantisLeg) wearMantisLeg = false;
 		}
-	
+	}
 }
 
 void Combat::PlayerBulletHitLogic()
@@ -1321,7 +1332,14 @@ void Combat::PlayerBulletHitLogic()
 			playerHitAble = false;
 			if (!wearMantisLeg)
 			{
-				app->scene->player1->health -= BulletDamageLogic();
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+				else if (secondPlayerProtection)
+				{
+					app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
+					app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+				}
+
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
@@ -1340,7 +1358,19 @@ void Combat::PlayerPosReset()
 {
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
+
+	if (secondPlayer)
+	{
+		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
+	}
 	steps = 0;
+}
+
+void Combat::SecondPlayerPosReset()
+{
+	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX + (171 * steps);
+	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 }
 
 void Combat::ItemDrop(EnemyClass enemy)
@@ -1421,6 +1451,12 @@ void Combat::EnemyTurn()
 
 	if (secondPlayer) secondPlayerChoice = true;
 
+	if (steps == 3) app->scene->moveButton->state == GuiControlState::LOCKED;
+	else
+	{
+		app->scene->moveButton->state == GuiControlState::LOCKED;
+	}
+
 	app->scene->escapeButton->state = GuiControlState::NORMAL;
 	app->scene->splitButton->state = GuiControlState::NORMAL;
 }
@@ -1433,7 +1469,8 @@ void Combat::PlayerTurn()
 
 	if (wearFeather) wearFeather = false;
 	if (wearMantisLeg) wearMantisLeg = false;
-	if (secondPlayerProtection) secondPlayerProtection = false;
+
+	if (app->scene->player2->health <= 0) SecondPlayerDie();
 }
 
 void Combat::SecondPlayerTurn()
@@ -1462,6 +1499,14 @@ void Combat::PlayerDie()
 	currentPlayerAnim->Reset();
 	LOG("PLAYER LOSE");
 	combatState = LOSE;
+}
+
+void Combat::SecondPlayerDie()
+{
+	/*currentPlayerAnim = &app->scene->player1->cDieAnim;
+	currentPlayerAnim->Reset();*/
+	LOG("SECOND PLAYER DIED");
+	secondPlayer = false;
 }
 
 void Combat::PlayerEscape()

@@ -232,15 +232,13 @@ void Scene::SetLogoScene()
 
 void Scene::SetMainMenu()
 {
-	//app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
+	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
 }
 
 void Scene::SetCombat(Enemy* enemySet)
 {
 	combatScene->enemy = enemySet;
 	combatScene->Start();
-
-	app->guiManager->debugGui = true;
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 	
@@ -266,6 +264,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
+		app->scene->itemButton->state = GuiControlState::LOCKED;
 	}
 
 	if (escapeButton == nullptr)
@@ -296,7 +295,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		protectButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		protectButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		protectButton->text = "ProtecteButton";
+		protectButton->text = "ProtectButton";
 		protectButton->SetObserver(this);
 	}
 
@@ -307,6 +306,54 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
 	}
+
+	//if (smallMeatButton == nullptr)
+	//{
+	//	smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	smallMeatButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	smallMeatButton->text = "ItemButton";
+	//	smallMeatButton->SetObserver(this);
+	//}
+
+	//if (largeMeatButton == nullptr)
+	//{
+	//	largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	largeMeatButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	largeMeatButton->text = "EscapeButton";
+	//	largeMeatButton->SetObserver(this);
+	//}
+
+	//if (featherButton == nullptr)
+	//{
+	//	featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	featherButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	featherButton->text = "SplitButton";
+	//	featherButton->SetObserver(this);
+	//}
+
+	//if (mantisButton == nullptr)
+	//{
+	//	mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	mantisButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	mantisButton->text = "SecondAttackButton";
+	//	mantisButton->SetObserver(this);
+	//}
+
+	//if (enemySplitButton == nullptr)
+	//{
+	//	enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	enemySplitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	enemySplitButton->text = "ProtecteButton";
+	//	enemySplitButton->SetObserver(this);
+	//}
+
+	//if (moneyButton == nullptr)
+	//{
+	//	moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+	//	moneyButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+	//	moneyButton->text = "BuffButton";
+	//	moneyButton->SetObserver(this);
+	//}
 
 	if (attackText == nullptr)
 	{
@@ -442,7 +489,7 @@ void Scene::UpdateCombat()
 
 	combatScene->Draw();
 
-	app->guiManager->Update(1.0f); // NO USE
+	//app->guiManager->Update(1.0f); // NO USE
 
 	combatScene->EndBattleSolving();
 

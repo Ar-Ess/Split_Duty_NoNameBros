@@ -85,6 +85,24 @@ public: //Combat Buttons
 	GuiButton* buffButton = nullptr;
 	bool buffPressed = false;
 
+	GuiButton* smallMeatButton = nullptr;
+	bool smallMeatPressed = false;
+
+	GuiButton* largeMeatButton = nullptr;
+	bool largeMeatPressed = false;
+
+	GuiButton* featherButton = nullptr;
+	bool featherPressed = false;
+
+	GuiButton* mantisButton = nullptr;
+	bool mantisPressed = false;
+
+	GuiButton* enemySplitButton = nullptr;
+	bool enemySplitPressed = false;
+
+	GuiButton* moneyButton = nullptr;
+	bool moneyPressed = false;
+
 	GuiString* attackText = nullptr;
 
 	GuiString* moveText = nullptr;

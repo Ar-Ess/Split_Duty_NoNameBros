@@ -166,10 +166,11 @@ void Player::Jump()
     }
     else
     {
-        colliderCombat.y = INIT_COMBAT_POSY;
+        if (type == EntityType::PLAYER1) colliderCombat.y = INIT_COMBAT_POSY;
+        else if (type == EntityType::PLAYER2 && !app->scene->combatScene->secondPlayerProtection) colliderCombat.y = INIT2_COMBAT_POSY;
         jumpTime = 0;
         jump = false;
-        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
+        if (type == EntityType::PLAYER1) app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
     }
 }
 
@@ -189,10 +190,11 @@ void Player::FeatherJump()
     }
     else
     {
-        colliderCombat.y = INIT_COMBAT_POSY;
+        if (type == EntityType::PLAYER1) colliderCombat.y = INIT_COMBAT_POSY;
+        else if (type == EntityType::PLAYER2 && !app->scene->combatScene->secondPlayerProtection) colliderCombat.y = INIT2_COMBAT_POSY;
         jumpFeatherTime = 0;
         jump = false;
-        app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
+        if (type == EntityType::PLAYER1) app->scene->combatScene->currentPlayerAnim = &cIdleAnim;
     }
 }
 

@@ -101,7 +101,10 @@ bool GuiManager::Update(float dt)
 	if (accumulatedTime >= updateMsCycle) doLogic = true;
 
 	//Activate Debug Draw
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debugGui = !debugGui;
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		debugGui = !debugGui;
+	}
 
 	//UpdateAll(dt, doLogic);
 
