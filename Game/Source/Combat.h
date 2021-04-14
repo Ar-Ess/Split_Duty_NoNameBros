@@ -27,6 +27,7 @@ class Collision;
 class Animation;
 struct SDL_Texture;
 struct SDL_Rect;
+class GuiString;
 
 enum CombatState
 {
@@ -63,6 +64,8 @@ public:
     void DrawEnemy();
 
     void DrawBakcground();
+
+    void DrawText();
 
     void FirstTurnLogic();
 
@@ -227,6 +230,8 @@ private:
     friend class Player;
 
     const SDL_Rect test = {52, 52, 70, 88};
+
+    GuiString* turnText = nullptr;
 
     Animation* currentPlayerAnim = nullptr;
     Animation* currentSecondPlayerAnim = nullptr;

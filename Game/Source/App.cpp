@@ -370,8 +370,6 @@ bool App::SaveGame() const
 {
 	bool ret = true;
 
-	//...
-
 	saveGameRequested = false;
 
 	return ret;

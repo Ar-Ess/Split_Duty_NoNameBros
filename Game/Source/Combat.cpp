@@ -203,6 +203,8 @@ void Combat::Draw()
 		}
 	}
 
+	DrawText();
+
 	app->guiManager->DrawCursor();
 }
 
@@ -276,13 +278,23 @@ void Combat::DrawBakcground()
 	}
 }
 
+void Combat::DrawText()
+{
+	turnText->Draw();
+}
+
 void Combat::FirstTurnLogic()
 {
-	if (app->scene->player1->velocity <= enemy->velocity) combatState = ENEMY_TURN;
+	if (app->scene->player1->velocity <= enemy->velocity)
+	{
+		combatState = ENEMY_TURN;
+		turnText->SetString("ENEMY TURN");
+	}
 	else
 	{
 		playerChoice = true;
 		combatState = PLAYER_TURN;
+		turnText->SetString("PLAYER TURN");
 	}
 }
 
@@ -766,7 +778,11 @@ void Combat::AfterEnemyAttack()
 {
 	if (app->scene->player1->health > 0)
 	{
-		if (enemy->enemyClass == MANTIS && enemy->attack == 3) playerStepDenied = true;
+		if (enemy->enemyClass == MANTIS && enemy->attack == 3)
+		{
+			playerStepDenied = true;
+			app->scene->moveButton->state = GuiControlState::LOCKED;
+		}
 		PlayerTurn();
 	}
 	else if (app->scene->player1->health <= 0)
@@ -782,19 +798,15 @@ void Combat::PlayerAttack()
 	{
 	case(0):
 		currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
-		currentPlayerAnim->Reset();
 		break;
 	case(1):
 		currentPlayerAnim = &app->scene->player1->cPos1AttackAnim;
-		currentPlayerAnim->Reset();
 		break;
 	case(2):
 		currentPlayerAnim = &app->scene->player1->cPos2AttackAnim;
-		currentPlayerAnim->Reset();
 		break;
 	case(3):
 		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
-		currentPlayerAnim->Reset();
 		break;
 	}
 
@@ -809,6 +821,8 @@ void Combat::PlayerAttack()
 
 		playerTimeAttack = 0;
 		playerAttack = false;
+
+		currentPlayerAnim->Reset();
 
 		PlayerPosReset();
 
@@ -1238,9 +1252,14 @@ void Combat::EnemyAttackProbability()
 
 		if (random < 5) enemy->attack = 1;
 		else if (random > 4 && random < 9) enemy->attack = 2;
-		else if (random > 8) enemy->attack = 3;
-
-		//enemy->attack = 2;
+		else if (random > 8)
+		{
+			if (steps != 3) enemy->attack = 3;
+			else 
+			{
+				enemy->attack = 2;
+			}
+		}
 	}
 }
 
@@ -1448,7 +1467,11 @@ void Combat::EnemyTurn()
 	playerResponseAble = true;
 	playerChoice = true;
 	secondPlayerChoice = true;
-	playerStepDenied = false;
+	if (playerStepDenied)
+	{
+		app->scene->moveButton->state == GuiControlState::NORMAL;
+		playerStepDenied = false;
+	}
 
 	if (secondPlayer) secondPlayerChoice = true;
 
@@ -1460,6 +1483,8 @@ void Combat::EnemyTurn()
 
 	app->scene->escapeButton->state = GuiControlState::NORMAL;
 	app->scene->splitButton->state = GuiControlState::NORMAL;
+
+	turnText->SetString("ENEMY TURN");
 }
 
 void Combat::PlayerTurn()
@@ -1472,6 +1497,8 @@ void Combat::PlayerTurn()
 	if (wearMantisLeg) wearMantisLeg = false;
 
 	if (app->scene->player2->health <= 0) SecondPlayerDie();
+
+	turnText->SetString("PLAYER TURN");
 }
 
 void Combat::SecondPlayerTurn()
@@ -1486,6 +1513,8 @@ void Combat::SecondPlayerTurn()
 
 	app->scene->escapeButton->state = GuiControlState::LOCKED;
 	app->scene->splitButton->state = GuiControlState::LOCKED;
+
+	turnText->SetString("SECOND PLAYER TURN");
 }
 
 void Combat::PlayerWin()

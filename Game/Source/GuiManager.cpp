@@ -177,14 +177,16 @@ void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
 	int offset = maxLife * size;
 	app->render->DrawRectangle({x - offset,y,maxLife*size,thickness }, MAGENTA);
 	lifeBar = { x-life*4,y,life * size,thickness };
-
-	//if life is critical blinks
-	if (life <= maxLife / 3)
+	if (life > 0)
 	{
-		BlinkLifeBar(life, RED, SOFT_RED);
+		//if life is critical blinks
+		if (life <= maxLife / 3)
+		{
+			BlinkLifeBar(life, RED, SOFT_RED);
+		}
+		else
+			app->render->DrawRectangle(lifeBar, RED);
 	}
-	else
-		app->render->DrawRectangle(lifeBar, RED);
 }
 
 void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)

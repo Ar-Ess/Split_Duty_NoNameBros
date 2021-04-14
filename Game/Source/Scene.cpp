@@ -52,7 +52,7 @@ bool Scene::Start()
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
-	player1->SetUp(40, 40, 30, 10, 0, 0, 0, 10, 0, 0);
+	player1->SetUp(40, 40, 27, 8, 0, 0, 0, 10, 0, 0);
 
 	world = new World();
 
@@ -67,7 +67,7 @@ bool Scene::Start()
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 
 	//ENEMY SET                                          ENEMY CLASS           -----------------COMBAT RECT----------------        ---WORLD RECT---  LVL EXP  HP STR DEF  VEL
-	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 20, 10, 5, 20);
+	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 20, 15, 5, 20);
 
 	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 400, 35, 25, 5, 40);
 	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 400, 40, 10, 20, 20);
@@ -131,6 +131,12 @@ bool Scene::Update(float dt)
 		app->render->DrawTexture(debugTex, pos.x, pos.y);
 	}
 	*/
+
+	if (currScene == WORLD && app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		app->SaveGameRequest();
+		continueButton->state = GuiControlState::NORMAL;
+	}
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
@@ -332,6 +338,13 @@ void Scene::SetOptionsMenu()
 
 void Scene::SetCombat(Enemy* enemySet)
 {
+	if (combatScene->turnText == nullptr)
+	{
+		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->turnText->bounds = { 540, 40, 200, 50 };
+		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
+	}
+
 	combatScene->enemy = enemySet;
 	combatScene->Start();
 
@@ -506,6 +519,8 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffText->SetTextFont(app->fontTTF->defaultFont);
 		buffText->SetString("BUFFS");
 	}
+
+	combatScene->turnText->CenterAlign();
 }
 
 void Scene::SetLevelUp(unsigned short int exp)
@@ -650,7 +665,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case COMBAT:
 
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
-		else if (strcmp(control->text.GetString(), "MoveButton") == 0 && !combatScene->playerStepDenied) movePressed = true;
+		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
 		else if (strcmp(control->text.GetString(), "EscapeButton") == 0) escapePressed = true;
 		else if (strcmp(control->text.GetString(), "SplitButton") == 0) splitPressed = true;
