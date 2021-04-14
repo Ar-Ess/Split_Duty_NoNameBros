@@ -75,9 +75,13 @@ private:
 
     void RectifyCameraPosition(Places place);
 
+    void AlignCameraPosition();
+
     void UpdateWorldSpeed();
 
     void ChangeMap(Places place);
+
+    void AsignPrevPosition();
 
 private:
 

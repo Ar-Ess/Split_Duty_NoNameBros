@@ -70,8 +70,8 @@ public: //Combat Buttons
 	GuiButton* itemButton = nullptr;
 	bool itemPressed = false;
 
-	GuiButton* scapeButton = nullptr;
-	bool scapePressed = false;
+	GuiButton* escapeButton = nullptr;
+	bool escapePressed = false;
 
 	GuiButton* splitButton = nullptr;
 	bool splitPressed = false;
@@ -84,6 +84,20 @@ public: //Combat Buttons
 
 	GuiButton* buffButton = nullptr;
 	bool buffPressed = false;
+
+	GuiString* attackText = nullptr;
+
+	GuiString* moveText = nullptr;
+
+	GuiString* itemsText = nullptr;
+
+	GuiString* escapeText = nullptr;
+
+	GuiString* splitText = nullptr;
+
+	GuiString* protectText = nullptr;
+
+	GuiString* buffText = nullptr;
 
 private: // Textures
 	SDL_Texture* logo = nullptr;

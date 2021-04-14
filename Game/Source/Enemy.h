@@ -104,6 +104,7 @@ public:
     SDL_Rect colliderWorld;
     SDL_Rect colliderRect;
     bool jumping = false;
+    bool active = true;
 
 public:
     friend class Combat;

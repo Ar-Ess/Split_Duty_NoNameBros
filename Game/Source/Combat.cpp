@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "GuiManager.h"
 #include "GuiButton.h"
+#include "GuiString.h"
 #include "World.h"
 
 #include "Combat.h"
@@ -97,7 +98,7 @@ void Combat::Update()
 		app->scene->itemButton->Update(0.0f);
 	}
 
-	app->scene->scapeButton->Update(0.0f);
+	app->scene->escapeButton->Update(0.0f);
 	app->scene->splitButton->Update(0.0f);
 
 	if (combatState != PLAYER_TURN)
@@ -150,21 +151,53 @@ void Combat::Draw()
 
 	app->guiManager->DrawCombatInterface();
 
-	if (combatState != SECOND_PLAYER_TURN)
+	if (!secondPlayer)
 	{
-		app->scene->attackButton->Draw();
-		app->scene->moveButton->Draw();
-		app->scene->itemButton->Draw();
+		if (combatState != ENEMY_TURN)
+		{
+			app->scene->attackButton->Draw();
+			app->scene->moveButton->Draw();
+			app->scene->itemButton->Draw();
+			app->scene->escapeButton->Draw();
+			app->scene->splitButton->Draw();
+
+			app->scene->attackText->Draw();
+			app->scene->moveText->Draw();
+			app->scene->itemsText->Draw();
+			app->scene->escapeText->Draw();
+			app->scene->splitText->Draw();
+		}
 	}
-
-	app->scene->scapeButton->Draw();
-	app->scene->splitButton->Draw();
-
-	if (combatState != PLAYER_TURN)
+	else if (secondPlayer)
 	{
-		app->scene->secondAttackButton->Draw();
-		app->scene->protectButton->Draw();
-		app->scene->buffButton->Draw();
+		if (combatState != ENEMY_TURN)
+		{
+			if (combatState == PLAYER_TURN)
+			{
+				app->scene->attackButton->Draw();
+				app->scene->moveButton->Draw();
+				app->scene->itemButton->Draw();
+
+				app->scene->attackText->Draw();
+				app->scene->moveText->Draw();
+				app->scene->itemsText->Draw();
+			}
+			else if (combatState == SECOND_PLAYER_TURN)
+			{
+				app->scene->attackButton->Draw();
+				app->scene->protectButton->Draw();
+				app->scene->buffButton->Draw();
+
+				app->scene->attackText->Draw();
+				app->scene->protectText->Draw();
+				app->scene->buffText->Draw();
+			}
+
+			app->scene->escapeButton->Draw();
+			app->scene->splitButton->Draw();
+			app->scene->escapeText->Draw();
+			app->scene->splitText->Draw();
+		}
 	}
 
 	app->guiManager->DrawCursor();
@@ -323,6 +356,7 @@ void Combat::CombatLogic()
 	{
 		ItemDrop(enemy->enemyClass);
 		playerWin = true;
+		enemy->active = false;
 	}
 	else if (combatState == LOSE)
 	{
@@ -335,6 +369,7 @@ void Combat::CombatLogic()
 	else if (combatState == SPLIT)
 	{
 		playerSplitWin = true;
+		enemy->active = false;
 	}
 	else if (combatState == ESCAPE)
 	{
@@ -354,7 +389,7 @@ void Combat::CombatLogic()
 void Combat::EndBattleSolving()
 {
 	if (playerWin) app->scene->SetScene(LEVEL_UP, enemy->exp);
-	else if (playerLose) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+	else if (playerLose) app->scene->SetScene(WORLD, Places::MAIN_VILLAGE);
 	else if (playerSplitWin) app->scene->SetScene(LEVEL_UP);
 	else if (playerEscaped) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 }
@@ -427,7 +462,7 @@ void Combat::PlayerChoiceLogic()
 		drawInventory = true;
 		return;
 	}
-	else if (app->scene->scapePressed)
+	else if (app->scene->escapePressed)
 	{
 		playerChoice = false;
 		short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
@@ -1386,7 +1421,7 @@ void Combat::EnemyTurn()
 
 	if (secondPlayer) secondPlayerChoice = true;
 
-	app->scene->scapeButton->state = GuiControlState::NORMAL;
+	app->scene->escapeButton->state = GuiControlState::NORMAL;
 	app->scene->splitButton->state = GuiControlState::NORMAL;
 }
 
@@ -1411,7 +1446,7 @@ void Combat::SecondPlayerTurn()
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 	currentPlayerAnim->Reset();
 
-	app->scene->scapeButton->state = GuiControlState::LOCKED;
+	app->scene->escapeButton->state = GuiControlState::LOCKED;
 	app->scene->splitButton->state = GuiControlState::LOCKED;
 }
 

@@ -72,8 +72,7 @@ void World::Start(Places placex)
 			app->scene->player1->collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
 		}
 
-		app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
-		app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
 	}
@@ -124,8 +123,7 @@ void World::Start(Places placex)
 			app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
 			app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
 
-			app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
-			app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+			AlignCameraPosition();
 
 			RectifyCameraPosition(placex);
 
@@ -133,6 +131,15 @@ void World::Start(Places placex)
 
 			app->scene->player1->colliderWorld.y += 1356; //1316
 			app->scene->player1->collisionRect.y += 1356; //1316
+		}
+		else
+		{
+			app->scene->player1->colliderWorld = { prevPosition.x, prevPosition.y, 56, 84 };
+			app->scene->player1->collisionRect = { prevPosition.x, prevPosition.y + 56, 56, 84 - 56 };
+
+			AlignCameraPosition();
+
+			RectifyCameraPosition(placex);
 		}
 
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
@@ -197,12 +204,15 @@ void World::DrawEnemy()
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
 			Enemy* enemy = app->entityManager->enemies[i];
-			app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
-			app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
-
-			if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
+			if (enemy->active)
 			{
-				app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+				app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
+				app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
+
+				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
+				{
+					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+				}
 			}
 
 			enemy = nullptr;
@@ -237,7 +247,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
 			{
-				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+				AsignPrevPosition();
 				ChangeMap(ENEMY_FIELD);
 				return;
 			}
@@ -265,7 +275,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, houses[i]))
 			{
-				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+				AsignPrevPosition();
 				ChangeMap(HOUSE);
 				return;
 			}
@@ -275,7 +285,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, tavern[i]))
 			{
-				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+				AsignPrevPosition();
 				ChangeMap(TAVERN);
 				return;
 			}
@@ -338,7 +348,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
 			{
-				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+				AsignPrevPosition();
 				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
@@ -350,8 +360,9 @@ void World::WorldEnemyDetection()
 {
 	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 	{
-		if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+		if (app->entityManager->enemies[i]->active, collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
 		{
+			AsignPrevPosition();
 			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
 		}
 	}
@@ -414,6 +425,12 @@ void World::CameraMovement(bool move)
 
 }
 
+void World::AlignCameraPosition()
+{
+	app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
+	app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+}
+
 void World::RectifyCameraPosition(Places placex)
 {
 	if (placex == MAIN_VILLAGE)
@@ -451,4 +468,9 @@ void World::ChangeMap(Places place)
 	}
 
 	//QUAN ELS TINGUEM TOTS NO TINDRÀ SENTIT L'IF, SIMPLEMENT app->scene->SetScene(WORLD, place); i ja
+}
+
+void World::AsignPrevPosition()
+{
+	prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 }

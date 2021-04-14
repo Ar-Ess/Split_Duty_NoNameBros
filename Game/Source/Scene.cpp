@@ -268,12 +268,12 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->SetObserver(this);
 	}
 
-	if (scapeButton == nullptr)
+	if (escapeButton == nullptr)
 	{
-		scapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		scapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		scapeButton->text = "ScapeButton";
-		scapeButton->SetObserver(this);
+		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		escapeButton->text = "EscapeButton";
+		escapeButton->SetObserver(this);
 	}
 
 	if (splitButton == nullptr)
@@ -306,6 +306,62 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
+	}
+
+	if (attackText == nullptr)
+	{
+		attackText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		attackText->bounds = attackButton->bounds;
+		attackText->SetTextFont(app->fontTTF->defaultFont);
+		attackText->SetString("ATTACK");
+	}
+
+	if (moveText == nullptr)
+	{
+		moveText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		moveText->bounds = { moveButton->bounds };
+		moveText->SetTextFont(app->fontTTF->defaultFont);
+		moveText->SetString("MOVE");
+	}
+
+	if (itemsText == nullptr)
+	{
+		itemsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		itemsText->bounds = { itemButton->bounds };
+		itemsText->SetTextFont(app->fontTTF->defaultFont);
+		itemsText->SetString("ITEM(beta)");
+	}
+
+	if (escapeText == nullptr)
+	{
+		escapeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		escapeText->bounds = { escapeButton->bounds };
+		escapeText->SetTextFont(app->fontTTF->defaultFont);
+		escapeText->SetString("ESCAPE");
+	}
+
+	if (splitText == nullptr)
+	{
+		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		splitText->bounds = { splitButton->bounds };
+		splitText->SetTextFont(app->fontTTF->defaultFont);
+		splitText->SetString("SPLIT");
+	}
+
+	if (protectText == nullptr)
+	{
+		protectText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		protectText->bounds = { protectButton->bounds };
+		protectText->SetTextFont(app->fontTTF->defaultFont);
+		protectText->SetString("PROTECT");
+	}
+
+	if (buffText == nullptr)
+	{
+		buffText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		buffText->bounds = { buffButton->bounds };
+		buffText->SetTextFont(app->fontTTF->defaultFont);
+		buffText->SetString("BUFFS");
 	}
 }
 
@@ -426,7 +482,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0 && !combatScene->playerStepDenied) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
-		else if (strcmp(control->text.GetString(), "ScapeButton") == 0) scapePressed = true;
+		else if (strcmp(control->text.GetString(), "EscapeButton") == 0) escapePressed = true;
 		else if (strcmp(control->text.GetString(), "SplitButton") == 0) splitPressed = true;
 		else if (strcmp(control->text.GetString(), "SecondAttackButton") == 0) secondAttackPressed = true;
 		else if (strcmp(control->text.GetString(), "ProtectButton") == 0) protectPressed = true;
@@ -443,7 +499,7 @@ void Scene::RestartPressState()
 	attackPressed = false;
 	movePressed = false;
 	itemPressed = false;
-	scapePressed = false;
+	escapePressed = false;
 	splitPressed = false;
 	secondAttackPressed = false;
 	protectPressed = false;
