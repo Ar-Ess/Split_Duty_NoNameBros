@@ -22,16 +22,60 @@ void World::Start(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+		Places temp = place;
 		place = placex;
-		map->Load("SplitDuty1.tmx");
+		map->Load("main_village.tmx");
 
-		//if (collisionUtils.CheckCollision({prevPosition.x, prevPosition.y}))
+		if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor1House))
+		{
+			app->scene->player1->colliderWorld = { 420, 636, 56, 84 };
+			app->scene->player1->collisionRect = { 420, 636 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor2House))
+		{
+			app->scene->player1->colliderWorld = { 952, 636, 56, 84 };
+			app->scene->player1->collisionRect = { 952, 636 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor3House))
+		{
+			app->scene->player1->colliderWorld = { 1428, 720, 56, 84 };
+			app->scene->player1->collisionRect = { 1428, 720 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor4House))
+		{
+			app->scene->player1->colliderWorld = { 2688, 1812, 56, 84 };
+			app->scene->player1->collisionRect = { 2688, 1812 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor5House))
+		{
+			app->scene->player1->colliderWorld = { 2072, 1812, 56, 84 };
+			app->scene->player1->collisionRect = { 2072, 1812 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor6House))
+		{
+			app->scene->player1->colliderWorld = { 3108, 1280, 56, 84 };
+			app->scene->player1->collisionRect = { 3108, 1280 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage1))
+		{
+			app->scene->player1->colliderWorld = { 35, 175, 56, 84 };
+			app->scene->player1->collisionRect = { 35, 175 + 56, 56, 84 - 56 };
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage2))
+		{
+			app->scene->player1->colliderWorld = { 35, 1380, 56, 84 };
+			app->scene->player1->collisionRect = { 35, 1380 + 56, 56, 84 - 56 };
+		}
+		else if (temp != TAVERN)
+		{
+			app->scene->player1->colliderWorld = { 1722, 210, 56, 84 };
+			app->scene->player1->collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+		}
 
-		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
-		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56};
+		app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
+		app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
 
-		app->render->camera.x = 0;
-		app->render->camera.y = 0;
+		RectifyCameraPosition(placex);
 	}
 	else if (placex == HOUSE)
 	{
@@ -47,15 +91,50 @@ void World::Start(Places placex)
 	{
 		place = placex;
 		map->Load("tavern.tmx");
-		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
-		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56 };
+		app->scene->player1->colliderWorld = { 504, 880, 56, 84 };
+		app->scene->player1->collisionRect = { 504, 880 + 56, 56, 84 - 56 };
+
+		app->render->camera.x = 140;
+		app->render->camera.y = -375;
+
+		RectifyCameraPosition(placex);
 	}
 	else if (placex == ENEMY_FIELD)
 	{
 		place = placex;
 		map->Load("graveyard.tmx");
-		app->scene->player1->colliderWorld = { 60, 150, 56, 84 };
-		app->scene->player1->collisionRect = { 60, 150 + 56, 56, 84 - 56 };
+
+		if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
+		{
+			app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
+			app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
+
+			app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
+			app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+
+			RectifyCameraPosition(placex);
+
+			app->render->camera.y = -140;
+
+			app->scene->player1->colliderWorld.y += 140;
+			app->scene->player1->collisionRect.y += 140;
+		}
+		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField2))
+		{
+			app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
+			app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
+
+			app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
+			app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+
+			RectifyCameraPosition(placex);
+
+			app->render->camera.y = -1216;
+
+			app->scene->player1->colliderWorld.y += 1356; //1316
+			app->scene->player1->collisionRect.y += 1356; //1316
+		}
+
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
 	}
 
@@ -93,6 +172,8 @@ void World::Update()
 	WorldMovement();
 	WorldChange();
 	if (place == ENEMY_FIELD) WorldEnemyDetection();
+
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) drawCollisions = !drawCollisions;
 }
 
 void World::Draw()
@@ -100,7 +181,7 @@ void World::Draw()
 	map->Draw();
 	DrawPlayer();
 	DrawEnemy();
-	DrawCollisions();
+	if (drawCollisions) DrawCollisions();
 }
 
 void World::DrawPlayer()
@@ -145,7 +226,7 @@ void World::DrawCollisions()
 void World::WorldMovement()
 {
 	bool move = PlayerMovement();
-	if (place != HOUSE) CameraMovement(move);
+	CameraMovement(move);
 }
 
 void World::WorldChange()
@@ -156,6 +237,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
 			{
+				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 				ChangeMap(ENEMY_FIELD);
 				return;
 			}
@@ -183,6 +265,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, houses[i]))
 			{
+				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 				ChangeMap(HOUSE);
 				return;
 			}
@@ -192,6 +275,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, tavern[i]))
 			{
+				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 				ChangeMap(TAVERN);
 				return;
 			}
@@ -206,15 +290,26 @@ void World::WorldChange()
 			}
 		}
 	}
-	else if (place == HOUSE || place == TAVERN || place == SHOP)
+	else if (place == HOUSE || place == SHOP)
 	{
 		for (int i = 0; i < location1.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
 				ChangeMap(MAIN_VILLAGE);
-				prevPosition = {app->scene->player1->colliderWorld.x, app->scene->player1->colliderWorld.y};
-				prevCam = {app->render->camera.x, app->render->camera.y};
+				return;
+			}
+		}
+	}
+	else if (place == TAVERN)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				app->scene->player1->colliderWorld = { 2380, 825, 56, 84 };
+				app->scene->player1->collisionRect = { 2380, 825 + 56, 56, 84 - 56 };
+				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
 		}
@@ -243,6 +338,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
 			{
+				prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
@@ -300,22 +396,45 @@ void World::CameraMovement(bool move)
 {
 	if (move)
 	{
-		if (app->scene->player1->colliderWorld.y > 317 && app->scene->player1->colliderWorld.y < 1662) if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
-		if (app->scene->player1->colliderWorld.y > 318 && app->scene->player1->colliderWorld.y < 1663) if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
-		if (app->scene->player1->colliderWorld.x > 611 && app->scene->player1->colliderWorld.x < 2832) if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += worldSpeed;
-		if (app->scene->player1->colliderWorld.x > 612 && app->scene->player1->colliderWorld.x < 2833) if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= worldSpeed;
+		if (place == MAIN_VILLAGE || place == ENEMY_FIELD)
+		{
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += worldSpeed;
+			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= worldSpeed;
+		}
+		else if (place == TAVERN)
+		{
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
+			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
+		}
+
+		RectifyCameraPosition(place);
 	}
 
-	RectifyCameraPosition();
 }
 
-void World::RectifyCameraPosition()
+void World::RectifyCameraPosition(Places placex)
 {
-	if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
-	if (app->scene->player1->colliderWorld.y > 1670) app->render->camera.y = 720 - 2072;
-
-	if (app->scene->player1->colliderWorld.x < 612) app->render->camera.x = 0;
-	if (app->scene->player1->colliderWorld.x > 2832) app->render->camera.x = 1280 - 3500;
+	if (placex == MAIN_VILLAGE)
+	{
+		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 1698) app->render->camera.y = 720 - 2100;
+		if (app->scene->player1->colliderWorld.x < 612) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 2832) app->render->camera.x = 1280 - 3500;
+	}
+	else if (placex == TAVERN)
+	{
+		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = -28;
+		if (app->scene->player1->colliderWorld.y > 639) app->render->camera.y = -375;
+	}
+	else if (placex == ENEMY_FIELD)
+	{
+		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
+		if (app->scene->player1->colliderWorld.x < 612) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 1068) app->render->camera.x = 1280 - 1680;
+	}
 }
 
 void World::UpdateWorldSpeed()

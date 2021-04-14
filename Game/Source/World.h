@@ -8,6 +8,9 @@
 
 #include "Collider.h"
 
+#define REL_CAMX_PLAYERX 612
+#define REL_CAMY_PLAYERY 318
+
 class Enemy;
 enum EnemyClass;
 class Player;
@@ -70,7 +73,7 @@ private:
 
     void CameraMovement(bool move);
 
-    void RectifyCameraPosition();
+    void RectifyCameraPosition(Places place);
 
     void UpdateWorldSpeed();
 
@@ -91,7 +94,8 @@ private:
     Places place;
 
     iPoint prevPosition = { 0, 0 };
-    iPoint prevCam = {0, 0};
+
+    bool drawCollisions = false;
 
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;
@@ -100,6 +104,17 @@ private:
     List<SDL_Rect> location3;
     List<SDL_Rect> tavern;
     List<SDL_Rect> shop;
+
+    const SDL_Rect sensor1House = { 392, 616, 112, 56 };
+    const SDL_Rect sensor2House = { 924, 616, 112, 56 };
+    const SDL_Rect sensor3House = { 1400, 700, 112, 56 };
+    const SDL_Rect sensor4House = { 2660, 1792, 112, 56 };
+    const SDL_Rect sensor5House = { 2044, 1792, 112, 56 };
+    const SDL_Rect sensor6House = { 3080, 1260, 112, 56 };
+    const SDL_Rect sensorVillageField1 = { 0, 140, 28, 196};
+    const SDL_Rect sensorVillageField2 = { 0, 1316, 28, 196 };
+    const SDL_Rect sensorFieldVillage1 = { 1652, 280, 28, 196 };
+    const SDL_Rect sensorFieldVillage2 = { 1652, 1456, 28, 196 };
 
 private: //Textures
 

@@ -2052,7 +2052,7 @@
    <tile gid="99"/>
    <tile gid="100"/>
    <tile gid="129"/>
-   <tile gid="130"/>
+   <tile/>
    <tile gid="131"/>
    <tile gid="132"/>
    <tile gid="129"/>
@@ -17962,7 +17962,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1799"/>
+   <tile gid="1796"/>
    <tile gid="1799"/>
    <tile/>
    <tile/>
