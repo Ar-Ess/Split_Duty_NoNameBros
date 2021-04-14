@@ -46,6 +46,8 @@ public:
 
     void Refill();
 
+    void RestartPlayer();
+
     SDL_Rect GetCombatBounds()
     {
         return colliderCombat;
@@ -101,28 +103,34 @@ public:
 public:
     friend class Combat;
 
-    int health = 35;
-    int maxHealth = 35;
-    int defense = 5;
-    int strength = 30;
+    int health = 0;
+    int maxHealth = 0;
+    int defense = 0;
+    int strength = 0;
     int velocity = 0;
     int luck = 0;
     int stab = 0;
     
-    int lvl;
-    int exp;
-    int money;
+    int lvl = 0;
+    int exp = 0;
+
+    int playerSpeed = 8;
+
+public: //Items
+    int smallMeatCount = 0;
+    int largeMeatCount = 0;
+    int featherCount = 0;
+    int mantisRodCount = 0;
+    int splitedEnemyCount = 0;
+    int moneyCount = 0;
 
 public:
     SDL_Texture* texture;
-    int playerSpeed;
-
-    iPoint positionLive;
-    int positionCombat;
 
     SDL_Rect colliderWorld;
     SDL_Rect collisionRect;
     SDL_Rect colliderCombat;
+
 public:
     bool godMode = false;
 };

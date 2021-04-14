@@ -52,8 +52,6 @@ bool Scene::Start()
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
-	player1->SetUp(40, 40, 27, 8, 0, 0, 0, 10, 0, 0);
-
 	world = new World();
 
 	combatScene = new Combat();
@@ -656,8 +654,17 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 	case MAIN_MENU:
 
-		if (strcmp(control->text.GetString(), "NewGameButton") == 0) SetScene(WORLD, Places::MAIN_VILLAGE);
-		else if (strcmp(control->text.GetString(), "ContinueButton") == 0) int i = 0;
+		if (strcmp(control->text.GetString(), "NewGameButton") == 0)
+		{
+			remove("save_game.xml");
+			SetScene(WORLD, Places::MAIN_VILLAGE);
+			player1->RestartPlayer();
+			player2->RestartPlayer();
+		}
+		else if (strcmp(control->text.GetString(), "ContinueButton") == 0)
+		{
+			app->LoadGameRequest();
+		}
 		else if (strcmp(control->text.GetString(), "OptionsButton") == 0) SetScene(OPTIONS_MENU);
 		else if (strcmp(control->text.GetString(), "ExitButton") == 0) exit = true;
 		break;

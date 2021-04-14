@@ -11,6 +11,9 @@
 #include "DialogueManager.h"
 #include "Scene.h"
 #include "Transition.h"
+#include "Player.h"
+#include "World.h"
+#include "Combat.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -337,14 +340,13 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
-// Load / Save
+// ---------------------------------------
 void App::LoadGameRequest()
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
 	loadGameRequested = true;
 }
 
-// ---------------------------------------
 void App::SaveGameRequest() const
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
@@ -352,23 +354,147 @@ void App::SaveGameRequest() const
 }
 
 // ---------------------------------------
-// L02: TODO 5: Create a method to actually load an xml file
-// then call all the modules to load themselves
 bool App::LoadGame()
 {
-	bool ret = false;
+	bool ret = true;
 
-	//...
+	pugi::xml_document data;
+	pugi::xml_parse_result doc = data.load_file("save_game.xml");
+	pugi::xml_node playerInfo;
+	pugi::xml_node worldInfo;
+	Player* p1 = app->scene->player1;
+	Player* p2 = app->scene->player2;
+	World* w = app->scene->world;
+
+	if (doc == NULL)
+	{
+		LOG("There was an arror trying to load the game, take care of save_game.xml file. %s", doc.description());
+		ret = false;
+	}
+	else
+	{
+		playerInfo = data.child("saveState").child("Player_Information");
+		pugi::xml_node pos = playerInfo.child("Position");
+		p1->colliderWorld.x = pos.attribute("x_world").as_int();
+		p1->colliderWorld.y = pos.attribute("y_world").as_int();
+		p1->collisionRect.x = pos.attribute("x_coll").as_int();
+		p1->collisionRect.y = pos.attribute("y_coll").as_int();
+		p1->playerSpeed = pos.attribute("player_speed").as_int();
+
+		pugi::xml_node stats = playerInfo.child("Player1_Stats");
+		p1->health = stats.attribute("health").as_int();
+		p1->maxHealth = stats.attribute("max_health").as_int();
+		p1->strength = stats.attribute("strength").as_int();
+		p1->defense = stats.attribute("defense").as_int();
+		p1->velocity = stats.attribute("velocity").as_int();
+		p1->luck = stats.attribute("luck").as_int();
+		p1->stab = stats.attribute("stab").as_int();
+		p1->lvl = stats.attribute("level").as_int();
+		p1->exp = stats.attribute("experience").as_int();
+
+		stats = playerInfo.child("Player2_Stats");
+		app->scene->combatScene->secondPlayer = stats.attribute("exists").as_bool();
+		p2->health = stats.attribute("health").as_int();
+		p2->maxHealth = stats.attribute("max_health").as_int();
+		p2->strength = stats.attribute("strength").as_int();
+		p2->defense = stats.attribute("defense").as_int();
+		p2->lvl = stats.attribute("level").as_int();
+		p2->exp = stats.attribute("experience").as_int();
+
+		pugi::xml_node items = playerInfo.child("Items");
+		p1->smallMeatCount = stats.attribute("small_meat").as_int();
+		p1->largeMeatCount = stats.attribute("large_meat").as_int();
+		p1->featherCount = stats.attribute("feather").as_int();
+		p1->mantisRodCount = stats.attribute("mantis_rod").as_int();
+		p1->splitedEnemyCount = stats.attribute("splited_enemy").as_int();
+		p1->moneyCount = stats.attribute("money").as_int();
+
+		worldInfo = data.child("saveState").child("World_Information");
+		pugi::xml_node world = worldInfo.child("Position");
+		w->SetPrevPosition(world.attribute("previous_x").as_int(), world.attribute("previous_y").as_int());
+		app->render->camera.x = world.attribute("cam_x").as_int();
+		app->render->camera.y = world.attribute("cam_y").as_int();
+
+		world = worldInfo.child("Place");
+		w->SetPlace(world.attribute("place").as_int());
+
+		LOG("Loading finished...");
+	}
 
 	loadGameRequested = false;
+
+	app->scene->continuePressed = true;
+	app->scene->SetScene(WORLD, w->GetPlace());
+	app->scene->continuePressed = false;
 
 	return ret;
 }
 
-// L02: TODO 7: Implement the xml save method for current state
 bool App::SaveGame() const
 {
 	bool ret = true;
+
+	pugi::xml_document saveDoc;
+	pugi::xml_node root = saveDoc.append_child("saveState");
+	pugi::xml_node saveNode;
+	pugi::xml_node playerInfo;
+	pugi::xml_node worldInfo;
+
+	if (root != NULL)
+	{
+		//PLAYER INFO
+		saveNode = root.append_child("Player_Information");
+		playerInfo = saveNode.append_child("Position");
+		playerInfo.append_attribute("x_world").set_value(scene->player1->colliderWorld.x);
+		playerInfo.append_attribute("y_world").set_value(scene->player1->colliderWorld.y);
+		playerInfo.append_attribute("x_coll").set_value(scene->player1->collisionRect.x);
+		playerInfo.append_attribute("y_coll").set_value(scene->player1->collisionRect.y);
+		playerInfo.append_attribute("player_speed").set_value(scene->player1->playerSpeed);
+		playerInfo = saveNode.append_child("Player1_Stats");
+		playerInfo.append_attribute("health").set_value(scene->player1->health);
+		playerInfo.append_attribute("max_health").set_value(scene->player1->maxHealth);
+		playerInfo.append_attribute("strength").set_value(scene->player1->strength);
+		playerInfo.append_attribute("defense").set_value(scene->player1->defense);
+		playerInfo.append_attribute("velocity").set_value(scene->player1->velocity);
+		playerInfo.append_attribute("luck").set_value(scene->player1->luck);
+		playerInfo.append_attribute("stab").set_value(scene->player1->stab);
+		playerInfo.append_attribute("level").set_value(scene->player1->lvl);
+		playerInfo.append_attribute("experience").set_value(scene->player1->exp);
+		playerInfo = saveNode.append_child("Player2_Stats");
+		playerInfo.append_attribute("exists").set_value(scene->combatScene->secondPlayer);
+		playerInfo.append_attribute("health").set_value(scene->player2->health);
+		playerInfo.append_attribute("max_health").set_value(scene->player2->maxHealth);
+		playerInfo.append_attribute("strength").set_value(scene->player2->strength);
+		playerInfo.append_attribute("defense").set_value(scene->player2->defense);
+		playerInfo.append_attribute("level").set_value(scene->player2->lvl);
+		playerInfo.append_attribute("experience").set_value(scene->player2->exp);
+		playerInfo = saveNode.append_child("Items");
+		playerInfo.append_attribute("small_meat").set_value(scene->player1->smallMeatCount);
+		playerInfo.append_attribute("large_meat").set_value(scene->player1->largeMeatCount);
+		playerInfo.append_attribute("feather").set_value(scene->player1->featherCount);
+		playerInfo.append_attribute("mantis_rod").set_value(scene->player1->mantisRodCount);
+		playerInfo.append_attribute("splited_enemy").set_value(scene->player1->splitedEnemyCount);
+		playerInfo.append_attribute("money").set_value(scene->player1->moneyCount);
+
+		//WORLD INFO
+		saveNode = root.append_child("World_Information");
+		worldInfo = saveNode.append_child("Position");
+		worldInfo.append_attribute("cam_x").set_value(render->camera.x);
+		worldInfo.append_attribute("cam_y").set_value(render->camera.y);
+		worldInfo.append_attribute("previous_x").set_value(scene->world->GetPreviousPosition().x);
+		worldInfo.append_attribute("previous_y").set_value(scene->world->GetPreviousPosition().y);
+		worldInfo.append_attribute("world_speed").set_value(scene->world->GetWorldSpeed());
+		worldInfo = saveNode.append_child("Place");
+		worldInfo.append_attribute("place").set_value(scene->world->GetPlace());
+
+		saveDoc.save_file("save_game.xml");
+		LOG("Game saved correctly");
+	}
+	else
+	{
+		LOG("Error on append child of the save_game.xml file");
+		ret = false;
+	}
 
 	saveGameRequested = false;
 

@@ -19,6 +19,7 @@ Combat::Combat()
 {
 	currentPlayerAnim = nullptr;
 	currentEnemyAnim = nullptr;
+	secondPlayer = false;
 }
 
 void Combat::Start()
@@ -32,23 +33,12 @@ void Combat::Start()
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
-	//Player 2 Harcoded
-	if (secondPlayer)
-	{
-		app->scene->player2->health = 15;
-		app->scene->player2->maxHealth = 15;
-		app->scene->player2->strength = 10;
-		app->scene->player2->defense = 5;
-		app->scene->player2->lvl = 10;
-		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
-		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
-	}
-
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 
 	//Item Inventory amount
-	ItemSetup(1, 1, 1, 1, 1);
+	Player* p = app->scene->player1;
+	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
 
 	//Bool preparation for combat
 	BoolStart();
@@ -88,6 +78,8 @@ void Combat::Restart()
 	app->tex->UnLoad(grassyLandsBackground);
 
 	PlayerPosReset();
+	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 }
 
 void Combat::Update()
@@ -931,11 +923,11 @@ void Combat::PlayerItemChoose()
 			protectPlayerTurn = true;
 			mantisLeg--;
 		}
-		else if (itemChoice && tamedEnemy > 0 && app->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
+		else if (itemChoice && splitedEnemy > 0 && app->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
 		{
 			itemChoice = false;
 			enemyThrow = true;
-			tamedEnemy--;
+			splitedEnemy--;
 		}
 	}
 	else
@@ -1213,13 +1205,14 @@ void Combat::PlayerResponse()
 	if (app->scene->player1->crouch) app->scene->player1->Crouch();
 }
 
-void Combat::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy)
+void Combat::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
 {
 	smallMeat = xsmallMeat;
 	largeMeat = xlargeMeat;
 	feather = xfeather;
 	mantisLeg = xmantisLeg;
-	tamedEnemy = xtamedEnemy;
+	splitedEnemy = xsplitedEnemy;
+	money = xmoney;
 }
 
 void Combat::EnemyAttackProbability()
@@ -1266,9 +1259,9 @@ void Combat::EnemyAttackProbability()
 void Combat::PlayerMoneyLose()
 {
 	int lostMoney = ceil(app->scene->player1->lvl / 10);
-	app->scene->player1->money -= lostMoney;
+	app->scene->player1->moneyCount -= lostMoney;
 
-	if (app->scene->player1->money < 0) app->scene->player1->money = 0;
+	if (app->scene->player1->moneyCount < 0) app->scene->player1->moneyCount = 0;
 }
 
 void Combat::EscapeProbability(short int probabilityRange)
@@ -1331,8 +1324,8 @@ void Combat::PlayerHitLogic()
 				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
 				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
-					app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defense) / 2);
+					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defense) / 2);
 					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
 
@@ -1552,6 +1545,6 @@ void Combat::PlayerEscape()
 void Combat::PlayerSplitWin()
 {
 	LOG("ENEMY SPLITED");
-	tamedEnemy++;
+	splitedEnemy++;
 	combatState = SPLIT;
 }

@@ -65,6 +65,7 @@ public: //Combat Buttons
 	GuiButton* newGameButton = nullptr;
 
 	GuiButton* continueButton = nullptr;
+	bool continuePressed = false;
 
 	GuiButton* optionsButton = nullptr;
 
@@ -155,6 +156,7 @@ public:
 
 private: //Scene Manager
 	friend class World;
+	friend class App;
 
 	Scenes currScene = NONE;
 	Scenes prevScene = NONE;

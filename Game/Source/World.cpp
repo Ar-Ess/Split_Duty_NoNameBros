@@ -26,50 +26,48 @@ void World::Start(Places placex)
 		place = placex;
 		map->Load("main_village.tmx");
 
-		if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor1House))
+		if (!app->scene->continuePressed)
 		{
-			app->scene->player1->colliderWorld = { 420, 636, 56, 84 };
-			app->scene->player1->collisionRect = { 420, 636 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor2House))
-		{
-			app->scene->player1->colliderWorld = { 952, 636, 56, 84 };
-			app->scene->player1->collisionRect = { 952, 636 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor3House))
-		{
-			app->scene->player1->colliderWorld = { 1428, 720, 56, 84 };
-			app->scene->player1->collisionRect = { 1428, 720 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor4House))
-		{
-			app->scene->player1->colliderWorld = { 2688, 1812, 56, 84 };
-			app->scene->player1->collisionRect = { 2688, 1812 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor5House))
-		{
-			app->scene->player1->colliderWorld = { 2072, 1812, 56, 84 };
-			app->scene->player1->collisionRect = { 2072, 1812 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor6House))
-		{
-			app->scene->player1->colliderWorld = { 3108, 1280, 56, 84 };
-			app->scene->player1->collisionRect = { 3108, 1280 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage1))
-		{
-			app->scene->player1->colliderWorld = { 35, 175, 56, 84 };
-			app->scene->player1->collisionRect = { 35, 175 + 56, 56, 84 - 56 };
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage2))
-		{
-			app->scene->player1->colliderWorld = { 35, 1380, 56, 84 };
-			app->scene->player1->collisionRect = { 35, 1380 + 56, 56, 84 - 56 };
-		}
-		else if (temp != TAVERN)
-		{
-			app->scene->player1->colliderWorld = { 1722, 210, 56, 84 };
-			app->scene->player1->collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+			if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor1House))
+			{
+				app->scene->player1->colliderWorld = { 420, 636, 56, 84 };
+				app->scene->player1->collisionRect = { 420, 636 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor2House))
+			{
+				app->scene->player1->colliderWorld = { 952, 636, 56, 84 };
+				app->scene->player1->collisionRect = { 952, 636 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor3House))
+			{
+				app->scene->player1->colliderWorld = { 1428, 720, 56, 84 };
+				app->scene->player1->collisionRect = { 1428, 720 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor4House))
+			{
+				app->scene->player1->colliderWorld = { 2688, 1812, 56, 84 };
+				app->scene->player1->collisionRect = { 2688, 1812 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor5House))
+			{
+				app->scene->player1->colliderWorld = { 2072, 1812, 56, 84 };
+				app->scene->player1->collisionRect = { 2072, 1812 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensor6House))
+			{
+				app->scene->player1->colliderWorld = { 3108, 1280, 56, 84 };
+				app->scene->player1->collisionRect = { 3108, 1280 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage1))
+			{
+				app->scene->player1->colliderWorld = { 35, 175, 56, 84 };
+				app->scene->player1->collisionRect = { 35, 175 + 56, 56, 84 - 56 };
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x + 54, prevPosition.y, 1, 1 }, sensorFieldVillage2))
+			{
+				app->scene->player1->colliderWorld = { 35, 1380, 56, 84 };
+				app->scene->player1->collisionRect = { 35, 1380 + 56, 56, 84 - 56 };
+			}
 		}
 
 		AlignCameraPosition();
@@ -81,22 +79,30 @@ void World::Start(Places placex)
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("house.tmx");
-		app->scene->player1->colliderWorld = { 280, 350, 56, 84 };
-		app->scene->player1->collisionRect = { 280, 350 + 56, 56, 84 - 56 };
 
-		app->render->camera.x = 332;
-		app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
+		if (!app->scene->continuePressed)
+		{
+			app->scene->player1->colliderWorld = { 280, 350, 56, 84 };
+			app->scene->player1->collisionRect = { 280, 350 + 56, 56, 84 - 56 };
+
+			app->render->camera.x = 332;
+			app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
+		}
 	}
 	else if (placex == TAVERN)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("tavern.tmx");
-		app->scene->player1->colliderWorld = { 504, 880, 56, 84 };
-		app->scene->player1->collisionRect = { 504, 880 + 56, 56, 84 - 56 };
 
-		app->render->camera.x = 140;
-		app->render->camera.y = -375;
+		if (!app->scene->continuePressed)
+		{
+			app->scene->player1->colliderWorld = { 504, 880, 56, 84 };
+			app->scene->player1->collisionRect = { 504, 880 + 56, 56, 84 - 56 };
+
+			app->render->camera.x = 140;
+			app->render->camera.y = -375;
+		}
 
 		RectifyCameraPosition(placex);
 	}
@@ -106,43 +112,46 @@ void World::Start(Places placex)
 		place = placex;
 		map->Load("graveyard.tmx");
 
-		if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
+		if (!app->scene->continuePressed)
 		{
-			app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
-			app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
+			if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
+			{
+				app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
+				app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
 
-			app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
-			app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
+				app->render->camera.x = (app->scene->player1->colliderWorld.x - REL_CAMX_PLAYERX) * -1;
+				app->render->camera.y = (app->scene->player1->colliderWorld.y - REL_CAMY_PLAYERY) * -1;
 
-			RectifyCameraPosition(placex);
+				RectifyCameraPosition(placex);
 
-			app->render->camera.y = -140;
+				app->render->camera.y = -140;
 
-			app->scene->player1->colliderWorld.y += 140;
-			app->scene->player1->collisionRect.y += 140;
-		}
-		else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField2))
-		{
-			app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
-			app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
+				app->scene->player1->colliderWorld.y += 140;
+				app->scene->player1->collisionRect.y += 140;
+			}
+			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField2))
+			{
+				app->scene->player1->colliderWorld = { 1580, 150, 56, 84 };
+				app->scene->player1->collisionRect = { 1580, 150 + 56, 56, 84 - 56 };
 
-			AlignCameraPosition();
+				AlignCameraPosition();
 
-			RectifyCameraPosition(placex);
+				RectifyCameraPosition(placex);
 
-			app->render->camera.y = -1216;
+				app->render->camera.y = -1216;
 
-			app->scene->player1->colliderWorld.y += 1356; //1316
-			app->scene->player1->collisionRect.y += 1356; //1316
-		}
-		else
-		{
-			app->scene->player1->colliderWorld = { prevPosition.x, prevPosition.y, 56, 84 };
-			app->scene->player1->collisionRect = { prevPosition.x, prevPosition.y + 56, 56, 84 - 56 };
+				app->scene->player1->colliderWorld.y += 1356; //1316
+				app->scene->player1->collisionRect.y += 1356; //1316
+			}
+			else
+			{
+				app->scene->player1->colliderWorld = { prevPosition.x, prevPosition.y, 56, 84 };
+				app->scene->player1->collisionRect = { prevPosition.x, prevPosition.y + 56, 56, 84 - 56 };
 
-			AlignCameraPosition();
+				AlignCameraPosition();
 
-			RectifyCameraPosition(placex);
+				RectifyCameraPosition(placex);
+			}
 		}
 
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");

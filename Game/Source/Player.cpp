@@ -17,8 +17,15 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     type = enType;
 
     colliderCombat = collCombat;
-    colliderWorld = {60, 150, 56, 84};
-    collisionRect = {60, 206, 56, 28};
+    colliderWorld = { 1722, 210, 56, 84 };
+    collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+
+    smallMeatCount = 1;
+    largeMeatCount = 1;
+    featherCount = 1;
+    mantisRodCount = 1;
+    splitedEnemyCount = 1;
+    moneyCount = 1;
 
     playerSpeed = 18;
 
@@ -148,7 +155,7 @@ void Player::SetUp(short int healthx, short int maxHealthx, short int strengthx,
     stab = stabx;
     lvl = lvlx;
     exp = expx;
-    money = moneyx;
+    moneyCount = moneyx;
 }
 
 void Player::SetTexture(SDL_Texture *tex)
@@ -222,4 +229,34 @@ void Player::Crouch()
 void Player::Refill()
 {
     health = maxHealth;
+}
+
+void Player::RestartPlayer()
+{
+    app->scene->player1->colliderWorld = { 1722, 210, 56, 84 };
+    app->scene->player1->collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+
+    smallMeatCount = 1;
+    largeMeatCount = 1;
+    featherCount = 1;
+    mantisRodCount = 1;
+    splitedEnemyCount = 1;
+    moneyCount = 1;
+
+    if (type == EntityType::PLAYER1)
+    {
+        SetUp(40, 40, 27, 8, 0, 0, 0, 10, 0, 0);
+        colliderCombat.x = INIT_COMBAT_POSX;
+        colliderCombat.y = INIT_COMBAT_POSY;
+    }
+    else if (type == EntityType::PLAYER2)
+    {
+        SetUp(15, 15, 10, 0, 0, 0, 0, 10, 0, 0);
+        colliderCombat.x = INIT2_COMBAT_POSX;
+        colliderCombat.y = INIT2_COMBAT_POSY;
+    }
+
+    app->scene->combatScene->secondPlayer = false;
+
+    playerSpeed = 18;
 }

@@ -59,6 +59,26 @@ public:
         return place;
     }
 
+    iPoint GetPreviousPosition() const
+    {
+        return prevPosition;
+    }
+
+    int GetWorldSpeed() const
+    {
+        return worldSpeed;
+    }
+
+    void SetPrevPosition(int x, int y)
+    {
+        prevPosition = { x, y };
+    }
+
+    void SetPlace(int placex)
+    {
+        place = (Places)placex;
+    }
+
 private:
 
     void WorldMovement();
@@ -86,10 +106,9 @@ private:
 private:
 
     friend class Map;
+    friend class Scene;
 
     int worldSpeed;
-
-    friend class Scene;
 
     Collision collisionUtils;
 

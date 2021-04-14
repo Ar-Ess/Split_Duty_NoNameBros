@@ -113,7 +113,7 @@ public:
 
     int EnemyItemDamage();
 
-    void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xtamedEnemy);
+    void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
 
     void EnemyAttackProbability();
 
@@ -222,7 +222,8 @@ public:
     short int largeMeat = 0;
     short int feather = 0;
     short int mantisLeg = 0;
-    short int tamedEnemy = 0;
+    short int splitedEnemy = 0;
+    short int money = 0;
 
 private:
     friend class Scene;
