@@ -36,6 +36,7 @@ void Combat::Start()
 	if (secondPlayer)
 	{
 		app->scene->player2->health = 15;
+		app->scene->player2->maxHealth = 15;
 		app->scene->player2->strength = 10;
 		app->scene->player2->defense = 5;
 		app->scene->player2->lvl = 10;
@@ -151,7 +152,7 @@ void Combat::Draw()
 	//INVENTORY
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
-	app->guiManager->DrawCombatInterface();
+	app->guiManager->DrawCombatInterface(enemy);
 
 	if (!secondPlayer)
 	{

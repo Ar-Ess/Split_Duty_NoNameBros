@@ -90,12 +90,14 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	}
 	else if (sc == MAINMENU_TRACK)
 	{
-		PlayMusic("Assets/Audio/Music/SplitDuty_MainMenu_Soundtrack.mp3", fadeTime);
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MainMenu_Soundtrack.mp3", fadeTime);
 	}
 	else if (sc == MAINVILLAGE_TRACK)
 	{
-		PlayMusic("Assets/Audio/Music/SplitDuty_MainVillage_Soundtrack.mp3", fadeTime);
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MainVillage_Soundtrack.mp3", fadeTime);
 	}
+
+	st = sc;
 }
 
 bool AudioManager::PlayMusic(const char* path, float fadeTime)

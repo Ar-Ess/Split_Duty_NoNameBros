@@ -14,6 +14,7 @@
 #define CYAN {0,255,247,255}
 
 struct SDL_Texture;
+class Enemy;
 
 class GuiManager : public Module
 {
@@ -32,6 +33,7 @@ public:
 	bool CleanUp();
 
 	GuiControl* CreateGuiControl(GuiControlType type);
+
 	void DestroyGuiControl(GuiControl* entity);
 
 	void AddGuiControl(GuiControl* entity);
@@ -44,7 +46,7 @@ public:
 
 	void BlinkLifeBar(int life,SDL_Color color1 , SDL_Color color2);
 
-	void DrawCombatInterface();
+	void DrawCombatInterface(Enemy* enemy);
 	
 	void DrawCombatButtons();
 

@@ -78,6 +78,7 @@ void World::Start(Places placex)
 	}
 	else if (placex == HOUSE)
 	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("house.tmx");
 		app->scene->player1->colliderWorld = { 280, 350, 56, 84 };
@@ -88,6 +89,7 @@ void World::Start(Places placex)
 	}
 	else if (placex == TAVERN)
 	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("tavern.tmx");
 		app->scene->player1->colliderWorld = { 504, 880, 56, 84 };
@@ -100,6 +102,7 @@ void World::Start(Places placex)
 	}
 	else if (placex == ENEMY_FIELD)
 	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		place = placex;
 		map->Load("graveyard.tmx");
 

@@ -20,6 +20,7 @@ enum Scenes
 	NONE = -1,
 	LOGO_SCENE,
 	MAIN_MENU,
+	OPTIONS_MENU,
 	COMBAT,
 	LEVEL_UP,
 	WORLD
@@ -60,6 +61,14 @@ public:
 public: //Combat Buttons
 
 	void RestartPressState();
+
+	GuiButton* newGameButton = nullptr;
+
+	GuiButton* continueButton = nullptr;
+
+	GuiButton* optionsButton = nullptr;
+
+	GuiButton* exitButton = nullptr;
 
 	GuiButton* attackButton = nullptr;
 	bool attackPressed = false;
@@ -117,8 +126,21 @@ public: //Combat Buttons
 
 	GuiString* buffText = nullptr;
 
+	GuiString* newGameText = nullptr;
+
+	GuiString* continueText = nullptr;
+
+	GuiString* optionsText = nullptr;
+
+	GuiString* exitText = nullptr;
+
+	bool exit = false;
+
+	bool activeContinue = false;
+
 private: // Textures
 	SDL_Texture* logo = nullptr;
+	SDL_Texture* menu = nullptr;
 
 public:
 	friend class Combat;
@@ -145,6 +167,7 @@ private: //Scene Manager
 	//Setters
 	void SetLogoScene();
 	void SetMainMenu();
+	void SetOptionsMenu();
 	void SetCombat(Enemy* enemy);
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
@@ -152,6 +175,7 @@ private: //Scene Manager
 	//Updaters
 	void UpdateLogoScene();
 	void UpdateMainMenu();
+	void UpdateOptionsMenu();
 	void UpdateCombat();
 	void UpdateLevelUp();
 	void UpdateWorld();

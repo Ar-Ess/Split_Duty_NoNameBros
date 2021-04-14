@@ -28,7 +28,7 @@ class AudioManager : public Module
 {
 public:
 
-	//SoundTrack sc = NO_TRACK;
+	SoundTrack st = NO_TRACK;
 
 	AudioManager();
 
@@ -43,6 +43,11 @@ public:
 	void SetFx(Effect fx);
 
 	unsigned int LoadFx(const char* path);
+
+	SoundTrack GetPlayingMusic() const
+	{
+		return st;
+	}
 
 private:
 	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);

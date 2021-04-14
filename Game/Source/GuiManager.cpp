@@ -3,6 +3,7 @@
 
 #include "GuiManager.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Combat.h"
 
 #include "Log.h"
@@ -142,7 +143,7 @@ void GuiManager::DrawCursor()
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 {
-	if (app->scene->player1->godMode == false)
+	if (!app->scene->player1->godMode)
 	{
 		int size = 4;
 		int thickness = 20;
@@ -156,15 +157,13 @@ void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 			if (life <= maxLife / 3)
 			{
 				BlinkLifeBar(life, RED, SOFT_RED);
-
 			}
 			else
 				app->render->DrawRectangle(lifeBar, RED);
 		}
 		
 	}
-
-	if (app->scene->player1->godMode)
+	else if (app->scene->player1->godMode)
 	{
 		app->render->DrawRectangle(maxLifeBar, BLUE);
 		BlinkLifeBar(life, BLUE, CYAN);
@@ -183,7 +182,6 @@ void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
 	if (life <= maxLife / 3)
 	{
 		BlinkLifeBar(life, RED, SOFT_RED);
-
 	}
 	else
 		app->render->DrawRectangle(lifeBar, RED);
@@ -198,7 +196,7 @@ void GuiManager::BlinkLifeBar(int life, SDL_Color color1, SDL_Color color2)
 		app->render->DrawRectangle(lifeBar, color2);
 }
 
-void GuiManager::DrawCombatInterface()
+void GuiManager::DrawCombatInterface(Enemy* enemy)
 {
 	const SDL_Rect guiRect = { 0,0,1280,720 };
 	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
@@ -208,7 +206,9 @@ void GuiManager::DrawCombatInterface()
 
 	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
 
-	app->guiManager->DrawEnemyLifeBar(30, 35, 1086, 30);
+	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
+
+	app->guiManager->DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1080, 30);
 }
 
 bool GuiManager::CleanUp()

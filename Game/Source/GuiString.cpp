@@ -35,3 +35,12 @@ void GuiString::SetTextFont(_TTF_Font* textFont)
 {
 	this->textFont = textFont;
 }
+
+void GuiString::CenterAlign()
+{
+	int width = 0, height = 0;
+	app->fontTTF->CalcSize(text.GetString(), width, height, textFont);
+
+	bounds.x += (bounds.w / 2) - (width / 2);
+	bounds.y += (bounds.h / 2) - (height / 2);
+}

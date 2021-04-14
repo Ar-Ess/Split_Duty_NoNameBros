@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "App.h"
 #include "Scene.h"
 
@@ -65,10 +67,20 @@ bool Scene::Start()
 	app->entityManager->CreateEntity(EntityType::ENEMY);
 
 	//ENEMY SET                                          ENEMY CLASS           -----------------COMBAT RECT----------------        ---WORLD RECT---  LVL EXP  HP STR DEF  VEL
-	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 20, 10, 5, 20);
 
-	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 200, 30, 30, 10, 20);
-	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 200, 30, 30, 10, 20);
+	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 400, 35, 25, 5, 40);
+	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 400, 40, 10, 20, 20);
+
+	if (FILE* file = fopen("save_game.xml", "r"))
+	{
+		fclose(file);
+		activeContinue = true;
+	}
+	else
+	{
+		activeContinue = false;
+	}
 
 	return true;
 }
@@ -122,6 +134,7 @@ bool Scene::Update(float dt)
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
+	else if (currScene == OPTIONS_MENU) UpdateOptionsMenu();
 	else if (currScene == COMBAT) UpdateCombat();
 	else if (currScene == LEVEL_UP) UpdateLevelUp();
 	else if (currScene == WORLD) UpdateWorld();
@@ -131,11 +144,9 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
-	bool ret = true;
-
 	app->win->FullScreenLogic();
 
-	return ret;
+	return !exit;
 }
 
 bool Scene::CleanUp()
@@ -147,6 +158,10 @@ bool Scene::CleanUp()
 		app->tex->UnLoad(logo);
 	}
 	else if (currScene == MAIN_MENU)
+	{
+		app->tex->UnLoad(menu);
+	}
+	else if (currScene == OPTIONS_MENU)
 	{
 
 	}
@@ -177,6 +192,7 @@ void Scene::SetScene(Scenes scene)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
+	else if (scene == OPTIONS_MENU) SetOptionsMenu();
 	//else if (scene == COMBAT) SetCombat();
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
@@ -191,6 +207,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
+	else if (scene == OPTIONS_MENU) SetOptionsMenu();
 	else if (scene == COMBAT) SetCombat(enemy);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
@@ -205,6 +222,7 @@ void Scene::SetScene(Scenes scene, Places place)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
+	else if (scene == OPTIONS_MENU) SetOptionsMenu();
 	//else if (scene == COMBAT) SetCombat();
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(place);
@@ -233,6 +251,83 @@ void Scene::SetLogoScene()
 void Scene::SetMainMenu()
 {
 	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
+	menu = app->tex->Load("Assets/Screens/tittle_screen.png");
+
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
+	if (newGameButton == nullptr)
+	{
+		newGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		newGameButton->bounds = { 640 - buttonPrefab.w / 2 , 350,buttonPrefab.w,buttonPrefab.h };
+		newGameButton->text = "NewGameButton";
+		newGameButton->SetObserver(this);
+	}
+
+	if (continueButton == nullptr)
+	{
+		continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		continueButton->bounds = { 640 - buttonPrefab.w / 2 , 430,buttonPrefab.w,buttonPrefab.h };
+		continueButton->text = "ContinueButton";
+		continueButton->SetObserver(this);
+		if (!activeContinue) continueButton->state = GuiControlState::LOCKED;
+	}
+
+	if (optionsButton == nullptr)
+	{
+		optionsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		optionsButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
+		optionsButton->text = "OptionsButton";
+		optionsButton->SetObserver(this);
+	}
+
+	if (exitButton == nullptr)
+	{
+		exitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		exitButton->bounds = { 640 - buttonPrefab.w / 2 , 590, buttonPrefab.w,buttonPrefab.h };
+		exitButton->text = "ExitButton";
+		exitButton->SetObserver(this);
+	}
+
+	if (newGameText == nullptr)
+	{
+		newGameText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		newGameText->bounds = newGameButton->bounds;
+		newGameText->SetTextFont(app->fontTTF->defaultFont);
+		newGameText->SetString("NEW GAME");
+		newGameText->CenterAlign();
+	}
+
+	if (continueText == nullptr)
+	{
+		continueText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		continueText->bounds = continueButton->bounds;
+		continueText->SetTextFont(app->fontTTF->defaultFont);
+		continueText->SetString("CONTINUE");
+		continueText->CenterAlign();
+	}
+
+	if (optionsText == nullptr)
+	{
+		optionsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsText->bounds = optionsButton->bounds;
+		optionsText->SetTextFont(app->fontTTF->defaultFont);
+		optionsText->SetString("OPTIONS");
+		optionsText->CenterAlign();
+	}
+
+	if (exitText == nullptr)
+	{
+		exitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		exitText->bounds = exitButton->bounds;
+		exitText->SetTextFont(app->fontTTF->defaultFont);
+		exitText->SetString("EXIT");
+		exitText->CenterAlign();
+	}
+}
+
+void Scene::SetOptionsMenu()
+{
+
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -264,7 +359,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
-		app->scene->itemButton->state = GuiControlState::LOCKED;
+		itemButton->state = GuiControlState::LOCKED;
 	}
 
 	if (escapeButton == nullptr)
@@ -305,6 +400,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
+		buffButton->state = GuiControlState::LOCKED;
 	}
 
 	//if (smallMeatButton == nullptr)
@@ -455,7 +551,7 @@ void Scene::UpdateMainMenu()
 	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
-	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(WORLD, Places::MAIN_VILLAGE);
+	//if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(WORLD, Places::MAIN_VILLAGE);
 	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		app->dialogueManager->StartDialogue(1); 
@@ -481,6 +577,28 @@ void Scene::UpdateMainMenu()
 		else
 			LOG("Second Player disabled");
 	}
+
+	app->render->DrawTexture(menu, 0, 0);
+
+	newGameButton->Update(1.0f);
+	continueButton->Update(1.0f);
+	optionsButton->Update(1.0f);
+	exitButton->Update(1.0f);
+
+	newGameButton->Draw();
+	continueButton->Draw();
+	optionsButton->Draw();
+	exitButton->Draw();
+
+	newGameText->Draw();
+	continueText->Draw();
+	optionsText->Draw();
+	exitText->Draw();
+}
+
+void Scene::UpdateOptionsMenu()
+{
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 void Scene::UpdateCombat()
@@ -522,6 +640,11 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		break;
 
 	case MAIN_MENU:
+
+		if (strcmp(control->text.GetString(), "NewGameButton") == 0) SetScene(WORLD, Places::MAIN_VILLAGE);
+		else if (strcmp(control->text.GetString(), "ContinueButton") == 0) int i = 0;
+		else if (strcmp(control->text.GetString(), "OptionsButton") == 0) SetScene(OPTIONS_MENU);
+		else if (strcmp(control->text.GetString(), "ExitButton") == 0) exit = true;
 		break;
 
 	case COMBAT:
@@ -551,7 +674,6 @@ void Scene::RestartPressState()
 	secondAttackPressed = false;
 	protectPressed = false;
 	buffPressed = false;
-
 }
 
 // Debug functions (future in debug module)

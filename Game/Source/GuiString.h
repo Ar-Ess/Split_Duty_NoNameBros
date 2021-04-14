@@ -23,6 +23,7 @@ public:
 	void Draw();
 	void SetString(char* newText);
 	void SetTextFont(_TTF_Font* textFont);
+	void CenterAlign();
 
 private:
 	_TTF_Font* textFont = nullptr;

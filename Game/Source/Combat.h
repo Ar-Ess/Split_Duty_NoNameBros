@@ -146,6 +146,13 @@ private: //STATE CHANGING FUNCTIONS
 
     void PlayerSplitWin();
 
+public: //Getters
+
+    bool GetSecondPlayerExistance() const
+    {
+        return secondPlayer;
+    }
+
 public:
     short int enemyTimeWait = 0;
     short int playerTimeAttack = 0;
