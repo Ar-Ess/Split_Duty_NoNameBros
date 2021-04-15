@@ -123,6 +123,8 @@ private:
     MantisBullet bullet[5];
 
 public:
+    Animation* currentEnemyAnim;
+
     Animation cLittleWolfAwakeAnim;
     Animation cLittleWolfIdleAnim;
     Animation cLittleWolfRunAnim;

@@ -18,7 +18,7 @@
 Combat::Combat()
 {
 	currentPlayerAnim = nullptr;
-	currentEnemyAnim = nullptr;
+	//enemy->currentEnemyAnim = nullptr;
 	secondPlayer = false;
 }
 
@@ -30,7 +30,7 @@ void Combat::Start()
 	fullscreenAttack_1 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_1.png");
 	fullscreenAttack_2 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_2.png");
 	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
-	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/combat_wolf_spritesheet.png");
+	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	//Idle Animation Set
@@ -238,17 +238,20 @@ void Combat::DrawSecondPlayer()
 
 void Combat::DrawEnemy()
 {
-	if (enemy->enemyClass == SMALL_WOLF)
+	if (enemy != nullptr)
 	{
+		if (enemy->enemyClass == SMALL_WOLF)
+		{
+			enemy->currentEnemyAnim = &enemy->cLittleWolfAwakeAnim;
+		}
+		else if (enemy->enemyClass == BIRD)
+		{
 
-	}
-	else if (enemy->enemyClass == BIRD)
-	{
+		}
+		else if (enemy->enemyClass == MANTIS)
+		{
 
-	}
-	else if (enemy->enemyClass == MANTIS)
-	{
-
+		}
 	}
 }
 

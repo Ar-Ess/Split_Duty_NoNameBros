@@ -15,23 +15,15 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
     path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
 
     //Load enemies textures
-    for (int i = 8; i >=0 ; i--)
-    {
-        cLittleWolfAwakeAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
-    }
-    cLittleWolfAwakeAnim.speed = 0.120f;
+    cLittleWolfAwakeAnim.PushBack({ 68,0,63,34 });
+    cLittleWolfAwakeAnim.PushBack({ 133 ,0,63,34 });
+    cLittleWolfAwakeAnim.PushBack({ 197 ,0,63,34 });
+    cLittleWolfAwakeAnim.PushBack({ 262,0,63,34 }); 
+    cLittleWolfAwakeAnim.speed = 0.1f;
+    cLittleWolfAwakeAnim.loop = true;
 
-    for (int i = 0; i < 5; i++)
-    {
-        cLittleWolfIdleAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
-    }
-    cLittleWolfIdleAnim.speed = 0.120f;
-
-    for (int i = 0; i < 5; i++)
-    {
-        cLittleWolfRunAnim.PushBack({ SPRITE_TILE_WIDTH * i,0 ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
-    }
-    cLittleWolfRunAnim.speed = 0.120f;
+    cLittleWolfRunAnim.PushBack({ 0,132,62,34 });
+    cLittleWolfRunAnim.PushBack({ 0,132,62,34 });
 }
 
 Enemy::~Enemy()
