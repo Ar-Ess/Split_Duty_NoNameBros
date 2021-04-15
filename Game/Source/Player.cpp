@@ -285,3 +285,11 @@ void Player::RestartPlayer()
 
     playerSpeed = 18;
 }
+
+void Player::ResetWalkingAnimation()
+{
+    walkRightAnim.Reset();
+    walkLeftAnim.Reset();
+    walkDownAnim.Reset();
+    walkUpAnim.Reset();
+}

@@ -48,6 +48,8 @@ public:
 
     void RestartPlayer();
 
+    void ResetWalkingAnimation();
+
     SDL_Rect GetCombatBounds()
     {
         return colliderCombat;

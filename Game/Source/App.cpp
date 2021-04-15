@@ -429,6 +429,7 @@ bool App::LoadGame()
 
 	app->scene->world->AlignCameraPosition();
 
+
 	return ret;
 }
 
