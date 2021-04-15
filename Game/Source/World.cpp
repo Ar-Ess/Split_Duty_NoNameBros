@@ -155,7 +155,12 @@ void World::Start(Places placex)
 		}
 
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
+		
 	}
+
+	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Caharacter/walking-spritesheet.png");
+
+	currentPlayerAnimation = &app->scene->player1->walkDownAnim;
 
 	UpdateWorldSpeed();
 }
@@ -402,11 +407,27 @@ bool World::PlayerMovement()
 {
 	iPoint previousPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->scene->player1->collisionRect.y -= worldSpeed;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->scene->player1->collisionRect.y += worldSpeed;
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->scene->player1->collisionRect.x -= worldSpeed;
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->scene->player1->collisionRect.x += worldSpeed;
-
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		app->scene->player1->collisionRect.y -= worldSpeed;
+		currentPlayerAnimation = &app->scene->player1->walkUpAnim;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		app->scene->player1->collisionRect.y += worldSpeed;
+		currentPlayerAnimation = &app->scene->player1->walkDownAnim;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		app->scene->player1->collisionRect.x -= worldSpeed;
+		currentPlayerAnimation = &app->scene->player1->walkLeftAnim;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		app->scene->player1->collisionRect.x += worldSpeed;
+		currentPlayerAnimation = &app->scene->player1->walkRightAnim;
+	}
+	
 	bool move = CollisionSolver(previousPosition);
 
 	app->scene->player1->colliderWorld.x = app->scene->player1->collisionRect.x;
