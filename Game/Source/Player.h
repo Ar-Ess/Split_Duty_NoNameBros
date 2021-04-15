@@ -84,6 +84,11 @@ public:
     }
 
 public:
+    Animation walkLeftAnim;
+    Animation walkRightAnim;
+    Animation walkUpAnim;
+    Animation walkDownAnim;
+
     Animation cIdleAnim;
     Animation cPos0AttackAnim;
     Animation cPos1AttackAnim;

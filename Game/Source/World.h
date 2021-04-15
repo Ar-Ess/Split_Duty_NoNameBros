@@ -20,6 +20,7 @@ class Collision;
 class Map;
 struct SDL_Texture;
 struct SDL_Rect;
+struct Animation;
 
 enum Places
 {
@@ -143,7 +144,11 @@ private:
 private: //Textures
 
     SDL_Texture* wolfSpritesheet = nullptr;
+    SDL_Texture* walkingSpritesheet = nullptr;
     const SDL_Rect wolfRect = {0, 166, 60, 35};
+
+    Animation* currentPlayerAnimation;
+
 };
 
 #endif // __COMBAT_H__
