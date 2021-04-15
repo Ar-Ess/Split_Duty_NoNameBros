@@ -593,9 +593,10 @@ void World::LoadNPCs(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::CITICIZEN, placex);
-		/*app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::CITICIZEN, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 1470, 86 }, NPCtype::CITICIZEN, placex, 1);
+		/*app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->CreateEntity(EntityType::NPC);*/
 	}
 }

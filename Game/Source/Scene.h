@@ -71,6 +71,14 @@ public: //Combat Buttons
 
 	GuiButton* optionsButton = nullptr;
 
+	GuiButton* backToGameButton = nullptr;
+
+	GuiButton* optionsPauseButton = nullptr;
+
+	GuiButton* saveGameButton = nullptr;
+
+	GuiButton* backToMenuButton = nullptr;
+
 	GuiButton* exitButton = nullptr;
 
 	GuiButton* attackButton = nullptr;
@@ -136,6 +144,14 @@ public: //Combat Buttons
 	GuiString* optionsText = nullptr;
 
 	GuiString* exitText = nullptr;
+
+	GuiString* backToGameText = nullptr;
+
+	GuiString* saveGameText = nullptr;
+
+	GuiString* optionsPauseText = nullptr;
+
+	GuiString* backToMenuText = nullptr;
 
 	bool exit = false;
 

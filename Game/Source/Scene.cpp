@@ -534,7 +534,76 @@ void Scene::SetWorld(Places place)
 
 void Scene::SetPauseMenu()
 {
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
+	if (backToGameButton == nullptr)
+	{
+		backToGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 350,buttonPrefab.w,buttonPrefab.h };
+		backToGameButton->text = "BackToGameButton";
+		backToGameButton->SetObserver(this);
+	}
+
+	if (saveGameButton == nullptr)
+	{
+		saveGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 430,buttonPrefab.w,buttonPrefab.h };
+		saveGameButton->text = "SaveGameButton";
+		saveGameButton->SetObserver(this);
+	}
+
+	if (optionsPauseButton == nullptr)
+	{
+		optionsPauseButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
+		optionsPauseButton->text = "OptionsPauseButton";
+		optionsPauseButton->SetObserver(this);
+		optionsPauseButton->state = GuiControlState::LOCKED;
+	}
+
+	if (backToMenuButton == nullptr)
+	{
+		backToMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 590, buttonPrefab.w,buttonPrefab.h };
+		backToMenuButton->text = "BackToMenuButton";
+		backToMenuButton->SetObserver(this);
+	}
+
+	if (backToGameText == nullptr)
+	{
+		backToGameText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		backToGameText->bounds = backToGameButton->bounds;
+		backToGameText->SetTextFont(app->fontTTF->defaultFont);
+		backToGameText->SetString("BACK TO GAME");
+		backToGameText->CenterAlign();
+	}
+
+	if (saveGameText == nullptr)
+	{
+		saveGameText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		saveGameText->bounds = saveGameButton->bounds;
+		saveGameText->SetTextFont(app->fontTTF->defaultFont);
+		saveGameText->SetString("SAVE GAME");
+		saveGameText->CenterAlign();
+	}
+
+	if (optionsPauseText == nullptr)
+	{
+		optionsPauseText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsPauseText->bounds = optionsPauseButton->bounds;
+		optionsPauseText->SetTextFont(app->fontTTF->defaultFont);
+		optionsPauseText->SetString("OPTIONS");
+		optionsPauseText->CenterAlign();
+	}
+
+	if (backToMenuText == nullptr)
+	{
+		backToMenuText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		backToMenuText->bounds = backToMenuButton->bounds;
+		backToMenuText->SetTextFont(app->fontTTF->defaultFont);
+		backToMenuText->SetString("BACK TO MENU");
+		backToMenuText->CenterAlign();
+	}
 }
 
 
@@ -651,20 +720,20 @@ void Scene::UpdateWorld()
 
 void Scene::UpdatePauseMenu()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		app->SaveGameRequest();
-		continueButton->state = GuiControlState::NORMAL;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		continuePressed = true;
-		SetScene(WORLD, world->place);
-		app->render->camera.x = prevCam.x;
-		app->render->camera.y = prevCam.y;
-		continuePressed = false;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
+	backToGameButton->Update(1.0f);
+	saveGameButton->Update(1.0f);
+	optionsPauseButton->Update(1.0f);
+	backToMenuButton->Update(1.0f);
+
+	backToGameButton->Draw();
+	saveGameButton->Draw();
+	optionsPauseButton->Draw();
+	backToMenuButton->Draw();
+
+	backToGameText->Draw();
+	saveGameText->Draw();
+	optionsPauseText->Draw();
+	backToMenuText->Draw();
 }
 
 // GUI CONTROLS
@@ -705,7 +774,24 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "SecondAttackButton") == 0) secondAttackPressed = true;
 		else if (strcmp(control->text.GetString(), "ProtectButton") == 0) protectPressed = true;
 		else if (strcmp(control->text.GetString(), "BuffButton") == 0) buffPressed = true;
+		break;
 
+	case PAUSE_MENU:
+		if (strcmp(control->text.GetString(), "BackToGameButton") == 0)
+		{
+			continuePressed = true;
+			SetScene(WORLD, world->place);
+			app->render->camera.x = prevCam.x;
+			app->render->camera.y = prevCam.y;
+			continuePressed = false;
+		}
+		else if (strcmp(control->text.GetString(), "SaveGameButton") == 0)
+		{
+			app->SaveGameRequest();
+			continueButton->state = GuiControlState::NORMAL;
+		}
+		else if (strcmp(control->text.GetString(), "OptionsPauseButton") == 0) SetScene(OPTIONS_MENU);
+		else if (strcmp(control->text.GetString(), "BackToMenuButton") == 0) SetScene(MAIN_MENU);
 		break;
 	}
 

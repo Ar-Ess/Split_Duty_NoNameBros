@@ -21,7 +21,7 @@ NPC::~NPC()
 {
 }
 
-void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace)
+void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 {
 	collider.x = position.x;
 	collider.y = position.y;
@@ -30,6 +30,7 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace)
 	contactCollider.h /= 2;
 	npcType = xtype;
 	place = xplace;
+	dialog = xdialog;
 	//if (xtype == CITICIZEN) texture = app->tex->Load("Assets/Blablabla");
 }
 
@@ -41,7 +42,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 		{
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
-				app->dialogueManager->StartDialogue(1);
+				app->dialogueManager->StartDialogue(dialog);
 				app->guiManager->debugGui = true;
 			}
 		}

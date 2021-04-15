@@ -32,7 +32,7 @@ public:
 
     ~NPC();
 
-    void SetUp(iPoint position, NPCtype type, Places place);
+    void SetUp(iPoint position, NPCtype type, Places place, int dialog);
 
     void Update(SDL_Rect pCollAmp);
 
@@ -53,6 +53,7 @@ private:
     NPCtype npcType;
     Places place;
     SDL_Texture* texture = nullptr;
+    int dialog;
 
     Collision collisionUtils;
 };
