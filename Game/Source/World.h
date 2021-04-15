@@ -15,6 +15,7 @@ class Enemy;
 enum EnemyClass;
 class Player;
 class Scene;
+enum Scenes;
 class Collision;
 class Map;
 struct SDL_Texture;
@@ -53,6 +54,8 @@ public:
     void DrawEnemy();
 
     void DrawCollisions();
+
+    void AlignCameraPosition();
 
     Places GetPlace() const
     {
@@ -94,8 +97,6 @@ private:
     void CameraMovement(bool move);
 
     void RectifyCameraPosition(Places place);
-
-    void AlignCameraPosition();
 
     void UpdateWorldSpeed();
 

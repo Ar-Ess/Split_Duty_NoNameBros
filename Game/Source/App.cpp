@@ -427,6 +427,8 @@ bool App::LoadGame()
 	app->scene->SetScene(WORLD, w->GetPlace());
 	app->scene->continuePressed = false;
 
+	app->scene->world->AlignCameraPosition();
+
 	return ret;
 }
 

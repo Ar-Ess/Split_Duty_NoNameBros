@@ -84,10 +84,10 @@ void World::Start(Places placex)
 		{
 			app->scene->player1->colliderWorld = { 280, 350, 56, 84 };
 			app->scene->player1->collisionRect = { 280, 350 + 56, 56, 84 - 56 };
-
-			app->render->camera.x = 332;
-			app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
 		}
+
+		app->render->camera.x = 332;
+		app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
 	}
 	else if (placex == TAVERN)
 	{
@@ -99,10 +99,10 @@ void World::Start(Places placex)
 		{
 			app->scene->player1->colliderWorld = { 504, 880, 56, 84 };
 			app->scene->player1->collisionRect = { 504, 880 + 56, 56, 84 - 56 };
-
-			app->render->camera.x = 140;
 			app->render->camera.y = -375;
 		}
+
+		app->render->camera.x = 140;
 
 		RectifyCameraPosition(placex);
 	}

@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Point.h"
 
 
 class GuiButton;
@@ -23,7 +24,8 @@ enum Scenes
 	OPTIONS_MENU,
 	COMBAT,
 	LEVEL_UP,
-	WORLD
+	WORLD,
+	PAUSE_MENU
 };
 
 enum Environments
@@ -153,6 +155,7 @@ public:
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
 	Environments enviroment;
+	iPoint prevCam = { 0, 0 };
 
 private: //Scene Manager
 	friend class World;
@@ -173,6 +176,7 @@ private: //Scene Manager
 	void SetCombat(Enemy* enemy);
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
+	void SetPauseMenu();
 
 	//Updaters
 	void UpdateLogoScene();
@@ -181,6 +185,7 @@ private: //Scene Manager
 	void UpdateCombat();
 	void UpdateLevelUp();
 	void UpdateWorld();
+	void UpdatePauseMenu();
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

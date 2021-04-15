@@ -130,18 +130,13 @@ bool Scene::Update(float dt)
 	}
 	*/
 
-	if (currScene == WORLD && app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		app->SaveGameRequest();
-		continueButton->state = GuiControlState::NORMAL;
-	}
-
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == OPTIONS_MENU) UpdateOptionsMenu();
 	else if (currScene == COMBAT) UpdateCombat();
 	else if (currScene == LEVEL_UP) UpdateLevelUp();
 	else if (currScene == WORLD) UpdateWorld();
+	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 
 	return true;
 }
@@ -200,6 +195,7 @@ void Scene::SetScene(Scenes scene)
 	//else if (scene == COMBAT) SetCombat();
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
+	else if (scene == PAUSE_MENU) SetPauseMenu();
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
@@ -215,6 +211,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 	else if (scene == COMBAT) SetCombat(enemy);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
+	else if (scene == PAUSE_MENU) SetPauseMenu();
 }
 
 void Scene::SetScene(Scenes scene, Places place)
@@ -230,6 +227,7 @@ void Scene::SetScene(Scenes scene, Places place)
 	//else if (scene == COMBAT) SetCombat();
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(place);
+	else if (scene == PAUSE_MENU) SetPauseMenu();
 }
 
 void Scene::SetScene(Scenes scene, unsigned short int exp)
@@ -243,8 +241,10 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 	else if (scene == MAIN_MENU) SetMainMenu();
 	//else if (scene == COMBAT) SetCombat();
 	else if (scene == LEVEL_UP) SetLevelUp(exp);
-	//else if (scene == WORLD) SetWorld(place);
+	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
+	else if (scene == PAUSE_MENU) SetPauseMenu();
 }
+
 
 void Scene::SetLogoScene()
 {
@@ -282,6 +282,7 @@ void Scene::SetMainMenu()
 		optionsButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
 		optionsButton->text = "OptionsButton";
 		optionsButton->SetObserver(this);
+		optionsButton->state = GuiControlState::LOCKED;
 	}
 
 	if (exitButton == nullptr)
@@ -531,6 +532,12 @@ void Scene::SetWorld(Places place)
 	world->Start(place);
 }
 
+void Scene::SetPauseMenu()
+{
+
+}
+
+
 void Scene::UpdateLogoScene()
 {
 	if (timer >= 50) app->render->DrawTexture(logo, 0, 0);
@@ -561,10 +568,7 @@ void Scene::UpdateLogoScene()
 
 void Scene::UpdateMainMenu()
 {
-	if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->data);
-	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->data);
-	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Enemy*)app->entityManager->enemies.start->next->next->data);
-	//if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(WORLD, Places::MAIN_VILLAGE);
+
 	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 	{
 		app->dialogueManager->StartDialogue(1); 
@@ -572,7 +576,7 @@ void Scene::UpdateMainMenu()
 	}
 
 // Other Options
-	if (app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		app->scene->player1->godMode = !app->scene->player1->godMode;
 
@@ -640,7 +644,29 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		prevCam = {app->render->camera.x, app->render->camera.y};
+		SetScene(PAUSE_MENU);
+	}
+}
+
+void Scene::UpdatePauseMenu()
+{
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		app->SaveGameRequest();
+		continueButton->state = GuiControlState::NORMAL;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		continuePressed = true;
+		SetScene(WORLD, world->place);
+		app->render->camera.x = prevCam.x;
+		app->render->camera.y = prevCam.y;
+		continuePressed = false;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 // GUI CONTROLS
@@ -660,6 +686,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			SetScene(WORLD, Places::MAIN_VILLAGE);
 			player1->RestartPlayer();
 			player2->RestartPlayer();
+			world->AlignCameraPosition();
+			continueButton->state = GuiControlState::LOCKED;
 		}
 		else if (strcmp(control->text.GetString(), "ContinueButton") == 0)
 		{
