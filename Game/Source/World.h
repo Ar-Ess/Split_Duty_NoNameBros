@@ -54,9 +54,15 @@ public:
 
     void DrawEnemy();
 
+    void DrawNPC();
+
     void DrawCollisions();
 
     void AlignCameraPosition();
+
+    void NPCLogic();
+
+    void LoadNPCs(Places place);
 
     Places GetPlace() const
     {
@@ -112,6 +118,8 @@ private:
 
     int worldSpeed;
 
+    SDL_Rect temp; //Borrar!
+
     Collision collisionUtils;
 
     Map* map = nullptr;
@@ -151,5 +159,5 @@ private: //Textures
 
 };
 
-#endif // __COMBAT_H__
+#endif // __WORLD_H__
 

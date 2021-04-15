@@ -17,8 +17,8 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     type = enType;
 
     colliderCombat = collCombat;
-    colliderWorld = { 1722, 210, 56, 84 };
-    collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+    colliderWorld = { 1722, 210, PLAYER_WORLD_WIDTH, 84 };
+    collisionRect = { 1722, 210 + 56, PLAYER_WORLD_WIDTH, 84 - 56 };
 
     smallMeatCount = 1;
     largeMeatCount = 1;
@@ -27,7 +27,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     splitedEnemyCount = 1;
     moneyCount = 1;
 
-    playerSpeed = 18;
+    playerSpeed = 10;
 
     if (enType == EntityType::PLAYER1)
     {
@@ -155,7 +155,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 52 * 3,101 * 3,20 * 3,26 * 3 });
 
-    walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.10f;
+    walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.30f;
     walkDownAnim.loop = walkUpAnim.loop = walkLeftAnim.loop = walkRightAnim.loop = false;
 }
 
@@ -258,8 +258,8 @@ void Player::Refill()
 
 void Player::RestartPlayer()
 {
-    app->scene->player1->colliderWorld = { 1722, 210, 56, 84 };
-    app->scene->player1->collisionRect = { 1722, 210 + 56, 56, 84 - 56 };
+    app->scene->player1->colliderWorld = { 1722, 210, PLAYER_WORLD_WIDTH, 84 };
+    app->scene->player1->collisionRect = { 1722, 210 + 56, PLAYER_WORLD_WIDTH, 84 - 56 };
 
     smallMeatCount = 1;
     largeMeatCount = 1;
@@ -276,14 +276,14 @@ void Player::RestartPlayer()
     }
     else if (type == EntityType::PLAYER2)
     {
-        SetUp(15, 15, 10, 0, 0, 0, 0, 10, 0, 0);
+        SetUp(15, 15, 15, 0, 0, 0, 0, 10, 0, 0);
         colliderCombat.x = INIT2_COMBAT_POSX;
         colliderCombat.y = INIT2_COMBAT_POSY;
     }
 
-    app->scene->combatScene->secondPlayer = false;
+    //app->scene->combatScene->secondPlayer = false;
 
-    playerSpeed = 18;
+    playerSpeed = 10;
 }
 
 void Player::ResetWalkingAnimation()

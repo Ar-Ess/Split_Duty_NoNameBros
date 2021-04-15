@@ -2,8 +2,6 @@
 #define __PLAYER_H__
 
 #include "Entity.h"
-#include "Input.h"
-#include "Render.h"
 #include "Animation.h"
 
 #include "Point.h"
@@ -18,6 +16,7 @@
 #define PROTECT2_COMBAT_POSY 350
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
+#define PLAYER_WORLD_WIDTH 46
 
 
 class Animation;

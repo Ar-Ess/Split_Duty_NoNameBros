@@ -174,6 +174,8 @@ public:
 
     short int steps = 0;
 
+    short int stepDeniedTurns = 0;
+
     bool playerResponseAble = true;
     bool playerHitAble = true;
     bool playerStepDenied = false;

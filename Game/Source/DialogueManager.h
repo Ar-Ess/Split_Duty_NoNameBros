@@ -59,7 +59,7 @@ private: //functions
 
 	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
 public: //variables
-
+	bool onDialog = false;
 private: // variables
 
 	Dialogue*			currentDialogue;

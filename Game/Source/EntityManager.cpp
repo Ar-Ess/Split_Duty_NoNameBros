@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "NPC.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -39,13 +40,14 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	{
 		case EntityType::PLAYER1: ret = new Player({0, 0, 48, 88}, type);  break;
 		case EntityType::PLAYER2: ret = new Player({0, 0, 30, 30}, type); break;
+		case EntityType::NPC: ret = new NPC({0, 0, 56, 84}); break;
 		case EntityType::ENEMY: ret = new Enemy();  break;
 		case EntityType::ITEM: ret = new Item();  break;
 		default: break;
 	}
 
 	if (ret != nullptr && type == EntityType::ENEMY) enemies.Add((Enemy*)ret);
-	else if (ret != nullptr && type == EntityType::ITEM) items.Add((Item*)ret);
+	else if (ret != nullptr && type == EntityType::NPC) NPCs.Add((NPC*)ret);
 
 	return ret;
 }

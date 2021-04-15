@@ -46,6 +46,8 @@ void Combat::Start()
 	//Firts turn decision
 	FirstTurnLogic();
 
+	secondPlayer = secondPlayer;
+
 	//LuckArray fill
 	int pLuck = app->scene->player1->luck;
 	if (pLuck > 0)
@@ -422,7 +424,7 @@ void Combat::CombatLogic()
 void Combat::EndBattleSolving()
 {
 	if (playerWin) app->scene->SetScene(LEVEL_UP, enemy->exp);
-	else if (playerLose) app->scene->SetScene(WORLD, Places::MAIN_VILLAGE);
+	else if (playerLose) app->scene->SetScene(MAIN_MENU);
 	else if (playerSplitWin) app->scene->SetScene(LEVEL_UP);
 	else if (playerEscaped) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 }
@@ -567,13 +569,13 @@ int Combat::SecondPlayerDamageLogic()
 {
 	int damage = app->scene->player2->strength - enemy->defense;
 
-	if (damage < 0) damage = 0;
-
 	int variation = rand() % 3;
 	bool negative = (bool)(rand() % 2);
 
 	if (!negative) damage += variation;
 	else if (negative) damage -= variation;
+
+	if (damage < 0) damage = 0;
 
 	return damage;
 }
@@ -1463,15 +1465,21 @@ void Combat::EnemyTurn()
 	playerResponseAble = true;
 	playerChoice = true;
 	secondPlayerChoice = true;
-	if (playerStepDenied)
+
+	if (playerStepDenied && stepDeniedTurns > 0)
 	{
-		app->scene->moveButton->state == GuiControlState::NORMAL;
+		app->scene->moveButton->state = GuiControlState::NORMAL;
 		playerStepDenied = false;
+		stepDeniedTurns = 0;
+	}
+	else
+	{
+		stepDeniedTurns++;
 	}
 
 	if (secondPlayer) secondPlayerChoice = true;
 
-	if (steps == 3) app->scene->moveButton->state == GuiControlState::LOCKED;
+	if (steps == 3) app->scene->moveButton->state = GuiControlState::LOCKED;
 	else
 	{
 		app->scene->moveButton->state == GuiControlState::LOCKED;

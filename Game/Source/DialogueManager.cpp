@@ -128,6 +128,8 @@ void DialogueManager::EndDialogue()
 		}
 		currentDialogue->currentNode->optionsActive = false;
 		currentDialogue = nullptr;
+
+		onDialog = false;
 	}
 }
 
@@ -159,6 +161,7 @@ void DialogueManager::StartDialogue(int dialogueID)
 			}
 			else continue;
 		}
+		onDialog = true;
 	}
 }
 
@@ -174,9 +177,9 @@ void DialogueManager::Draw()
 	SDL_Rect nodeChart{ nodePos.x,nodePos.y, tempRect.w + (2 * offset), tempRect.h + (2 * offset) };
 
 	//DRAWING NODE
-	app->render->DrawRectangle(nodeChart, red);
+	app->render->DrawRectangle(nodeChart, red, true, false);
 	app->render->DrawTexture(currentDialogue->currentNode->nodeTexture,
-							 nodeChart.x + offset, nodeChart.y + offset, &tempRect);
+							 nodeChart.x + offset, nodeChart.y + offset, &tempRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	if (currentDialogue->currentNode->optionsList.Count() != 0)
 	{
@@ -205,9 +208,9 @@ void DialogueManager::Draw()
 				itemOption->data->optionButton->bounds.w += 15;
 				itemOption->data->optionButton->bounds.h += 15; 
 
-				itemOption->data->optionButton->Draw();
+				itemOption->data->optionButton->Draw(false);
 				app->render->DrawTexture(itemOption->data->optionTexture, (optionPos.x + offset), (optionPos.y + offset),
-					                     &optionChart);
+					                     &optionChart, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 				break;
 			case 1:
 				itemOption->data->optionButton->bounds.x = optionPos.x = 100;
@@ -215,9 +218,9 @@ void DialogueManager::Draw()
 				itemOption->data->optionButton->bounds.w += 15;
 				itemOption->data->optionButton->bounds.h += 15;
 
-				itemOption->data->optionButton->Draw();
+				itemOption->data->optionButton->Draw(false);
 				app->render->DrawTexture(itemOption->data->optionTexture, (optionPos.x + offset), (optionPos.y + offset),
-										 &optionChart);
+										 &optionChart, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 				break;
 			default:
 				break;
@@ -237,7 +240,7 @@ void DialogueManager::Input()
 			itemOption->data->optionButton->Update(.0f);
 		}		
 	}
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) EndDialogue();
+	else EndDialogue();
 }
 
 bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
