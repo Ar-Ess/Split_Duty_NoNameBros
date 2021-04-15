@@ -158,7 +158,7 @@ void World::Start(Places placex)
 		
 	}
 
-	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Caharacter/walking-spritesheet.png");
+	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking-spritesheet.png");
 
 	currentPlayerAnimation = &app->scene->player1->walkDownAnim;
 
@@ -212,6 +212,9 @@ void World::DrawPlayer()
 {
 	app->render->DrawRectangle(app->scene->player1->GetWorldBounds(), {100, 150, 240, 150});
 	app->render->DrawRectangle(app->scene->player1->GetCollisionBounds(), { 150, 150, 140, 200 });
+
+	currentPlayerAnimation->Update(1.0f);
+	app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
 }
 
 void World::DrawEnemy()
@@ -410,22 +413,36 @@ bool World::PlayerMovement()
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		app->scene->player1->collisionRect.y -= worldSpeed;
+		app->scene->player1->walkUpAnim.loop = true;
 		currentPlayerAnimation = &app->scene->player1->walkUpAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		app->scene->player1->collisionRect.y += worldSpeed;
+		app->scene->player1->walkDownAnim.loop = true;
 		currentPlayerAnimation = &app->scene->player1->walkDownAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		app->scene->player1->collisionRect.x -= worldSpeed;
+		app->scene->player1->walkLeftAnim.loop = true;
 		currentPlayerAnimation = &app->scene->player1->walkLeftAnim;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		app->scene->player1->collisionRect.x += worldSpeed;
+		app->scene->player1->walkRightAnim.loop = true;
 		currentPlayerAnimation = &app->scene->player1->walkRightAnim;
+	}
+	else
+	{
+		app->scene->player1->walkDownAnim.loop = app->scene->player1->walkUpAnim.loop = 
+			app->scene->player1->walkLeftAnim.loop = app->scene->player1->walkRightAnim.loop = false;
+
+		app->scene->player1->walkDownAnim.Reset();
+		app->scene->player1->walkUpAnim.Reset();
+		app->scene->player1->walkLeftAnim.Reset();
+		app->scene->player1->walkRightAnim.Reset();
 	}
 	
 	bool move = CollisionSolver(previousPosition);
