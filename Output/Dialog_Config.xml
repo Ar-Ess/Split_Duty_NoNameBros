@@ -7,12 +7,12 @@
       <Node ID="0">
         <NPCTalk>HELLO! DO YOU WANT ME TO EXPLAIN YOU THE PLACES YOU CAN VISIT?</NPCTalk>
         <Option NextNode="1" ReturnCode="1">Yes</Option>
-        <Option NextNode="8" ReturnCode="1">No, I already know that!</Option><!--When a node returns -1 the dialog will finish-->
+        <Option NextNode="8" ReturnCode="1">No need</Option><!--When a node returns -1 the dialog will finish-->
       </Node>
       <Node ID="1">
         <NPCTalk>OKEY, IF YOU GO TO THE LEFT, YOU'LL FIND THE ENEMY FIELD</NPCTalk>
-        <Option NextNode="2" ReturnCode="1">Can I battle with them?</Option>
-        <Option NextNode="3" ReturnCode="1">Right, that's cool</Option>
+        <Option NextNode="2" ReturnCode="1">Can I battle them?</Option>
+        <Option NextNode="3" ReturnCode="1">Right, cool!</Option>
       </Node>
       <Node ID="2">
         <NPCTalk>YES, TALK WITH THE ONE WAITING YOU THERE, HE WILL EXPLAIN YOU HOW TO DO IT!</NPCTalk>
@@ -20,20 +20,20 @@
       </Node>
       <Node ID="3">
         <NPCTalk>IF YOU GO DOWN HERE, YOU CAN VISIT THE HOUSES. THEY ARE PRETTY AWESOME DESIGNED ;)</NPCTalk>
-        <Option NextNode="4" ReturnCode="1">Can I enter somewhere else?</Option>
-        <Option NextNode="5" ReturnCode="1">Perfect, what's more?</Option>
+        <Option NextNode="4" ReturnCode="1">Can I go somewhere else?</Option>
+        <Option NextNode="5" ReturnCode="1">What's more?</Option>
       </Node>
       <Node ID="4">
         <NPCTalk>YES, YOU CAN GO TO THE TAVERN. IT IS THE BIG BUILDING ON THE RIGHT OF THE VILLAGE</NPCTalk>
-        <Option NextNode="5" ReturnCode="1">Fine. Something more?</Option>
+        <Option NextNode="5" ReturnCode="1">Something more?</Option>
       </Node>
       <Node ID="5">
         <NPCTalk>OH! Yes! YOU CAN TALK WITH MY FRIENDS, MAYBE YOU HAVE A SURPRISE (LIKE A SECOND PLAYER...) ;)</NPCTalk>
-        <Option NextNode="6" ReturnCode="1">Okey, where are they?</Option>
+        <Option NextNode="6" ReturnCode="1">Where are they?</Option>
       </Node>
       <Node ID="6">
         <NPCTalk>I THINK THAT, BY THE TIME IT IS, THEY ARE IN THE LAKE LOCATED AT THE BOTTOM LEFT OF THE VILLAGE</NPCTalk>
-        <Option NextNode="7" ReturnCode="1">Okey, noting that!</Option>
+        <Option NextNode="7" ReturnCode="1">Noting that!</Option>
       </Node>
       <Node ID="7">
         <NPCTalk>PERFECT! TALK WITH ME IF YOU NEED THIS INFO AGAIN!</NPCTalk>
@@ -46,17 +46,17 @@
       <Node ID="0">
         <NPCTalk>SHHT I KNOW WHAT YOU WANT</NPCTalk>
         <Option NextNode="1" ReturnCode="1">What I want?</Option>
-        <Option NextNode="6" ReturnCode="1">You really don't know it</Option>
+        <Option NextNode="6" ReturnCode="1">Not at all</Option>
       </Node>
       <Node ID="1">
         <NPCTalk>YES, YOU WANT THE SECOND PLAYER RIGHT?</NPCTalk>
         <Option NextNode="3" ReturnCode="1">Yeeees!</Option>
-        <Option NextNode="2" ReturnCode="1">I already have it!</Option>
+        <Option NextNode="2" ReturnCode="1">I have it!</Option>
       </Node>
       <Node ID="2">
         <NPCTalk>OH YES, I ALREADY GAVE IT TO YOU. DO YOU WANT ME TO KEEP IT FOR YOU?</NPCTalk>
         <Option NextNode="5" ReturnCode="3">Yes</Option>
-        <Option NextNode="4" ReturnCode="1">No, I am fine with it!</Option>
+        <Option NextNode="4" ReturnCode="1">No, I'm fine!</Option>
       </Node>
       <Node ID="3">
         <NPCTalk>OKEY, HERE YOU HAVE IT! IF IT DIES, TALK WITH ME AGAIN</NPCTalk>
@@ -79,17 +79,17 @@
       <Node ID="0">
         <NPCTalk>HOW ARE YOU DOING? DO YOU NEED A LIFE REFILL?</NPCTalk>
         <Option NextNode="1" ReturnCode="1">Yes</Option>
-        <Option NextNode="6" ReturnCode="1">No, I am okey!</Option>
+        <Option NextNode="6" ReturnCode="1">No, I'm okey!</Option>
       </Node>
       <Node ID="1">
         <NPCTalk>DO YOU WANT IT FOR YOU OR FOR THE SECOND PLAYER?</NPCTalk>
         <Option NextNode="2" ReturnCode="4">For me!</Option>
-        <Option NextNode="3" ReturnCode="5">For the second player</Option>
+        <Option NextNode="3" ReturnCode="5">For second player</Option>
       </Node>
       <Node ID="2">
         <NPCTalk>DONE! DO YOU NEED A REFILL FOR THE SECOND PLYER?</NPCTalk>
         <Option NextNode="4" ReturnCode="5">Yes, thanks!</Option>
-        <Option NextNode="6" ReturnCode="1">No, it is enough</Option>
+        <Option NextNode="6" ReturnCode="1">No, enough</Option>
       </Node>
       <Node ID="3">
         <NPCTalk>DONE! DO YOU NEED A REFILL FOR YOU?</NPCTalk>
@@ -106,6 +106,87 @@
       </Node>
       <Node ID="6">
         <NPCTalk>TALK WITH ME IF YOU NEED A HEALTH REFILL</NPCTalk>
+      </Node>
+    </Dialog>
+    <Dialog ID="4">
+      <Node ID="0">
+        <NPCTalk>WANT TO KNOW THE BATTLE MECHANIC?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yes</Option>
+        <Option NextNode="18" ReturnCode="1">No, I'm okey!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>BEFORE STARTING, NOTE THAT BY MAKING CONTACT WITH THEM YOU START THE BATTLE</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">OKEY</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>THE BATTLE IS BASED IN TURNS. WHICH TURN YOU WANT ME TO EXPLAIN?</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">My turn!</Option>
+        <Option NextNode="12" ReturnCode="1">2nd Player's turn</Option>
+        <Option NextNode="15" ReturnCode="1">Enemy's turn</Option>
+        <Option NextNode="18" ReturnCode="1">Nothing more!</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>LISTEN UP. TO KILL THE ENEMY YOU NEED TO ATTACK IT BY PRESSING THE BUTTON "ATTACK", WHICH MAKES YOU END YOUR TURN</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>ONCE YOU ARE IN THE BATTLE, YOU'LL SEE 4 MARKS IN THE GROUND. YOU WILL BE PLACED IN THE FIRST ONE</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Perfect!</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>THOSE MARKS SYMBOLIZES THE PLACES YOU CAN GO. AS CLOSER AS YOU GO TO THE ENEMY, THE MORE DAMAGE YOU WILL CAUSE THEM</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">How to be close?</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>YOU CAN CLICK THE MOVE BUTTON, WHICH WILL MAKE YOU MOVE ONE STEP AND THEN, YOUR TURN WILL FINISH</NPCTalk>
+        <Option NextNode="7" ReturnCode="1">I understand!</Option>
+      </Node>
+      <Node ID="7">
+        <NPCTalk>THEN WE HAVE THE ITEMS, BUT THEY ARE NOT ACCESSIBLE, WAIT UNTIL A FUTURE VERSION</NPCTalk>
+        <Option NextNode="8" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="8">
+        <NPCTalk>NEXT, THE ESCAPE BUTTON. IT ALLOWS YOU TO RUN OUT THE COMBAT DEPENDING ON THE DIFFERENCE OF LEVEL BETWEEN YOU AND THE ENEMY</NPCTalk>
+        <Option NextNode="9" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="9">
+        <NPCTalk>AND FINALLY, THE SPLIT BUTTON. IN CASE THE ENEMY HAS LESS THAN 20 PERCENT OF LIFE AND YOU ARE IN THE 4RTH PLACE, YOU CAN SPLIT THE ENEMY</NPCTalk>
+        <Option NextNode="10" ReturnCode="1">What's that?</Option>
+      </Node>
+      <Node ID="10">
+        <NPCTalk>THERE'S A SMALL CHANCE TO GET THE SOUL OF THE ENEMY TO USE IT IN ANOTHER COMBAT AS AN ITEM. BUT IN CASE OF SPLIT SUCCESS, THERE ARE CONSEQUENCES!</NPCTalk>
+        <Option NextNode="11" ReturnCode="1">Which ones?</Option>
+      </Node>
+      <Node ID="11">
+        <NPCTalk>YOU'LL GET HURT WITH THE REMAINING ENEMY HEALTH, YOU CAN DIE!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Noted!</Option>
+      </Node>
+      <Node ID="12">
+        <NPCTalk>SECOND PLAYER CAN ATTACK BY CLICKING THE ATTACK BUTTON, BUT IT DOES NOT VARY DEPENDING THE CLOSURE WITH THE ENEMY</NPCTalk>
+        <Option NextNode="13" ReturnCode="1">I see...</Option>
+      </Node>
+      <Node ID="13">
+        <NPCTalk>IMPORTANT. SECOND PLAYER CAN NOT BE HURTED BY THE ENEMY NORMALLY, EXCEO FOR ONE THING</NPCTalk>
+        <Option NextNode="14" ReturnCode="1">Which one?</Option>
+      </Node>
+      <Node ID="14">
+        <NPCTalk>IF THE SECOND PLAYER CHOOSES PROTECTING YOU, IT WILL BE HURTED WITH THE 50 PERCENT OF THE DAMAGE, AS WELL AS YOU. BE CAREFUL!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Interesting!</Option>
+      </Node>
+      <Node ID="15">
+        <NPCTalk>THE ENEMY ALWAYS STARTS ATTACKING. EACH ENEMY HAS A DIFFERENT ATTACK, BUT THERE IS A CHANGE IN USUALITY!</NPCTalk>
+        <Option NextNode="16" ReturnCode="1">Which change?</Option>
+      </Node>
+      <Node ID="16">
+        <NPCTalk>YOU HAVE TO DODGE THE ATTACK PRESSING SPACE TO JUMP OR EITHER SHIFT TO CROACH! YOU'S BETTER LEARN THEIR PATTERNS!</NPCTalk>
+        <Option NextNode="17" ReturnCode="1">What?</Option>
+      </Node>
+      <Node ID="17">
+        <NPCTalk>YES, THIS RPG HAS A LIVE DODGE COMBAT SYSTEM IMPLEMENTED. HAVE FUN!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">I'll try...</Option>
+      </Node>
+      <Node ID="18">
+        <NPCTalk>SEE Y0U SOON!</NPCTalk>
       </Node>
     </Dialog>
   </Dialogs>

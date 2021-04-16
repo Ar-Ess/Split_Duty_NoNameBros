@@ -603,7 +603,7 @@ void World::LoadNPCs(Places placex)
 	else if (placex == ENEMY_FIELD)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 200, 1490 }, NPCtype::CITICIZEN, placex, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::CITICIZEN, placex, 4);
 	}
 }
 
@@ -627,10 +627,7 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
-		if (app->scene->player1->colliderWorld.x > 1068)
-		{
-			app->render->camera.x = 1280 - 1680;
-		}
+		if (app->scene->player1->colliderWorld.x > 1068) app->render->camera.x = 1280 - 1680;
 	}
 }
 
