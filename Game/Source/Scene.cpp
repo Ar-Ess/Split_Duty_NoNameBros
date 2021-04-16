@@ -637,13 +637,6 @@ void Scene::UpdateLogoScene()
 
 void Scene::UpdateMainMenu()
 {
-
-	if (app->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
-	{
-		app->dialogueManager->StartDialogue(1); 
-		app->guiManager->debugGui = true;
-	}
-
 // Other Options
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{

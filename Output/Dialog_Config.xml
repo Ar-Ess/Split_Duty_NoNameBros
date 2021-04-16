@@ -55,12 +55,12 @@
       </Node>
       <Node ID="2">
         <NPCTalk>OH YES, I ALREADY GAVE IT TO YOU. DO YOU WANT ME TO KEEP IT FOR YOU?</NPCTalk>
-        <Option NextNode="5" ReturnCode="1">Yes</Option>
+        <Option NextNode="5" ReturnCode="3">Yes</Option>
         <Option NextNode="4" ReturnCode="1">No, I am fine with it!</Option>
       </Node>
       <Node ID="3">
         <NPCTalk>OKEY, HERE YOU HAVE IT! IF IT DIES, TALK WITH ME AGAIN</NPCTalk>
-        <Option NextNode="7" ReturnCode="1">Thank you!</Option>
+        <Option NextNode="7" ReturnCode="2">Thank you!</Option>
       </Node>
       <Node ID="4">
         <NPCTalk>OKEY, TAKE CARE OF IT! AND REMEMBER TO TALK WITH MY FRIEND TO HEAL YOU AND THE SECOND PLAYER!</NPCTalk>
@@ -83,17 +83,17 @@
       </Node>
       <Node ID="1">
         <NPCTalk>DO YOU WANT IT FOR YOU OR FOR THE SECOND PLAYER?</NPCTalk>
-        <Option NextNode="2" ReturnCode="1">For me!</Option>
-        <Option NextNode="3" ReturnCode="1">For the second player</Option>
+        <Option NextNode="2" ReturnCode="4">For me!</Option>
+        <Option NextNode="3" ReturnCode="5">For the second player</Option>
       </Node>
       <Node ID="2">
         <NPCTalk>DONE! DO YOU NEED A REFILL FOR THE SECOND PLYER?</NPCTalk>
-        <Option NextNode="4" ReturnCode="1">Yes, thanks!</Option>
+        <Option NextNode="4" ReturnCode="5">Yes, thanks!</Option>
         <Option NextNode="6" ReturnCode="1">No, it is enough</Option>
       </Node>
       <Node ID="3">
         <NPCTalk>DONE! DO YOU NEED A REFILL FOR YOU?</NPCTalk>
-        <Option NextNode="5" ReturnCode="1">Please</Option>
+        <Option NextNode="5" ReturnCode="4">Please</Option>
         <Option NextNode="6" ReturnCode="1">No need to</Option>
       </Node>
       <Node ID="4">

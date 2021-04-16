@@ -225,7 +225,7 @@ void World::Draw()
 	DrawPlayer();
 	//DrawNPC();
 	DrawEnemy();
-	app->dialogueManager->Update(1.0f);
+	//app->dialogueManager->Update(1.0f);
 }
 
 void World::DrawPlayer()
@@ -596,10 +596,14 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::CITICIZEN, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1800 }, NPCtype::CITICIZEN, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::CITICIZEN, placex, 2);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 70, 1850 }, NPCtype::CITICIZEN, placex, 3);
-		/*app->entityManager->CreateEntity(EntityType::NPC);*/
+		app->entityManager->NPCs.end->data->SetUp({ 200, 1490 }, NPCtype::CITICIZEN, placex, 3);
+	}
+	else if (placex == ENEMY_FIELD)
+	{
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 200, 1490 }, NPCtype::CITICIZEN, placex, 4);
 	}
 }
 
@@ -619,10 +623,14 @@ void World::RectifyCameraPosition(Places placex)
 	}
 	else if (placex == ENEMY_FIELD)
 	{
+		LOG("%d", app->scene->player1->colliderWorld.x);
 		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
-		if (app->scene->player1->colliderWorld.x < 612) app->render->camera.x = 0;
-		if (app->scene->player1->colliderWorld.x > 1068) app->render->camera.x = 1280 - 1680;
+		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 1068)
+		{
+			app->render->camera.x = 1280 - 1680;
+		}
 	}
 }
 

@@ -2,6 +2,8 @@
 #include "GuiButton.h"
 #include "Textures.h"
 #include "GuiManager.h"
+#include "Combat.h"
+#include "Player.h"
 
 
 DialogueManager::DialogueManager()
@@ -269,6 +271,30 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			else if (itemOption->data->returnCode == -1)
 			{
 				EndDialogue();
+			}
+			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 2)
+			{
+				app->scene->combatScene->secondPlayer = true;
+				currentDialogue->currentNode = itemOption->data->nextNode;
+				optionHitted = true;
+			}
+			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 3)
+			{
+				app->scene->combatScene->secondPlayer = false;
+				currentDialogue->currentNode = itemOption->data->nextNode;
+				optionHitted = true;
+			}
+			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 4)
+			{
+				app->scene->player1->Refill();
+				currentDialogue->currentNode = itemOption->data->nextNode;
+				optionHitted = true;
+			}
+			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 5)
+			{
+				app->scene->player2->Refill();
+				currentDialogue->currentNode = itemOption->data->nextNode;
+				optionHitted = true;
 			}
 		}
 
