@@ -124,6 +124,8 @@ private:
 
     Map* map = nullptr;
 
+	DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
+
     Places place;
 
     iPoint prevPosition = { 0, 0 };

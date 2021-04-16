@@ -17,6 +17,7 @@
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
 #define PLAYER_WORLD_WIDTH 46
+#define PLAYER_SPEED 6
 
 
 class Animation;

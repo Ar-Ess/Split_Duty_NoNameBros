@@ -75,5 +75,38 @@
         <NPCTalk>BY THE WAY, TALK WITH MY FRIEND TO HEAL YOU AND THE SECOND PLAYER!</NPCTalk>
       </Node>
     </Dialog>
+    <Dialog ID="3">
+      <Node ID="0">
+        <NPCTalk>HOW ARE YOU DOING? DO YOU NEED A LIFE REFILL?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yes</Option>
+        <Option NextNode="6" ReturnCode="1">No, I am okey!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>DO YOU WANT IT FOR YOU OR FOR THE SECOND PLAYER?</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">For me!</Option>
+        <Option NextNode="3" ReturnCode="1">For the second player</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>DONE! DO YOU NEED A REFILL FOR THE SECOND PLYER?</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Yes, thanks!</Option>
+        <Option NextNode="6" ReturnCode="1">No, it is enough</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>DONE! DO YOU NEED A REFILL FOR YOU?</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Please</Option>
+        <Option NextNode="6" ReturnCode="1">No need to</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>SECOND PLAYER REFILLED</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Perfect!</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>YOU'VE BEEN REFILLED</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>TALK WITH ME IF YOU NEED A HEALTH REFILL</NPCTalk>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

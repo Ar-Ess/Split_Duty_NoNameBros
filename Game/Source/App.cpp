@@ -21,10 +21,6 @@
 #include <iostream>
 #include <sstream>
 
-// L07: DONE 3: Measure the amount of ms that takes to execute:
-// App constructor, Awake, Start and CleanUp
-// LOG the result
-
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	PERF_START(ptimer);
@@ -90,7 +86,6 @@ bool App::Awake()
 
 	bool ret = false;
 
-	// L01: DONE 3: Load config from XML
 	config = LoadConfig(configFile);
 
 	if (config.empty() == false)
@@ -98,11 +93,9 @@ bool App::Awake()
 		ret = true;
 		configApp = config.child("app");
 
-		// L01: DONE 4: Read the title from the config file
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
 
-        // L08: DONE 1: Read from config file your framerate cap
 		int cap = configApp.attribute("framerate_cap").as_int(-1);
 		if (cap > 0) cappedMs = 1000 / cap;
 	}
@@ -114,16 +107,14 @@ bool App::Awake()
 
 		while ((item != NULL) && (ret == true))
 		{
-			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
-			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
-			// that can be used to read all variables for that module.
-			// Send nullptr if the node does not exist in config.xml
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
 	}
 	
 	PERF_PEEK(ptimer);
+
+	configFile.reset();
 
 	return ret;
 }
@@ -168,8 +159,6 @@ bool App::Update()
 	return ret;
 }
 
-// Load config from XML file
-// NOTE: Function has been redesigned to avoid storing additional variables on the class
 pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 {
 	pugi::xml_node ret;
@@ -182,30 +171,20 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 	return ret;
 }
 
-// ---------------------------------------------
 void App::PrepareUpdate()
 {
     frameCount++;
     lastSecFrameCount++;
 
-    // L08: DONE 4: Calculate the dt: differential time since last frame
 	dt = frameTime.ReadSec();
 	frameTime.Start();
 }
 
-// ---------------------------------------------
 void App::FinishUpdate()
 {
-	// L02: DONE 1: This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
     
-    // L07: DONE 4: Now calculate:
-	// Amount of frames since startup
-	// Amount of time since game start (use a low resolution timer)
-	// Average FPS for the whole game life
-	// Amount of ms took the last update
-	// Amount of frames during the last second
 	if (lastSecFrameTime.Read() > 1000)
 	{
 		lastSecFrameTime.Start();
@@ -224,10 +203,8 @@ void App::FinishUpdate()
 
 	app->win->SetTitle(title);
 
-    // L08: DONE 2: Use SDL_Delay to make sure you get your capped framerate
 	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
 	{
-		// L08: DONE 3: Measure accurately the amount of time SDL_Delay actually waits compared to what was expected
 		PerfTimer pt;
 		SDL_Delay(cappedMs - lastFrameMs);
 		LOG("We waited for %d milliseconds and got back in %f", cappedMs - lastFrameMs, pt.ReadMs());
@@ -270,8 +247,6 @@ bool App::DoUpdate()
 			continue;
 		}
 
-        // L08: DONE 5: Send dt as an argument to all updates, you need
-        // to update module parent class and all modules that use update
 		ret = item->data->Update(dt);
 	}
 
@@ -313,13 +288,11 @@ bool App::CleanUp()
 	return ret;
 }
 
-// ---------------------------------------
 int App::GetArgc() const
 {
 	return argc;
 }
 
-// ---------------------------------------
 const char* App::GetArgv(int index) const
 {
 	if(index < argc)
@@ -328,22 +301,18 @@ const char* App::GetArgv(int index) const
 		return NULL;
 }
 
-// ---------------------------------------
 const char* App::GetTitle() const
 {
 	return title.GetString();
 }
 
-// ---------------------------------------
 const char* App::GetOrganization() const
 {
 	return organization.GetString();
 }
 
-// ---------------------------------------
 void App::LoadGameRequest()
 {
-	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
 	loadGameRequested = true;
 }
 
@@ -353,7 +322,6 @@ void App::SaveGameRequest() const
 	saveGameRequested = true;
 }
 
-// ---------------------------------------
 bool App::LoadGame()
 {
 	bool ret = true;
@@ -429,6 +397,7 @@ bool App::LoadGame()
 
 	app->scene->world->AlignCameraPosition();
 
+	data.reset();
 
 	return ret;
 }
@@ -498,6 +467,8 @@ bool App::SaveGame() const
 		LOG("Error on append child of the save_game.xml file");
 		ret = false;
 	}
+
+	saveDoc.reset();
 
 	saveGameRequested = false;
 

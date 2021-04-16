@@ -237,8 +237,8 @@ void DialogueManager::Input()
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
-			itemOption->data->optionButton->Update(.0f);
-		}		
+			itemOption->data->optionButton->Update(1.0f);
+		}
 	}
 	else EndDialogue();
 }
@@ -249,14 +249,17 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 
 	currentDialogue->currentNode->optionsActive = false;
 
+	bool optionHitted = false;
+
 	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start; 
 		 itemOption != nullptr; itemOption = itemOption->next)
 	{
-		if (strcmp(option->text.GetString(), itemOption->data->optionText.GetString()) == 0)
+		if (strcmp(option->text.GetString(), itemOption->data->optionText.GetString()) == 0 && !optionHitted)
 		{
 			if(itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 1)
 			{
 				currentDialogue->currentNode = itemOption->data->nextNode;
+				optionHitted = true;
 			}
 			else if (itemOption->data->returnCode == 0)
 			{

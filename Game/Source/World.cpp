@@ -18,6 +18,7 @@ World::World()
 	map = new Map();
 	place = NO_PLACE;
 	prevPosition = {0, 0};
+	dialogs = new DialogueManager();
 }
 
 void World::Start(Places placex)
@@ -595,9 +596,10 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::CITICIZEN, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1470, 86 }, NPCtype::CITICIZEN, placex, 1);
-		/*app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->CreateEntity(EntityType::NPC);*/
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1800 }, NPCtype::CITICIZEN, placex, 2);
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 70, 1850 }, NPCtype::CITICIZEN, placex, 3);
+		/*app->entityManager->CreateEntity(EntityType::NPC);*/
 	}
 }
 

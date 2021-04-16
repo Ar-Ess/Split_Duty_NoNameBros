@@ -16,8 +16,6 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(float dt)
 {
-
-
     if (state != GuiControlState::DISABLED)
     {
         if (state == GuiControlState::LOCKED)

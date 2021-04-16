@@ -27,7 +27,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     splitedEnemyCount = 1;
     moneyCount = 1;
 
-    playerSpeed = 10;
+    playerSpeed = PLAYER_SPEED;
 
     if (enType == EntityType::PLAYER1)
     {
@@ -283,7 +283,7 @@ void Player::RestartPlayer()
 
     //app->scene->combatScene->secondPlayer = false;
 
-    playerSpeed = 10;
+    playerSpeed = PLAYER_SPEED;
 }
 
 void Player::ResetWalkingAnimation()
