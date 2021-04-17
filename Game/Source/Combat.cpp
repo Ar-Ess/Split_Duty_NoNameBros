@@ -260,7 +260,11 @@ void Combat::DrawEnemy()
 	if (currentEnemyAnim != nullptr)
 	{
 		currentEnemyAnim->Update(1.0f);
-		app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+
+		if(enemy->enemyClass == EnemyClass::MANTIS)
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 3, &currentEnemyAnim->GetCurrentFrame(), false);
+		else
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
 }
 
