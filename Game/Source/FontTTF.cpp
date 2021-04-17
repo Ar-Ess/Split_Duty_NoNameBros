@@ -58,7 +58,6 @@ _TTF_Font* const FontTTF::Load(const char* path, int size)
 {
 	_TTF_Font* font = TTF_OpenFont(path, size);
 
-
 	if (font == NULL)
 	{
 		LOG("Could not load TTF font with path: %s. TTF_OpenFont: %s", path, TTF_GetError());
