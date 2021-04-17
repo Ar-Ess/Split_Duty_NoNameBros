@@ -154,11 +154,12 @@ private:
 private: //Textures
 
     SDL_Texture* wolfSpritesheet = nullptr;
+    SDL_Texture* birdSpritesheet = nullptr;
+    SDL_Texture* mantisSpritesheet = nullptr;
     SDL_Texture* walkingSpritesheet = nullptr;
     const SDL_Rect wolfRect = {0, 166, 60, 35};
 
     Animation* currentPlayerAnimation;
-
 };
 
 #endif // __WORLD_H__
