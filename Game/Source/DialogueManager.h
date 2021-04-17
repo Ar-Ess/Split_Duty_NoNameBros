@@ -56,11 +56,16 @@ private: //functions
 	void Input();
 
 	bool OnGuiMouseClickEvent(GuiControl* option);
-
+	
 	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
+
+	//Utils
+	SDL_Rect Center(SDL_Rect ref, SDL_Rect butt);
+
 public: //variables
 	bool onDialog = false;
 private: // variables
+	int					offset = 15;
 
 	Dialogue*			currentDialogue;
 	List<Dialogue*>		dialoguesList;

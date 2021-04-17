@@ -1,8 +1,13 @@
 #ifndef _DIALOGUE_H__
 #define _DIALOGUE_H__
 
+
 #include "List.h"
 #include "Sstring.h"
+#include "Point.h"
+
+#include "App.h"
+#include "Window.h"
 
 //#include "SDL/include/SDL.h"
 
