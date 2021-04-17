@@ -60,7 +60,7 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::SMALL_WOLF);
+	app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
 	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
 	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
 
@@ -647,15 +647,8 @@ void Scene::UpdateMainMenu()
 		else
 			LOG("God mode disabled");
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
-		combatScene->secondPlayer = !combatScene->secondPlayer;
 
-		if (combatScene->secondPlayer)
-			LOG("Second Player enabled");
-		else
-			LOG("Second Player disabled");
-	}
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) SetScene(COMBAT, app->entityManager->enemies.start->data);
 
 	app->render->DrawTexture(menu, 0, 0);
 

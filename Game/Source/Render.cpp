@@ -191,6 +191,70 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	return ret;
 }
 
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, bool scaleModifiesCoordinates, const SDL_Rect* section, double angle, int pivotX, int pivotY, SDL_RendererFlip flip, bool useCamera) const
+{
+	bool ret = true;
+
+	SDL_Rect rect;
+	if (useCamera)
+	{
+		if (scaleModifiesCoordinates)
+		{
+			rect.x = (int)(camera.x) + x * scale;
+			rect.y = (int)(camera.y) + y * scale;
+		}
+		else if (!scaleModifiesCoordinates)
+		{
+			rect.x = (int)(camera.x) + x;
+			rect.y = (int)(camera.y) + y;
+		}
+	}
+	else if (!useCamera)
+	{
+		if (scaleModifiesCoordinates)
+		{
+			rect.x = x * scale;
+			rect.y = y * scale;
+		}
+		else if (!scaleModifiesCoordinates)
+		{
+			rect.x = x;
+			rect.y = y;
+		}
+	}
+
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
+
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
+	{
+		pivot.x = pivotX;
+		pivot.y = pivotY;
+		p = &pivot;
+	}
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, const SDL_Rect* section, bool scaleModifiesCoordinates, double angle, SDL_RendererFlip flip) const
 {
 	bool ret = true;

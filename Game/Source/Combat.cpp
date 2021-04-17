@@ -38,8 +38,6 @@ void Combat::Start()
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 
-	//currentEnemyAnim = &app->scene->player1->cIdleAnim;
-
 	//Item Inventory amount
 	Player* p = app->scene->player1;
 	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
@@ -67,7 +65,7 @@ void Combat::Start()
 	if (secondPlayer) LOG("P2H: %d", app->scene->player2->health);
 	LOG("EH: %d", enemy->health);
 	
-	enemy->currentEnemyAnim = &enemy->idleAnim;
+	currentEnemyAnim = &enemy->idleAnim;
 }
 
 void Combat::Restart()
@@ -134,8 +132,6 @@ void Combat::Draw()
 
 	// DEBUG COLLISIONS
 	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 }); //NEED TO BE IN FUNCTION DEBUGDRAW (when Animation Uploaded)
-
-	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 255 }); //NEED TO BE IN FUNCTION DEBUGDRAW (when Animation Uploaded)
 
 	if (debugCombat) DebugDraw();
 
@@ -236,7 +232,8 @@ void Combat::DrawPlayer()
 
 void Combat::DebugDraw()
 {
-	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 100 });
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
+	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
 }
 
 void Combat::DrawSecondPlayer()
@@ -246,15 +243,11 @@ void Combat::DrawSecondPlayer()
 
 void Combat::DrawEnemy()
 {
-	if (enemy->currentEnemyAnim != nullptr)
+	if (currentEnemyAnim != nullptr)
 	{
-		const SDL_Rect test = { 0,0,160,160 };
-		enemy->currentEnemyAnim->Update(1.0f);
-		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderCombat.x, enemy->colliderCombat.y, &test);
+		currentEnemyAnim->Update(1.0f);
+		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
-
-	
-
 }
 
 void Combat::DrawBakcground()
@@ -302,7 +295,11 @@ void Combat::CombatLogic()
 		if (enemyTimeWait < 60)
 		{
 			enemyTimeWait++; // Make enemy wait so it does not atack directly
-			if (enemyTimeWait == 59) EnemyAttackProbability();
+			if (enemyTimeWait == 59)
+			{
+				EnemyAttackProbability();
+				currentEnemyAnim = &enemy->moveAnim;
+			}
 		}
 		else
 		{
@@ -621,6 +618,8 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				playerHitAble = true;
 
 				AfterEnemyAttack();
+
+
 			}
 		}
 		else if (enemy->attack == 2)
@@ -1510,6 +1509,8 @@ void Combat::PlayerTurn()
 	if (app->scene->player2->health <= 0) SecondPlayerDie();
 
 	if (steps < 3) app->scene->moveButton->state = GuiControlState::NORMAL;
+
+	currentEnemyAnim = &enemy->idleAnim;
 
 	turnText->SetString("PLAYER TURN");
 	turnText->CenterAlign();

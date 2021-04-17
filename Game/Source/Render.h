@@ -39,6 +39,7 @@ public:
 	// Drawing
 	bool DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX, SDL_RendererFlip flip = SDL_FLIP_NONE, bool useCamera = true) const;
 	bool DrawTexture(SDL_Texture* texture, int x, int y, float scale, const SDL_Rect* section = NULL, bool scaleModifiesCoordinates = true, double angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
+	bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, bool scaleModifiesCoordinates = true, const SDL_Rect* section = NULL, double angle = 0, int pivotX = INT_MAX, int pivotY = INT_MAX, SDL_RendererFlip flip = SDL_FLIP_NONE, bool useCamera = true) const;
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled = true, bool useCamera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, SDL_Color color, bool useCamera = true) const;

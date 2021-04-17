@@ -208,7 +208,7 @@ void DialogueManager::Draw()
 
 			itemOption->data->optionButton->bounds = optionChart;
 
-			itemOption->data->optionButton->Draw(false);
+			itemOption->data->optionButton->Draw(1.2, false);
 			app->render->DrawTexture(itemOption->data->optionTexture, optionChart.x + offset, optionChart.y + offset,
 				                     &itemOption->data->optionRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);		
 		}

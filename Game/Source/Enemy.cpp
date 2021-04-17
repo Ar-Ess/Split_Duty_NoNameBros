@@ -13,9 +13,6 @@
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
     path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
-
-   
-
 }
 
 Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
@@ -30,8 +27,8 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
     {
     case(EnemyClass::SMALL_WOLF):
 
-        idleAnim.PushBack({ 197,34,63 });
-        idleAnim.PushBack({ 262,34,63 });
+        idleAnim.PushBack({ 197, 0, 63, 34});
+        idleAnim.PushBack({ 262, 0, 63, 34 });
 
         awakeAnim.PushBack({ 68,0,63,34 });
         awakeAnim.PushBack({ 133 ,0,63,34 });

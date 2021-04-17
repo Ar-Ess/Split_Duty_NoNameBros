@@ -54,7 +54,7 @@ bool GuiButton::Update(float dt)
     return true;
 }
 
-bool GuiButton::Draw(bool useCamera)
+bool GuiButton::Draw(float scale, bool useCamera)
 {
     if (useCamera)
     {
@@ -108,22 +108,22 @@ bool GuiButton::Draw(bool useCamera)
         switch (state)
         {
         case GuiControlState::DISABLED:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Disabled, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false, &Disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         case GuiControlState::NORMAL:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Normal, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false, &Normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         case GuiControlState::FOCUSED:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Focused, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false, &Focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         case GuiControlState::PRESSED:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Pressed, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false,  &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         case GuiControlState::SELECTED:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Pressed, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false, &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         case GuiControlState::LOCKED:
-            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, &Locked, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+            app->render->DrawTexture(app->guiManager->GuiTexture, bounds.x, bounds.y, scale, false, &Locked, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
             break;
         default:
             break;

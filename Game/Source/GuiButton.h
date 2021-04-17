@@ -13,7 +13,7 @@ public:
     virtual ~GuiButton();
 
     bool Update(float dt);
-    bool Draw(bool useCamera = true);
+    bool Draw(float scale = 1, bool useCamera = true);
 
 private:
     //Texture sections

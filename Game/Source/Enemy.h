@@ -125,7 +125,6 @@ private:
     MantisBullet bullet[5];
 
 public:
-    Animation* currentEnemyAnim;
 
     Animation awakeAnim;
     Animation idleAnim;

@@ -40,6 +40,7 @@
       </Node>
       <Node ID="8">
         <NPCTalk>OKEY, TALK WITH ME IF YOU FORGET IT</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
     <Dialog ID="2">
@@ -73,6 +74,7 @@
       </Node>
       <Node ID="7">
         <NPCTalk>BY THE WAY, TALK WITH MY FRIEND TO HEAL YOU AND THE SECOND PLAYER!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
     <Dialog ID="3">
@@ -106,6 +108,7 @@
       </Node>
       <Node ID="6">
         <NPCTalk>TALK WITH ME IF YOU NEED A HEALTH REFILL</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
     <Dialog ID="4">
@@ -187,6 +190,7 @@
       </Node>
       <Node ID="18">
         <NPCTalk>SEE Y0U SOON!</NPCTalk>
+        <Option NextNode="0" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
   </Dialogs>
