@@ -31,7 +31,7 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 	npcType = xtype;
 	place = xplace;
 	dialog = xdialog;
-	//if (xtype == CITICIZEN) texture = app->tex->Load("Assets/Blablabla");
+	//if (xtype == CITICIZEN) texture = app->tex->Load("Assets/");
 }
 
 void NPC::Update(SDL_Rect pCollAmp)

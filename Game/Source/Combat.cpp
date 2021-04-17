@@ -1181,16 +1181,22 @@ int Combat::EnemyItemDamage()
 
 void Combat::PlayerResponse()
 {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
-		app->scene->player1->jump = true;
-		currentPlayerAnim = &app->scene->player1->cJumpAnim;
+		if (!app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch)
+		{
+			app->scene->player1->jump = true;
+			currentPlayerAnim = &app->scene->player1->cJumpAnim;
+		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN && !app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
-		app->scene->player1->crouch = true;
-		currentPlayerAnim = &app->scene->player1->cCrouchAnim;
+		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
+		{
+			app->scene->player1->crouch = true;
+			currentPlayerAnim = &app->scene->player1->cCrouchAnim;
+		}
 	}
 
 	if (app->scene->player1->jump)
@@ -1482,7 +1488,7 @@ void Combat::EnemyTurn()
 	if (steps == 3) app->scene->moveButton->state = GuiControlState::LOCKED;
 	else
 	{
-		app->scene->moveButton->state == GuiControlState::LOCKED;
+		app->scene->moveButton->state = GuiControlState::NORMAL;
 	}
 
 	app->scene->escapeButton->state = GuiControlState::NORMAL;
@@ -1501,6 +1507,8 @@ void Combat::PlayerTurn()
 	if (wearMantisLeg) wearMantisLeg = false;
 
 	if (app->scene->player2->health <= 0) SecondPlayerDie();
+
+	if (steps < 3) app->scene->moveButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("PLAYER TURN");
 }
