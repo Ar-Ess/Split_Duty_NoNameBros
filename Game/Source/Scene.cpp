@@ -704,7 +704,7 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !app->dialogueManager->onDialog )
 	{
 		prevCam = {app->render->camera.x, app->render->camera.y};
 		SetScene(PAUSE_MENU);

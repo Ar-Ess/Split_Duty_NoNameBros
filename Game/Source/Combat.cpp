@@ -248,8 +248,9 @@ void Combat::DrawEnemy()
 {
 	if (enemy->currentEnemyAnim != nullptr)
 	{
+		const SDL_Rect test = { 0,0,160,160 };
 		enemy->currentEnemyAnim->Update(1.0f);
-		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderRect.x, enemy->colliderRect.y, &enemy->idleAnim.GetCurrentFrame());
+		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderCombat.x, enemy->colliderCombat.y, &test);
 	}
 
 	
