@@ -49,6 +49,11 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
+	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonFocussed_Fx.wav");
+	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav");
+	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav");
+	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_MainMenuScene_Fx.wav");
+
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
@@ -254,6 +259,7 @@ void Scene::SetLogoScene()
 
 void Scene::SetMainMenu()
 {
+	app->audio->SetFx(Effect::MAIN_MENU_FX);
 	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
 	menu = app->tex->Load("Assets/Screens/tittle_screen.png");
 
@@ -619,6 +625,7 @@ void Scene::UpdateLogoScene()
 	{
 		app->transition->FadeToBlackEffect(true, 30.0f);
 		timer++;
+		if (timer == 51) app->audio->SetFx(Effect::LOGO_SCENE_FX);
 	}
 	else if (timer < 250)
 	{

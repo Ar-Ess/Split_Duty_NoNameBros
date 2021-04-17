@@ -19,9 +19,11 @@ enum SoundTrack
 
 enum Effect
 {
-	NO_FX = 0,
-	RUN_FX,
-	JUMP_FX
+	NO_FX = -1,
+	BUTTON_FOCUSSED,
+	BUTTON_RELEASED,
+	LOGO_SCENE_FX,
+	MAIN_MENU_FX
 };
 
 class AudioManager : public Module

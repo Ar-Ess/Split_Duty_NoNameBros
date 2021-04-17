@@ -222,9 +222,9 @@ void World::Draw()
 {
 	map->Draw();
 	if (drawCollisions) DrawCollisions();
-	DrawPlayer();
 	DrawNPC();
 	DrawEnemy();
+	DrawPlayer();
 }
 
 void World::DrawPlayer()

@@ -100,6 +100,26 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	st = sc;
 }
 
+void AudioManager::SetFx(Effect fx)
+{
+	if (fx == BUTTON_FOCUSSED)
+	{
+		PlayFx(0);
+	}
+	else if (fx == BUTTON_RELEASED)
+	{
+		PlayFx(1);
+	}
+	else if (fx == LOGO_SCENE_FX)
+	{
+		PlayFx(2);
+	}
+	else if (fx == MAIN_MENU_FX)
+	{
+		PlayFx(3);
+	}
+}
+
 void AudioManager::ChangeVolumeMusic()
 {
 	if (Mix_VolumeMusic(-1) == MIX_MAX_VOLUME)
@@ -205,6 +225,7 @@ bool AudioManager::PlayFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.Count())
 	{
+		Mix_VolumeChunk(fx[id - 1], 40);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
 

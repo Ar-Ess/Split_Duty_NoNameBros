@@ -32,7 +32,7 @@ bool GuiButton::Update(float dt)
             {
                 if (state == GuiControlState::NORMAL)
                 {
-                    //app->audio->PlayFx(Focus Mouse Sound);
+                    app->audio->SetFx(Effect::BUTTON_FOCUSSED);
                 }
                 state = GuiControlState::FOCUSED;
                 if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
@@ -42,13 +42,12 @@ bool GuiButton::Update(float dt)
 
                 if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
                 {
-                    //app->audio->PlayFx(Click Sound);
+                    app->audio->SetFx(Effect::BUTTON_RELEASED);
                     NotifyObserver();
                 }
             }
             else state = GuiControlState::NORMAL;
-        }
-        
+        } 
     }
 
     return true;
