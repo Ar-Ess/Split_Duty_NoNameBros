@@ -695,7 +695,7 @@ void Scene::UpdateCombat()
 
 void Scene::UpdateLevelUp()
 {
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) SetScene(WORLD, world->place);
+	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)*/ SetScene(WORLD, world->place);
 }
 
 void Scene::UpdateWorld()
