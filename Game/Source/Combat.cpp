@@ -575,7 +575,7 @@ int Combat::SecondPlayerDamageLogic()
 	if (!negative) damage += variation;
 	else if (negative) damage -= variation;
 
-	if (damage < 0) damage = 0;
+	if (damage <= 0) damage = 1;
 
 	return damage;
 }
