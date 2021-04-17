@@ -36,6 +36,8 @@ void Combat::Start()
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 
+	//currentEnemyAnim = &app->scene->player1->cIdleAnim;
+
 	//Item Inventory amount
 	Player* p = app->scene->player1;
 	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
@@ -45,8 +47,6 @@ void Combat::Start()
 
 	//Firts turn decision
 	FirstTurnLogic();
-
-	secondPlayer = secondPlayer;
 
 	//LuckArray fill
 	int pLuck = app->scene->player1->luck;
@@ -1495,6 +1495,7 @@ void Combat::EnemyTurn()
 	app->scene->splitButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("ENEMY TURN");
+	turnText->CenterAlign();
 }
 
 void Combat::PlayerTurn()
@@ -1511,6 +1512,7 @@ void Combat::PlayerTurn()
 	if (steps < 3) app->scene->moveButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("PLAYER TURN");
+	turnText->CenterAlign();
 }
 
 void Combat::SecondPlayerTurn()
@@ -1527,6 +1529,7 @@ void Combat::SecondPlayerTurn()
 	app->scene->splitButton->state = GuiControlState::LOCKED;
 
 	turnText->SetString("SECOND PLAYER TURN");
+	turnText->CenterAlign();
 }
 
 void Combat::PlayerWin()

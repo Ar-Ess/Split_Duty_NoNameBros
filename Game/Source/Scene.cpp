@@ -469,6 +469,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		attackText->bounds = attackButton->bounds;
 		attackText->SetTextFont(app->fontTTF->defaultFont);
 		attackText->SetString("ATTACK");
+		attackText->CenterAlign();
 	}
 
 	if (moveText == nullptr)
@@ -477,6 +478,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		moveText->bounds = { moveButton->bounds };
 		moveText->SetTextFont(app->fontTTF->defaultFont);
 		moveText->SetString("MOVE");
+		moveText->CenterAlign();
 	}
 
 	if (itemsText == nullptr)
@@ -484,7 +486,8 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		itemsText->bounds = { itemButton->bounds };
 		itemsText->SetTextFont(app->fontTTF->defaultFont);
-		itemsText->SetString("ITEM(beta)");
+		itemsText->SetString("ITEM(alpha)");
+		itemsText->CenterAlign();
 	}
 
 	if (escapeText == nullptr)
@@ -493,6 +496,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		escapeText->bounds = { escapeButton->bounds };
 		escapeText->SetTextFont(app->fontTTF->defaultFont);
 		escapeText->SetString("ESCAPE");
+		escapeText->CenterAlign();
 	}
 
 	if (splitText == nullptr)
@@ -501,6 +505,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitText->bounds = { splitButton->bounds };
 		splitText->SetTextFont(app->fontTTF->defaultFont);
 		splitText->SetString("SPLIT");
+		splitText->CenterAlign();
 	}
 
 	if (protectText == nullptr)
@@ -509,6 +514,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		protectText->bounds = { protectButton->bounds };
 		protectText->SetTextFont(app->fontTTF->defaultFont);
 		protectText->SetString("PROTECT");
+		protectText->CenterAlign();
 	}
 
 	if (buffText == nullptr)
@@ -517,6 +523,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffText->bounds = { buffButton->bounds };
 		buffText->SetTextFont(app->fontTTF->defaultFont);
 		buffText->SetString("BUFFS");
+		buffText->CenterAlign();
 	}
 
 	combatScene->turnText->CenterAlign();
