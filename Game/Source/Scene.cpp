@@ -60,15 +60,15 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	app->entityManager->CreateEntity(EntityType::ENEMY);
-	app->entityManager->CreateEntity(EntityType::ENEMY);
-	app->entityManager->CreateEntity(EntityType::ENEMY);
+	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::SMALL_WOLF);
+	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
+	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
 
 	//ENEMY SET                                          ENEMY CLASS           -----------------COMBAT RECT----------------        ---WORLD RECT---  LVL EXP  HP STR DEF  VEL
-	app->entityManager->enemies.start->data->SetUp(EnemyClass::SMALL_WOLF, { INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 25, 15, 10, 20);
+	app->entityManager->enemies.start->data->SetUp({ INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 25, 15, 10, 20);
 
-	app->entityManager->enemies.start->next->data->SetUp(EnemyClass::BIRD, { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 400, 30, 15, 15, 40);
-	app->entityManager->enemies.start->next->next->data->SetUp(EnemyClass::MANTIS, { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 400, 40, 20, 5, 20);
+	app->entityManager->enemies.start->next->data->SetUp( { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 400, 30, 15, 15, 40);
+	app->entityManager->enemies.start->next->next->data->SetUp( { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 400, 40, 20, 5, 20);
 
 	if (FILE* file = fopen("save_game.xml", "r"))
 	{

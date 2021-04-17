@@ -158,8 +158,8 @@ void World::Start(Places placex)
 			}
 		}
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
-		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
-		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
 	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking-spritesheet.png");
@@ -246,6 +246,15 @@ void World::DrawEnemy()
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
 					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+				}
+				if (enemy->GetClass() == EnemyClass::BIRD)
+				{
+					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+
+				}
+				if (enemy->GetClass() == EnemyClass::MANTIS)
+				{
+					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
 				}
 			}
 
@@ -623,7 +632,6 @@ void World::RectifyCameraPosition(Places placex)
 	}
 	else if (placex == ENEMY_FIELD)
 	{
-		LOG("%d", app->scene->player1->colliderWorld.x);
 		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;

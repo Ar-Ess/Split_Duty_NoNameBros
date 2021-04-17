@@ -61,9 +61,11 @@ class Enemy : public Entity
 public:
     Enemy();
 
+    Enemy(EnemyClass enClass);
+
     virtual ~Enemy();
 
-    void SetUp(EnemyClass xenemyClass, SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
+    void SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
 
     void Jump();
 
@@ -125,9 +127,10 @@ private:
 public:
     Animation* currentEnemyAnim;
 
-    Animation cLittleWolfAwakeAnim;
-    Animation cLittleWolfIdleAnim;
-    Animation cLittleWolfRunAnim;
+    Animation awakeAnim;
+    Animation idleAnim;
+    Animation attackAnim;
+    Animation moveAnim;
 };
 
 #endif // __ENEMY_H__

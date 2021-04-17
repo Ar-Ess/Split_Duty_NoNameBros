@@ -431,18 +431,18 @@ bool Map::Load(const char* filename)
     if(ret == true)
     {
         // L03: DONE 5: LOG all the data loaded iterate all tilesets and LOG everything
-		LOG("Successfully parsed map XML file: %s", filename);
-		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tileWidth, data.tileHeight);
+		//LOG("Successfully parsed map XML file: %s", filename);
+		//LOG("width: %d height: %d", data.width, data.height);
+		//LOG("tile_width: %d tile_height: %d", data.tileWidth, data.tileHeight);
 
 		ListItem<TileSet*>* item = data.tilesets.start;
 		while (item != NULL)
 		{
 			TileSet* s = item->data;
-			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
-			LOG("tile width: %d tile height: %d", s->tileWidth, s->tileHeight);
-			LOG("spacing: %d margin: %d", s->spacing, s->margin);
+			//LOG("Tileset ----");
+			//LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
+			//LOG("tile width: %d tile height: %d", s->tileWidth, s->tileHeight);
+			//LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
 		}
 

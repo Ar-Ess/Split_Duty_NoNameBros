@@ -5,6 +5,7 @@
 #include "Entity.h"
 
 #include "List.h"
+enum EnemyClass;
 
 class EntityManager : public Module
 {
@@ -21,6 +22,9 @@ public:
 	bool CleanUp();
 
 	Entity* CreateEntity(EntityType type);
+
+	Entity* CreateEntity(EntityType type,EnemyClass enemy);
+
 	void DestroyEntity(Entity* entity);
 
 	void AddEntity(Entity* entity);

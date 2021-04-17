@@ -52,6 +52,26 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	return ret;
 }
 
+Entity* EntityManager::CreateEntity(EntityType type, EnemyClass enemy)
+{
+	Entity* ret = nullptr;
+
+	switch (type)
+	{
+	case EntityType::PLAYER1: ret = new Player({ 0, 0, 48, 88 }, type);  break;
+	case EntityType::PLAYER2: ret = new Player({ 0, 0, 30, 30 }, type); break;
+	case EntityType::NPC: ret = new NPC({ 0, 0, 56, 84 }); break;
+	case EntityType::ENEMY: ret = new Enemy(enemy);  break;
+	case EntityType::ITEM: ret = new Item();  break;
+	default: break;
+	}
+
+	if (ret != nullptr && type == EntityType::ENEMY) enemies.Add((Enemy*)ret);
+	else if (ret != nullptr && type == EntityType::NPC) NPCs.Add((NPC*)ret);
+
+	return ret;
+}
+
 bool EntityManager::Update(float dt)
 {
 	accumulatedTime += dt;

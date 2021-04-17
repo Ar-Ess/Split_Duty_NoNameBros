@@ -14,25 +14,65 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
     path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
 
-    //Load enemies textures
-    cLittleWolfAwakeAnim.PushBack({ 68,0,63,34 });
-    cLittleWolfAwakeAnim.PushBack({ 133 ,0,63,34 });
-    cLittleWolfAwakeAnim.PushBack({ 197 ,0,63,34 });
-    cLittleWolfAwakeAnim.PushBack({ 262,0,63,34 }); 
-    cLittleWolfAwakeAnim.speed = 0.1f;
-    cLittleWolfAwakeAnim.loop = true;
+   
 
-    cLittleWolfRunAnim.PushBack({ 0,132,62,34 });
-    cLittleWolfRunAnim.PushBack({ 0,132,62,34 });
+}
+
+Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
+{
+    path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
+
+    //Load enemies textures
+    //wolf
+    enemyClass = enClass;
+
+    switch (enClass)
+    {
+    case(EnemyClass::SMALL_WOLF):
+
+        awakeAnim.PushBack({ 68,0,63,34 });
+        awakeAnim.PushBack({ 133 ,0,63,34 });
+        awakeAnim.PushBack({ 197 ,0,63,34 });
+        awakeAnim.PushBack({ 262,0,63,34 });
+        
+
+        moveAnim.PushBack({ 0,132,62,34 });
+        moveAnim.PushBack({ 0,132,62,34 });
+
+        break;
+    case(EnemyClass::BIRD):
+
+        idleAnim.PushBack({ 32,0,32,32 });
+        idleAnim.PushBack({ 32 * 2,0,32,32 });
+        idleAnim.PushBack({ 32 * 3,0,32,32 });
+
+        break;
+    case(EnemyClass::MANTIS):
+
+        idleAnim.PushBack({ 0,0,28,31 });
+        idleAnim.PushBack({ 28,0,35,31 });
+        idleAnim.PushBack({ 63,0,37,31 });
+        
+        break;
+    }
+    awakeAnim.loop = true;
+    awakeAnim.speed = 0.1f;
+    
+    idleAnim.loop = true;
+    idleAnim.speed = 0.1f;
+    
+
+  
+    
 }
 
 Enemy::~Enemy()
 {
 }
 
-void Enemy::SetUp(EnemyClass xenemyClass, SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
+void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {
-    enemyClass = xenemyClass;
+    
     colliderCombat = combatCollider;
     colliderWorld = worldCollider;
     colliderRect = {worldCollider.x, worldCollider.y + worldCollider.h - 28, worldCollider.w, 28};

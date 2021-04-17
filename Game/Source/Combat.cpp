@@ -32,6 +32,7 @@ void Combat::Start()
 	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
 	mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
+	batSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	//Idle Animation Set
@@ -65,6 +66,8 @@ void Combat::Start()
 	LOG("P1H: %d", app->scene->player1->health);
 	if (secondPlayer) LOG("P2H: %d", app->scene->player2->health);
 	LOG("EH: %d", enemy->health);
+	
+	enemy->currentEnemyAnim = &enemy->idleAnim;
 }
 
 void Combat::Restart()
@@ -78,6 +81,8 @@ void Combat::Restart()
 	app->tex->UnLoad(fullscreenAttack_2);
 	app->tex->UnLoad(fullscreenAttack_3);
 	app->tex->UnLoad(littleWolfSpritesheet);
+	app->tex->UnLoad(mantisSpritesheet);
+	app->tex->UnLoad(batSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 
 	PlayerPosReset();
@@ -241,21 +246,14 @@ void Combat::DrawSecondPlayer()
 
 void Combat::DrawEnemy()
 {
-	if (enemy != nullptr)
+	if (enemy->currentEnemyAnim != nullptr)
 	{
-		if (enemy->enemyClass == SMALL_WOLF)
-		{
-			enemy->currentEnemyAnim = &enemy->cLittleWolfAwakeAnim;
-		}
-		else if (enemy->enemyClass == BIRD)
-		{
-
-		}
-		else if (enemy->enemyClass == MANTIS)
-		{
-
-		}
+		enemy->currentEnemyAnim->Update(1.0f);
+		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderRect.x, enemy->colliderRect.y, &enemy->idleAnim.GetCurrentFrame());
 	}
+
+	
+
 }
 
 void Combat::DrawBakcground()
