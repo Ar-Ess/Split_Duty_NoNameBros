@@ -100,6 +100,27 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	st = sc;
 }
 
+void AudioManager::ChangeVolumeMusic()
+{
+	if (Mix_VolumeMusic(-1) == MIX_MAX_VOLUME)
+		Mix_VolumeMusic(MIX_MAX_VOLUME / 3);
+	else
+		Mix_VolumeMusic(MIX_MAX_VOLUME);		
+}
+
+void AudioManager::TogglePauseMusic()
+{
+	if (Mix_PausedMusic)
+		Mix_PauseMusic();
+	else
+		Mix_ResumeMusic();
+}
+
+void AudioManager::StopMusic()
+{
+	Mix_HaltMusic();
+}
+
 bool AudioManager::PlayMusic(const char* path, float fadeTime)
 {
 	bool ret = true;

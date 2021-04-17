@@ -534,6 +534,7 @@ void Scene::SetWorld(Places place)
 
 void Scene::SetPauseMenu()
 {
+	app->audio->ChangeVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	if (backToGameButton == nullptr)
@@ -605,7 +606,6 @@ void Scene::SetPauseMenu()
 		backToMenuText->CenterAlign();
 	}
 }
-
 
 void Scene::UpdateLogoScene()
 {
@@ -778,6 +778,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			app->render->camera.x = prevCam.x;
 			app->render->camera.y = prevCam.y;
 			continuePressed = false;
+			app->audio->ChangeVolumeMusic();
 		}
 		else if (strcmp(control->text.GetString(), "SaveGameButton") == 0)
 		{
@@ -785,10 +786,13 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			continueButton->state = GuiControlState::NORMAL;
 		}
 		else if (strcmp(control->text.GetString(), "OptionsPauseButton") == 0) SetScene(OPTIONS_MENU);
-		else if (strcmp(control->text.GetString(), "BackToMenuButton") == 0) SetScene(MAIN_MENU);
+		else if (strcmp(control->text.GetString(), "BackToMenuButton") == 0)
+		{
+			SetScene(MAIN_MENU);
+			app->audio->ChangeVolumeMusic();
+		}
 		break;
 	}
-
 	return true;
 }
 

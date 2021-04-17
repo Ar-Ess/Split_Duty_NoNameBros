@@ -49,6 +49,10 @@ public:
 		return st;
 	}
 
+	void ChangeVolumeMusic();
+	void TogglePauseMusic();
+	void StopMusic();
+
 private:
 	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
 
