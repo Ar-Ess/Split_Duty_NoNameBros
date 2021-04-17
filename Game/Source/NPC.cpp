@@ -66,7 +66,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 void NPC::Draw()
 {
 	const SDL_Rect sprite = { 0,0,32,32 };
-	app->render->DrawTexture(texture, collider.x, collider.y, 2.5f, &sprite,false);
+	app->render->DrawTexture(texture, collider.x, collider.y, 2.3f, &sprite,false);
 	
 }
 

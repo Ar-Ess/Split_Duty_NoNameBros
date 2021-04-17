@@ -274,6 +274,7 @@ private:
     SDL_Texture* littleWolfSpritesheet = nullptr;
     SDL_Texture* mantisSpritesheet = nullptr;
     SDL_Texture* batSpritesheet = nullptr;
+    SDL_Texture* enemySpritesheet = nullptr;
 
     SDL_Texture* grassyLandsBackground = nullptr;
     SDL_Texture* autummFallsBackground = nullptr;

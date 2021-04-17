@@ -23,12 +23,22 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
     //wolf
     enemyClass = enClass;
 
+    awakeAnim.loop = true;
+    awakeAnim.speed = 0.1f;
+
+    idleAnim.loop = true;
+    idleAnim.speed = 0.06f;
+
+    moveAnim.loop = true;
+    moveAnim.speed = 0.1f;
+
     switch (enClass)
     {
     case(EnemyClass::SMALL_WOLF):
 
         idleAnim.PushBack({ 197, 0, 63, 34});
         idleAnim.PushBack({ 262, 0, 63, 34 });
+        idleAnim.speed = 0.06f;
 
         awakeAnim.PushBack({ 68,0,63,34 });
         awakeAnim.PushBack({ 133 ,0,63,34 });
@@ -36,8 +46,12 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         awakeAnim.PushBack({ 262,0,63,34 });
         
 
-        moveAnim.PushBack({ 0,132,62,34 });
-        moveAnim.PushBack({ 0,132,62,34 });
+        moveAnim.PushBack({ 0,132,67,34 });
+        moveAnim.PushBack({ 65,132,67,34 });
+        moveAnim.PushBack({ 65*2,132,67,34 });
+        moveAnim.PushBack({ 65*3,132,67,34 });
+        moveAnim.PushBack({ 65*4,132,67,34 });
+        moveAnim.speed = 0.14f;
 
         break;
     case(EnemyClass::BIRD):
@@ -46,6 +60,12 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         idleAnim.PushBack({ 32 * 2,0,32,32 });
         idleAnim.PushBack({ 32 * 3,0,32,32 });
 
+        moveAnim.PushBack({ 32,0,32,32 });
+        moveAnim.PushBack({ 32 * 2,0,32,32 });
+        moveAnim.PushBack({ 32 * 3,0,32,32 });
+        moveAnim.speed = idleAnim.speed * 2;
+
+
         break;
     case(EnemyClass::MANTIS):
 
@@ -53,13 +73,14 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         idleAnim.PushBack({ 28,0,35,31 });
         idleAnim.PushBack({ 63,0,37,31 });
         
+
+        moveAnim.PushBack({ 0,74,34,34 });
+        moveAnim.PushBack({ 31,74,34,34 });
+        moveAnim.PushBack({ 31*2,74,34,34 });
+
         break;
     }
-    awakeAnim.loop = true;
-    awakeAnim.speed = 0.1f;
     
-    idleAnim.loop = true;
-    idleAnim.speed = 0.1f;
     
 
   

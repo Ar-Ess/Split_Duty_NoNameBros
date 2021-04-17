@@ -35,6 +35,19 @@ void Combat::Start()
 	batSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
+	switch (enemy->enemyClass)
+	{
+	case(EnemyClass::SMALL_WOLF):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
+		break;
+	case(EnemyClass::BIRD):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
+		break;
+	case(EnemyClass::MANTIS):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
+		break;
+	}
+
 	//Idle Animation Set
 	currentPlayerAnim = &app->scene->player1->cIdleAnim;
 
@@ -81,6 +94,7 @@ void Combat::Restart()
 	app->tex->UnLoad(littleWolfSpritesheet);
 	app->tex->UnLoad(mantisSpritesheet);
 	app->tex->UnLoad(batSpritesheet);
+	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 
 	PlayerPosReset();
@@ -246,7 +260,7 @@ void Combat::DrawEnemy()
 	if (currentEnemyAnim != nullptr)
 	{
 		currentEnemyAnim->Update(1.0f);
-		app->render->DrawTexture(littleWolfSpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+		app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
 }
 
