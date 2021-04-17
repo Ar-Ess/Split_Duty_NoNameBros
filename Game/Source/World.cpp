@@ -195,6 +195,7 @@ void World::Restart()
 	if (place == ENEMY_FIELD) app->tex->UnLoad(wolfSpritesheet);
 
 	app->tex->UnLoad(walkingSpritesheet);
+	
 
 	ListItem<NPC*>* item = app->entityManager->NPCs.start;
 	while (item != NULL)
@@ -223,7 +224,7 @@ void World::Draw()
 	if (drawCollisions) DrawCollisions();
 	app->render->DrawRectangle(temp, { 0, 0, 0, 150 });
 	DrawPlayer();
-	//DrawNPC();
+	DrawNPC();
 	DrawEnemy();
 	//app->dialogueManager->Update(1.0f);
 }
@@ -270,6 +271,7 @@ void World::DrawNPC()
 		NPC* npc = app->entityManager->NPCs[i];
 		if (npc->place == GetPlace())
 		{
+			LOG("draw npc");
 			npc->Draw();
 		}
 		npc = nullptr;
@@ -600,19 +602,21 @@ void World::NPCLogic()
 
 void World::LoadNPCs(Places placex)
 {
+	
+
 	if (placex == MAIN_VILLAGE)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::CITICIZEN, placex, 1);
+		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::OLD, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::CITICIZEN, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT, placex, 2);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 200, 1490 }, NPCtype::CITICIZEN, placex, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 200, 1490 }, NPCtype::PRIEST, placex, 3);
 	}
 	else if (placex == ENEMY_FIELD)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::CITICIZEN, placex, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::OLD, placex, 4);
 	}
 }
 

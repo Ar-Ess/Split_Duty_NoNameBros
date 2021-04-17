@@ -16,10 +16,9 @@ enum Places;
 
 enum NPCtype
 {
-    CITICIZEN,
-    MAGICIAN,
-    BARMAN,
-    SHOPMAN
+    KNIGHT,
+    OLD,
+    PRIEST
 };
 
 class NPC : public Entity

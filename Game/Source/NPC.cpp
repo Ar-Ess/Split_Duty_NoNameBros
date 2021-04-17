@@ -31,7 +31,21 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 	npcType = xtype;
 	place = xplace;
 	dialog = xdialog;
-	//if (xtype == CITICIZEN) texture = app->tex->Load("Assets/");
+	
+	switch (xtype)
+	{
+	case(NPCtype::KNIGHT):
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/knight-spritesheet.png");
+		break;
+	case(NPCtype::OLD):
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/old-spritesheet.png");
+		break;
+	case(NPCtype::PRIEST):
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest-spritesheet.png");
+		break;
+	}
+	
+
 }
 
 void NPC::Update(SDL_Rect pCollAmp)
@@ -51,9 +65,12 @@ void NPC::Update(SDL_Rect pCollAmp)
 
 void NPC::Draw()
 {
+	const SDL_Rect sprite = { 0,0,32,32 };
+	app->render->DrawTexture(texture, collider.x, collider.y, 2.5f, &sprite,false);
+	
 }
 
 void NPC::Delete()
 {
-	//app->tex->UnLoad(texture);
+	app->tex->UnLoad(texture);
 }
