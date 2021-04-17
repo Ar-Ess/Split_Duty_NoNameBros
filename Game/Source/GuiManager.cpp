@@ -85,10 +85,7 @@ bool GuiManager::Start()
 	idleFaceAnim.PushBack({ 0,0,70,69 });
 	idleFaceAnim.PushBack({ 70,0,70,69 });
 
-
 	currentPlayerFaceAnim = &idleFaceAnim;
-
-
 	return true;
 }
 

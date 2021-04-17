@@ -94,7 +94,6 @@ void DialogueManager::CreateDialogue(pugi::xml_node& setter)
 	for (pugi::xml_node dlg = setter.child("Dialog"); dlg != nullptr; dlg = dlg.next_sibling("Dialog"))
 	{	
 		Dialogue* dialogue = new Dialogue(dlg.attribute("ID").as_int());	
-		LOG("MY DIALOGUE TREE NUMBER %d", dialogue->dialogueID);
 
 		for (pugi::xml_node nodeSetter = dlg.child("Node"); nodeSetter != nullptr; 
 			 nodeSetter = nodeSetter.next_sibling("Node"))
@@ -152,11 +151,14 @@ void DialogueManager::StartDialogue(int dialogueID)
 
 			if (itemNode->data->optionsList.Count() != 0)
 			{
+				int optPlace = 0;
 				for (ListItem<DialogueOption*>* itemOption = itemNode->data->optionsList.start;
 					itemOption != nullptr; itemOption = itemOption->next)
 				{
 					itemOption->data->optionTexture = app->fontTTF->Print(itemOption->data->optionText.GetString(), 
 													  white, app->fontTTF->defaultFont);
+					itemOption->data->optPlacing = OptionsPos(optPlace);
+					optPlace++;
 
 					if (itemOption->data->optionTexture == nullptr) LOG("OPTION TEXTURE NOT LOADED");
 				}
@@ -169,25 +171,22 @@ void DialogueManager::StartDialogue(int dialogueID)
 
 void DialogueManager::Draw()
 {
-	SDL_Rect tempRect{ 0,0,0,0 };
-	iPoint nodePos{ 100,100 };
-	int offset = 15;
-
 	app->fontTTF->CalcSize(currentDialogue->currentNode->nodeText.GetString(),
-						   tempRect.w, tempRect.h, app->fontTTF->defaultFont);
+						   currentDialogue->currentNode->nodeRect.w, currentDialogue->currentNode->nodeRect.h, app->fontTTF->defaultFont);
 
-	SDL_Rect nodeChart{ nodePos.x,nodePos.y, tempRect.w + (2 * offset), tempRect.h + (2 * offset) };
+	currentDialogue->currentNode->NodePlacing();
+
+	SDL_Rect nodeChart{ currentDialogue->currentNode->nodePos.x, currentDialogue->currentNode->nodePos.y,
+						currentDialogue->currentNode->nodeRect.w + (2 * offset), currentDialogue->currentNode->nodeRect.h + (2 * offset) };
 
 	//DRAWING NODE
 	app->render->DrawRectangle(nodeChart, red, true, false);
 	app->render->DrawTexture(currentDialogue->currentNode->nodeTexture,
-							 nodeChart.x + offset, nodeChart.y + offset, &tempRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+							 nodeChart.x + offset, nodeChart.y + offset, &currentDialogue->currentNode->nodeRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	if (currentDialogue->currentNode->optionsList.Count() != 0)
 	{
-		currentDialogue->currentNode->optionsActive = true;
-		int i = 0;
-		iPoint optionPos{ 100, 150 };
+		if(currentDialogue->currentNode->optionsActive == false)currentDialogue->currentNode->optionsActive = true;
 
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
@@ -198,36 +197,20 @@ void DialogueManager::Draw()
 			app->fontTTF->CalcSize(itemOption->data->optionText.GetString(), itemOption->data->optionButton->bounds.w, 
 								   itemOption->data->optionButton->bounds.h, app->fontTTF->defaultFont);
 
+			itemOption->data->optionRect = itemOption->data->optionButton->bounds;
 			itemOption->data->optionButton->SetObserver(this);
 
-			SDL_Rect optionChart{ 0,0,itemOption->data->optionButton->bounds.w, itemOption->data->optionButton->bounds.h };
+			itemOption->data->OptionPlacingX();
+			itemOption->data->OptionPlacingY();
 
-			switch (i)
-			{
-			case 0:
-				itemOption->data->optionButton->bounds.x = optionPos.x = 100;
-				itemOption->data->optionButton->bounds.y = optionPos.y = 150;
-				itemOption->data->optionButton->bounds.w += 15;
-				itemOption->data->optionButton->bounds.h += 15; 
+			SDL_Rect optionChart{ itemOption->data->optionPos.x, itemOption->data->optionPos.y,
+								itemOption->data->optionButton->bounds.w + (2 * offset), itemOption->data->optionButton->bounds.h + (2 * offset)};
 
-				itemOption->data->optionButton->Draw(false);
-				app->render->DrawTexture(itemOption->data->optionTexture, (optionPos.x + offset), (optionPos.y + offset),
-					                     &optionChart, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-				break;
-			case 1:
-				itemOption->data->optionButton->bounds.x = optionPos.x = 100;
-				itemOption->data->optionButton->bounds.y = optionPos.y = 200;
-				itemOption->data->optionButton->bounds.w += 15;
-				itemOption->data->optionButton->bounds.h += 15;
+			itemOption->data->optionButton->bounds = optionChart;
 
-				itemOption->data->optionButton->Draw(false);
-				app->render->DrawTexture(itemOption->data->optionTexture, (optionPos.x + offset), (optionPos.y + offset),
-										 &optionChart, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-				break;
-			default:
-				break;
-			}
-			i++;
+			itemOption->data->optionButton->Draw(false);
+			app->render->DrawTexture(itemOption->data->optionTexture, optionChart.x + offset, optionChart.y + offset,
+				                     &itemOption->data->optionRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);		
 		}
 	}
 }
@@ -318,4 +301,14 @@ pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFil
 
 	return ret;
 	
+}
+
+SDL_Rect DialogueManager::Center(SDL_Rect ref, SDL_Rect butt)
+{
+	SDL_Rect temp = butt;
+
+	temp.x = ref.x + (ref.w / 2) - (temp.w / 2);
+	temp.y = ref.y + (ref.h / 2) - (temp.h / 2);
+
+	return temp;
 }
