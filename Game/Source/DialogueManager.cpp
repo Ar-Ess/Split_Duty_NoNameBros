@@ -181,6 +181,12 @@ void DialogueManager::Draw()
 
 	//DRAWING NODE
 	app->render->DrawRectangle(nodeChart, red, true, false);
+
+
+
+
+
+
 	app->render->DrawTexture(currentDialogue->currentNode->nodeTexture,
 							 nodeChart.x + offset, nodeChart.y + offset, &currentDialogue->currentNode->nodeRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
