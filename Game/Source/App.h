@@ -121,6 +121,8 @@ private:
 	uint32 prevLastSecFrameCount = 0;
 	float dt = 0.0f;
 
+	const uint32 frameDelay = 1000 / 60;
+
 	int	cappedMs = -1;
 };
 

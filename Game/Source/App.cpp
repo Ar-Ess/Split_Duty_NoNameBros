@@ -203,11 +203,9 @@ void App::FinishUpdate()
 
 	app->win->SetTitle(title);
 
-	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
+	if (frameDelay > lastFrameMs)
 	{
-		PerfTimer pt;
-		SDL_Delay(cappedMs - lastFrameMs);
-		LOG("We waited for %d milliseconds and got back in %f", cappedMs - lastFrameMs, pt.ReadMs());
+		SDL_Delay(frameDelay - lastFrameMs);
 	}
 }
 
