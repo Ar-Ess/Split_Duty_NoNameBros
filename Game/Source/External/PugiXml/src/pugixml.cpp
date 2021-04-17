@@ -5336,10 +5336,10 @@ namespace pugi
         {
             cursor = cursor.parent();
             
-            string_t temp = cursor.name();
-            temp += delimiter;
-            temp += result;
-            result.swap(temp);
+            string_t contactPlayerZone = cursor.name();
+            contactPlayerZone += delimiter;
+            contactPlayerZone += result;
+            result.swap(contactPlayerZone);
         }
 
         return result;
@@ -5797,9 +5797,9 @@ namespace pugi
 
     PUGI__FN xml_node_iterator xml_node_iterator::operator++(int)
     {
-        xml_node_iterator temp = *this;
+        xml_node_iterator contactPlayerZone = *this;
         ++*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN const xml_node_iterator& xml_node_iterator::operator--()
@@ -5810,9 +5810,9 @@ namespace pugi
 
     PUGI__FN xml_node_iterator xml_node_iterator::operator--(int)
     {
-        xml_node_iterator temp = *this;
+        xml_node_iterator contactPlayerZone = *this;
         --*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN xml_attribute_iterator::xml_attribute_iterator()
@@ -5858,9 +5858,9 @@ namespace pugi
 
     PUGI__FN xml_attribute_iterator xml_attribute_iterator::operator++(int)
     {
-        xml_attribute_iterator temp = *this;
+        xml_attribute_iterator contactPlayerZone = *this;
         ++*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN const xml_attribute_iterator& xml_attribute_iterator::operator--()
@@ -5871,9 +5871,9 @@ namespace pugi
 
     PUGI__FN xml_attribute_iterator xml_attribute_iterator::operator--(int)
     {
-        xml_attribute_iterator temp = *this;
+        xml_attribute_iterator contactPlayerZone = *this;
         --*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN xml_named_node_iterator::xml_named_node_iterator(): _name(0)
@@ -5919,9 +5919,9 @@ namespace pugi
 
     PUGI__FN xml_named_node_iterator xml_named_node_iterator::operator++(int)
     {
-        xml_named_node_iterator temp = *this;
+        xml_named_node_iterator contactPlayerZone = *this;
         ++*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN const xml_named_node_iterator& xml_named_node_iterator::operator--()
@@ -5941,9 +5941,9 @@ namespace pugi
 
     PUGI__FN xml_named_node_iterator xml_named_node_iterator::operator--(int)
     {
-        xml_named_node_iterator temp = *this;
+        xml_named_node_iterator contactPlayerZone = *this;
         --*this;
-        return temp;
+        return contactPlayerZone;
     }
 
     PUGI__FN xml_parse_result::xml_parse_result(): status(status_internal_error), offset(0), encoding(encoding_auto)
@@ -6330,9 +6330,9 @@ PUGI__NS_BEGIN
 
     template <typename T> void swap(T& lhs, T& rhs)
     {
-        T temp = lhs;
+        T contactPlayerZone = lhs;
         lhs = rhs;
-        rhs = temp;
+        rhs = contactPlayerZone;
     }
 
     template <typename I, typename Pred> I min_element(I begin, I end, const Pred& pred)
@@ -6702,27 +6702,27 @@ PUGI__NS_BEGIN
     struct xpath_stack
     {
         xpath_allocator* result;
-        xpath_allocator* temp;
+        xpath_allocator* contactPlayerZone;
     };
 
     struct xpath_stack_data
     {
         xpath_memory_block blocks[2];
         xpath_allocator result;
-        xpath_allocator temp;
+        xpath_allocator contactPlayerZone;
         xpath_stack stack;
 
     #ifdef PUGIXML_NO_EXCEPTIONS
         jmp_buf error_handler;
     #endif
 
-        xpath_stack_data(): result(blocks + 0), temp(blocks + 1)
+        xpath_stack_data(): result(blocks + 0), contactPlayerZone(blocks + 1)
         {
             blocks[0].next = blocks[1].next = 0;
             blocks[0].capacity = blocks[1].capacity = sizeof(blocks[0].data);
 
             stack.result = &result;
-            stack.temp = &temp;
+            stack.contactPlayerZone = &contactPlayerZone;
 
         #ifdef PUGIXML_NO_EXCEPTIONS
             result.error_handler = temp.error_handler = &error_handler;
@@ -6732,7 +6732,7 @@ PUGI__NS_BEGIN
         ~xpath_stack_data()
         {
             result.release();
-            temp.release();
+            contactPlayerZone.release();
         }
     };
 PUGI__NS_END
@@ -9486,7 +9486,7 @@ PUGI__NS_BEGIN
         {
             assert(_type == ast_func_concat);
 
-            xpath_allocator_capture ct(stack.temp);
+            xpath_allocator_capture ct(stack.contactPlayerZone);
 
             // count the string number
             size_t count = 1;
@@ -9499,12 +9499,12 @@ PUGI__NS_BEGIN
             // allocate on-heap for large concats
             if (count > sizeof(static_buffer) / sizeof(static_buffer[0]))
             {
-                buffer = static_cast<xpath_string*>(stack.temp->allocate(count * sizeof(xpath_string)));
+                buffer = static_cast<xpath_string*>(stack.contactPlayerZone->allocate(count * sizeof(xpath_string)));
                 assert(buffer);
             }
 
             // evaluate all strings to temporary stack
-            xpath_stack swapped_stack = {stack.temp, stack.result};
+            xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
             buffer[0] = _left->eval_string(c, swapped_stack);
 
@@ -9600,9 +9600,9 @@ PUGI__NS_BEGIN
 
             case ast_func_substring_before:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_string s = _left->eval_string(c, swapped_stack);
                 xpath_string p = _right->eval_string(c, swapped_stack);
@@ -9614,9 +9614,9 @@ PUGI__NS_BEGIN
             
             case ast_func_substring_after:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_string s = _left->eval_string(c, swapped_stack);
                 xpath_string p = _right->eval_string(c, swapped_stack);
@@ -9632,9 +9632,9 @@ PUGI__NS_BEGIN
 
             case ast_func_substring_2:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_string s = _left->eval_string(c, swapped_stack);
                 size_t s_length = s.length();
@@ -9655,9 +9655,9 @@ PUGI__NS_BEGIN
             
             case ast_func_substring_3:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_string s = _left->eval_string(c, swapped_stack);
                 size_t s_length = s.length();
@@ -9702,9 +9702,9 @@ PUGI__NS_BEGIN
 
             case ast_func_translate:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_string s = _left->eval_string(c, stack);
                 xpath_string from = _right->eval_string(c, swapped_stack);
@@ -9748,9 +9748,9 @@ PUGI__NS_BEGIN
                     
                 case xpath_type_node_set:
                 {
-                    xpath_allocator_capture cr(stack.temp);
+                    xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                    xpath_stack swapped_stack = {stack.temp, stack.result};
+                    xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                     xpath_node_set_raw ns = eval_node_set(c, swapped_stack, nodeset_eval_first);
                     return ns.empty() ? xpath_string() : string_value(ns.first(), stack.result);
@@ -9770,9 +9770,9 @@ PUGI__NS_BEGIN
             {
             case ast_op_union:
             {
-                xpath_allocator_capture cr(stack.temp);
+                xpath_allocator_capture cr(stack.contactPlayerZone);
 
-                xpath_stack swapped_stack = {stack.temp, stack.result};
+                xpath_stack swapped_stack = {stack.contactPlayerZone, stack.result};
 
                 xpath_node_set_raw ls = _left->eval_node_set(c, swapped_stack, eval);
                 xpath_node_set_raw rs = _right->eval_node_set(c, stack, eval);

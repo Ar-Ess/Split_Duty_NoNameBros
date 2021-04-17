@@ -305,10 +305,10 @@ pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFil
 
 SDL_Rect DialogueManager::Center(SDL_Rect ref, SDL_Rect butt)
 {
-	SDL_Rect temp = butt;
+	SDL_Rect contactPlayerZone = butt;
 
-	temp.x = ref.x + (ref.w / 2) - (temp.w / 2);
-	temp.y = ref.y + (ref.h / 2) - (temp.h / 2);
+	contactPlayerZone.x = ref.x + (ref.w / 2) - (contactPlayerZone.w / 2);
+	contactPlayerZone.y = ref.y + (ref.h / 2) - (contactPlayerZone.h / 2);
 
-	return temp;
+	return contactPlayerZone;
 }

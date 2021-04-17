@@ -638,15 +638,6 @@ void Scene::UpdateLogoScene()
 void Scene::UpdateMainMenu()
 {
 // Other Options
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		app->scene->player1->godMode = !app->scene->player1->godMode;
-
-		if (app->scene->player1->godMode)
-			LOG("God mode enabled");
-		else
-			LOG("God mode disabled");
-	}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) SetScene(COMBAT, app->entityManager->enemies.start->data);
 
@@ -701,6 +692,23 @@ void Scene::UpdateWorld()
 	{
 		prevCam = {app->render->camera.x, app->render->camera.y};
 		SetScene(PAUSE_MENU);
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		player1->godMode = !player1->godMode;
+		world->godMode = !world->godMode;
+
+		if (player1->godMode)
+		{
+			LOG("God mode enabled");
+			player1->playerSpeed = 14;
+		}
+		else
+		{
+			LOG("God mode disabled");
+			player1->playerSpeed = PLAYER_SPEED;
+		}
 	}
 }
 

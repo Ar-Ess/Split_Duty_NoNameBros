@@ -26,7 +26,7 @@ void World::Start(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		Places temp = place;
+		Places contactPlayerZone = place;
 		place = placex;
 		map->Load("main_village.tmx");
 
@@ -222,11 +222,9 @@ void World::Draw()
 {
 	map->Draw();
 	if (drawCollisions) DrawCollisions();
-	app->render->DrawRectangle(temp, { 0, 0, 0, 150 });
 	DrawPlayer();
 	DrawNPC();
 	DrawEnemy();
-	//app->dialogueManager->Update(1.0f);
 }
 
 void World::DrawPlayer()
@@ -320,6 +318,8 @@ void World::DrawCollisions()
 			enemy = nullptr;
 		}
 	}
+
+	app->render->DrawRectangle(contactPlayerZone, { 0, 0, 0, 150 });
 }
 
 //-------------------------------------------------------------------
@@ -546,10 +546,9 @@ bool World::PlayerMovement()
 		app->scene->player1->ResetWalkingAnimation();
 		app->scene->player1->walkRightAnim.loop = app->scene->player1->walkLeftAnim.loop = app->scene->player1->walkUpAnim.loop = app->scene->player1->walkDownAnim.loop = false;
 	}
-
-
 	
-	bool move = CollisionSolver(previousPosition);
+	bool move = true;
+	if (!godMode) move = CollisionSolver(previousPosition);
 
 	app->scene->player1->colliderWorld.x = app->scene->player1->collisionRect.x;
 	app->scene->player1->colliderWorld.y = app->scene->player1->collisionRect.y - 56;
@@ -592,7 +591,7 @@ void World::NPCLogic()
 	ampPlayerCollider.y -= 25;
 	ampPlayerCollider.w += 30;
 	ampPlayerCollider.h += 50;
-	temp = ampPlayerCollider;
+	contactPlayerZone = ampPlayerCollider;
 
 	for (int i = 0; i < app->entityManager->NPCs.Count(); i++)
 	{

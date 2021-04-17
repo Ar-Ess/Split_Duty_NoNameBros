@@ -89,6 +89,9 @@ public:
         place = (Places)placex;
     }
 
+public:
+    bool godMode = false;
+
 private:
 
     void WorldMovement();
@@ -118,7 +121,7 @@ private:
 
     int worldSpeed;
 
-    SDL_Rect temp; //Borrar!
+    SDL_Rect contactPlayerZone; //Borrar!
 
     Collision collisionUtils;
 
@@ -163,11 +166,6 @@ private: //Textures
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;
-
-private:
-    
-
-
 };
 
 #endif // __WORLD_H__
