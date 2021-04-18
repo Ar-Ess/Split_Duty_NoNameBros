@@ -267,7 +267,6 @@ void World::DrawNPC()
 		NPC* npc = app->entityManager->NPCs[i];
 		if (npc->place == GetPlace())
 		{
-			LOG("draw npc");
 			npc->Draw();
 		}
 		npc = nullptr;
