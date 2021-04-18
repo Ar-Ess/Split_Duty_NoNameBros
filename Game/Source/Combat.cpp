@@ -80,6 +80,7 @@ void Combat::Restart()
 	enemy = nullptr;
 
 	app->tex->UnLoad(character1Spritesheet);
+	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 
