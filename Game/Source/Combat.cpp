@@ -443,6 +443,7 @@ void Combat::CombatLogic()
 		{
 			playerTimeEscape++;
 			app->scene->player1->colliderCombat.x -= 3;
+			if (secondPlayer) app->scene->player2->colliderCombat.x -= 3;
 		}
 		else
 		{
