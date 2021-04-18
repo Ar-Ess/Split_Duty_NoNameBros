@@ -35,7 +35,7 @@ struct MantisBullet
         
         //bulletSpritesheet = nullptr;
         
-            bulletSpritesheet=app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-acid-bullet.png");
+            bulletSpritesheet=app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_acid_bullet.png");
     }
 
     SDL_Rect bulletRect;

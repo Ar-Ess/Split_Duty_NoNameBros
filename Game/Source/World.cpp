@@ -157,12 +157,12 @@ void World::Start(Places placex)
 				RectifyCameraPosition(placex);
 			}
 		}
-		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf-spritesheet.png");
-		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
-		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 
-	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking-spritesheet.png");
+	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
 
 	LoadNPCs(placex);
 
@@ -192,11 +192,12 @@ void World::Restart()
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
-	if (place == ENEMY_FIELD) app->tex->UnLoad(wolfSpritesheet);
+	if (wolfSpritesheet != nullptr) app->tex->UnLoad(wolfSpritesheet);
+	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
+	if (mantisSpritesheet != nullptr)app->tex->UnLoad(mantisSpritesheet);
 
-	app->tex->UnLoad(walkingSpritesheet);
+	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	
-
 	ListItem<NPC*>* item = app->entityManager->NPCs.start;
 	while (item != NULL)
 	{

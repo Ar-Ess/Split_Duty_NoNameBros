@@ -35,13 +35,13 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 	switch (xtype)
 	{
 	case(NPCtype::KNIGHT):
-		texture = app->tex->Load("Assets/Textures/Characters/NPCs/knight-spritesheet.png");
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/knight_spritesheet.png");
 		break;
 	case(NPCtype::OLD):
-		texture = app->tex->Load("Assets/Textures/Characters/NPCs/old-spritesheet.png");
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/old_spritesheet.png");
 		break;
 	case(NPCtype::PRIEST):
-		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest-spritesheet.png");
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest_spritesheet.png");
 		break;
 	}
 	

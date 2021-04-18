@@ -26,19 +26,19 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/second player/second-player.png");
+	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/Second_Player/second_player.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
 	{
 	case(EnemyClass::SMALL_WOLF):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
 		break;
 	case(EnemyClass::BIRD):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		break;
 	case(EnemyClass::MANTIS):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 
 	//Idle Animation Set
