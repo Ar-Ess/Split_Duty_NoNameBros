@@ -125,6 +125,13 @@ The assets are from a game project that never panned out :(
 
 Donations are welcome :)
 
+4. PIPOYA FREE RPG Character Sprites 32x32 by pipoya
+
+- For commercial or personal use.
+- Use and edit freely.
+- Not redistribute or resell this assets.
+- It can be used for game development and other productions.
+
 Assets/Fonts:
 
 1. Manaspace Font by codeman38
