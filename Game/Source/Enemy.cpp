@@ -78,6 +78,12 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         moveAnim.PushBack({ 31,70,34,34 });
         moveAnim.PushBack({ 31*2,70,34,34 });
 
+        for (int i = 0; i < 7; i++)
+        {
+            bulletMantis.PushBack({ 31 * i, 32,32 , 32 });
+        }
+        
+
         break;
     }
     

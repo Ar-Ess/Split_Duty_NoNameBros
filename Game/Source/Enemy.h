@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Animation.h"
 #include "Render.h"
+#include "Textures.h"
 
 #include "DynArray.h"
 #include "Point.h"
@@ -15,6 +16,7 @@
 
 struct SDL_Rect;
 struct Animation;
+struct SDL_Texture;
 
 enum EnemyClass
 {
@@ -29,10 +31,17 @@ struct MantisBullet
     MantisBullet()
     {
         bulletRect = { 1004, 440, 40, 65 };
-        bulletSpritesheet = nullptr;
+        
+        
+        //bulletSpritesheet = nullptr;
+        
+            bulletSpritesheet=app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-acid-bullet.png");
     }
 
     SDL_Rect bulletRect;
+    const SDL_Rect sprite= { 0,0,32,32 };
+    int frame;
+
     SDL_Texture* bulletSpritesheet;
     bool active = false;
 
@@ -45,13 +54,17 @@ struct MantisBullet
     void Update()
     {
         if (active) bulletRect.x -= 9;
+        
+        
+   
     }
 
     void Draw()
     {
         if (active)
         {
-            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 255 });
+            
+            app->render->DrawTexture(bulletSpritesheet, bulletRect.x - 40, bulletRect.y-20, 3.6f, &sprite,false);
         }
     }
 
@@ -59,7 +72,7 @@ struct MantisBullet
     {
         if (active)
         {
-            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 255 });
+            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 100 });
         }
     }
 };
@@ -138,6 +151,7 @@ public:
     Animation idleAnim;
     Animation attackAnim;
     Animation moveAnim;
+    Animation bulletMantis;
 };
 
 #endif // __ENEMY_H__
