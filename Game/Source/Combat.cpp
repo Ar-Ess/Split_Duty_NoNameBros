@@ -26,13 +26,6 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	fullscreenAttack_0 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_0.png");
-	fullscreenAttack_1 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_1.png");
-	fullscreenAttack_2 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_2.png");
-	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
-	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
-	mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
-	batSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
@@ -45,7 +38,6 @@ void Combat::Start()
 		break;
 	case(EnemyClass::MANTIS):
 		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
-		break;
 	}
 
 	//Idle Animation Set
@@ -87,13 +79,6 @@ void Combat::Restart()
 	enemy = nullptr;
 
 	app->tex->UnLoad(character1Spritesheet);
-	app->tex->UnLoad(fullscreenAttack_0);
-	app->tex->UnLoad(fullscreenAttack_1);
-	app->tex->UnLoad(fullscreenAttack_2);
-	app->tex->UnLoad(fullscreenAttack_3);
-	app->tex->UnLoad(littleWolfSpritesheet);
-	app->tex->UnLoad(mantisSpritesheet);
-	app->tex->UnLoad(batSpritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 
@@ -163,21 +148,26 @@ void Combat::DrawPlayer()
 	{
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
+	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
 	{
-		app->render->DrawTexture(fullscreenAttack_0, 0,0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos1AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_1, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos2AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_2, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos3AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+		switch (steps)
+		{
+		case(0):
+			
+			break;
+		case(1):
+			
+			break;
+		case(2):
+			
+			break;
+		case(3):
+			
+			break;
+		default:
+			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+			break;
+		}
 	}
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
@@ -211,7 +201,7 @@ void Combat::DrawEnemy()
 		else if (enemy->enemyClass == EnemyClass::BIRD)
 			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 38, enemy->colliderCombat.y - 15, 3.5, &currentEnemyAnim->GetCurrentFrame(), false);
 		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x, enemy->colliderCombat.y, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
 }
 
@@ -817,23 +807,9 @@ void Combat::AfterEnemyAttack()
 void Combat::PlayerAttack()
 {
 	//app->scene->player1->cPos0AttackAnim.Reset();
-	switch (steps)
-	{
-	case(0):
-		currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
-		break;
-	case(1):
-		currentPlayerAnim = &app->scene->player1->cPos1AttackAnim;
-		break;
-	case(2):
-		currentPlayerAnim = &app->scene->player1->cPos2AttackAnim;
-		break;
-	case(3):
-		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
-		break;
-	}
+	currentPlayerAnim = &app->scene->player1->cAttackAnim;
 
-	if (playerTimeAttack < 200)
+	if (playerTimeAttack < 35)
 	{
 		playerTimeAttack++;
 	}
@@ -1554,7 +1530,7 @@ void Combat::SecondPlayerTurn()
 	app->scene->escapeButton->state = GuiControlState::LOCKED;
 	app->scene->splitButton->state = GuiControlState::LOCKED;
 
-	turnText->SetString("SECOND PLAYER TURN");
+	turnText->SetString("2ND PLAYER TURN");
 }
 
 void Combat::PlayerWin()
@@ -1585,7 +1561,7 @@ void Combat::PlayerEscape()
 
 	PlayerMoneyLose();
 
-	currentPlayerAnim = &app->scene->player1->cStepAnim;
+	currentPlayerAnim = &app->scene->player1->cScapeAnim;
 	currentPlayerAnim->Reset();
 }
 

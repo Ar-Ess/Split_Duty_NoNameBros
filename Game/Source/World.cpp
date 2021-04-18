@@ -267,7 +267,6 @@ void World::DrawNPC()
 		NPC* npc = app->entityManager->NPCs[i];
 		if (npc->place == GetPlace())
 		{
-			LOG("draw npc");
 			npc->Draw();
 		}
 		npc = nullptr;
@@ -324,6 +323,7 @@ void World::DrawCollisions()
 
 void World::WorldMovement()
 {
+	ChangePlayerState();
 	bool move = PlayerMovement();
 	CameraMovement(move);
 }
@@ -475,74 +475,72 @@ bool World::CollisionSolver(iPoint prevPos)
 	return true; //Player Can Move
 }
 
+void World::ChangePlayerState()
+{
+	playerState = PlayerState::IDLE;
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		playerState = PlayerState::UP;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		playerState = PlayerState::DOWN;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		playerState = PlayerState::LEFT;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		playerState = PlayerState::RIGHT;
+	}
+}
+
 bool World::PlayerMovement()
 {
 	iPoint previousPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	switch (playerState)
 	{
+	case(PlayerState::IDLE):
+	
+		app->scene->player1->walkDownAnim.loop = false;
+		app->scene->player1->walkDownAnim.Reset();
+		app->scene->player1->walkUpAnim.loop = false;
+		app->scene->player1->walkUpAnim.Reset();
+		app->scene->player1->walkLeftAnim.loop = false;
+		app->scene->player1->walkLeftAnim.Reset();
+		app->scene->player1->walkRightAnim.loop = false;
+		app->scene->player1->walkRightAnim.Reset();
+
+		break;
+	case(PlayerState::UP):
 		currentPlayerAnimation = &app->scene->player1->walkUpAnim;
 		app->scene->player1->walkUpAnim.loop = true;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
+
 		app->scene->player1->collisionRect.y -= worldSpeed;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-	{
-		app->scene->player1->ResetWalkingAnimation();
-		app->scene->player1->walkUpAnim.loop = false;
-	}
-	
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-	{
+		break;
+	case(PlayerState::DOWN):
+		LOG("player down");
+
 		currentPlayerAnimation = &app->scene->player1->walkDownAnim;
 		app->scene->player1->walkDownAnim.loop = true;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
+
 		app->scene->player1->collisionRect.y += worldSpeed;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_UP)
-	{
-		app->scene->player1->ResetWalkingAnimation();
-		app->scene->player1->walkDownAnim.loop = false;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN)
-	{
-		app->scene->player1->walkLeftAnim.loop = true;
+		break;
+	case(PlayerState::LEFT):
 		currentPlayerAnimation = &app->scene->player1->walkLeftAnim;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
+		app->scene->player1->walkLeftAnim.loop = true;
+
 		app->scene->player1->collisionRect.x -= worldSpeed;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
-	{
-		app->scene->player1->ResetWalkingAnimation();
-		app->scene->player1->walkLeftAnim.loop = false;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
-	{
-		app->scene->player1->walkRightAnim.loop = true;
+		break;
+	case(PlayerState::RIGHT):
 		currentPlayerAnimation = &app->scene->player1->walkRightAnim;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		app->scene->player1->collisionRect.x += worldSpeed;
-	}
-	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-	{
-		app->scene->player1->ResetWalkingAnimation();
-		app->scene->player1->walkRightAnim.loop = false;
-	}
+		app->scene->player1->walkRightAnim.loop = true;
 
-	if (!app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && !app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN && !app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN && !app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)
-	{
-		app->scene->player1->ResetWalkingAnimation();
-		app->scene->player1->walkRightAnim.loop = app->scene->player1->walkLeftAnim.loop = app->scene->player1->walkUpAnim.loop = app->scene->player1->walkDownAnim.loop = false;
+		app->scene->player1->collisionRect.x += worldSpeed;
+		break;
 	}
 	
 	bool move = true;

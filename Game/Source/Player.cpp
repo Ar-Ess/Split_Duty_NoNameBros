@@ -49,57 +49,14 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
         }
         cIdleAnim.speed = 0.120f;
 
-        int j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos0AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
         for (int i = 0; i < 7; i++)
         {
-            cPos0AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos0AttackAnim.speed = 0.240f;
-        cPos0AttackAnim.loop = false;
-        cPos0AttackAnim.pingpong = false;
+            cAttackAnim.PushBack({ 154 * i,SPRITE_TILE_HEIGHT * 7 , 154 ,SPRITE_TILE_HEIGHT });
 
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos1AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
         }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos1AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos1AttackAnim.speed = 0.240f;
-        cPos1AttackAnim.loop = false;
-        cPos1AttackAnim.pingpong = false;
-
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos2AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos2AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos2AttackAnim.speed = 0.240f;
-        cPos2AttackAnim.loop = false;
-        cPos2AttackAnim.pingpong = false;
-
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos3AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos3AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos3AttackAnim.speed = 0.240f;
-        cPos3AttackAnim.loop = false;
-        cPos3AttackAnim.pingpong = false;
+        cAttackAnim.speed = 0.16f;
+        cAttackAnim.loop = false;
+        cAttackAnim.pingpong = false;
 
         for (int i = 0; i < 8; i++)
         {
@@ -113,6 +70,13 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
             cStepAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT ,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
         }
         cStepAnim.speed = 0.190f;
+
+        for (int i = 6; i > 0; i--)
+        {
+            // y: 600
+            cScapeAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT *4,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
+        }
+        cScapeAnim.speed = 0.200f;
 
         for (int i = 0; i < 10; i++)
         {
@@ -136,24 +100,29 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     //world animations
 
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
+    walkDownAnim.PushBack({ 52 * 3,5 * 3,20 * 3,30 * 3 });
+    walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
     walkDownAnim.PushBack({ 3*3,5 * 3,20 * 3,28 * 3 });
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
-    walkDownAnim.PushBack({ 52 * 3,5 * 3,20 * 3,30 * 3 });
-
+   
+    walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
+    walkLeftAnim.PushBack({ 53 * 3,37 * 3,20 * 3,26 * 3 });
     walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
     walkLeftAnim.PushBack({ 4*3,37 * 3,20 * 3,28 * 3 });
     walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
-    walkLeftAnim.PushBack({ 53 * 3,37 * 3,20 * 3,26 * 3 });
-
+   
+    walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
+    walkRightAnim.PushBack({ 51 * 3,69 * 3,20 * 3,26 * 3 });
     walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
     walkRightAnim.PushBack({ 3 * 3,69 * 3,20 * 3,28 * 3 });
     walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
-    walkRightAnim.PushBack({ 51 * 3,69 * 3,20 * 3,26 * 3 });
-
+    
+    walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
+    walkUpAnim.PushBack({ 52 * 3,101 * 3,20 * 3,26 * 3 });
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 4 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
-    walkUpAnim.PushBack({ 52 * 3,101 * 3,20 * 3,26 * 3 });
+   
 
     walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.30f;
     walkDownAnim.loop = walkUpAnim.loop = walkLeftAnim.loop = walkRightAnim.loop = false;

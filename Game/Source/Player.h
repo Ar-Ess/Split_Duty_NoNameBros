@@ -22,6 +22,8 @@
 
 class Animation;
 
+
+
 class Player : public Entity
 {
 public:
@@ -92,20 +94,20 @@ public:
     Animation walkDownAnim;
 
     Animation cIdleAnim;
-    Animation cPos0AttackAnim;
-    Animation cPos1AttackAnim;
-    Animation cPos2AttackAnim;
-    Animation cPos3AttackAnim;
+    Animation cAttackAnim;
     Animation cStepAnim;
     Animation cJumpAnim;
     Animation cDieAnim;
     Animation cCrouchAnim;
+    Animation cScapeAnim;
 
     bool jump = false;
     bool crouch = false;
     int jumpTime = 0;
     int jumpFeatherTime = 0;
     int crouchTime = 0;
+
+    
 
 public:
     friend class Combat;

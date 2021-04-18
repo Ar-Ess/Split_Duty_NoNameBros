@@ -179,7 +179,7 @@ bool Scene::CleanUp()
 	}
 	else if (currScene == OPTIONS_MENU)
 	{
-
+		
 	}
 	else if (currScene == COMBAT)
 	{
@@ -193,7 +193,10 @@ bool Scene::CleanUp()
 	{
 		world->Restart();
 	}
-
+	else if (currScene == PAUSE_MENU)
+	{
+		app->tex->UnLoad(pause);
+	}
 	return true;
 }
 
@@ -265,7 +268,7 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 
 void Scene::SetLogoScene()
 {
-	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
+	logo = app->tex->Load("Assets/Screens/logo_screen.png");
 	timer = 0;
 }
 
@@ -358,7 +361,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (combatScene->turnText == nullptr)
 	{
 		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		combatScene->turnText->bounds = { 540, 40, 200, 50 };
+		combatScene->turnText->bounds = { 541, 43, 200, 50 };
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
@@ -561,11 +564,12 @@ void Scene::SetPauseMenu()
 {
 	app->audio->ChangeVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+	pause = app->tex->Load("Assets/Screens/pause_menu_screen.png");
 
 	if (backToGameButton == nullptr)
 	{
 		backToGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 350,buttonPrefab.w,buttonPrefab.h };
+		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
 		backToGameButton->text = "BackToGameButton";
 		backToGameButton->SetObserver(this);
 	}
@@ -573,7 +577,7 @@ void Scene::SetPauseMenu()
 	if (saveGameButton == nullptr)
 	{
 		saveGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 430,buttonPrefab.w,buttonPrefab.h };
+		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 295,buttonPrefab.w,buttonPrefab.h };
 		saveGameButton->text = "SaveGameButton";
 		saveGameButton->SetObserver(this);
 	}
@@ -581,7 +585,7 @@ void Scene::SetPauseMenu()
 	if (optionsPauseButton == nullptr)
 	{
 		optionsPauseButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
+		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 382, buttonPrefab.w, buttonPrefab.h };
 		optionsPauseButton->text = "OptionsPauseButton";
 		optionsPauseButton->SetObserver(this);
 		optionsPauseButton->state = GuiControlState::LOCKED;
@@ -590,7 +594,7 @@ void Scene::SetPauseMenu()
 	if (backToMenuButton == nullptr)
 	{
 		backToMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 590, buttonPrefab.w,buttonPrefab.h };
+		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 482, buttonPrefab.w,buttonPrefab.h };
 		backToMenuButton->text = "BackToMenuButton";
 		backToMenuButton->SetObserver(this);
 	}
@@ -744,6 +748,8 @@ void Scene::UpdatePauseMenu()
 	saveGameButton->Update(1.0f);
 	optionsPauseButton->Update(1.0f);
 	backToMenuButton->Update(1.0f);
+
+	app->render->DrawTexture(pause, 0, 0);
 
 	backToGameButton->Draw();
 	saveGameButton->Draw();
