@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="60" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="1">
  <tileset firstgid="1" name="A2_Ground" tilewidth="16" tileheight="16" tilecount="768" columns="32">
-  <image source="A2_Ground.png" width="512" height="384"/>
+  <image source="ground_tileset.png" width="512" height="384"/>
  </tileset>
  <tileset firstgid="769" name="C_OutSide_Nature" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
-  <image source="C_OutSide_Nature.png" width="512" height="512"/>
+  <image source="nature_tileset.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="1793" name="collisions" tilewidth="16" tileheight="16" tilecount="8" columns="8">
   <image source="collisions.png" width="128" height="16"/>
