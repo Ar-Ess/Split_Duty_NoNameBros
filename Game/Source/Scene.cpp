@@ -179,7 +179,7 @@ bool Scene::CleanUp()
 	}
 	else if (currScene == OPTIONS_MENU)
 	{
-
+		
 	}
 	else if (currScene == COMBAT)
 	{
@@ -193,7 +193,10 @@ bool Scene::CleanUp()
 	{
 		world->Restart();
 	}
-
+	else if (currScene == PAUSE_MENU)
+	{
+		app->tex->UnLoad(pause);
+	}
 	return true;
 }
 
@@ -265,7 +268,7 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 
 void Scene::SetLogoScene()
 {
-	logo = app->tex->Load("Assets/Textures/logo_nonamebros.png");
+	logo = app->tex->Load("Assets/Screens/logo_screen.png");
 	timer = 0;
 }
 
@@ -561,6 +564,7 @@ void Scene::SetPauseMenu()
 {
 	app->audio->ChangeVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+	pause = app->tex->Load("Assets/Screens/pause_menu_screen.png");
 
 	if (backToGameButton == nullptr)
 	{
@@ -744,6 +748,8 @@ void Scene::UpdatePauseMenu()
 	saveGameButton->Update(1.0f);
 	optionsPauseButton->Update(1.0f);
 	backToMenuButton->Update(1.0f);
+
+	app->render->DrawTexture(pause, 0, 0);
 
 	backToGameButton->Draw();
 	saveGameButton->Draw();

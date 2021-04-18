@@ -160,6 +160,7 @@ public: //Combat Buttons
 private: // Textures
 	SDL_Texture* logo = nullptr;
 	SDL_Texture* menu = nullptr;
+	SDL_Texture* pause = nullptr;
 
 public:
 	friend class Combat;
