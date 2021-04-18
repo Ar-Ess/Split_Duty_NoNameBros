@@ -23,9 +23,6 @@ bool DialogueManager::Awake(pugi::xml_node&)
 
 	configDial = LoadDialogueConfig(dConfigFile);
 
-	const char* path = configDial.child("DialogueTextures").attribute("file").as_string();
-	dialogueTexture = app->tex->Load(path);
-
 	if (configDial.empty() == false)
 	{
 		pugi::xml_node dSetUp = configDial.child("Dialogs");
@@ -36,6 +33,7 @@ bool DialogueManager::Awake(pugi::xml_node&)
 
 bool DialogueManager::Start()
 {	
+	dialogueTexture = app->tex->Load("Assets/Textures/UI/dialogSquare.png");
 	return true;
 }
 
@@ -224,8 +222,9 @@ void DialogueManager::Draw()
 	SDL_Rect textureChart{ 0,0,910,113 };
 	
 	//DRAWING NODE
-	app->render->DrawTexture(dialogueTexture, nodeChart.x, nodeChart.y, 1.0, &textureChart);
-	app->render->DrawRectangle(nodeChart, black, true, false);
+	SDL_RenderCopy(app->render->renderer, dialogueTexture, &textureChart, &nodeChart);
+	//app->render->DrawTexture(dialogueTexture, nodeChart.x, nodeChart.y, 1.0f, &textureChart, false, 0.0, SDL_FLIP_NONE);
+	//app->render->DrawRectangle(nodeChart, black, true, false);
 	currentDialogue->currentNode->nodeText->Draw();
 	
 	if (currentDialogue->currentNode->optionsList.Count() != 0)
