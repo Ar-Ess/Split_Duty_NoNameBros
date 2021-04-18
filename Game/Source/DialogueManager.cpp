@@ -203,12 +203,18 @@ void DialogueManager::StartDialogue(int dialogueID)
 void DialogueManager::Draw()
 {
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+	SDL_Rect nodeChart = currentDialogue->currentNode->nodeText->bounds;
 
 	currentDialogue->currentNode->NodePlacing();
 	currentDialogue->currentNode->nodeText->CenterAlign();
 
+	nodeChart.x -= offset;
+	nodeChart.y -= offset;
+	nodeChart.w += (2 * offset);
+	nodeChart.h += (2 * offset);
+	
 	//DRAWING NODE
-	app->render->DrawRectangle(currentDialogue->currentNode->nodeText->bounds, red, true, false);
+	app->render->DrawRectangle(nodeChart, black, true, false);
 	currentDialogue->currentNode->nodeText->Draw();
 	
 	if (currentDialogue->currentNode->optionsList.Count() != 0)

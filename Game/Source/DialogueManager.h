@@ -71,11 +71,11 @@ private: // variables
 	Dialogue*			currentDialogue;
 	List<Dialogue*>		dialoguesList;
 
-	SDL_Color           black	=		{ 0  , 0  , 0  , 250 };
-	SDL_Color           white	=		{ 255, 255, 255, 250 };
-	SDL_Color           red		=		{ 255, 0  , 0  , 250 };
-	SDL_Color           green	=		{ 0  , 255, 0  , 250 };
-	SDL_Color           blue	=		{ 0  , 0  , 255, 250 };
+	SDL_Color           black	=		{ 0  , 0  , 0  , 150 };
+	SDL_Color           white	=		{ 255, 255, 255, 125 };
+	SDL_Color           red		=		{ 255, 0  , 0  , 125 };
+	SDL_Color           green	=		{ 0  , 255, 0  , 125 };
+	SDL_Color           blue	=		{ 0  , 0  , 255, 125 };
 };
 
 #endif // __DIALOGUEMANAGER_H__
