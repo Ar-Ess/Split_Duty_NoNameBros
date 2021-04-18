@@ -642,7 +642,7 @@ void World::RectifyCameraPosition(Places placex)
 	}
 	else if (placex == TAVERN)
 	{
-		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = -28;
+		if (app->scene->player1->colliderWorld.y < 300) app->render->camera.y = -28;
 		if (app->scene->player1->colliderWorld.y > 639) app->render->camera.y = -375;
 	}
 	else if (placex == ENEMY_FIELD)
