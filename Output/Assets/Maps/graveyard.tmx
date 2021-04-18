@@ -10,7 +10,7 @@
   <image source="collisions.png" width="128" height="16"/>
  </tileset>
  <tileset firstgid="1801" name="tileset_tree" tilewidth="16" tileheight="16" tilecount="323" columns="17">
-  <image source="tileset_tree.png" width="276" height="304"/>
+  <image source="tree_tileset.png" width="276" height="304"/>
  </tileset>
  <layer id="1" name="floor" width="60" height="80">
   <data>
