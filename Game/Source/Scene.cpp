@@ -361,7 +361,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (combatScene->turnText == nullptr)
 	{
 		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		combatScene->turnText->bounds = { 540, 40, 200, 50 };
+		combatScene->turnText->bounds = { 541, 43, 200, 50 };
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
@@ -569,7 +569,7 @@ void Scene::SetPauseMenu()
 	if (backToGameButton == nullptr)
 	{
 		backToGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 350,buttonPrefab.w,buttonPrefab.h };
+		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
 		backToGameButton->text = "BackToGameButton";
 		backToGameButton->SetObserver(this);
 	}
@@ -577,7 +577,7 @@ void Scene::SetPauseMenu()
 	if (saveGameButton == nullptr)
 	{
 		saveGameButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 430,buttonPrefab.w,buttonPrefab.h };
+		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 295,buttonPrefab.w,buttonPrefab.h };
 		saveGameButton->text = "SaveGameButton";
 		saveGameButton->SetObserver(this);
 	}
@@ -585,7 +585,7 @@ void Scene::SetPauseMenu()
 	if (optionsPauseButton == nullptr)
 	{
 		optionsPauseButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
+		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 382, buttonPrefab.w, buttonPrefab.h };
 		optionsPauseButton->text = "OptionsPauseButton";
 		optionsPauseButton->SetObserver(this);
 		optionsPauseButton->state = GuiControlState::LOCKED;
@@ -594,7 +594,7 @@ void Scene::SetPauseMenu()
 	if (backToMenuButton == nullptr)
 	{
 		backToMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 590, buttonPrefab.w,buttonPrefab.h };
+		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 482, buttonPrefab.w,buttonPrefab.h };
 		backToMenuButton->text = "BackToMenuButton";
 		backToMenuButton->SetObserver(this);
 	}

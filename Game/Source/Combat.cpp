@@ -201,7 +201,7 @@ void Combat::DrawEnemy()
 		else if (enemy->enemyClass == EnemyClass::BIRD)
 			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 38, enemy->colliderCombat.y - 15, 3.5, &currentEnemyAnim->GetCurrentFrame(), false);
 		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x, enemy->colliderCombat.y, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
 }
 
@@ -706,10 +706,12 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				if (enemy->birdTimeAttack3 >= 60 && enemy->birdTimeAttack3 < 145)
 				{
 					app->scene->player1->colliderCombat.x -= 2;
+					app->scene->player2->colliderCombat.x -= 2;
 				}
 				else if (enemy->birdTimeAttack3 == 145)
 				{
 					app->scene->player1->colliderCombat.x -= 1;
+					app->scene->player2->colliderCombat.x -= 1;
 					steps--;
 				}
 			}
@@ -1528,7 +1530,7 @@ void Combat::SecondPlayerTurn()
 	app->scene->escapeButton->state = GuiControlState::LOCKED;
 	app->scene->splitButton->state = GuiControlState::LOCKED;
 
-	turnText->SetString("SECOND PLAYER TURN");
+	turnText->SetString("2ND PLAYER TURN");
 }
 
 void Combat::PlayerWin()
