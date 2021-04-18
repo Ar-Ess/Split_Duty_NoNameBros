@@ -97,6 +97,7 @@ public:
     Animation cJumpAnim;
     Animation cDieAnim;
     Animation cCrouchAnim;
+    Animation cScapeAnim;
 
     bool jump = false;
     bool crouch = false;

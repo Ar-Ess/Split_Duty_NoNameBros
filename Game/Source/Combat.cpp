@@ -1566,7 +1566,7 @@ void Combat::PlayerEscape()
 
 	PlayerMoneyLose();
 
-	currentPlayerAnim = &app->scene->player1->cStepAnim;
+	currentPlayerAnim = &app->scene->player1->cScapeAnim;
 	currentPlayerAnim->Reset();
 }
 
