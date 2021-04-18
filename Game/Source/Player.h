@@ -22,6 +22,8 @@
 
 class Animation;
 
+
+
 class Player : public Entity
 {
 public:
@@ -104,6 +106,8 @@ public:
     int jumpTime = 0;
     int jumpFeatherTime = 0;
     int crouchTime = 0;
+
+    
 
 public:
     friend class Combat;
