@@ -446,6 +446,7 @@ void Combat::CombatLogic()
 		}
 		else
 		{
+			enemy->health = enemy->maxHealth;
 			playerTimeEscape = 0;
 			playerEscaped = true;
 		}

@@ -15505,7 +15505,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1766"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -19228,7 +19228,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="5" name="colliders" width="60" height="80" visible="0">
+ <layer id="5" name="colliders" width="60" height="80" opacity="0.45">
   <data>
    <tile/>
    <tile/>
@@ -20487,8 +20487,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1799"/>
+   <tile gid="1799"/>
    <tile gid="1799"/>
    <tile/>
    <tile/>

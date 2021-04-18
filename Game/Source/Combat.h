@@ -271,10 +271,8 @@ private:
 
     SDL_Texture* character1Spritesheet = nullptr;
     SDL_Texture* character2Spritesheet = nullptr;
-
  
-    SDL_Texture* enemySpritesheet = nullptr;
-    
+    SDL_Texture* enemySpritesheet = nullptr;    
 
     SDL_Texture* grassyLandsBackground = nullptr;
     SDL_Texture* autummFallsBackground = nullptr;

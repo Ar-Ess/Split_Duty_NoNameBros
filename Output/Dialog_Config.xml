@@ -2,6 +2,7 @@
 
 <!-- Settup Dialog for the game -->
 <DialogSettup>
+  <DialogueTextures file="Assets/Textures/UI/dialog_square.png"/>
   <Dialogs>
     <Dialog ID="1">
       <Node ID="0">
