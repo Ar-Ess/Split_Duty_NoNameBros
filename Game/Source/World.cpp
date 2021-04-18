@@ -306,11 +306,10 @@ void World::DrawCollisions()
 			{
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
-					/*app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
-					app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });*/
+					app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
+					app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
 				}
-				app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
-				app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
+				
 			}
 			enemy = nullptr;
 		}

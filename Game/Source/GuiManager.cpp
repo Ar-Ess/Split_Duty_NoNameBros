@@ -134,11 +134,13 @@ void GuiManager::DrawCursor()
 
 void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 {
+	int size = 4;
+	int thickness = 20;
+	maxLifeBar = { x,y,maxLife * size,thickness };
+
 	if (!app->scene->player1->godMode)
 	{
-		int size = 4;
-		int thickness = 20;
-		maxLifeBar = { x,y,maxLife * size,thickness };
+		
 		app->render->DrawRectangle(maxLifeBar, MAGENTA);
 		if (life > 0)
 		{
@@ -156,8 +158,11 @@ void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 	}
 	else if (app->scene->player1->godMode)
 	{
+		LOG("god mode life bar");
 		app->render->DrawRectangle(maxLifeBar, BLUE);
-		BlinkLifeBar(life, BLUE, CYAN);
+		//BlinkLifeBar(maxLife, BLUE, CYAN);
+
+		
 	}
 }
 
