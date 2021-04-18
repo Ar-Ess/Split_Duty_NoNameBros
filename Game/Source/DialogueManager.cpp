@@ -210,6 +210,7 @@ void DialogueManager::Draw()
 {
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 	SDL_Rect nodeChart = currentDialogue->currentNode->nodeText->bounds;
+	float scale = 1.2f;
 
 	currentDialogue->currentNode->NodePlacing();
 	currentDialogue->currentNode->nodeText->CenterDialogue();
@@ -245,7 +246,9 @@ void DialogueManager::Draw()
 			itemOption->data->OptionPlacingY();
 			itemOption->data->optionText->CenterAlign();
 
-			itemOption->data->optionButton->Draw(1.2f, false);
+
+			//draw buttons options
+			itemOption->data->optionButton->Draw(scale, false);
 			itemOption->data->optionText->Draw();	
 		}
 	}

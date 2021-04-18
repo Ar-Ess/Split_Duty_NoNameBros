@@ -28,6 +28,7 @@ public:
 	void OptionPlacingX()
 	{
 		uint w, h;
+		int offset = 35;
 		app->win->GetWindowSize(w, h);
 
 		if (this->optPlacing == POS1 || this->optPlacing == POS3)
@@ -35,7 +36,7 @@ public:
 		else
 			this->optionButton->bounds.x = 3 * (w / 4) - (this->optionButton->bounds.w / 2);
 
-		this->optionText->bounds.x = this->optionButton->bounds.x;
+		this->optionText->bounds.x = this->optionButton->bounds.x + offset;
 	}
 	void OptionPlacingY()
 	{

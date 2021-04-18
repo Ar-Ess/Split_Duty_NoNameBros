@@ -57,7 +57,6 @@ void NPC::Update(SDL_Rect pCollAmp)
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 			{
 				app->dialogueManager->StartDialogue(dialog);
-				app->guiManager->debugGui = true;
 			}
 		}
 	}

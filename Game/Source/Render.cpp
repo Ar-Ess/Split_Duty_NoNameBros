@@ -298,8 +298,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scaleX, float
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w *= scale;
-	rect.h *= scale;
+	rect.w *= scaleX;
+	rect.h *= scaleY;
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;

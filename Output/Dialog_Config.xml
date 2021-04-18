@@ -12,7 +12,7 @@
       </Node>
       <Node ID="1">
         <NPCTalk>OKEY, IF YOU GO TO THE LEFT, YOU'LL FIND THE ENEMY FIELD</NPCTalk>
-        <Option NextNode="2" ReturnCode="1">Can I battle them?</Option>
+        <Option NextNode="2" ReturnCode="1">Can I fight them?</Option>
         <Option NextNode="3" ReturnCode="1">Right, cool!</Option>
       </Node>
       <Node ID="2">
@@ -21,7 +21,7 @@
       </Node>
       <Node ID="3">
         <NPCTalk>IF YOU GO DOWN HERE, YOU CAN VISIT THE HOUSES. THEY ARE PRETTY AWESOME DESIGNED ;)</NPCTalk>
-        <Option NextNode="4" ReturnCode="1">Can I go somewhere else?</Option>
+        <Option NextNode="4" ReturnCode="1">Somewhere else?</Option>
         <Option NextNode="5" ReturnCode="1">What's more?</Option>
       </Node>
       <Node ID="4">
