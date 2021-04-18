@@ -155,7 +155,7 @@ bool Scene::PostUpdate()
 {
 	app->win->FullScreenLogic();
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -668,8 +668,6 @@ void Scene::UpdateLogoScene()
 void Scene::UpdateMainMenu()
 {
 // Other Options
-
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) SetScene(COMBAT, app->entityManager->enemies.end->data);
 
 	app->render->DrawTexture(menu, 0, 0);
 
