@@ -76,7 +76,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
             // y: 600
             cScapeAnim.PushBack({ SPRITE_TILE_WIDTH * i,SPRITE_TILE_HEIGHT *4,SPRITE_TILE_WIDTH,SPRITE_TILE_HEIGHT });
         }
-        cScapeAnim.speed = 0.190f;
+        cScapeAnim.speed = 0.200f;
 
         for (int i = 0; i < 10; i++)
         {
