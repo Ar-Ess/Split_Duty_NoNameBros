@@ -73,6 +73,7 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         idleAnim.PushBack({ 28,0,35,31 });
         idleAnim.PushBack({ 63,0,37,31 });
         idleAnim.speed = 0.045f;
+        idleAnim.pingpong = true;
 
         moveAnim.PushBack({ 0,70,34,34 });
         moveAnim.PushBack({ 31,70,34,34 });

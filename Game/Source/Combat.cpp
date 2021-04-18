@@ -26,6 +26,7 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
+	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/second player/second-player.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
@@ -146,7 +147,7 @@ void Combat::DrawPlayer()
 {
 	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
 	{
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
 	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
 	{
@@ -165,12 +166,12 @@ void Combat::DrawPlayer()
 			
 			break;
 		default:
-			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 			break;
 		}
 	}
 	else
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
 
 void Combat::DebugDraw()
@@ -184,7 +185,9 @@ void Combat::DebugDraw()
 
 void Combat::DrawSecondPlayer()
 {
-
+	currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
+	currentSecondPlayerAnim->Update(1.0f);
+	app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
 }
 
 void Combat::DrawEnemy()
@@ -329,6 +332,21 @@ void Combat::CombatLogic()
 			else if (enemy->enemyClass == BIRD)
 			{
 				if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 60 - (steps * 20)) playerResponseAble = false;
+			}
+			else if (enemy->enemyClass == MANTIS)
+			{
+				if (enemy->attack == 1)
+				{
+					if (enemy->bullet[4].bulletRect.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 40) playerResponseAble = false;
+				}
+				else if (enemy->attack == 2)
+				{
+					if (steps != 3) if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 30) playerResponseAble = false;
+					else
+					{
+						if (enemy->mantisTimeAttack2 == 242) playerResponseAble = false;
+					}
+				}
 			}
 		}
 	}
@@ -1355,22 +1373,26 @@ void Combat::PlayerBulletHitLogic()
 	{
 		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->bullet[i].bulletRect))
 		{
-			playerHitAble = false;
-			if (!wearMantisLeg)
+			if (app->scene->player1->godMode) LOG("Player Is Inmune");
+			else
 			{
-				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
-				else if (secondPlayerProtection)
+				playerHitAble = false;
+				if (!wearMantisLeg)
 				{
-					app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
-					app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
-					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+					else if (secondPlayerProtection)
+					{
+						app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
+						app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+						LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					}
+
+					LOG("Player Hit - PH: %d", app->scene->player1->health);
 				}
+				else if (wearMantisLeg) wearMantisLeg = false;
 
-				LOG("Player Hit - PH: %d", app->scene->player1->health);
+				bulletHitted = i;
 			}
-			else if (wearMantisLeg) wearMantisLeg = false;
-
-			bulletHitted = i;
 		}
 	}
 

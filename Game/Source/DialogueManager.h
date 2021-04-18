@@ -51,19 +51,20 @@ private: //functions
 	DialogueNode* CreateNode(pugi::xml_node& setter);
 	void CreateDialogue(pugi::xml_node& setter);
 
-	void EndDialogue();
-	void DeleteOptions();
-	void DeleteOptionButtons();
-
 	void Draw();
 	void Input();
 
 	bool OnGuiMouseClickEvent(GuiControl* option);
-	
+
 	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
 
+	void EndDialogue();
+	void DeleteOptions();
+	void DeleteOptionButtons();
+
 public: //variables
-	bool onDialog = false;
+	bool				onDialog = false;
+	int					endLine = 850;
 private: // variables
 	int					offset = 15;
 	float				dscale = 1.2f;

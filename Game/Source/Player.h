@@ -88,6 +88,7 @@ public:
     }
 
 public:
+    //player 1 animations
     Animation walkLeftAnim;
     Animation walkRightAnim;
     Animation walkUpAnim;
@@ -107,6 +108,8 @@ public:
     int jumpFeatherTime = 0;
     int crouchTime = 0;
 
+    //player 2
+    Animation secIdleAnim;
     
 
 public:

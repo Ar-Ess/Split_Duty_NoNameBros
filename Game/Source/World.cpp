@@ -242,16 +242,16 @@ void World::DrawEnemy()
 			{
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
-					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE, &wolfRect, false);
 				}
 				if (enemy->GetClass() == EnemyClass::BIRD)
 				{
-					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &birdRect, false);
 
 				}
 				if (enemy->GetClass() == EnemyClass::MANTIS)
 				{
-					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
 				}
 			}
 
@@ -554,19 +554,24 @@ bool World::PlayerMovement()
 
 void World::CameraMovement(bool move)
 {
-	if (move)
+	if (move || place != HOUSE)
 	{
-		if (place == MAIN_VILLAGE || place == ENEMY_FIELD)
+		switch (playerState)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= worldSpeed;
-		}
-		else if (place == TAVERN)
-		{
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
+		case(PlayerState::IDLE): break;
+
+		case(PlayerState::UP):
+			app->render->camera.y += worldSpeed;
+			break;
+		case(PlayerState::DOWN):
+			app->render->camera.y -= worldSpeed;
+			break;
+		case(PlayerState::LEFT):
+			if (place != TAVERN) app->render->camera.x += worldSpeed;
+			break;
+		case(PlayerState::RIGHT):
+			if (place != TAVERN) app->render->camera.x -= worldSpeed;
+			break;
 		}
 
 		RectifyCameraPosition(place);

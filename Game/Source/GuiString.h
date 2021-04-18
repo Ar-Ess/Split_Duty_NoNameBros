@@ -24,6 +24,7 @@ public:
 	void SetString(const char* newText);
 	void SetTextFont(_TTF_Font* textFont);
 	void CenterAlign();
+	void CenterDialogue();
 	void UnLoadTextTexture();
 
 private:

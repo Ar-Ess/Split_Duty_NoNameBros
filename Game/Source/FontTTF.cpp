@@ -71,10 +71,10 @@ _TTF_Font* const FontTTF::Load(const char* path, int size)
 	return font;
 }
 
-SDL_Texture* FontTTF::Print(const char* text, SDL_Color color, _TTF_Font* font, SDL_Texture* tex)
+SDL_Texture* FontTTF::Print(const char* text, SDL_Color color, _TTF_Font* font, SDL_Texture* tex, int endLine)
 {
 	SDL_Texture* ret = NULL;
-	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : defaultFont, text, color);
+	SDL_Surface* surface = TTF_RenderText_Blended_Wrapped((font) ? font : defaultFont, text, color, endLine);
 
 	if (surface == NULL)
 	{
