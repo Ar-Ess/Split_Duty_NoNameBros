@@ -27,7 +27,7 @@ void Combat::Start()
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
 	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/second player/second-player.png");
-	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
+	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
 	{
@@ -443,6 +443,7 @@ void Combat::CombatLogic()
 		{
 			playerTimeEscape++;
 			app->scene->player1->colliderCombat.x -= 3;
+			if (secondPlayer) app->scene->player2->colliderCombat.x -= 3;
 		}
 		else
 		{
