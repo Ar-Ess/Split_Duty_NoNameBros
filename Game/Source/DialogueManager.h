@@ -33,11 +33,7 @@ public: //functions
 
 	bool Start();
 
-	//bool PreUpdate();
-
 	bool Update(float dt);
-
-	//bool PostUpdate();
 
 	bool CleanUp();
 	/////////////////////////////////	
@@ -46,7 +42,6 @@ public: //functions
 private: //functions
 
 	//////CREATORS//////
-	/*Dialogue CreateDialogue(pugi::xml_node&);*/
 	DialogueOption* CreateOptions(pugi::xml_node& setter);
 	DialogueNode* CreateNode(pugi::xml_node& setter);
 	void CreateDialogue(pugi::xml_node& setter);
@@ -74,9 +69,9 @@ private: // variables
 
 	SDL_Color           black = { 0  , 0  , 0  , 150 };
 	SDL_Color           white = { 255, 255, 255, 125 };
-	SDL_Color           red = { 255, 0  , 0  , 125 };
+	SDL_Color           red =	{ 255, 0  , 0  , 125 };
 	SDL_Color           green = { 0  , 255, 0  , 125 };
-	SDL_Color           blue = { 0  , 0  , 255, 125 };
+	SDL_Color           blue =	{ 0  , 0  , 255, 125 };
 
 	SDL_Texture*		dialogueTexture = nullptr;
 };
