@@ -4,6 +4,7 @@
 #include "Point.h"
 #include "SString.h"
 #include "Animation.h"
+#include "Player.h"
 #include "Scene.h"
 
 #include "Collider.h"
@@ -22,6 +23,15 @@ struct SDL_Texture;
 struct SDL_Rect;
 struct Animation;
 
+enum PlayerState
+{
+    IDLE,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 enum Places
 {
     NO_PLACE,
@@ -35,6 +45,7 @@ enum Places
     AUTUM_FALL,
     MOSSY_ROCKS
 };
+
 
 class World
 {
@@ -102,6 +113,8 @@ private:
 
     bool CollisionSolver(iPoint prevPos);
 
+    void ChangePlayerState();
+
     bool PlayerMovement();
 
     void CameraMovement(bool move);
@@ -130,6 +143,8 @@ private:
 	DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
 
     Places place;
+
+    PlayerState playerState;
 
     iPoint prevPosition = { 0, 0 };
 
@@ -166,6 +181,8 @@ private: //Textures
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;
+
+    
 };
 
 #endif // __WORLD_H__
