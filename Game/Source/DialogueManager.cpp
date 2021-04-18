@@ -223,8 +223,6 @@ void DialogueManager::Draw()
 	
 	//DRAWING NODE
 	SDL_RenderCopy(app->render->renderer, dialogueTexture, &textureChart, &nodeChart);
-	//app->render->DrawTexture(dialogueTexture, nodeChart.x, nodeChart.y, 1.0f, &textureChart, false, 0.0, SDL_FLIP_NONE);
-	//app->render->DrawRectangle(nodeChart, black, true, false);
 	currentDialogue->currentNode->nodeText->Draw();
 	
 	if (currentDialogue->currentNode->optionsList.Count() != 0)
