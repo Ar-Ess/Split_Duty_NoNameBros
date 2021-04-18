@@ -126,6 +126,13 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.30f;
     walkDownAnim.loop = walkUpAnim.loop = walkLeftAnim.loop = walkRightAnim.loop = false;
+
+    //second player
+    for (int i = 0; i < 3; i++)
+    {
+        secIdleAnim.PushBack({ 32 * i,0,32,32 });
+    }
+    secIdleAnim.speed = 0.15f;
 }
 
 bool Player::Update(float dt)

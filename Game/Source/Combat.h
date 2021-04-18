@@ -270,7 +270,7 @@ private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };
 
     SDL_Texture* character1Spritesheet = nullptr;
-    
+    SDL_Texture* character2Spritesheet = nullptr;
 
  
     SDL_Texture* enemySpritesheet = nullptr;

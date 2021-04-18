@@ -26,6 +26,7 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
+	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/second player/second-player.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
@@ -146,7 +147,7 @@ void Combat::DrawPlayer()
 {
 	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
 	{
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
 	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
 	{
@@ -165,12 +166,12 @@ void Combat::DrawPlayer()
 			
 			break;
 		default:
-			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 			break;
 		}
 	}
 	else
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
 }
 
 void Combat::DebugDraw()
@@ -184,7 +185,9 @@ void Combat::DebugDraw()
 
 void Combat::DrawSecondPlayer()
 {
-
+	currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
+	currentSecondPlayerAnim->Update(1.0f);
+	app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
 }
 
 void Combat::DrawEnemy()
