@@ -177,8 +177,13 @@ void DialogueManager::StartDialogue(int dialogueID)
 			itemNode->data->nodeText->bounds = { 0,0,0,0 };
 			itemNode->data->nodeText->SetTextFont(app->fontTTF->defaultFont);
 
-			app->fontTTF->CalcSize(itemNode->data->nodeText->text.GetString(),itemNode->data->nodeText->bounds.w,
-								   itemNode->data->nodeText->bounds.h, app->fontTTF->defaultFont);
+			app->fontTTF->CalcSize(itemNode->data->nodeText->text.GetString(), itemNode->data->nodeText->bounds.w,
+				itemNode->data->nodeText->bounds.h, app->fontTTF->defaultFont);
+
+			int lineScale = static_cast<int>(ceil(itemNode->data->nodeText->bounds.w / endLine));
+
+			itemNode->data->nodeText->bounds.w = endLine;
+			itemNode->data->nodeText->bounds.h *= lineScale;
 
 			if (itemNode->data->optionsList.Count() != 0)
 			{
@@ -206,12 +211,12 @@ void DialogueManager::Draw()
 	SDL_Rect nodeChart = currentDialogue->currentNode->nodeText->bounds;
 
 	currentDialogue->currentNode->NodePlacing();
-	currentDialogue->currentNode->nodeText->CenterAlign();
+	currentDialogue->currentNode->nodeText->CenterDialogue();
 
 	nodeChart.x -= offset;
 	nodeChart.y -= offset;
 	nodeChart.w += (2 * offset);
-	nodeChart.h += (2 * offset);
+	nodeChart.h += (3 * offset);
 	
 	//DRAWING NODE
 	app->render->DrawRectangle(nodeChart, black, true, false);
