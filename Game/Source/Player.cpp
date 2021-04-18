@@ -100,24 +100,29 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     //world animations
 
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
+    walkDownAnim.PushBack({ 52 * 3,5 * 3,20 * 3,30 * 3 });
+    walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
     walkDownAnim.PushBack({ 3*3,5 * 3,20 * 3,28 * 3 });
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
-    walkDownAnim.PushBack({ 52 * 3,5 * 3,20 * 3,30 * 3 });
-
+   
+    walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
+    walkLeftAnim.PushBack({ 53 * 3,37 * 3,20 * 3,26 * 3 });
     walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
     walkLeftAnim.PushBack({ 4*3,37 * 3,20 * 3,28 * 3 });
     walkLeftAnim.PushBack({ 29 * 3,37 * 3,20 * 3,28 * 3 });
-    walkLeftAnim.PushBack({ 53 * 3,37 * 3,20 * 3,26 * 3 });
-
+   
+    walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
+    walkRightAnim.PushBack({ 51 * 3,69 * 3,20 * 3,26 * 3 });
     walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
     walkRightAnim.PushBack({ 3 * 3,69 * 3,20 * 3,28 * 3 });
     walkRightAnim.PushBack({ 28 * 3,69 * 3,20 * 3,28 * 3 });
-    walkRightAnim.PushBack({ 51 * 3,69 * 3,20 * 3,26 * 3 });
-
+    
+    walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
+    walkUpAnim.PushBack({ 52 * 3,101 * 3,20 * 3,26 * 3 });
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 4 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
-    walkUpAnim.PushBack({ 52 * 3,101 * 3,20 * 3,26 * 3 });
+   
 
     walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.30f;
     walkDownAnim.loop = walkUpAnim.loop = walkLeftAnim.loop = walkRightAnim.loop = false;
