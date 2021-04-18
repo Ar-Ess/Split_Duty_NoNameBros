@@ -5,13 +5,8 @@
 #include "Defs.h"
 #include "Log.h"
 
-// NOTE: Recommended using: Additional Include Directories,
-// instead of 'hardcoding' library location path in code logic
 #include "SDL/include/SDL.h"
 #include "SDL_mixer/include/SDL_mixer.h"
-
-// NOTE: Library linkage is configured in Linker Options
-//#pragma comment(lib, "../Game/Source/External/SDL_mixer/libx86/SDL2_mixer.lib")
 
 AudioManager::AudioManager() : Module()
 {
@@ -96,6 +91,10 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	{
 		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MainVillage_Soundtrack.mp3", fadeTime);
 	}
+	else if (sc == MAINCOMBAT_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MainCombat_Soundtrack.mp3", fadeTime);
+	}
 
 	st = sc;
 }
@@ -104,19 +103,19 @@ void AudioManager::SetFx(Effect fx)
 {
 	if (fx == BUTTON_FOCUSSED)
 	{
-		PlayFx(0);
+		PlayFx(1);
 	}
 	else if (fx == BUTTON_RELEASED)
 	{
-		PlayFx(1);
+		PlayFx(2);
 	}
 	else if (fx == LOGO_SCENE_FX)
 	{
-		PlayFx(2);
+		PlayFx(3);
 	}
 	else if (fx == MAIN_MENU_FX)
 	{
-		PlayFx(3);
+		PlayFx(4);
 	}
 }
 

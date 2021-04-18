@@ -213,15 +213,13 @@ void World::Update()
 	WorldChange();
 	if (place == ENEMY_FIELD) WorldEnemyDetection();
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) drawCollisions = !drawCollisions;
-
 	NPCLogic();
 }
 
 void World::Draw()
 {
 	map->Draw();
-	if (drawCollisions) DrawCollisions();
+	if (debugCollisions) DrawCollisions();
 	DrawNPC();
 	DrawEnemy();
 	DrawPlayer();

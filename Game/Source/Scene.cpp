@@ -49,6 +49,7 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
+
 	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonFocussed_Fx.wav");
 	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav");
 	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav");
@@ -60,6 +61,10 @@ bool Scene::Start()
 	world = new World();
 
 	combatScene = new Combat();
+
+	combatScene->debugCombat = false;
+	world->debugCollisions = false;
+	app->guiManager->debugGui = false;
 
 	enviroment = GRASSY_LANDS;
 
@@ -149,6 +154,13 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	app->win->FullScreenLogic();
+
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		combatScene->debugCombat = !combatScene->debugCombat;
+		world->debugCollisions = !world->debugCollisions;
+		app->guiManager->debugGui = !app->guiManager->debugGui;
+	}
 
 	return !exit;
 }
@@ -475,6 +487,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		attackText->bounds = attackButton->bounds;
 		attackText->SetTextFont(app->fontTTF->defaultFont);
 		attackText->SetString("ATTACK");
+		attackText->CenterAlign();
 	}
 
 	if (moveText == nullptr)
@@ -483,6 +496,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		moveText->bounds = { moveButton->bounds };
 		moveText->SetTextFont(app->fontTTF->defaultFont);
 		moveText->SetString("MOVE");
+		moveText->CenterAlign();
 	}
 
 	if (itemsText == nullptr)
@@ -491,6 +505,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemsText->bounds = { itemButton->bounds };
 		itemsText->SetTextFont(app->fontTTF->defaultFont);
 		itemsText->SetString("ITEM(beta)");
+		itemsText->CenterAlign();
 	}
 
 	if (escapeText == nullptr)
@@ -499,6 +514,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		escapeText->bounds = { escapeButton->bounds };
 		escapeText->SetTextFont(app->fontTTF->defaultFont);
 		escapeText->SetString("ESCAPE");
+		escapeText->CenterAlign();
 	}
 
 	if (splitText == nullptr)
@@ -507,6 +523,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitText->bounds = { splitButton->bounds };
 		splitText->SetTextFont(app->fontTTF->defaultFont);
 		splitText->SetString("SPLIT");
+		splitText->CenterAlign();
 	}
 
 	if (protectText == nullptr)
@@ -515,6 +532,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		protectText->bounds = { protectButton->bounds };
 		protectText->SetTextFont(app->fontTTF->defaultFont);
 		protectText->SetString("PROTECT");
+		protectText->CenterAlign();
 	}
 
 	if (buffText == nullptr)
@@ -523,9 +541,10 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffText->bounds = { buffButton->bounds };
 		buffText->SetTextFont(app->fontTTF->defaultFont);
 		buffText->SetString("BUFFS");
+		buffText->CenterAlign();
 	}
 
-	combatScene->turnText->CenterAlign();
+	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
 }
 
 void Scene::SetLevelUp(unsigned short int exp)
@@ -646,7 +665,7 @@ void Scene::UpdateMainMenu()
 {
 // Other Options
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) SetScene(COMBAT, app->entityManager->enemies.start->data);
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) SetScene(COMBAT, app->entityManager->enemies.end->data);
 
 	app->render->DrawTexture(menu, 0, 0);
 

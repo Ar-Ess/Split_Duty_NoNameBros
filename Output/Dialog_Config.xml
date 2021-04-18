@@ -118,7 +118,7 @@
         <Option NextNode="18" ReturnCode="1">No, I'm okey!</Option>
       </Node>
       <Node ID="1">
-        <NPCTalk>BEFORE STARTING, NOTE THAT BY MAKING CONTACT WITH THEM YOU START THE BATTLE</NPCTalk>
+        <NPCTalk>BEFORE STARTING, NOTE THAT BY MAKING CONTACT WITH THOSE ENEMIES YOU WILL START THE BATTLE</NPCTalk>
         <Option NextNode="2" ReturnCode="1">OKEY</Option>
       </Node>
       <Node ID="2">

@@ -54,6 +54,14 @@ struct MantisBullet
             app->render->DrawRectangle(bulletRect, { 20, 100, 181, 255 });
         }
     }
+
+    void DebugDraw()
+    {
+        if (active)
+        {
+            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 255 });
+        }
+    }
 };
 
 class Enemy : public Entity

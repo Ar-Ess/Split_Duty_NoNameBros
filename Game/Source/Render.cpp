@@ -142,7 +142,8 @@ void Render::ResetViewPort()
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, SDL_RendererFlip flip, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = app->win->GetScale();
+
+	float scale = 1;
 
 	SDL_Rect rect;
 	if (useCamera)

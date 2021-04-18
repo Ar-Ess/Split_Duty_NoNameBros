@@ -124,46 +124,125 @@ void Combat::Update()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
 
 	currentPlayerAnim->Update(1.0f);
-	//currentSecondPlayerAnim->Update(1.0f);
-
-	/*LOG("PY: %d", app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h);
-	LOG("EY: %d", enemy->colliderCombat.y + enemy->colliderCombat.h);*/
-
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) debugCombat = !debugCombat;
 
 	CombatLogic();
-}
-
-void Combat::Draw()
-{
-	DrawBakcground();
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 	else
 	{
 		app->scene->splitButton->state = GuiControlState::LOCKED;
 	}
+}
 
-	// DEBUG COLLISIONS
-	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 }); //NEED TO BE IN FUNCTION DEBUGDRAW (when Animation Uploaded)
+void Combat::Draw()
+{
+	DrawBakcground();
 
 	if (debugCombat) DebugDraw();
 
-	//DRAW CHARACTERS
 	DrawPlayer();
 
 	if (secondPlayer) DrawSecondPlayer();
 
 	DrawEnemy();
 
-	//BULLETS
-	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
+	app->guiManager->DrawCombatInterface(enemy);
 
+	DrawPopUps();
+
+	DrawButtons();
+
+	DrawText();
+
+	app->guiManager->DrawCursor();
+}
+
+void Combat::DrawPlayer()
+{
+	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
+	{
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_0, 0,0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos1AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_1, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos2AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_2, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentPlayerAnim == &app->scene->player1->cPos3AttackAnim)
+	{
+		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+}
+
+void Combat::DebugDraw()
+{
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
+	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
+	//BULLETS
+	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+}
+
+void Combat::DrawSecondPlayer()
+{
+
+}
+
+void Combat::DrawEnemy()
+{
+	if (currentEnemyAnim != nullptr)
+	{
+		currentEnemyAnim->Update(1.0f);
+
+		if (enemy->enemyClass == EnemyClass::MANTIS)
+		{
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 3, &currentEnemyAnim->GetCurrentFrame(), false);
+			for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
+		}
+		else if (enemy->enemyClass == EnemyClass::BIRD)
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 38, enemy->colliderCombat.y - 15, 3.5, &currentEnemyAnim->GetCurrentFrame(), false);
+		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x, enemy->colliderCombat.y, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+	}
+}
+
+void Combat::DrawBakcground()
+{
+	switch (app->scene->enviroment)
+	{
+		case GRASSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+		break;
+
+		case AUTUM_FALLS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
+		case MOSSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+	}
+}
+
+void Combat::DrawPopUps()
+{
 	//INVENTORY
 	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
 
-	app->guiManager->DrawCombatInterface(enemy);
+	//BUFFS MENU
+}
 
+void Combat::DrawButtons()
+{
 	if (!secondPlayer)
 	{
 		if (combatState != ENEMY_TURN)
@@ -211,78 +290,6 @@ void Combat::Draw()
 			app->scene->escapeText->Draw();
 			app->scene->splitText->Draw();
 		}
-	}
-
-	DrawText();
-
-	app->guiManager->DrawCursor();
-}
-
-void Combat::DrawPlayer()
-{
-	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
-	{
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_0, 0,0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos1AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_1, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos2AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_2, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos3AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
-}
-
-void Combat::DebugDraw()
-{
-	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
-	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
-}
-
-void Combat::DrawSecondPlayer()
-{
-
-}
-
-void Combat::DrawEnemy()
-{
-	if (currentEnemyAnim != nullptr)
-	{
-		currentEnemyAnim->Update(1.0f);
-
-		if(enemy->enemyClass == EnemyClass::MANTIS)
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 3, &currentEnemyAnim->GetCurrentFrame(), false);
-		else
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
-	}
-}
-
-void Combat::DrawBakcground()
-{
-	switch (app->scene->enviroment)
-	{
-		case GRASSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-		break;
-
-		case AUTUM_FALLS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
-
-		case MOSSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
 	}
 }
 
@@ -1512,7 +1519,6 @@ void Combat::EnemyTurn()
 	app->scene->splitButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("ENEMY TURN");
-	turnText->CenterAlign();
 }
 
 void Combat::PlayerTurn()
@@ -1531,7 +1537,6 @@ void Combat::PlayerTurn()
 	currentEnemyAnim = &enemy->idleAnim;
 
 	turnText->SetString("PLAYER TURN");
-	turnText->CenterAlign();
 }
 
 void Combat::SecondPlayerTurn()
@@ -1548,7 +1553,6 @@ void Combat::SecondPlayerTurn()
 	app->scene->splitButton->state = GuiControlState::LOCKED;
 
 	turnText->SetString("SECOND PLAYER TURN");
-	turnText->CenterAlign();
 }
 
 void Combat::PlayerWin()

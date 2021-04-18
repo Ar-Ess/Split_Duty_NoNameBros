@@ -7,7 +7,7 @@
   </app>
 
   <fonts>
-    <default_font file="Assets/Fonts/kenvector_future_thin.ttf" size="14"/>
+    <default_font file="Assets/Fonts/kenvector_future_thin.ttf" size="20"/>
   </fonts>
 
   <renderer>

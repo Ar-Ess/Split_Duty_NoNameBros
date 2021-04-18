@@ -11,7 +11,7 @@
 
 FontTTF::FontTTF() : Module()
 {
-
+	name.Create("fonts");
 }
 
 FontTTF::~FontTTF()

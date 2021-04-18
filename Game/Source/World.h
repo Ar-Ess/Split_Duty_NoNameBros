@@ -133,7 +133,7 @@ private:
 
     iPoint prevPosition = { 0, 0 };
 
-    bool drawCollisions = false;
+    bool debugCollisions = false;
 
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;

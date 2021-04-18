@@ -65,6 +65,10 @@ public:
 
     void DrawBakcground();
 
+    void DrawPopUps();
+
+    void DrawButtons();
+
     void DrawText();
 
     void FirstTurnLogic();

@@ -5,7 +5,7 @@
 
 #include "List.h"
 
-#define DEFAULT_MUSIC_FADE_TIME 2.0f
+#define DEFAULT_MUSIC_FADE_TIME 1.0f
 
 struct _Mix_Music;
 struct Mix_Chunk;
@@ -14,7 +14,8 @@ enum SoundTrack
 {
 	NO_TRACK = 0,
 	MAINMENU_TRACK,
-	MAINVILLAGE_TRACK
+	MAINVILLAGE_TRACK,
+	MAINCOMBAT_TRACK,
 };
 
 enum Effect
