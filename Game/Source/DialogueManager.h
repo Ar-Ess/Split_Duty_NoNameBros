@@ -69,14 +69,16 @@ private: // variables
 	int					offset = 15;
 	float				dscale = 1.2f;
 
-	Dialogue*			currentDialogue;
+	Dialogue* currentDialogue;
 	List<Dialogue*>		dialoguesList;
 
-	SDL_Color           black	=		{ 0  , 0  , 0  , 150 };
-	SDL_Color           white	=		{ 255, 255, 255, 125 };
-	SDL_Color           red		=		{ 255, 0  , 0  , 125 };
-	SDL_Color           green	=		{ 0  , 255, 0  , 125 };
-	SDL_Color           blue	=		{ 0  , 0  , 255, 125 };
+	SDL_Color           black = { 0  , 0  , 0  , 150 };
+	SDL_Color           white = { 255, 255, 255, 125 };
+	SDL_Color           red = { 255, 0  , 0  , 125 };
+	SDL_Color           green = { 0  , 255, 0  , 125 };
+	SDL_Color           blue = { 0  , 0  , 255, 125 };
+
+	SDL_Texture*		dialogueTexture;
 };
 
 #endif // __DIALOGUEMANAGER_H__
