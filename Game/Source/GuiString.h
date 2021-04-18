@@ -21,9 +21,10 @@ public:
 public:
 
 	void Draw();
-	void SetString(char* newText);
+	void SetString(const char* newText);
 	void SetTextFont(_TTF_Font* textFont);
 	void CenterAlign();
+	void UnLoadTextTexture();
 
 private:
 	_TTF_Font* textFont = nullptr;

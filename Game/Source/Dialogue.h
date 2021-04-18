@@ -3,7 +3,8 @@
 
 
 #include "List.h"
-#include "Sstring.h"
+#include "GuiString.h"
+#include "SString.h"
 #include "Point.h"
 
 #include "App.h"

@@ -10,8 +10,8 @@ public:
 	//default constructor
 	DialogueNode() {};
 
-	DialogueNode(SString text, int id) : nodeText(text), nodeID(id),
-				 optionsActive(false), nodeTexture(nullptr) {};
+	DialogueNode(SString text, int id) : text(text), nodeID(id),
+				 optionsActive(false) {};
 
 	virtual ~DialogueNode() {};
 
@@ -21,20 +21,17 @@ public:
 		uint w, h;
 		app->win->GetWindowSize(w, h);
 
-		this->nodePos.x = (w / 2) - (this->nodeRect.w / 2);
-		this->nodePos.y = 4 * (h / 6);
+		this->nodeText->bounds.x = (w / 2) - (this->nodeText->bounds.w / 2);
+		this->nodeText->bounds.y = 4 * (h / 6);
 	}
 
 public:
 	int						nodeID;
 	bool					optionsActive = true;
-		
-	SString					nodeText;
+
+	SString					text;
+	GuiString*				nodeText = nullptr;
+
 	List<DialogueOption*>	optionsList;
-
-	iPoint					nodePos{ 0,0 };
-
-	SDL_Rect				nodeRect{ 0,0,0,0 };
-	SDL_Texture*			nodeTexture;
 };
 #endif // __DIALOGUENODE_H__

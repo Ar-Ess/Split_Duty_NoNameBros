@@ -50,7 +50,10 @@ private: //functions
 	DialogueOption* CreateOptions(pugi::xml_node& setter);
 	DialogueNode* CreateNode(pugi::xml_node& setter);
 	void CreateDialogue(pugi::xml_node& setter);
+
 	void EndDialogue();
+	void DeleteOptions();
+	void DeleteOptionButtons();
 
 	void Draw();
 	void Input();
@@ -59,13 +62,11 @@ private: //functions
 	
 	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
 
-	//Utils
-	SDL_Rect Center(SDL_Rect ref, SDL_Rect butt);
-
 public: //variables
 	bool onDialog = false;
 private: // variables
 	int					offset = 15;
+	float				dscale = 1.2f;
 
 	Dialogue*			currentDialogue;
 	List<Dialogue*>		dialoguesList;

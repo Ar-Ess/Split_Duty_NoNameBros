@@ -11,7 +11,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 
 GuiButton::~GuiButton()
 {
-    delete &text;
+    text.Clear();
+    text.~SString();
 }
 
 bool GuiButton::Update(float dt)

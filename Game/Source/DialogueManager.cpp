@@ -117,15 +117,11 @@ void DialogueManager::EndDialogue()
 		{
 			if (itemNode->data->optionsList.Count() != 0)
 			{
-				for (ListItem<DialogueOption*>* itemOption = itemNode->data->optionsList.start;
-					itemOption != nullptr; itemOption = itemOption->next)
-				{
-					app->tex->UnLoad(itemOption->data->optionTexture);
-					if (itemOption->data->optionTexture != nullptr) LOG("OPTION TEXTURE NOT DELETED");
-				}
+				DeleteOptions();
 			}		
-			app->tex->UnLoad(itemNode->data->nodeTexture);
-			if (itemNode->data->nodeTexture != nullptr) LOG("NODE TEXTURE NOT DELETED");
+			itemNode->data->nodeText->text.Clear();
+			itemNode->data->nodeText->UnLoadTextTexture();
+			itemNode->data->nodeText = nullptr;
 		}
 		currentDialogue->currentNode->optionsActive = false;
 		currentDialogue = nullptr;
@@ -134,8 +130,40 @@ void DialogueManager::EndDialogue()
 	}
 }
 
-void DialogueManager::StartDialogue(int dialogueID)
+void DialogueManager::DeleteOptionButtons()
 {
+	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
+		itemOption != nullptr; itemOption = itemOption->next)
+	{
+		if (itemOption->data->optionButton != nullptr)
+		{
+			itemOption->data->optionButton->text.Clear();
+			itemOption->data->optionButton = nullptr;
+		}
+	}
+}
+
+void DialogueManager::DeleteOptions()
+{
+	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
+		itemOption != nullptr; itemOption = itemOption->next)
+	{
+		if (itemOption->data->optionButton != nullptr)
+		{
+			itemOption->data->optionButton->text.Clear();
+			itemOption->data->optionButton = nullptr;
+		}
+		if (itemOption->data->optionText != nullptr)
+		{
+			itemOption->data->optionText->text.Clear();
+			itemOption->data->optionText->UnLoadTextTexture();
+			itemOption->data->optionText = nullptr;
+		}
+	}
+}
+
+void DialogueManager::StartDialogue(int dialogueID)
+{	
 	if (currentDialogue == nullptr)
 	{
 		currentDialogue = dialoguesList.At(--dialogueID)->data;
@@ -144,10 +172,13 @@ void DialogueManager::StartDialogue(int dialogueID)
 		for (ListItem<DialogueNode*>* itemNode = currentDialogue->nodeList.start;
 			itemNode != nullptr; itemNode = itemNode->next)
 		{
-			itemNode->data->nodeTexture = app->fontTTF->Print(itemNode->data->nodeText.GetString(), white,
-										  app->fontTTF->defaultFont);
+			itemNode->data->nodeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			itemNode->data->nodeText->SetString(itemNode->data->text.GetString());
+			itemNode->data->nodeText->bounds = { 0,0,0,0 };
+			itemNode->data->nodeText->SetTextFont(app->fontTTF->defaultFont);
 
-			if (itemNode->data->nodeTexture == nullptr) LOG("NODE TEXTURE NOT LOADED");
+			app->fontTTF->CalcSize(itemNode->data->nodeText->text.GetString(),itemNode->data->nodeText->bounds.w,
+								   itemNode->data->nodeText->bounds.h, app->fontTTF->defaultFont);
 
 			if (itemNode->data->optionsList.Count() != 0)
 			{
@@ -155,12 +186,12 @@ void DialogueManager::StartDialogue(int dialogueID)
 				for (ListItem<DialogueOption*>* itemOption = itemNode->data->optionsList.start;
 					itemOption != nullptr; itemOption = itemOption->next)
 				{
-					itemOption->data->optionTexture = app->fontTTF->Print(itemOption->data->optionText.GetString(), 
-													  white, app->fontTTF->defaultFont);
+					itemOption->data->optionText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+					itemOption->data->optionText->SetString(itemOption->data->text.GetString());
+					itemOption->data->optionText->SetTextFont(app->fontTTF->defaultFont);
+
 					itemOption->data->optPlacing = OptionsPos(optPlace);
 					optPlace++;
-
-					if (itemOption->data->optionTexture == nullptr) LOG("OPTION TEXTURE NOT LOADED");
 				}
 			}
 			else continue;
@@ -171,25 +202,15 @@ void DialogueManager::StartDialogue(int dialogueID)
 
 void DialogueManager::Draw()
 {
-	app->fontTTF->CalcSize(currentDialogue->currentNode->nodeText.GetString(),
-						   currentDialogue->currentNode->nodeRect.w, currentDialogue->currentNode->nodeRect.h, app->fontTTF->defaultFont);
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	currentDialogue->currentNode->NodePlacing();
-
-	SDL_Rect nodeChart{ currentDialogue->currentNode->nodePos.x, currentDialogue->currentNode->nodePos.y,
-						currentDialogue->currentNode->nodeRect.w + (2 * offset), currentDialogue->currentNode->nodeRect.h + (2 * offset) };
+	currentDialogue->currentNode->nodeText->CenterAlign();
 
 	//DRAWING NODE
-	app->render->DrawRectangle(nodeChart, red, true, false);
-
-
-
-
-
-
-	app->render->DrawTexture(currentDialogue->currentNode->nodeTexture,
-							 nodeChart.x + offset, nodeChart.y + offset, &currentDialogue->currentNode->nodeRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
+	app->render->DrawRectangle(currentDialogue->currentNode->nodeText->bounds, red, true, false);
+	currentDialogue->currentNode->nodeText->Draw();
+	
 	if (currentDialogue->currentNode->optionsList.Count() != 0)
 	{
 		if(currentDialogue->currentNode->optionsActive == false)currentDialogue->currentNode->optionsActive = true;
@@ -197,38 +218,34 @@ void DialogueManager::Draw()
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
-			itemOption->data->optionButton = new GuiButton(itemOption->data->nodeID, { 0,0,0,0 }, 
-														   itemOption->data->optionText.GetString());
-			//DRAWING OPTIONS
-			app->fontTTF->CalcSize(itemOption->data->optionText.GetString(), itemOption->data->optionButton->bounds.w, 
-								   itemOption->data->optionButton->bounds.h, app->fontTTF->defaultFont);
+			if (!itemOption->data->optionButton)
+			{
+				itemOption->data->optionButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+				itemOption->data->optionButton->bounds = { 0,0,int(buttonPrefab.w * dscale),int(buttonPrefab.h * dscale) - offset };
+				itemOption->data->optionButton->text = itemOption->data->optionText->text.GetString();
+				itemOption->data->optionButton->SetObserver(this);
+			}
 
-			itemOption->data->optionRect = itemOption->data->optionButton->bounds;
-			itemOption->data->optionButton->SetObserver(this);
-
+			itemOption->data->optionText->bounds = itemOption->data->optionButton->bounds;
 			itemOption->data->OptionPlacingX();
 			itemOption->data->OptionPlacingY();
+			itemOption->data->optionText->CenterAlign();
 
-			SDL_Rect optionChart{ itemOption->data->optionPos.x, itemOption->data->optionPos.y,
-								itemOption->data->optionButton->bounds.w + (2 * offset), itemOption->data->optionButton->bounds.h + (2 * offset)};
-
-			itemOption->data->optionButton->bounds = optionChart;
-
-			itemOption->data->optionButton->Draw(1.2, false);
-			app->render->DrawTexture(itemOption->data->optionTexture, optionChart.x + offset, optionChart.y + offset,
-				                     &itemOption->data->optionRect, 1.0f, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);		
+			itemOption->data->optionButton->Draw(1.2f, false);
+			itemOption->data->optionText->Draw();	
 		}
 	}
 }
 
 void DialogueManager::Input()
 {
-	if (currentDialogue != nullptr && currentDialogue->currentNode->optionsActive)
+	if (currentDialogue != nullptr && currentDialogue->currentNode->optionsActive == true)
 	{
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
-			itemOption->data->optionButton->Update(1.0f);
+			if(itemOption->data->optionButton != nullptr)
+				itemOption->data->optionButton->Update(1.0f);
 		}
 	}
 	else EndDialogue();
@@ -240,59 +257,61 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 
 	currentDialogue->currentNode->optionsActive = false;
 
-	bool optionHitted = false;
+	//bool optionHitted = false;
 
 	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start; 
 		 itemOption != nullptr; itemOption = itemOption->next)
 	{
-		if (strcmp(option->text.GetString(), itemOption->data->optionText.GetString()) == 0 && !optionHitted)
+		if (strcmp(option->text.GetString(), itemOption->data->text.GetString()) == 0)//&& !optionHitted)
 		{
 			if(itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 1)
 			{
+				DeleteOptionButtons();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				optionHitted = true;
+				//optionHitted = true;
+				return ret;
 			}
 			else if (itemOption->data->returnCode == 0)
 			{
 				//node with continue option
 				//==> go to next node
+				return ret;
 			}
 			else if (itemOption->data->returnCode == -1)
 			{
 				EndDialogue();
+				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 2)
 			{
 				app->scene->combatScene->secondPlayer = true;
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				optionHitted = true;
+				//optionHitted = true;
+				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 3)
 			{
 				app->scene->combatScene->secondPlayer = false;
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				optionHitted = true;
+				//optionHitted = true;
+				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 4)
 			{
 				app->scene->player1->Refill();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				optionHitted = true;
+				//optionHitted = true;
+				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 5)
 			{
 				app->scene->player2->Refill();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				optionHitted = true;
+				//optionHitted = true;
+				return ret;
 			}
 		}
-
-		//DELETE GUI OPTION BUTTONS HERE
-		//INITIALIZE BUTTON? THEN RELEASE?
-		app->guiManager->DestroyGuiControl(itemOption->data->optionButton);
-		if (itemOption->data->optionButton != nullptr) LOG("OPTION BUTTON NOT DELETED");
 	}
-
 	return ret;
 }
 
@@ -307,14 +326,4 @@ pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFil
 
 	return ret;
 	
-}
-
-SDL_Rect DialogueManager::Center(SDL_Rect ref, SDL_Rect butt)
-{
-	SDL_Rect contactPlayerZone = butt;
-
-	contactPlayerZone.x = ref.x + (ref.w / 2) - (contactPlayerZone.w / 2);
-	contactPlayerZone.y = ref.y + (ref.h / 2) - (contactPlayerZone.h / 2);
-
-	return contactPlayerZone;
 }

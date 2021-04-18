@@ -17,7 +17,6 @@ GuiString::GuiString() : GuiControl(GuiControlType::TEXT, id), textFont(app->fon
 GuiString::~GuiString()
 {
 	app->tex->UnLoad(textTexture);
-	delete &text;
 }
 
 void GuiString::Draw()
@@ -25,7 +24,7 @@ void GuiString::Draw()
 	app->render->DrawTexture(textTexture, bounds.x - app->render->camera.x, bounds.y - app->render->camera.y);
 }
 
-void GuiString::SetString(char* newText)
+void GuiString::SetString(const char* newText)
 {
 	text = newText;
 	textTexture = app->fontTTF->Print(text.GetString(), { 255,255,255,255 }, textFont, textTexture);
@@ -43,4 +42,9 @@ void GuiString::CenterAlign()
 
 	bounds.x += (bounds.w / 2) - (width / 2);
 	bounds.y += (bounds.h / 2) - (height / 2);
+}
+
+void GuiString::UnLoadTextTexture()
+{
+	app->tex->UnLoad(textTexture);
 }
