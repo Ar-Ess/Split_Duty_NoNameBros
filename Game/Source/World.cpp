@@ -554,19 +554,24 @@ bool World::PlayerMovement()
 
 void World::CameraMovement(bool move)
 {
-	if (move)
+	if (move || place != HOUSE)
 	{
-		if (place == MAIN_VILLAGE || place == ENEMY_FIELD)
+		switch (playerState)
 		{
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) app->render->camera.x += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) app->render->camera.x -= worldSpeed;
-		}
-		else if (place == TAVERN)
-		{
-			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) app->render->camera.y += worldSpeed;
-			if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) app->render->camera.y -= worldSpeed;
+		case(PlayerState::IDLE): break;
+
+		case(PlayerState::UP):
+			app->render->camera.y += worldSpeed;
+			break;
+		case(PlayerState::DOWN):
+			app->render->camera.y -= worldSpeed;
+			break;
+		case(PlayerState::LEFT):
+			if (place != TAVERN) app->render->camera.x += worldSpeed;
+			break;
+		case(PlayerState::RIGHT):
+			if (place != TAVERN) app->render->camera.x -= worldSpeed;
+			break;
 		}
 
 		RectifyCameraPosition(place);
