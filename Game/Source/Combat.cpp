@@ -333,6 +333,21 @@ void Combat::CombatLogic()
 			{
 				if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 60 - (steps * 20)) playerResponseAble = false;
 			}
+			else if (enemy->enemyClass == MANTIS)
+			{
+				if (enemy->attack == 1)
+				{
+					if (enemy->bullet[4].bulletRect.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 40) playerResponseAble = false;
+				}
+				else if (enemy->attack == 2)
+				{
+					if (steps != 3) if (enemy->colliderCombat.x < app->scene->player1->colliderCombat.x - enemy->colliderCombat.w - 30) playerResponseAble = false;
+					else
+					{
+						if (enemy->mantisTimeAttack2 == 242) playerResponseAble = false;
+					}
+				}
+			}
 		}
 	}
 	else if (combatState == PLAYER_TURN)
@@ -1358,22 +1373,26 @@ void Combat::PlayerBulletHitLogic()
 	{
 		if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->bullet[i].bulletRect))
 		{
-			playerHitAble = false;
-			if (!wearMantisLeg)
+			if (app->scene->player1->godMode) LOG("Player Is Inmune");
+			else
 			{
-				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
-				else if (secondPlayerProtection)
+				playerHitAble = false;
+				if (!wearMantisLeg)
 				{
-					app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
-					app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
-					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+					else if (secondPlayerProtection)
+					{
+						app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
+						app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+						LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					}
+
+					LOG("Player Hit - PH: %d", app->scene->player1->health);
 				}
+				else if (wearMantisLeg) wearMantisLeg = false;
 
-				LOG("Player Hit - PH: %d", app->scene->player1->health);
+				bulletHitted = i;
 			}
-			else if (wearMantisLeg) wearMantisLeg = false;
-
-			bulletHitted = i;
 		}
 	}
 
