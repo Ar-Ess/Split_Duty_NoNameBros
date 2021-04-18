@@ -60,9 +60,9 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
         idleAnim.PushBack({ 32 * 2,0,32,32 });
         idleAnim.PushBack({ 32 * 3,0,32,32 });
 
-        moveAnim.PushBack({ 32,0,32,32 });
-        moveAnim.PushBack({ 32 * 2,0,32,32 });
-        moveAnim.PushBack({ 32 * 3,0,32,32 });
+        moveAnim.PushBack({ 32,32*3,32,32 });
+        moveAnim.PushBack({ 32 * 2,32*3,32,32 });
+        moveAnim.PushBack({ 32 * 3,32*3,32,32 });
         moveAnim.speed = idleAnim.speed * 2;
 
 
