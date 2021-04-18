@@ -22,7 +22,7 @@ public:
 		app->win->GetWindowSize(w, h);
 
 		this->nodeText->bounds.x = (w / 2) - (this->nodeText->bounds.w / 2);
-		this->nodeText->bounds.y = 4 * (h / 6);
+		this->nodeText->bounds.y = 5 * (h / 8);
 	}
 
 public:
