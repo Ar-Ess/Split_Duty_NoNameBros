@@ -553,23 +553,35 @@ bool World::PlayerMovement()
 
 void World::CameraMovement(bool move)
 {
-	if (move || place != HOUSE)
+	if (move)
 	{
 		switch (playerState)
 		{
 		case(PlayerState::IDLE): break;
-
+			break;
 		case(PlayerState::UP):
-			app->render->camera.y += worldSpeed;
+			if (place != HOUSE)
+			{
+				app->render->camera.y += worldSpeed;
+			}
 			break;
 		case(PlayerState::DOWN):
-			app->render->camera.y -= worldSpeed;
+			if (place != HOUSE)
+			{
+				app->render->camera.y -= worldSpeed;
+			}
 			break;
 		case(PlayerState::LEFT):
-			if (place != TAVERN) app->render->camera.x += worldSpeed;
+			if (place != TAVERN && place != HOUSE)
+			{
+				app->render->camera.x += worldSpeed;
+			}
 			break;
 		case(PlayerState::RIGHT):
-			if (place != TAVERN) app->render->camera.x -= worldSpeed;
+			if (place != TAVERN && place != HOUSE)
+			{
+				app->render->camera.x -= worldSpeed;
+			}
 			break;
 		}
 
@@ -630,7 +642,7 @@ void World::RectifyCameraPosition(Places placex)
 	}
 	else if (placex == TAVERN)
 	{
-		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = -28;
+		if (app->scene->player1->colliderWorld.y < 300) app->render->camera.y = -28;
 		if (app->scene->player1->colliderWorld.y > 639) app->render->camera.y = -375;
 	}
 	else if (placex == ENEMY_FIELD)
