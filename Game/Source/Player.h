@@ -92,10 +92,7 @@ public:
     Animation walkDownAnim;
 
     Animation cIdleAnim;
-    Animation cPos0AttackAnim;
-    Animation cPos1AttackAnim;
-    Animation cPos2AttackAnim;
-    Animation cPos3AttackAnim;
+    Animation cAttackAnim;
     Animation cStepAnim;
     Animation cJumpAnim;
     Animation cDieAnim;

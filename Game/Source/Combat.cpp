@@ -26,10 +26,6 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	fullscreenAttack_0 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_0.png");
-	fullscreenAttack_1 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_1.png");
-	fullscreenAttack_2 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_2.png");
-	fullscreenAttack_3 = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/fullscreen_attack_3.png");
 	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
 	mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
 	batSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
@@ -87,10 +83,6 @@ void Combat::Restart()
 	enemy = nullptr;
 
 	app->tex->UnLoad(character1Spritesheet);
-	app->tex->UnLoad(fullscreenAttack_0);
-	app->tex->UnLoad(fullscreenAttack_1);
-	app->tex->UnLoad(fullscreenAttack_2);
-	app->tex->UnLoad(fullscreenAttack_3);
 	app->tex->UnLoad(littleWolfSpritesheet);
 	app->tex->UnLoad(mantisSpritesheet);
 	app->tex->UnLoad(batSpritesheet);
