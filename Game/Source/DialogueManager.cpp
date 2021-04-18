@@ -23,6 +23,9 @@ bool DialogueManager::Awake(pugi::xml_node&)
 
 	configDial = LoadDialogueConfig(dConfigFile);
 
+	const char* path = configDial.child("DialogueTextures").attribute("file").as_string();
+	dialogueTexture = app->tex->Load(path);
+
 	if (configDial.empty() == false)
 	{
 		pugi::xml_node dSetUp = configDial.child("Dialogs");
@@ -217,8 +220,11 @@ void DialogueManager::Draw()
 	nodeChart.y -= offset;
 	nodeChart.w += (2 * offset);
 	nodeChart.h += (3 * offset);
+
+	SDL_Rect textureChart{ 0,0,910,113 };
 	
 	//DRAWING NODE
+	app->render->DrawTexture(dialogueTexture, nodeChart.x, nodeChart.y, 1.0, &textureChart);
 	app->render->DrawRectangle(nodeChart, black, true, false);
 	currentDialogue->currentNode->nodeText->Draw();
 	
