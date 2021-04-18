@@ -242,16 +242,16 @@ void World::DrawEnemy()
 			{
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
-					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE, &wolfRect, false);
 				}
 				if (enemy->GetClass() == EnemyClass::BIRD)
 				{
-					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &birdRect, false);
 
 				}
 				if (enemy->GetClass() == EnemyClass::MANTIS)
 				{
-					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y, SCALE, &wolfRect, false);
+					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
 				}
 			}
 

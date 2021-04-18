@@ -176,7 +176,7 @@ private: //Textures
     SDL_Texture* mantisSpritesheet = nullptr;
     SDL_Texture* walkingSpritesheet = nullptr;
 
-    const SDL_Rect wolfRect = {0, 166, 60, 35};
+    const SDL_Rect wolfRect = {65,0, 60, 35};
     const SDL_Rect birdRect = { 32*3, 0, 32, 32 };
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
