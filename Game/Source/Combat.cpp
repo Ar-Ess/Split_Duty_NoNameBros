@@ -716,10 +716,12 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				if (enemy->birdTimeAttack3 >= 60 && enemy->birdTimeAttack3 < 145)
 				{
 					app->scene->player1->colliderCombat.x -= 2;
+					app->scene->player2->colliderCombat.x -= 2;
 				}
 				else if (enemy->birdTimeAttack3 == 145)
 				{
 					app->scene->player1->colliderCombat.x -= 1;
+					app->scene->player2->colliderCombat.x -= 1;
 					steps--;
 				}
 			}
