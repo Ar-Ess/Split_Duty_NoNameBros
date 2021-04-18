@@ -26,9 +26,6 @@ void Combat::Start()
 {
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
-	littleWolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey-wolf-spritesheet.png");
-	mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
-	batSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat-spritesheet.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/Combat/grassy_lands_combat_scene.png");
 
 	switch (enemy->enemyClass)
@@ -41,7 +38,6 @@ void Combat::Start()
 		break;
 	case(EnemyClass::MANTIS):
 		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis-spritesheet.png");
-		break;
 	}
 
 	//Idle Animation Set
@@ -83,9 +79,6 @@ void Combat::Restart()
 	enemy = nullptr;
 
 	app->tex->UnLoad(character1Spritesheet);
-	app->tex->UnLoad(littleWolfSpritesheet);
-	app->tex->UnLoad(mantisSpritesheet);
-	app->tex->UnLoad(batSpritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 
