@@ -155,21 +155,26 @@ void Combat::DrawPlayer()
 	{
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
 	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos0AttackAnim)
+	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
 	{
-		app->render->DrawTexture(fullscreenAttack_0, 0,0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos1AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_1, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos2AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_2, 0, 0, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentPlayerAnim == &app->scene->player1->cPos3AttackAnim)
-	{
-		app->render->DrawTexture(fullscreenAttack_3, 0, 0, &currentPlayerAnim->GetCurrentFrame());
+		switch (steps)
+		{
+		case(0):
+			
+			break;
+		case(1):
+			
+			break;
+		case(2):
+			
+			break;
+		case(3):
+			
+			break;
+		default:
+			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+			break;
+		}
 	}
 	else
 		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 52, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
@@ -807,23 +812,9 @@ void Combat::AfterEnemyAttack()
 void Combat::PlayerAttack()
 {
 	//app->scene->player1->cPos0AttackAnim.Reset();
-	switch (steps)
-	{
-	case(0):
-		currentPlayerAnim = &app->scene->player1->cPos0AttackAnim;
-		break;
-	case(1):
-		currentPlayerAnim = &app->scene->player1->cPos1AttackAnim;
-		break;
-	case(2):
-		currentPlayerAnim = &app->scene->player1->cPos2AttackAnim;
-		break;
-	case(3):
-		currentPlayerAnim = &app->scene->player1->cPos3AttackAnim;
-		break;
-	}
+	currentPlayerAnim = &app->scene->player1->cAttackAnim;
 
-	if (playerTimeAttack < 200)
+	if (playerTimeAttack < 35)
 	{
 		playerTimeAttack++;
 	}

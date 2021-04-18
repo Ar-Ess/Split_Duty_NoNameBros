@@ -49,57 +49,14 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
         }
         cIdleAnim.speed = 0.120f;
 
-        int j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos0AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
         for (int i = 0; i < 7; i++)
         {
-            cPos0AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos0AttackAnim.speed = 0.240f;
-        cPos0AttackAnim.loop = false;
-        cPos0AttackAnim.pingpong = false;
+            cAttackAnim.PushBack({ 154 * i,SPRITE_TILE_HEIGHT * 7 , 154 ,SPRITE_TILE_HEIGHT });
 
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos1AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
         }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos1AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos1AttackAnim.speed = 0.240f;
-        cPos1AttackAnim.loop = false;
-        cPos1AttackAnim.pingpong = false;
-
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos2AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos2AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos2AttackAnim.speed = 0.240f;
-        cPos2AttackAnim.loop = false;
-        cPos2AttackAnim.pingpong = false;
-
-        j = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            cPos3AttackAnim.PushBack({ 0, 0 + (i * 720),1280,720 });
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            cPos3AttackAnim.PushBack({ 1280, 0 + (i * 720),1280,720 });
-        }
-        cPos3AttackAnim.speed = 0.240f;
-        cPos3AttackAnim.loop = false;
-        cPos3AttackAnim.pingpong = false;
+        cAttackAnim.speed = 0.16f;
+        cAttackAnim.loop = false;
+        cAttackAnim.pingpong = false;
 
         for (int i = 0; i < 8; i++)
         {
