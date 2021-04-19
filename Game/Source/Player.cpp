@@ -13,19 +13,17 @@ Player::Player() : Entity(EntityType::PLAYER1)
 
 Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 {
-    texture = NULL;
+    texture = nullptr;
     type = enType;
 
     colliderCombat = collCombat;
-    colliderWorld = { 1722, 210, PLAYER_WORLD_WIDTH, 84 };
-    collisionRect = { 1722, 210 + 56, PLAYER_WORLD_WIDTH, 84 - 56 };
 
-    smallMeatCount = 1;
-    largeMeatCount = 1;
-    featherCount = 1;
-    mantisRodCount = 1;
-    splitedEnemyCount = 1;
-    moneyCount = 1;
+    smallMeatCount = 0;
+    largeMeatCount = 0;
+    featherCount = 0;
+    mantisRodCount = 0;
+    splitedEnemyCount = 0;
+    moneyCount = 0;
 
     playerSpeed = PLAYER_SPEED;
 
@@ -98,7 +96,6 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     }
 
     //world animations
-
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
     walkDownAnim.PushBack({ 52 * 3,5 * 3,20 * 3,30 * 3 });
     walkDownAnim.PushBack({ 28 * 3,5 * 3,20 * 3,28 * 3 });
@@ -123,7 +120,6 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     walkUpAnim.PushBack({ 4 * 3,101 * 3,20 * 3,28 * 3 });
     walkUpAnim.PushBack({ 28 * 3,101 * 3,20 * 3,28 * 3 });
    
-
     walkLeftAnim.speed = walkRightAnim.speed = walkDownAnim.speed = walkUpAnim.speed = 0.30f;
     walkDownAnim.loop = walkUpAnim.loop = walkLeftAnim.loop = walkRightAnim.loop = false;
 
@@ -234,19 +230,19 @@ void Player::Refill()
 
 void Player::RestartPlayer()
 {
-    app->scene->player1->colliderWorld = { 1722, 210, PLAYER_WORLD_WIDTH, 84 };
-    app->scene->player1->collisionRect = { 1722, 210 + 56, PLAYER_WORLD_WIDTH, 84 - 56 };
+    app->scene->player1->colliderWorld = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+    app->scene->player1->collisionRect = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
-    smallMeatCount = 1;
-    largeMeatCount = 1;
-    featherCount = 1;
-    mantisRodCount = 1;
-    splitedEnemyCount = 1;
-    moneyCount = 1;
+    smallMeatCount = 0;
+    largeMeatCount = 0;
+    featherCount = 0;
+    mantisRodCount = 0;
+    splitedEnemyCount = 0;
+    moneyCount = 0;
 
     if (type == EntityType::PLAYER1)
     {
-        SetUp(40, 40, 27, 8, 0, 0, 0, 10, 0, 0);
+        SetUp(20, 20, 10, 3, 0, 0, 0, 0, 0, 0);
         colliderCombat.x = INIT_COMBAT_POSX;
         colliderCombat.y = INIT_COMBAT_POSY;
     }
@@ -256,8 +252,6 @@ void Player::RestartPlayer()
         colliderCombat.x = INIT2_COMBAT_POSX;
         colliderCombat.y = INIT2_COMBAT_POSY;
     }
-
-    //app->scene->combatScene->secondPlayer = false;
 
     playerSpeed = PLAYER_SPEED;
 }

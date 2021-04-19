@@ -752,11 +752,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	switch (currScene)
 	{
-	case LOGO_SCENE:
-		break;
-
 	case MAIN_MENU:
-
 		if (strcmp(control->text.GetString(), "NewGameButton") == 0)
 		{
 			remove("save_game.xml");
@@ -775,7 +771,6 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		break;
 
 	case COMBAT:
-
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
 		else if (strcmp(control->text.GetString(), "ItemButton") == 0) itemPressed = true;
@@ -791,9 +786,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			continuePressed = true;
 			SetScene(WORLD, world->place);
+			continuePressed = false;
 			app->render->camera.x = prevCam.x;
 			app->render->camera.y = prevCam.y;
-			continuePressed = false;
 			app->audio->ChangeVolumeMusic();
 		}
 		else if (strcmp(control->text.GetString(), "SaveGameButton") == 0)
@@ -809,6 +804,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		}
 		break;
 	}
+
 	return true;
 }
 

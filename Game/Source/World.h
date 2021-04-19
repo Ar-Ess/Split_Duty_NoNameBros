@@ -113,6 +113,8 @@ private:
 
     void WorldChange();
 
+    void WorldEnemySpawn();
+
     void WorldEnemyDetection();
 
     bool CollisionSolver(iPoint prevPos);
