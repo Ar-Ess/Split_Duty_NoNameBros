@@ -43,9 +43,9 @@ public:
 
 	void SetMusic(SoundTrack sc, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
 
-	void SetFx(Effect fx);
-
+	void LoadAllFx(pugi::xml_node& fx_node);
 	unsigned int LoadFx(const char* path);
+	void SetFx(Effect fx);
 
 	SoundTrack GetPlayingMusic() const
 	{

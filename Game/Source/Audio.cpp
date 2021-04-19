@@ -49,6 +49,10 @@ bool AudioManager::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	//LOADING ALL SFX
+	pugi::xml_node sFx = config.child("fx");
+	LoadAllFx(sFx);
+
 	return ret;
 }
 
@@ -191,6 +195,16 @@ bool AudioManager::PlayMusic(const char* path, float fadeTime)
 
 	LOG("Successfully playing %s", path);
 	return ret;
+}
+
+void AudioManager::LoadAllFx(pugi::xml_node& fx_node)
+{
+	for (pugi::xml_node sound = fx_node.child("sound");
+		sound != nullptr; sound = sound.next_sibling("sound"))
+	{
+		const char* path = sound.child_value();
+		LoadFx(path);
+	}
 }
 
 unsigned int AudioManager::LoadFx(const char* path)

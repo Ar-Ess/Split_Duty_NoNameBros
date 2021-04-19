@@ -26,4 +26,16 @@
   <map>
     <folder>Assets/maps/</folder>
   </map>
+
+  <audio>
+    <music>
+     <!-- <track>Assets/Audio/Music/ockaie_temple.ogg</track>-->
+    </music>
+    <fx>
+      <sound>Assets/Audio/Fx/SplitDuty_ButtonFocussed_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_MainMenuScene_Fx.wav</sound>
+    </fx>
+  </audio>
 </config>

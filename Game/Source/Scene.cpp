@@ -49,12 +49,6 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
-
-	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonFocussed_Fx.wav");
-	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav");
-	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav");
-	app->audio->LoadFx("Assets/Audio/Fx/SplitDuty_MainMenuScene_Fx.wav");
-
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
