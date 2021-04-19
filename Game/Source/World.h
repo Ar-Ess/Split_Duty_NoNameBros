@@ -29,7 +29,11 @@ enum PlayerState
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    DOWNLEFT,
+    DOWNRIGHT,
+    UPLEFT,
+    UPRIGHT
 };
 
 enum Places

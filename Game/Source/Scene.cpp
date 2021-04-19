@@ -721,16 +721,8 @@ void Scene::UpdateWorld()
 		player1->godMode = !player1->godMode;
 		world->godMode = !world->godMode;
 
-		if (player1->godMode)
-		{
-			LOG("God mode enabled");
-			player1->playerSpeed = 14;
-		}
-		else
-		{
-			LOG("God mode disabled");
-			player1->playerSpeed = PLAYER_SPEED;
-		}
+		if (player1->godMode) player1->playerSpeed = 14;
+		else player1->playerSpeed = PLAYER_SPEED;
 	}
 }
 

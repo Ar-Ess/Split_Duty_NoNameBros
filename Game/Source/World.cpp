@@ -26,7 +26,6 @@ void World::Start(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		Places contactPlayerZone = place;
 		place = placex;
 		map->Load("main_village.tmx");
 
@@ -91,7 +90,7 @@ void World::Start(Places placex)
 		}
 
 		app->render->camera.x = 332;
-		app->render->camera.y = 100; //Full = 22 width -> 616 | Half = 11 width -> 308 | Half screen width = 640
+		app->render->camera.y = 100;
 	}
 	else if (placex == TAVERN)
 	{
@@ -99,6 +98,7 @@ void World::Start(Places placex)
 		place = placex;
 		map->Load("tavern.tmx");
 
+		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
 		{
 			app->scene->player1->colliderWorld = { 504, 880, PLAYER_WORLD_WIDTH, 84 };
@@ -116,6 +116,7 @@ void World::Start(Places placex)
 		place = placex;
 		map->Load("graveyard.tmx");
 
+		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
 		{
 			if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
@@ -157,6 +158,7 @@ void World::Start(Places placex)
 				RectifyCameraPosition(placex);
 			}
 		}
+
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -211,8 +213,10 @@ void World::Restart()
 void World::Update()
 {
 	if (!app->dialogueManager->onDialog) WorldMovement();
+
 	WorldChange();
-	if (place == ENEMY_FIELD) WorldEnemyDetection();
+
+	WorldEnemyDetection();
 
 	NPCLogic();
 }
@@ -234,7 +238,7 @@ void World::DrawPlayer()
 
 void World::DrawEnemy()
 {
-	if (place == ENEMY_FIELD)
+	if (app->entityManager->enemies.Count())
 	{
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
@@ -255,7 +259,6 @@ void World::DrawEnemy()
 					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
 				}
 			}
-
 			enemy = nullptr;
 		}
 	}
@@ -447,12 +450,15 @@ void World::WorldChange()
 
 void World::WorldEnemyDetection()
 {
-	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
+	if (app->entityManager->enemies.Count() > 0)
 	{
-		if (app->entityManager->enemies[i]->active, collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
-			AsignPrevPosition();
-			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
+			if (app->entityManager->enemies[i]->active, collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+			{
+				AsignPrevPosition();
+				app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
+			}
 		}
 	}
 }
@@ -478,76 +484,107 @@ bool World::CollisionSolver(iPoint prevPos)
 void World::ChangePlayerState()
 {
 	playerState = PlayerState::IDLE;
+	bool ford = false;
+	bool back = false;
+	bool left = false;
+	bool right = false;
+	short unsigned int directionsActive = 0;
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		playerState = PlayerState::UP;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		playerState = PlayerState::DOWN;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		playerState = PlayerState::LEFT;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		playerState = PlayerState::RIGHT;
-	}
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) ford = true;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) back = true;
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) left = true;
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) right = true;
+
+	if (ford && !back && !left && !right) playerState = PlayerState::UP;
+	if (!ford && back && !left && !right) playerState = PlayerState::DOWN;
+	if (!ford && !back && left && !right) playerState = PlayerState::LEFT;
+	if (!ford && !back && !left && right) playerState = PlayerState::RIGHT;
+	if (ford && !back && left && !right) playerState = PlayerState::UPLEFT;
+	if (ford && !back && !left && right) playerState = PlayerState::UPRIGHT;
+	if (!ford && back && left && !right) playerState = PlayerState::DOWNLEFT;
+	if (!ford && back && !left && right) playerState = PlayerState::DOWNRIGHT;
+
 }
 
 bool World::PlayerMovement()
 {
-	iPoint previousPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+	Player* p = app->scene->player1;
+	iPoint previousPosition = { p->collisionRect.x, p->collisionRect.y };
 
 	switch (playerState)
 	{
 	case(PlayerState::IDLE):
 	
-		app->scene->player1->walkDownAnim.loop = false;
-		app->scene->player1->walkDownAnim.Reset();
-		app->scene->player1->walkUpAnim.loop = false;
-		app->scene->player1->walkUpAnim.Reset();
-		app->scene->player1->walkLeftAnim.loop = false;
-		app->scene->player1->walkLeftAnim.Reset();
-		app->scene->player1->walkRightAnim.loop = false;
-		app->scene->player1->walkRightAnim.Reset();
-
+		p->walkDownAnim.loop = false;
+		p->walkDownAnim.Reset();
+		p->walkUpAnim.loop = false;
+		p->walkUpAnim.Reset();
+		p->walkLeftAnim.loop = false;
+		p->walkLeftAnim.Reset();
+		p->walkRightAnim.loop = false;
+		p->walkRightAnim.Reset();
 		break;
+
 	case(PlayerState::UP):
-		currentPlayerAnimation = &app->scene->player1->walkUpAnim;
-		app->scene->player1->walkUpAnim.loop = true;
-
-		app->scene->player1->collisionRect.y -= worldSpeed;
+		currentPlayerAnimation = &p->walkUpAnim;
+		p->walkUpAnim.loop = true;
+		p->collisionRect.y -= worldSpeed;
 		break;
+
 	case(PlayerState::DOWN):
-		LOG("player down");
-
-		currentPlayerAnimation = &app->scene->player1->walkDownAnim;
-		app->scene->player1->walkDownAnim.loop = true;
-
-		app->scene->player1->collisionRect.y += worldSpeed;
+		currentPlayerAnimation = &p->walkDownAnim;
+		p->walkDownAnim.loop = true;
+		p->collisionRect.y += worldSpeed;
 		break;
+
 	case(PlayerState::LEFT):
-		currentPlayerAnimation = &app->scene->player1->walkLeftAnim;
-		app->scene->player1->walkLeftAnim.loop = true;
-
-		app->scene->player1->collisionRect.x -= worldSpeed;
+		currentPlayerAnimation = &p->walkLeftAnim;
+		p->walkLeftAnim.loop = true;
+		p->collisionRect.x -= worldSpeed;
 		break;
-	case(PlayerState::RIGHT):
-		currentPlayerAnimation = &app->scene->player1->walkRightAnim;
-		app->scene->player1->walkRightAnim.loop = true;
 
-		app->scene->player1->collisionRect.x += worldSpeed;
+	case(PlayerState::RIGHT):
+		currentPlayerAnimation = &p->walkRightAnim;
+		p->walkRightAnim.loop = true;
+		p->collisionRect.x += worldSpeed;
+		break;
+
+	case(PlayerState::UPLEFT):
+		currentPlayerAnimation = &p->walkUpAnim;
+		p->walkUpAnim.loop = true;
+		p->collisionRect.y -= worldSpeed;
+		p->collisionRect.x -= worldSpeed;
+		break;
+
+	case(PlayerState::UPRIGHT):
+		currentPlayerAnimation = &p->walkUpAnim;
+		p->walkDownAnim.loop = true;
+		p->collisionRect.y -= worldSpeed;
+		p->collisionRect.x += worldSpeed;
+		break;
+
+	case(PlayerState::DOWNLEFT):
+		currentPlayerAnimation = &p->walkDownAnim;
+		p->walkLeftAnim.loop = true;
+		p->collisionRect.y += worldSpeed;
+		p->collisionRect.x -= worldSpeed;
+		break;
+
+	case(PlayerState::DOWNRIGHT):
+		currentPlayerAnimation = &p->walkDownAnim;
+		p->walkRightAnim.loop = true;
+		p->collisionRect.y += worldSpeed;
+		p->collisionRect.x += worldSpeed;
 		break;
 	}
 	
 	bool move = true;
 	if (!godMode) move = CollisionSolver(previousPosition);
 
-	app->scene->player1->colliderWorld.x = app->scene->player1->collisionRect.x;
-	app->scene->player1->colliderWorld.y = app->scene->player1->collisionRect.y - 56;
+	p->colliderWorld.x = p->collisionRect.x;
+	p->colliderWorld.y = p->collisionRect.y - 56;
+
+	p = nullptr;
 
 	return move;
 }
@@ -558,30 +595,54 @@ void World::CameraMovement(bool move)
 	{
 		switch (playerState)
 		{
-		case(PlayerState::IDLE): break;
+		case(PlayerState::IDLE):
 			break;
+
 		case(PlayerState::UP):
+			if (place != HOUSE) app->render->camera.y += worldSpeed;
+			break;
+
+		case(PlayerState::DOWN):
+			if (place != HOUSE) app->render->camera.y -= worldSpeed;
+			break;
+
+		case(PlayerState::LEFT):
+			if (place != TAVERN && place != HOUSE) app->render->camera.x += worldSpeed;
+			break;
+
+		case(PlayerState::RIGHT):
+			if (place != TAVERN && place != HOUSE) app->render->camera.x -= worldSpeed;
+			break;
+
+		case(PlayerState::UPLEFT):
 			if (place != HOUSE)
 			{
 				app->render->camera.y += worldSpeed;
+				if (place != TAVERN) app->render->camera.x += worldSpeed;
 			}
 			break;
-		case(PlayerState::DOWN):
+
+		case(PlayerState::UPRIGHT):
+			if (place != HOUSE)
+			{
+				app->render->camera.y += worldSpeed;
+				if (place != TAVERN) app->render->camera.x -= worldSpeed;
+			}
+			break;
+
+		case(PlayerState::DOWNLEFT):
 			if (place != HOUSE)
 			{
 				app->render->camera.y -= worldSpeed;
+				if (place != TAVERN) app->render->camera.x += worldSpeed;
 			}
 			break;
-		case(PlayerState::LEFT):
-			if (place != TAVERN && place != HOUSE)
+
+		case(PlayerState::DOWNRIGHT):
+			if (place != HOUSE)
 			{
-				app->render->camera.x += worldSpeed;
-			}
-			break;
-		case(PlayerState::RIGHT):
-			if (place != TAVERN && place != HOUSE)
-			{
-				app->render->camera.x -= worldSpeed;
+				app->render->camera.y -= worldSpeed;
+				if (place != TAVERN) app->render->camera.x -= worldSpeed;
 			}
 			break;
 		}
