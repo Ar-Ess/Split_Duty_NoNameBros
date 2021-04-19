@@ -12,6 +12,8 @@
 #define REL_CAMX_PLAYERX 612
 #define REL_CAMY_PLAYERY 318
 
+#define ENEMY_FIELD_ENEMY_MAX 3
+
 class Enemy;
 enum EnemyClass;
 class Player;
@@ -116,6 +118,8 @@ private:
     void WorldEnemySpawn();
 
     void WorldEnemyDetection();
+
+    void EnemyStatsGeneration(Enemy* enemy, Player* player);
 
     bool CollisionSolver(iPoint prevPos);
 

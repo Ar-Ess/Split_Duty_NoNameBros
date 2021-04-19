@@ -451,7 +451,14 @@ void World::WorldChange()
 
 void World::WorldEnemySpawn()
 {
-	//Player* p = app->scene->player1;
+	if (place == ENEMY_FIELD)
+	{
+		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
+		{
+			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+		}
+	}
 }
 
 void World::WorldEnemyDetection()
@@ -467,6 +474,20 @@ void World::WorldEnemyDetection()
 			}
 		}
 	}
+}
+
+void World::EnemyStatsGeneration(Enemy* e, Player* p)
+{
+	int eHealth = 0;
+	int eStrength = 0;
+	int eDefense = 0;
+	int eVelocity = 0;
+	int eLevel = 0;
+	int eExp = 0;
+	SDL_Rect combatCollider = {NULL};
+	SDL_Rect worldCollider = {NULL};
+
+	e->SetUp(combatCollider, worldCollider, eLevel, eExp, eHealth, eStrength, eDefense, eVelocity);
 }
 
 bool World::CollisionSolver(iPoint prevPos)
