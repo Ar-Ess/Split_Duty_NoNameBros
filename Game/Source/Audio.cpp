@@ -1,6 +1,6 @@
 #include "App.h"
 #include "Audio.h"
-#include "Textures.h"
+//#include "Textures.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -52,6 +52,9 @@ bool AudioManager::Awake(pugi::xml_node& config)
 	//LOADING ALL SFX
 	pugi::xml_node sFx = config.child("fx");
 	LoadAllFx(sFx);
+
+	Mix_AllocateChannels(360);
+	SetChannelAngles();
 
 	return ret;
 }
@@ -135,29 +138,23 @@ uint AudioManager::GetAngle(iPoint player, iPoint enemy)
 
 	if (angle < 0)
 		angle += 180.0f;
-	LOG("angle: %f", angle);
 
 	uint a_ret = static_cast<uint>(angle);
-	LOG("final angle: %d", a_ret);
 
 	return a_ret;
 }
 
 uint AudioManager::GetVolumeFromDistance(iPoint player, iPoint enemy)
 {
-	iPoint vec = enemy - player;
+	iPoint vec(enemy.x - player.x, enemy.y - player.y);
 	float screen_dist = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
-	LOG("screen distance: %f", screen_dist);
 
 	if (screen_dist >= MUTE_DISTANCE)
 		return uint(MUTE_DISTANCE_VOL);
 
 	float scaled_dist = screen_dist * (MUTE_DISTANCE_VOL / MAX_DISTANCE);
-	LOG("scaled distance: %f", scaled_dist);
-
 	uint volume = static_cast<uint>(scaled_dist);
 
-	LOG("volume: %d", volume);
 	if (volume > MAX_DISTANCE_VOL)
 		volume = MAX_DISTANCE_VOL;
 
