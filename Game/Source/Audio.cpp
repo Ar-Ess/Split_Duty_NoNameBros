@@ -123,6 +123,54 @@ void AudioManager::SetFx(Effect fx)
 	}
 }
 
+uint AudioManager::GetAngle(iPoint player, iPoint enemy)
+{
+	iPoint vec(enemy.x - player.x, enemy.y - player.y);
+
+	float dot = (yAxis.x * vec.x) + (yAxis.y * vec.y);
+	float det = (yAxis.x * vec.y) - (yAxis.y * vec.x);
+
+	double angle = atan2(det, dot) * RADS_TO_DEG;
+	angle += 180.0f;
+
+	if (angle < 0)
+		angle += 180.0f;
+	LOG("angle: %f", angle);
+
+	uint a_ret = static_cast<uint>(angle);
+	LOG("final angle: %d", a_ret);
+
+	return a_ret;
+}
+
+uint AudioManager::GetVolumeFromDistance(iPoint player, iPoint enemy)
+{
+	iPoint vec = enemy - player;
+	float screen_dist = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+	LOG("screen distance: %f", screen_dist);
+
+	if (screen_dist >= MUTE_DISTANCE)
+		return uint(MUTE_DISTANCE_VOL);
+
+	float scaled_dist = screen_dist * (MUTE_DISTANCE_VOL / MAX_DISTANCE);
+	LOG("scaled distance: %f", scaled_dist);
+
+	uint volume = static_cast<uint>(scaled_dist);
+
+	LOG("volume: %d", volume);
+	if (volume > MAX_DISTANCE_VOL)
+		volume = MAX_DISTANCE_VOL;
+
+	return volume;
+}
+
+void AudioManager::SetChannelAngles()
+{
+	for (int i = 0; i <= 360; i++) {
+		Mix_SetPosition(i, i, 1);
+	}
+}
+
 void AudioManager::ChangeVolumeMusic()
 {
 	if (Mix_VolumeMusic(-1) == MIX_MAX_VOLUME)
@@ -242,5 +290,29 @@ bool AudioManager::PlayFx(unsigned int id, int repeat)
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 	}
 
+	return ret;
+}
+
+bool AudioManager::PlayFxOnChannel(uint id, uint channel, uint distance, int repeat)
+{
+	bool ret = true;
+
+	if (!active)
+		return ret;
+
+	if (fx.At(id - 1) != nullptr)
+	{
+		while (Mix_Playing(channel))
+		{
+			channel++;
+			if (channel >= MAX_CHANNELS)
+				channel = 0;
+		}
+
+		Mix_SetPosition(channel, channel, distance);
+		Mix_PlayChannel(channel, fx[id - 1], repeat);
+	}
+	else
+		ret = false;
 	return ret;
 }
