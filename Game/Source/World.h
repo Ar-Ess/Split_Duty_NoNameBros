@@ -12,7 +12,9 @@
 #define REL_CAMX_PLAYERX 612
 #define REL_CAMY_PLAYERY 318
 
-#define ENEMY_FIELD_ENEMY_MAX 3
+#define ENEMY_FIELD_ENEMY_MAX 7
+
+#define ENEMY_SPEED 5
 
 class Enemy;
 enum EnemyClass;
@@ -61,9 +63,11 @@ public:
 
     void Start(Places place);
 
-    void Restart();
+    void Restart(Scenes scene);
 
     void Update();
+
+    void EnemyLogic();
 
     void Draw();
 
@@ -118,6 +122,8 @@ private:
     void WorldEnemySpawn();
 
     void WorldEnemyDetection();
+
+    void WorldEnemyChasing();
 
     void EnemyStatsGeneration(Enemy* enemy, Player* player);
 

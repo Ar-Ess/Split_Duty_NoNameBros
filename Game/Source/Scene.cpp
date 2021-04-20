@@ -64,15 +64,15 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
-	app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
+	//app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
+	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
 
-	//ENEMY SET                                          ENEMY CLASS           -----------------COMBAT RECT----------------        ---WORLD RECT---  LVL EXP  HP STR DEF  VEL
-	app->entityManager->enemies.start->data->SetUp({ INIT_SMALLWOLF_POSX, INIT_SMALLWOLF_POSY, 86, 44 }, {1000, 180, 70, 42}, 2, 200, 25, 15, 10, 20);
+	////ENEMY SET                                            -----------------COMBAT RECT----------------                        ---WORLD RECT---              LVL EXP  HP STR DEF  VEL
+	//app->entityManager->enemies.start->data->SetUp({ SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H }, {1000, 180, SMALLWOLF_W_W, SMALLWOLF_W_H}, 2, 200, 25, 15, 10, 20);
 
-	app->entityManager->enemies.start->next->data->SetUp( { INIT_BIRD_POSX, INIT_BIRD_POSY, 40, 75 }, { 1200, 180, 70, 42 }, 2, 400, 30, 15, 15, 40);
-	app->entityManager->enemies.start->next->next->data->SetUp( { INIT_MANTIS_POSX, INIT_MANTIS_POSY, 56, 75 }, { 1400, 180, 70, 42 }, 2, 400, 40, 20, 5, 20);
+	//app->entityManager->enemies.start->next->data->SetUp( { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H }, { 1200, 180, BIRD_W_W, BIRD_W_H}, 2, 400, 30, 15, 15, 40);
+	//app->entityManager->enemies.start->next->next->data->SetUp( { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H }, { 1400, 180, MANTIS_W_W, MANTIS_W_H }, 2, 400, 40, 20, 5, 20);
 
 	if (FILE* file = fopen("save_game.xml", "r"))
 	{
@@ -134,6 +134,8 @@ bool Scene::Update(float dt)
 	}
 	*/
 
+	//LOG("X:%d Y:%d", player1->colliderWorld.x, player1->colliderWorld.y);
+
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == OPTIONS_MENU) UpdateOptionsMenu();
@@ -149,7 +151,7 @@ bool Scene::PostUpdate()
 {
 	app->win->FullScreenLogic();
 
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -159,7 +161,7 @@ bool Scene::PostUpdate()
 	return !exit;
 }
 
-bool Scene::CleanUp()
+bool Scene::CleanUp(Scenes nextScene)
 {
 	LOG("Freeing scene");
 
@@ -185,7 +187,7 @@ bool Scene::CleanUp()
 	}
 	else if (currScene == WORLD)
 	{
-		world->Restart();
+		world->Restart(nextScene);
 	}
 	else if (currScene == PAUSE_MENU)
 	{
@@ -198,7 +200,7 @@ bool Scene::CleanUp()
 
 void Scene::SetScene(Scenes scene)
 {
-	CleanUp();
+	CleanUp(scene);
 
 	prevScene = currScene;
 	currScene = scene;
@@ -214,7 +216,7 @@ void Scene::SetScene(Scenes scene)
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
 {
-	CleanUp();
+	CleanUp(scene);
 
 	prevScene = currScene;
 	currScene = scene;
@@ -230,7 +232,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 
 void Scene::SetScene(Scenes scene, Places place)
 {
-	CleanUp();
+	CleanUp(scene);
 
 	prevScene = currScene;
 	currScene = scene;
@@ -246,7 +248,7 @@ void Scene::SetScene(Scenes scene, Places place)
 
 void Scene::SetScene(Scenes scene, unsigned short int exp)
 {
-	CleanUp();
+	CleanUp(scene);
 
 	prevScene = currScene;
 	currScene = scene;
@@ -799,6 +801,13 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "OptionsPauseButton") == 0) SetScene(OPTIONS_MENU);
 		else if (strcmp(control->text.GetString(), "BackToMenuButton") == 0)
 		{
+			ListItem<Enemy*>* item = app->entityManager->enemies.start;
+			while (item != NULL)
+			{
+				RELEASE(item->data);
+				item = item->next;
+			}
+			app->entityManager->enemies.Clear();
 			SetScene(MAIN_MENU);
 			app->audio->ChangeVolumeMusic();
 		}

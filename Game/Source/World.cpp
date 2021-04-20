@@ -174,7 +174,7 @@ void World::Start(Places placex)
 	p = nullptr;
 }
 
-void World::Restart()
+void World::Restart(Scenes scene)
 {
 	map->CleanUp();
 
@@ -201,12 +201,23 @@ void World::Restart()
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	
-	ListItem<NPC*>* item = app->entityManager->NPCs.start;
-	while (item != NULL)
+	if (scene == WORLD)
 	{
-		item->data->Delete();
-		RELEASE(item->data);
-		item = item->next;
+		ListItem<Enemy*>* item = app->entityManager->enemies.start;
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		app->entityManager->enemies.Clear();
+	}
+
+	ListItem<NPC*>* item1 = app->entityManager->NPCs.start;
+	while (item1 != NULL)
+	{
+		item1->data->Delete();
+		RELEASE(item1->data);
+		item1 = item1->next;
 	}
 	app->entityManager->NPCs.Clear();
 }
@@ -217,9 +228,20 @@ void World::Update()
 
 	WorldChange();
 
-	WorldEnemyDetection();
+	EnemyLogic();
 
 	NPCLogic();
+}
+
+void World::EnemyLogic()
+{
+	WorldEnemySpawn();
+
+	if (app->entityManager->enemies.Count() > 0)
+	{
+		WorldEnemyChasing();
+		WorldEnemyDetection();
+	}
 }
 
 void World::Draw()
@@ -309,12 +331,8 @@ void World::DrawCollisions()
 			Enemy* enemy = app->entityManager->enemies[i];
 			if (enemy->active)
 			{
-				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
-				{
-					app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
-					app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
-				}
-				
+				app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
+				app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
 			}
 			enemy = nullptr;
 		}
@@ -410,8 +428,8 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
-				app->scene->player1->colliderWorld = { 2380, 825, PLAYER_WORLD_WIDTH, 84 };
-				app->scene->player1->collisionRect = { 2380, 825 + 56, PLAYER_WORLD_WIDTH, 84 - 56 };
+				app->scene->player1->colliderWorld = { 2380, 825, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				app->scene->player1->collisionRect = { 2380, 825 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
@@ -463,29 +481,84 @@ void World::WorldEnemySpawn()
 
 void World::WorldEnemyDetection()
 {
-	if (app->entityManager->enemies.Count() > 0)
+	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 	{
+		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+		{
+			AsignPrevPosition();
+			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
+			return;
+		}
+	}
+}
+
+void World::WorldEnemyChasing()
+{
+	if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, { 196, 168, 1120, 1512 }))
+	{
+		Player* p = app->scene->player1;
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
-			if (app->entityManager->enemies[i]->active, collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+			Enemy* e = app->entityManager->enemies[i];
+			if (p->collisionRect.x - e->colliderRect.x > 0)
 			{
-				AsignPrevPosition();
-				app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
+				e->colliderRect.x += ENEMY_SPEED;
+				e->colliderWorld.x += ENEMY_SPEED;
 			}
+			else if (p->collisionRect.x - e->colliderRect.x < 0)
+			{
+				e->colliderRect.x -= ENEMY_SPEED;
+				e->colliderWorld.x -= ENEMY_SPEED;
+			}
+
+			if (p->collisionRect.y - e->colliderRect.y > 0)
+			{
+				e->colliderRect.y += ENEMY_SPEED;
+				e->colliderWorld.y += ENEMY_SPEED;
+			}
+			else if (p->collisionRect.y - e->colliderRect.y < 0)
+			{
+				e->colliderRect.y -= ENEMY_SPEED;
+				e->colliderWorld.y -= ENEMY_SPEED;
+			}
+
+			e = nullptr;
 		}
 	}
 }
 
 void World::EnemyStatsGeneration(Enemy* e, Player* p)
 {
-	int eHealth = 0;
-	int eStrength = 0;
-	int eDefense = 0;
-	int eVelocity = 0;
-	int eLevel = 0;
-	int eExp = 0;
-	SDL_Rect combatCollider = {NULL};
-	SDL_Rect worldCollider = {NULL};
+	int eHealth = p->maxHealth;
+	int eStrength = p->strength;
+	int eDefense = p->defense;
+	int eVelocity = 10;
+	int eLevel = p->lvl + 1;
+	int eExp = 200;
+
+	SDL_Rect combatCollider = { NULL };
+	SDL_Rect worldCollider = { NULL };
+
+	switch(e->GetClass())
+	{
+	case EnemyClass::SMALL_WOLF:
+		combatCollider = { SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H };
+		worldCollider = {0, 0, SMALLWOLF_W_W, SMALLWOLF_W_H};
+		break;
+
+	case EnemyClass::BIRD:
+		combatCollider = { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H };
+		worldCollider = { 0, 0, BIRD_W_W, BIRD_W_H };
+		break;
+
+	case EnemyClass::MANTIS:
+		combatCollider = { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H };
+		worldCollider = { 0, 0, MANTIS_W_W , MANTIS_W_H };
+		break;
+	}
+
+	worldCollider.x = 196 + (rand() % 1121);
+	worldCollider.y = 168 + (rand() % 1513);
 
 	e->SetUp(combatCollider, worldCollider, eLevel, eExp, eHealth, eStrength, eDefense, eVelocity);
 }

@@ -96,6 +96,10 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
 
 Enemy::~Enemy()
 {
+    for (int i = 0; i < 5; i++)
+    {
+        if (bullet[i].bulletSpritesheet != nullptr) app->tex->UnLoad(bullet[i].bulletSpritesheet);
+    }
 }
 
 void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
@@ -123,7 +127,7 @@ void Enemy::Jump()
     }
     else
     {
-        colliderCombat.y = INIT_SMALLWOLF_POSY;
+        colliderCombat.y = SMALLWOLF_C_Y;
         jumpTime = 0;
     }
 }
@@ -138,7 +142,7 @@ void Enemy::HighJump()
     }
     else
     {
-        colliderCombat.y = INIT_MANTIS_POSY;
+        colliderCombat.y = MANTIS_C_Y;
         jumpTime = 0;
     }
 }
@@ -358,7 +362,7 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
         if (colliderCombat.x + colliderCombat.w < 0)
         {
             colliderCombat.x = 1280;
-            colliderCombat.y = INIT_BIRD_POSY;
+            colliderCombat.y = BIRD_C_Y;
         }
     }
     else if (typeOfAttack == 2)
@@ -400,7 +404,7 @@ void Enemy::BirdAttack(unsigned short int typeOfAttack)
         if (colliderCombat.x + colliderCombat.w < 0)
         {
             colliderCombat.x = 1280;
-            colliderCombat.y = INIT_BIRD_POSY;
+            colliderCombat.y = BIRD_C_Y;
         }
     }
 }
@@ -462,7 +466,7 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
         }
         else if (mantisTimeAttack2 == 242)
         {
-            colliderCombat.y = INIT_MANTIS_POSY;
+            colliderCombat.y = MANTIS_C_Y;
             colliderCombat.x += 22;
         }
         else if (mantisTimeAttack2 > 242 && mantisTimeAttack2 < 270)
@@ -473,7 +477,7 @@ void Enemy::MantisAttack(unsigned short int typeOfAttack)
 
             colliderCombat.x += move;
         }
-        else if (mantisTimeAttack2 == 270) colliderCombat.x = INIT_MANTIS_POSX;
+        else if (mantisTimeAttack2 == 270) colliderCombat.x = MANTIS_C_X;
     }
     else if (typeOfAttack == 3)
     {
@@ -513,4 +517,9 @@ void Enemy::MantisAttack1Logic(unsigned short int timer)
 
     if (jumping) HighJump();
     else if (jumping) jumpTime = 0;
+}
+
+void Enemy::Refill()
+{
+    health = maxHealth;
 }

@@ -8,12 +8,6 @@
 
 #include "Collider.h"
 
-#define INIT_SMALLWOLF_POSX 988
-#define INIT_SMALLWOLF_POSY 444 
-#define INIT_BIRD_POSX 1011
-#define INIT_BIRD_POSY 350
-#define INIT_MANTIS_POSX 1004
-#define INIT_MANTIS_POSY 413
 #define INIT_GROUND_POSY 444
 
 #define MAX_MEAT 10

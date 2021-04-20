@@ -53,7 +53,7 @@ public:
 
 	bool PostUpdate();
 
-	bool CleanUp();
+	bool CleanUp(Scenes scene);
 
 	Scenes GetCurrScene() const
 	{

@@ -14,6 +14,27 @@
 #define SPRITE_TILE_WIDTH 154
 #define SPRITE_TILE_HEIGHT 141
 
+#define SMALLWOLF_W_W 70
+#define SMALLWOLF_W_H 42
+#define SMALLWOLF_C_X 988
+#define SMALLWOLF_C_Y 444
+#define SMALLWOLF_C_W 86
+#define SMALLWOLF_C_H 44 
+
+#define BIRD_W_W 70
+#define BIRD_W_H 42
+#define BIRD_C_X 1011
+#define BIRD_C_Y 350
+#define BIRD_C_W 40
+#define BIRD_C_H 75
+
+#define MANTIS_W_W 70
+#define MANTIS_W_H 42
+#define MANTIS_C_X 1004
+#define MANTIS_C_Y 413
+#define MANTIS_C_W 56
+#define MANTIS_C_H 75
+
 struct SDL_Rect;
 struct Animation;
 struct SDL_Texture;
@@ -31,11 +52,7 @@ struct MantisBullet
     MantisBullet()
     {
         bulletRect = { 1004, 440, 40, 65 };
-        
-        
-        //bulletSpritesheet = nullptr;
-        
-            bulletSpritesheet=app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_acid_bullet.png");
+        bulletSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_acid_bullet.png");
     }
 
     SDL_Rect bulletRect;
@@ -54,26 +71,16 @@ struct MantisBullet
     void Update()
     {
         if (active) bulletRect.x -= 9;
-        
-        
-   
     }
 
     void Draw()
     {
-        if (active)
-        {
-            
-            app->render->DrawTexture(bulletSpritesheet, bulletRect.x - 40, bulletRect.y-20, 3.6f, &sprite,false);
-        }
+        if (active) app->render->DrawTexture(bulletSpritesheet, bulletRect.x - 40, bulletRect.y-20, 3.6f, &sprite,false);
     }
 
     void DebugDraw()
     {
-        if (active)
-        {
-            app->render->DrawRectangle(bulletRect, { 20, 100, 181, 100 });
-        }
+        if (active) app->render->DrawRectangle(bulletRect, { 20, 100, 181, 100 });
     }
 };
 
@@ -101,6 +108,8 @@ public:
     void MantisAttack1Logic(unsigned short int timer);
 
     void MantisBulletShoot();
+
+    void Refill();
 
     EnemyClass GetClass() const
     {

@@ -6,6 +6,7 @@
 #include "GuiButton.h"
 #include "GuiString.h"
 #include "World.h"
+#include "EntityManager.h"
 
 #include "Combat.h"
 #include "Enemy.h"
@@ -456,10 +457,29 @@ void Combat::CombatLogic()
 
 void Combat::EndBattleSolving()
 {
-	if (playerWin) app->scene->SetScene(LEVEL_UP, enemy->exp);
-	else if (playerLose) app->scene->SetScene(MAIN_MENU);
-	else if (playerSplitWin) app->scene->SetScene(LEVEL_UP);
-	else if (playerEscaped) app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+	if (playerWin)
+	{
+		short int experience = enemy->exp;
+		short int id = app->entityManager->enemies.Find(enemy);
+		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+		app->scene->SetScene(LEVEL_UP, experience);
+	}
+	else if (playerLose)
+	{
+		enemy->Refill();
+		app->scene->SetScene(MAIN_MENU);
+	}
+	else if (playerSplitWin)
+	{
+		short int id = app->entityManager->enemies.Find(enemy);
+		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+		app->scene->SetScene(LEVEL_UP);
+	}
+	else if (playerEscaped)
+	{
+		enemy->Refill();
+		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+	}
 }
 
 void Combat::BoolStart()
@@ -650,7 +670,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->smallWolfTimeAttack1 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
+				enemy->colliderCombat.x = SMALLWOLF_C_X;
 				playerHitAble = true;
 
 				AfterEnemyAttack();
@@ -671,7 +691,7 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->smallWolfTimeAttack2 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_SMALLWOLF_POSX;
+				enemy->colliderCombat.x = SMALLWOLF_C_X;
 				playerHitAble = true;
 
 				AfterEnemyAttack();
@@ -692,8 +712,8 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->birdTimeAttack1 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_BIRD_POSX;
-				enemy->colliderCombat.y = INIT_BIRD_POSY;
+				enemy->colliderCombat.x = BIRD_C_X;
+				enemy->colliderCombat.y = BIRD_C_Y;
 				playerHitAble = true;
 
 				AfterEnemyAttack();
@@ -711,8 +731,8 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 			{
 				enemy->birdTimeAttack2 = 0;
 				enemyTimeWait = 0;
-				enemy->colliderCombat.x = INIT_BIRD_POSX;
-				enemy->colliderCombat.y = INIT_BIRD_POSY;
+				enemy->colliderCombat.x = BIRD_C_X;
+				enemy->colliderCombat.y = BIRD_C_Y;
 				playerHitAble = true;
 
 				AfterEnemyAttack();
