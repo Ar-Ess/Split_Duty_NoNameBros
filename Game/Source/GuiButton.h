@@ -13,7 +13,8 @@ public:
     virtual ~GuiButton();
 
     bool Update(float dt);
-    bool Draw(float scale = 1, bool useCamera = true);
+    bool Draw(float scale = 1, bool useCamera = true, bool drawTexture = true);
+    void ChangeTexture(const char* path);
 
 private:
     //Texture sections
@@ -22,7 +23,7 @@ private:
     const SDL_Rect Focused = { 162, 720, 162, 60 };
     const SDL_Rect Pressed = { 162 *2, 720, 162, 60 };
     const SDL_Rect Locked = { 162 * 3, 720, 162, 60 };
-    
+    SDL_Texture* texture = nullptr;
 };
 
 #endif // __GUIBUTTON_H__

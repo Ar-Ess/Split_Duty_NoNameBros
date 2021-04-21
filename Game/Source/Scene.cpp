@@ -388,7 +388,6 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
-		itemButton->state = GuiControlState::LOCKED;
 	}
 
 	if (escapeButton == nullptr)
@@ -432,54 +431,56 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->state = GuiControlState::LOCKED;
 	}
 
-	//if (smallMeatButton == nullptr)
-	//{
-	//	smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	smallMeatButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	smallMeatButton->text = "ItemButton";
-	//	smallMeatButton->SetObserver(this);
-	//}
+	// INVENTORY BUTTONS
+	if (smallMeatButton == nullptr)
+	{
+		smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		smallMeatButton->bounds = { 354, 239, 91, 91 };
+		smallMeatButton->text = "SmallMeatButton";
+		smallMeatButton->SetObserver(this);
+	}
 
-	//if (largeMeatButton == nullptr)
-	//{
-	//	largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	largeMeatButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	largeMeatButton->text = "EscapeButton";
-	//	largeMeatButton->SetObserver(this);
-	//}
+	if (largeMeatButton == nullptr)
+	{
+		largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		largeMeatButton->bounds = { 354 + (96 * 1), 239, 91, 91 };
+		largeMeatButton->text = "LargeMeatButton";
+		largeMeatButton->SetObserver(this);
+	}
 
-	//if (featherButton == nullptr)
-	//{
-	//	featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	featherButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	featherButton->text = "SplitButton";
-	//	featherButton->SetObserver(this);
-	//}
+	if (featherButton == nullptr)
+	{
+		featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		featherButton->bounds = { 354 + (96 * 2), 239, 91, 91 };
+		featherButton->text = "FeatherButton";
+		featherButton->SetObserver(this);
+	}
 
-	//if (mantisButton == nullptr)
-	//{
-	//	mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	mantisButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	mantisButton->text = "SecondAttackButton";
-	//	mantisButton->SetObserver(this);
-	//}
+	if (mantisButton == nullptr)
+	{
+		mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		mantisButton->bounds = { 354 + (96 * 3), 239, 91, 91 };
+		mantisButton->text = "MantisButton";
+		mantisButton->SetObserver(this);
+	}
 
-	//if (enemySplitButton == nullptr)
-	//{
-	//	enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	enemySplitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	enemySplitButton->text = "ProtecteButton";
-	//	enemySplitButton->SetObserver(this);
-	//}
+	if (enemySplitButton == nullptr)
+	{
+		enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		enemySplitButton->bounds = { 354 + (96 * 4), 239, 91, 91 };
+		enemySplitButton->text = "EnemySplitButton";
+		enemySplitButton->SetObserver(this);
+	}
 
-	//if (moneyButton == nullptr)
-	//{
-	//	moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-	//	moneyButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-	//	moneyButton->text = "BuffButton";
-	//	moneyButton->SetObserver(this);
-	//}
+	if (moneyButton == nullptr)
+	{
+		moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		moneyButton->bounds = { 354 + (96 * 5), 239, 91, 91 };
+		moneyButton->text = "MoneyButton";
+		moneyButton->SetObserver(this);
+	}
 
+	// TEXTS
 	if (attackText == nullptr)
 	{
 		attackText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
@@ -781,6 +782,12 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "SecondAttackButton") == 0) secondAttackPressed = true;
 		else if (strcmp(control->text.GetString(), "ProtectButton") == 0) protectPressed = true;
 		else if (strcmp(control->text.GetString(), "BuffButton") == 0) buffPressed = true;
+		else if (strcmp(control->text.GetString(), "SmallMeatButton") == 0) smallMeatPressed = true;
+		else if (strcmp(control->text.GetString(), "LargeMeatButton") == 0) largeMeatPressed = true;
+		else if (strcmp(control->text.GetString(), "FeatherButton") == 0) featherPressed = true;
+		else if (strcmp(control->text.GetString(), "MantisButton") == 0) mantisPressed = true;
+		else if (strcmp(control->text.GetString(), "EnemySplitButton") == 0) enemySplitPressed = true;
+		else if (strcmp(control->text.GetString(), "MoneyButton") == 0) moneyPressed = true;
 		break;
 
 	case PAUSE_MENU:
@@ -827,6 +834,12 @@ void Scene::RestartPressState()
 	secondAttackPressed = false;
 	protectPressed = false;
 	buffPressed = false;
+	smallMeatPressed = false;
+	largeMeatPressed = false;
+	featherPressed = false;
+	mantisPressed = false;
+	enemySplitPressed = false;
+	moneyPressed = false;
 }
 
 // Debug functions (future in debug module)

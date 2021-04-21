@@ -160,6 +160,16 @@ void Player::SetTexture(SDL_Texture *tex)
     texture = tex;
 }
 
+void Player::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
+{
+    smallMeatCount = xsmallMeat;
+    largeMeatCount = xlargeMeat;
+    featherCount = xfeather;
+    mantisRodCount = xmantisLeg;
+    splitedEnemyCount = xsplitedEnemy;
+    moneyCount = xmoney;
+}
+
 void Player::Jump()
 {
     if (jumpTime < 34)

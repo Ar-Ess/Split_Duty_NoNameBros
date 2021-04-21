@@ -47,6 +47,12 @@ public:
 
     void Update();
 
+    void UpdateButtons();
+
+    void UpdatePopUps();
+
+    void CombatLogic();
+
     void Draw();
 
     void DrawPlayer();
@@ -66,8 +72,6 @@ public:
     void DrawText();
 
     void FirstTurnLogic();
-
-    void CombatLogic();
 
     void EndBattleSolving();
 
@@ -163,6 +167,7 @@ public:
     short int playerTimeWearFeather = 0;
     short int playerTimeWearLeg = 0;
     short int playerTimeEnemyThrow = 0;
+    short int playerTimeMoneyThrow = 0;
     short int playerTimeSplit = 0;
     short int playerTimeEscape = 0;
 
@@ -196,6 +201,7 @@ public:
     bool protectPlayerTurn = false;
     bool secondPlayerProtection = false;
     bool enemyThrow = false;
+    bool moneyThrow = false;
 
 //Player 2 Choices
     bool secondPlayerAttack = false;
@@ -256,8 +262,6 @@ public:
 
     CombatState combatState = NULL_STATE;
 
-    SDL_Rect inventorySimulation = {192, 108, 896, 504};
-
     bool debugCombat = false;
 
 private:
@@ -271,6 +275,8 @@ private:
     SDL_Texture* grassyLandsBackground = nullptr;
     SDL_Texture* autummFallsBackground = nullptr;
     SDL_Texture* mossyLandsBackground = nullptr;
+
+    SDL_Texture* combatInventory = nullptr;
 
 };
 

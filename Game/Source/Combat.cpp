@@ -23,12 +23,16 @@ Combat::Combat()
 	secondPlayer = false;
 }
 
+// START
+
 void Combat::Start()
 {
+	Player* p = app->scene->player1;
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
 	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/Second_Player/second_player.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
+	combatInventory = app->tex->Load("Assets/Screens/combat_inventory.png");
 
 	switch (enemy->enemyClass)
 	{
@@ -43,10 +47,10 @@ void Combat::Start()
 	}
 
 	//Idle Animation Set
-	currentPlayerAnim = &app->scene->player1->cIdleAnim;
+	currentPlayerAnim = &p->cIdleAnim;
+	currentEnemyAnim = &enemy->idleAnim;
 
 	//Item Inventory amount
-	Player* p = app->scene->player1;
 	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
 
 	//Bool preparation for combat
@@ -56,7 +60,7 @@ void Combat::Start()
 	FirstTurnLogic();
 
 	//LuckArray fill
-	int pLuck = app->scene->player1->luck;
+	int pLuck = p->luck;
 	if (pLuck > 0)
 	{
 		for (int i = 0; i < 100; i++)
@@ -68,11 +72,7 @@ void Combat::Start()
 		}
 	}
 
-	LOG("P1H: %d", app->scene->player1->health);
-	if (secondPlayer) LOG("P2H: %d", app->scene->player2->health);
-	LOG("EH: %d", enemy->health);
-	
-	currentEnemyAnim = &enemy->idleAnim;
+	p = nullptr;
 }
 
 void Combat::Restart()
@@ -84,213 +84,52 @@ void Combat::Restart()
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
+	app->tex->UnLoad(combatInventory);
 
 	PlayerPosReset();
 	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
 	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 }
 
-void Combat::Update()
+void Combat::BoolStart()
 {
-	if (combatState != SECOND_PLAYER_TURN)
-	{
-		app->scene->moveButton->Update(0.0f);
-		app->scene->itemButton->Update(0.0f);
-	}
+	// Player 1
+	playerAttack = false;
+	playerItem = false;
+	playerStep = false;
+	playerSplit = false;
+	playerResponseAble = true;
+	playerHitAble = true;
+	playerChoice = true;
+	steps = 0;
 
-	app->scene->attackButton->Update(0.0f);
-	app->scene->escapeButton->Update(0.0f);
-	app->scene->splitButton->Update(0.0f);
+	itemChoice = true;
+	healPlayerSmall = false;
+	healPlayerLarge = false;
+	featherPlayerTurn = false;
+	protectPlayerTurn = false;
+	enemyThrow = false;
 
-	if (combatState != PLAYER_TURN)
-	{
-		app->scene->secondAttackButton->Update(0.0f);
-		app->scene->protectButton->Update(0.0f);
-		app->scene->buffButton->Update(0.0f);
-	}
+	// Player 2
+	secondPlayerAttack = false;
+	secondPlayerProtect = false;
+	secondPlayerBuff = false;
+	secondPlayerChoice = true;
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->Update(0.0f);
+	secondPlayerAttack = false;
+	secondPlayerProtect = false;
+	secondPlayerBuff = false;
+	drawBuffMenu = false;
 
-	currentPlayerAnim->Update(1.0f);
+	//Items
+	wearFeather = false;
+	wearMantisLeg = false;
 
-	CombatLogic();
-
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
-	else
-	{
-		app->scene->splitButton->state = GuiControlState::LOCKED;
-	}
-}
-
-void Combat::Draw()
-{
-	DrawBakcground();
-
-	if (debugCombat) DebugDraw();
-
-	DrawPlayer();
-
-	if (secondPlayer) DrawSecondPlayer();
-
-	DrawEnemy();
-
-	app->guiManager->DrawCombatInterface(enemy);
-
-	DrawPopUps();
-
-	DrawButtons();
-
-	DrawText();
-
-	app->guiManager->DrawCursor();
-}
-
-void Combat::DrawPlayer()
-{
-	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
-	{
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
-	}
-	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
-	{
-		switch (steps)
-		{
-		case(0):
-			
-			break;
-		case(1):
-			
-			break;
-		case(2):
-			
-			break;
-		case(3):
-			
-			break;
-		default:
-			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
-			break;
-		}
-	}
-	else
-		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
-}
-
-void Combat::DebugDraw()
-{
-	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
-	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
-	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
-	//BULLETS
-	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
-}
-
-void Combat::DrawSecondPlayer()
-{
-	currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
-	currentSecondPlayerAnim->Update(1.0f);
-	app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
-}
-
-void Combat::DrawEnemy()
-{
-	if (currentEnemyAnim != nullptr)
-	{
-		currentEnemyAnim->Update(1.0f);
-
-		if (enemy->enemyClass == EnemyClass::MANTIS)
-		{
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 3, &currentEnemyAnim->GetCurrentFrame(), false);
-			for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
-		}
-		else if (enemy->enemyClass == EnemyClass::BIRD)
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 38, enemy->colliderCombat.y - 15, 3.5, &currentEnemyAnim->GetCurrentFrame(), false);
-		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
-			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
-	}
-}
-
-void Combat::DrawBakcground()
-{
-	switch (app->scene->enviroment)
-	{
-		case GRASSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-		break;
-
-		case AUTUM_FALLS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
-
-		case MOSSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
-	}
-}
-
-void Combat::DrawPopUps()
-{
-	//INVENTORY
-	if (drawInventory) app->render->DrawRectangle(inventorySimulation, { 0, 255, 100, 50 });
-
-	//BUFFS MENU
-}
-
-void Combat::DrawButtons()
-{
-	if (!secondPlayer)
-	{
-		if (combatState != ENEMY_TURN)
-		{
-			app->scene->attackButton->Draw();
-			app->scene->moveButton->Draw();
-			app->scene->itemButton->Draw();
-			app->scene->escapeButton->Draw();
-			app->scene->splitButton->Draw();
-
-			app->scene->attackText->Draw();
-			app->scene->moveText->Draw();
-			app->scene->itemsText->Draw();
-			app->scene->escapeText->Draw();
-			app->scene->splitText->Draw();
-		}
-	}
-	else if (secondPlayer)
-	{
-		if (combatState != ENEMY_TURN)
-		{
-			if (combatState == PLAYER_TURN)
-			{
-				app->scene->attackButton->Draw();
-				app->scene->moveButton->Draw();
-				app->scene->itemButton->Draw();
-
-				app->scene->attackText->Draw();
-				app->scene->moveText->Draw();
-				app->scene->itemsText->Draw();
-			}
-			else if (combatState == SECOND_PLAYER_TURN)
-			{
-				app->scene->attackButton->Draw();
-				app->scene->protectButton->Draw();
-				app->scene->buffButton->Draw();
-
-				app->scene->attackText->Draw();
-				app->scene->protectText->Draw();
-				app->scene->buffText->Draw();
-			}
-
-			app->scene->escapeButton->Draw();
-			app->scene->splitButton->Draw();
-			app->scene->escapeText->Draw();
-			app->scene->splitText->Draw();
-		}
-	}
-}
-
-void Combat::DrawText()
-{
-	turnText->Draw();
+	// END BATTLE BOOLS
+	playerEscaped = false;
+	playerWin = false;
+	playerLose = false;
+	playerSplitWin = false;
 }
 
 void Combat::FirstTurnLogic()
@@ -305,6 +144,60 @@ void Combat::FirstTurnLogic()
 		playerChoice = true;
 		combatState = PLAYER_TURN;
 		turnText->SetString("PLAYER TURN");
+	}
+}
+
+// UPDATE
+
+void Combat::Update()
+{
+	if (!drawInventory) UpdateButtons();
+
+	UpdatePopUps();
+
+	currentPlayerAnim->Update(1.0f);
+	currentEnemyAnim->Update(1.0f);
+
+	CombatLogic();
+
+	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
+	else app->scene->splitButton->state = GuiControlState::LOCKED;
+}
+
+void Combat::UpdateButtons()
+{
+	Scene* s = app->scene;
+	if (combatState != SECOND_PLAYER_TURN)
+	{
+		s->moveButton->Update(0.0f);
+		s->itemButton->Update(0.0f);
+	}
+
+	s->attackButton->Update(0.0f);
+	s->escapeButton->Update(0.0f);
+	s->splitButton->Update(0.0f);
+
+	if (combatState != PLAYER_TURN)
+	{
+		s->secondAttackButton->Update(0.0f);
+		s->protectButton->Update(0.0f);
+		s->buffButton->Update(0.0f);
+	}
+	s = nullptr;
+}
+
+void Combat::UpdatePopUps()
+{
+	if (drawInventory)
+	{
+		Scene* s = app->scene;
+		s->smallMeatButton->Update(1.0f);
+		s->largeMeatButton->Update(1.0f);
+		s->featherButton->Update(1.0f);
+		s->mantisButton->Update(1.0f);
+		s->enemySplitButton->Update(1.0f);
+		s->moneyButton->Update(1.0f);
+		s = nullptr;
 	}
 }
 
@@ -424,7 +317,6 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == WIN)
 	{
-		ItemDrop(enemy->enemyClass);
 		playerWin = true;
 		enemy->active = false;
 	}
@@ -458,10 +350,196 @@ void Combat::CombatLogic()
 	}
 }
 
+// DRAW
+
+void Combat::Draw()
+{
+	DrawBakcground();
+
+	if (debugCombat) DebugDraw();
+
+	DrawPlayer();
+
+	if (secondPlayer) DrawSecondPlayer();
+
+	DrawEnemy();
+
+	app->guiManager->DrawCombatInterface(enemy);
+
+	DrawButtons();
+
+	DrawText();
+
+	DrawPopUps();
+
+	app->guiManager->DrawCursor();
+}
+
+void Combat::DrawPlayer()
+{
+	if (currentPlayerAnim == &app->scene->player1->cCrouchAnim)
+	{
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+	}
+	else if (currentEnemyAnim == &app->scene->player1->cAttackAnim)
+	{
+		switch (steps)
+		{
+		case(0):
+			
+			break;
+		case(1):
+			
+			break;
+		case(2):
+			
+			break;
+		case(3):
+			
+			break;
+		default:
+			app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, 400 - 52, &currentPlayerAnim->GetCurrentFrame());
+			break;
+		}
+	}
+	else
+		app->render->DrawTexture(character1Spritesheet, app->scene->player1->colliderCombat.x - 29, app->scene->player1->colliderCombat.y - 52, &currentPlayerAnim->GetCurrentFrame());
+}
+
+void Combat::DebugDraw()
+{
+	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
+	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
+	//BULLETS
+	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+}
+
+void Combat::DrawSecondPlayer()
+{
+	currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
+	currentSecondPlayerAnim->Update(1.0f);
+	app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
+}
+
+void Combat::DrawEnemy()
+{
+	if (currentEnemyAnim != nullptr)
+	{
+		if (enemy->enemyClass == EnemyClass::MANTIS)
+		{
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 3, &currentEnemyAnim->GetCurrentFrame(), false);
+			for (int i = 0; i < 5; i++) enemy->bullet[i].Draw();
+		}
+		else if (enemy->enemyClass == EnemyClass::BIRD)
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 38, enemy->colliderCombat.y - 15, 3.5, &currentEnemyAnim->GetCurrentFrame(), false);
+		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
+			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
+	}
+}
+
+void Combat::DrawBakcground()
+{
+	switch (app->scene->enviroment)
+	{
+		case GRASSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+		break;
+
+		case AUTUM_FALLS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+
+		case MOSSY_LANDS:
+			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
+			break;
+	}
+}
+
+void Combat::DrawPopUps()
+{
+	//INVENTORY
+	if (drawInventory)
+	{
+		Scene* s = app->scene;
+		app->render->DrawTexture(combatInventory, 0, -20, 1, false);
+		s->smallMeatButton->Draw(1, true, false);
+		s->largeMeatButton->Draw(1, true, false);
+		s->featherButton->Draw(1, true, false);
+		s->mantisButton->Draw(1, true, false);
+		s->enemySplitButton->Draw(1, true, false);
+		s->moneyButton->Draw(1, true, false);
+		s = nullptr;
+	}
+
+	//BUFFS MENU
+}
+
+void Combat::DrawButtons()
+{
+	if (!secondPlayer)
+	{
+		if (combatState != ENEMY_TURN)
+		{
+			app->scene->attackButton->Draw();
+			app->scene->moveButton->Draw();
+			app->scene->itemButton->Draw();
+			app->scene->escapeButton->Draw();
+			app->scene->splitButton->Draw();
+
+			app->scene->attackText->Draw();
+			app->scene->moveText->Draw();
+			app->scene->itemsText->Draw();
+			app->scene->escapeText->Draw();
+			app->scene->splitText->Draw();
+		}
+	}
+	else if (secondPlayer)
+	{
+		if (combatState != ENEMY_TURN)
+		{
+			if (combatState == PLAYER_TURN)
+			{
+				app->scene->attackButton->Draw();
+				app->scene->moveButton->Draw();
+				app->scene->itemButton->Draw();
+
+				app->scene->attackText->Draw();
+				app->scene->moveText->Draw();
+				app->scene->itemsText->Draw();
+			}
+			else if (combatState == SECOND_PLAYER_TURN)
+			{
+				app->scene->attackButton->Draw();
+				app->scene->protectButton->Draw();
+				app->scene->buffButton->Draw();
+
+				app->scene->attackText->Draw();
+				app->scene->protectText->Draw();
+				app->scene->buffText->Draw();
+			}
+
+			app->scene->escapeButton->Draw();
+			app->scene->splitButton->Draw();
+			app->scene->escapeText->Draw();
+			app->scene->splitText->Draw();
+		}
+	}
+}
+
+void Combat::DrawText()
+{
+	turnText->Draw();
+}
+
+// END
+
 void Combat::EndBattleSolving()
 {
 	if (playerWin)
 	{
+		ItemDrop(enemy->enemyClass);
+		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		short int experience = enemy->exp;
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
@@ -470,11 +548,13 @@ void Combat::EndBattleSolving()
 	}
 	else if (playerLose)
 	{
+		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		enemy->Refill();
 		app->scene->SetScene(MAIN_MENU);
 	}
 	else if (playerSplitWin)
 	{
+		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		app->scene->SetScene(LEVEL_UP);
@@ -482,53 +562,14 @@ void Combat::EndBattleSolving()
 	}
 	else if (playerEscaped)
 	{
+		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		enemy->Refill();
 		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 }
 
-void Combat::BoolStart()
-{
-// Player 1
-	playerAttack = false;
-	playerItem = false;
-	playerStep = false;
-	playerSplit = false;
-	playerResponseAble = true;
-	playerHitAble = true;
-	playerChoice = true;
-	steps = 0;
-
-	itemChoice = true;
-	healPlayerSmall = false;
-	healPlayerLarge = false;
-	featherPlayerTurn = false;
-	protectPlayerTurn = false;
-	enemyThrow = false;
-
-// Player 2
-	secondPlayerAttack = false;
-	secondPlayerProtect = false;
-	secondPlayerBuff = false;
-	secondPlayerChoice = true;
-
-	secondPlayerAttack = false;
-	secondPlayerProtect = false;
-	secondPlayerBuff = false;
-	drawBuffMenu = false;
-
-//Items
-	wearFeather = false;
-	wearMantisLeg = false;
-
-// END BATTLE BOOLS
-	playerEscaped = false;
-	playerWin = false;
-	playerLose = false;
-	playerSplitWin = false;
-}
-
+// ---------------------------------------------------
 // ---------------------------------------------------
 
 void Combat::PlayerChoiceLogic()
@@ -607,7 +648,7 @@ int Combat::PlayerDamageLogic()
 
 	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
 	{
-		damage = 0;
+		damage = 1;
 		return damage;
 	}
 
@@ -947,41 +988,48 @@ void Combat::PlayerItemChoose()
 {
 	if (itemChoice)
 	{
+		Scene* s = app->scene;
 		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			playerChoice = true;
 			drawInventory = false;
 			playerItem = false;
 		}
-		else if (itemChoice && smallMeat > 0 && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+		else if (itemChoice && smallMeat > 0 && s->smallMeatPressed)
 		{
 			itemChoice = false;
 			healPlayerSmall = true;
 			smallMeat--;
 		}
-		else if (itemChoice && largeMeat > 0 && app->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+		else if (itemChoice && largeMeat > 0 && s->largeMeatPressed)
 		{
 			itemChoice = false;
 			healPlayerLarge = true;
 			largeMeat--;
 		}
-		else if (itemChoice && feather > 0 && app->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
+		else if (itemChoice && feather > 0 && s->featherPressed)
 		{
 			itemChoice = false;
 			featherPlayerTurn = true;
 			feather--;
 		}
-		else if (itemChoice && mantisLeg > 0 && app->input->GetKey(SDL_SCANCODE_KP_4) == KEY_DOWN)
+		else if (itemChoice && mantisLeg > 0 && s->mantisPressed)
 		{
 			itemChoice = false;
 			protectPlayerTurn = true;
 			mantisLeg--;
 		}
-		else if (itemChoice && splitedEnemy > 0 && app->input->GetKey(SDL_SCANCODE_KP_5) == KEY_DOWN)
+		else if (itemChoice && splitedEnemy > 0 && s->enemySplitPressed)
 		{
 			itemChoice = false;
 			enemyThrow = true;
 			splitedEnemy--;
+		}
+		else if (itemChoice && splitedEnemy > 0 && s->moneyPressed)
+		{
+			itemChoice = false;
+			moneyThrow = true;
+			money--;
 		}
 	}
 	else
@@ -1117,6 +1165,32 @@ void Combat::ItemUsage()
 				PlayerWin();
 			}
 		}
+	}
+	else if (moneyThrow)
+	{
+	if (playerTimeMoneyThrow < 120)
+	{
+		playerTimeMoneyThrow++;
+	}
+	else
+	{
+		playerTimeMoneyThrow = 0;
+		playerItem = false;
+		itemChoice = true;
+		moneyThrow = false;
+
+		enemy->health -= 1;
+
+		if (enemy->health > 0)
+		{
+			if (!secondPlayer) EnemyTurn();
+			else if (secondPlayer) SecondPlayerTurn();
+		}
+		else if (enemy->health <= 0)
+		{
+			PlayerWin();
+		}
+	}
 	}
 }
 
