@@ -364,7 +364,6 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, float scale, const 
 bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = app->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -372,8 +371,8 @@ bool Render::DrawRectangle(const SDL_Rect& rect, SDL_Color color, bool filled, b
 	SDL_Rect rec(rect);
 	if (useCamera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(camera.x + rect.x);
+		rec.y = (int)(camera.y + rect.y);
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -413,10 +412,9 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, SDL_Color color, bool useC
 	return ret;
 }
 
-bool Render::DrawCircle(int x, int y, int radius, SDL_Color color) const
+bool Render::DrawCircle(int x, int y, int radius, SDL_Color color, bool filled, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = app->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -430,9 +428,33 @@ bool Render::DrawCircle(int x, int y, int radius, SDL_Color color) const
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));
 		points[i].y = (int)(y + radius * sin(i * factor));
+
+		if (useCamera)
+		{
+			points[i].x += camera.x;
+			points[i].y += camera.y;
+		}
 	}
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
+
+	if (filled)
+	{
+		for (double dy = 1; dy <= radius; dy += 1)
+		{
+			double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
+			if (useCamera)
+			{
+				SDL_RenderDrawLine(renderer, camera.x + x - dx, camera.y + y + dy - radius, camera.x + x + dx, camera.y + y + dy - radius);
+				SDL_RenderDrawLine(renderer, camera.x + x - dx, camera.y + y - dy + radius, camera.x + x + dx, camera.y + y - dy + radius);
+			}
+			else
+			{
+				SDL_RenderDrawLine(renderer, x - dx, y + dy - radius, x + dx, y + dy - radius);
+				SDL_RenderDrawLine(renderer, x - dx, y - dy + radius, x + dx, y - dy + radius);
+			}
+		}
+	}
 
 	if (result != 0)
 	{

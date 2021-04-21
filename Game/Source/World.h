@@ -12,9 +12,10 @@
 #define REL_CAMX_PLAYERX 612
 #define REL_CAMY_PLAYERY 318
 
-#define ENEMY_FIELD_ENEMY_MAX 7
+#define ENEMY_FIELD_ENEMY_MAX 4
 
-#define ENEMY_SPEED 5
+#define ENEMY_RUN_SPEED 4
+#define ENEMY_WALK_SPEED 2
 
 class Enemy;
 enum EnemyClass;
@@ -126,6 +127,10 @@ private:
     void WorldEnemyChasing();
 
     void EnemyStatsGeneration(Enemy* enemy, Player* player);
+
+    void EnemyRunChasing(Enemy* e, Player* p);
+
+    void EnemyWalkReturn(Enemy* e, Player* p);
 
     bool CollisionSolver(iPoint prevPos);
 

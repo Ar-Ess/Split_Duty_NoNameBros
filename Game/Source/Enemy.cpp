@@ -108,6 +108,8 @@ void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, in
     colliderCombat = combatCollider;
     colliderWorld = worldCollider;
     colliderRect = {worldCollider.x, worldCollider.y + worldCollider.h - 28, worldCollider.w, 28};
+    originalPosition = { colliderRect.x, colliderRect.y };
+    dangerRadius.SetCircle(colliderWorld.x + (colliderWorld.w / 2), colliderWorld.y + (colliderWorld.h / 2), 300);
     lvl = xlvl;
     exp = xexp;
     health = xhealth;

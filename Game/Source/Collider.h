@@ -23,6 +23,18 @@ public:
 		x = x_;
 		y = y_;
 	}
+
+	void SetRadius(int radius_)
+	{
+		radius = radius_;
+	}
+
+	void SetCircle(int x_, int y_, int radius_)
+	{
+		x = x_;
+		y = y_;
+		radius = radius_;
+	}
 };
 
 class Collision

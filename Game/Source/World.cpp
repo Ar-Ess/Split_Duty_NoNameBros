@@ -331,6 +331,7 @@ void World::DrawCollisions()
 			Enemy* enemy = app->entityManager->enemies[i];
 			if (enemy->active)
 			{
+				app->render->DrawCircle(enemy->dangerRadius.x, enemy->dangerRadius.y, enemy->dangerRadius.radius, { 200, 70, 100, 70 }, true);
 				app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
 				app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
 			}
@@ -494,37 +495,31 @@ void World::WorldEnemyDetection()
 
 void World::WorldEnemyChasing()
 {
-	if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, { 196, 168, 1120, 1512 }))
+	Player* p = app->scene->player1;
+	if (collisionUtils.CheckCollision(p->collisionRect, { 196, 168, 1120, 1512 }))
 	{
-		Player* p = app->scene->player1;
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
 			Enemy* e = app->entityManager->enemies[i];
-			if (p->collisionRect.x - e->colliderRect.x > 0)
-			{
-				e->colliderRect.x += ENEMY_SPEED;
-				e->colliderWorld.x += ENEMY_SPEED;
-			}
-			else if (p->collisionRect.x - e->colliderRect.x < 0)
-			{
-				e->colliderRect.x -= ENEMY_SPEED;
-				e->colliderWorld.x -= ENEMY_SPEED;
-			}
 
-			if (p->collisionRect.y - e->colliderRect.y > 0)
-			{
-				e->colliderRect.y += ENEMY_SPEED;
-				e->colliderWorld.y += ENEMY_SPEED;
-			}
-			else if (p->collisionRect.y - e->colliderRect.y < 0)
-			{
-				e->colliderRect.y -= ENEMY_SPEED;
-				e->colliderWorld.y -= ENEMY_SPEED;
-			}
+			if (collisionUtils.CheckCollision(e->dangerRadius, p->collisionRect)) EnemyRunChasing(e, p);
+			else EnemyWalkReturn(e, p);
 
 			e = nullptr;
 		}
 	}
+	else
+	{
+		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
+		{
+			Enemy* e = app->entityManager->enemies[i];
+
+			EnemyWalkReturn(e, p);
+
+			e = nullptr;
+		}
+	}
+	p = nullptr;
 }
 
 void World::EnemyStatsGeneration(Enemy* e, Player* p)
@@ -561,6 +556,54 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p)
 	worldCollider.y = 168 + (rand() % 1513);
 
 	e->SetUp(combatCollider, worldCollider, eLevel, eExp, eHealth, eStrength, eDefense, eVelocity);
+}
+
+void World::EnemyRunChasing(Enemy* e, Player* p)
+{
+	int xOffset = p->collisionRect.x - e->colliderRect.x;
+	int yOffset = p->collisionRect.y - e->colliderRect.y;
+
+	int velX = xOffset / ENEMY_RUN_SPEED;
+	int velY = yOffset / ENEMY_RUN_SPEED;
+
+	if (velX > ENEMY_RUN_SPEED) velX = ENEMY_RUN_SPEED;
+	if (velY > ENEMY_RUN_SPEED) velY = ENEMY_RUN_SPEED;
+
+	if (velX < -ENEMY_RUN_SPEED) velX = -ENEMY_RUN_SPEED;
+	if (velY < -ENEMY_RUN_SPEED) velY = -ENEMY_RUN_SPEED;
+
+	e->colliderRect.x += velX;
+	e->colliderRect.y += velY;
+
+	e->colliderWorld.x += velX;
+	e->colliderWorld.y += velY;
+
+	e->dangerRadius.x += velX;
+	e->dangerRadius.y += velY;
+}
+
+void World::EnemyWalkReturn(Enemy* e, Player* p)
+{
+	int xOffset = e->originalPosition.x - e->colliderRect.x;
+	int yOffset = e->originalPosition.y - e->colliderRect.y;
+
+	int velX = xOffset / ENEMY_WALK_SPEED;
+	int velY = yOffset / ENEMY_RUN_SPEED;
+
+	if (velX > ENEMY_WALK_SPEED) velX = ENEMY_WALK_SPEED;
+	if (velY > ENEMY_WALK_SPEED) velY = ENEMY_WALK_SPEED;
+
+	if (velX < -ENEMY_WALK_SPEED) velX = -ENEMY_WALK_SPEED;
+	if (velY < -ENEMY_WALK_SPEED) velY = -ENEMY_WALK_SPEED;
+
+	e->colliderRect.x += velX;
+	e->colliderRect.y += velY;
+
+	e->colliderWorld.x += velX;
+	e->colliderWorld.y += velY;
+
+	e->dangerRadius.x += velX;
+	e->dangerRadius.y += velY;
 }
 
 bool World::CollisionSolver(iPoint prevPos)

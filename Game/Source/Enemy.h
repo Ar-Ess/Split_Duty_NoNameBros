@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "Render.h"
 #include "Textures.h"
+#include "Collider.h"
 
 #include "DynArray.h"
 #include "Point.h"
@@ -38,6 +39,7 @@
 struct SDL_Rect;
 struct Animation;
 struct SDL_Texture;
+struct CircleCollider;
 
 enum EnemyClass
 {
@@ -135,6 +137,8 @@ public:
     SDL_Rect colliderCombat;
     SDL_Rect colliderWorld;
     SDL_Rect colliderRect;
+    CircleCollider dangerRadius;
+    iPoint originalPosition;
     bool jumping = false;
     bool active = true;
 
