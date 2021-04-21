@@ -17,6 +17,8 @@
 #define ENEMY_RUN_SPEED 4
 #define ENEMY_WALK_SPEED 2
 
+#define PLAYER_INMUNITY_TIME 100
+
 class Enemy;
 enum EnemyClass;
 class Player;
@@ -84,6 +86,8 @@ public:
 
     void NPCLogic();
 
+    void PlayerInmunityLogic();
+
     void LoadNPCs(Places place);
 
     Places GetPlace() const
@@ -109,6 +113,11 @@ public:
     void SetPlace(int placex)
     {
         place = (Places)placex;
+    }
+
+    void SetInmunityTime(unsigned short int time)
+    {
+        playerInmuneTime = time;
     }
 
 public:
@@ -170,6 +179,10 @@ private:
     iPoint prevPosition = { 0, 0 };
 
     bool debugCollisions = false;
+
+    unsigned short int playerInmuneTime = 0;
+
+    bool playerInmunity = false;
 
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;

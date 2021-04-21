@@ -354,6 +354,9 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == PLAYER_TURN)
 	{
+		//DEBUG MODE
+		if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) enemy->health -= enemy->health;
+
 		if (!secondPlayerProtection)
 		{
 			if (playerChoice)
@@ -463,6 +466,7 @@ void Combat::EndBattleSolving()
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		app->scene->SetScene(LEVEL_UP, experience);
+		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 	else if (playerLose)
 	{
@@ -474,11 +478,13 @@ void Combat::EndBattleSolving()
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		app->scene->SetScene(LEVEL_UP);
+		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 	else if (playerEscaped)
 	{
 		enemy->Refill();
 		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 }
 

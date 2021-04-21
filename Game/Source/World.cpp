@@ -231,13 +231,18 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	if (playerInmuneTime > 0)
+	{
+		PlayerInmunityLogic();
+	}
 }
 
 void World::EnemyLogic()
 {
 	WorldEnemySpawn();
 
-	if (app->entityManager->enemies.Count() > 0)
+	if (app->entityManager->enemies.Count() > 0 && !playerInmunity)
 	{
 		WorldEnemyChasing();
 		WorldEnemyDetection();
@@ -256,7 +261,14 @@ void World::Draw()
 void World::DrawPlayer()
 {
 	currentPlayerAnimation->Update(1.0f);
-	app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
+	if (!playerInmunity) app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
+	else
+	{
+		if (app->GetFrameCount() % 2 == 0)
+		{
+			app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
+		}
+	}
 }
 
 void World::DrawEnemy()
@@ -833,6 +845,19 @@ void World::NPCLogic()
 	for (int i = 0; i < app->entityManager->NPCs.Count(); i++)
 	{
 		app->entityManager->NPCs[i]->Update(ampPlayerCollider);
+	}
+}
+
+void World::PlayerInmunityLogic()
+{
+	if (playerInmuneTime > 1)
+	{
+		playerInmuneTime--;
+		playerInmunity = true;
+	}
+	else
+	{
+		playerInmunity = false;
 	}
 }
 

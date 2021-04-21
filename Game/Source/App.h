@@ -46,6 +46,10 @@ public:
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
+	uint32 GetFrameCount() const
+	{
+		return frameCount;
+	}
 
     // L02: DONE 1: Create methods to request Load / Save
 	void LoadGameRequest();
