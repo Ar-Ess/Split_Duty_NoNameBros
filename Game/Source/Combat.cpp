@@ -190,14 +190,12 @@ void Combat::UpdatePopUps()
 {
 	if (drawInventory)
 	{
-		Scene* s = app->scene;
-		s->smallMeatButton->Update(1.0f);
-		s->largeMeatButton->Update(1.0f);
-		s->featherButton->Update(1.0f);
-		s->mantisButton->Update(1.0f);
-		s->enemySplitButton->Update(1.0f);
-		s->moneyButton->Update(1.0f);
-		s = nullptr;
+		smallMeatButton->Update(1.0f);
+		largeMeatButton->Update(1.0f);
+		featherButton->Update(1.0f);
+		mantisButton->Update(1.0f);
+		enemySplitButton->Update(1.0f);
+		moneyButton->Update(1.0f);
 	}
 }
 
@@ -461,15 +459,23 @@ void Combat::DrawPopUps()
 	//INVENTORY
 	if (drawInventory)
 	{
-		Scene* s = app->scene;
 		app->render->DrawTexture(combatInventory, 0, -20, 1, false);
-		s->smallMeatButton->Draw(1, true, false);
-		s->largeMeatButton->Draw(1, true, false);
-		s->featherButton->Draw(1, true, false);
-		s->mantisButton->Draw(1, true, false);
-		s->enemySplitButton->Draw(1, true, false);
-		s->moneyButton->Draw(1, true, false);
-		s = nullptr;
+
+		// DRAW BUTTONS
+		smallMeatButton->Draw(1, true, false);
+		largeMeatButton->Draw(1, true, false);
+		featherButton->Draw(1, true, false);
+		mantisButton->Draw(1, true, false);
+		enemySplitButton->Draw(1, true, false);
+		moneyButton->Draw(1, true, false);
+
+		//DRAW TEXT
+		if (smallMeatButton->state == GuiControlState::FOCUSED || smallMeatButton->state == GuiControlState::PRESSED) smallMeatDescription->Draw();
+		if (largeMeatButton->state == GuiControlState::FOCUSED || largeMeatButton->state == GuiControlState::PRESSED) largeMeatDescription->Draw();
+		if (featherButton->state == GuiControlState::FOCUSED || featherButton->state == GuiControlState::PRESSED) featherDescription->Draw();
+		if (mantisButton->state == GuiControlState::FOCUSED || mantisButton->state == GuiControlState::PRESSED) mantisRodDescription->Draw();
+		if (enemySplitButton->state == GuiControlState::FOCUSED || enemySplitButton->state == GuiControlState::PRESSED) enemySplitDescription->Draw();
+		if (moneyButton->state == GuiControlState::FOCUSED || moneyButton->state == GuiControlState::PRESSED) moneyDescription->Draw();
 	}
 
 	//BUFFS MENU
@@ -479,57 +485,61 @@ void Combat::DrawButtons()
 {
 	if (!secondPlayer)
 	{
-		if (combatState != ENEMY_TURN)
+		app->scene->attackButton->Draw();
+		app->scene->moveButton->Draw();
+		app->scene->itemButton->Draw();
+		app->scene->escapeButton->Draw();
+		app->scene->splitButton->Draw();
+	}
+	else if (secondPlayer)
+	{
+		if (combatState != SECOND_PLAYER_TURN)
 		{
 			app->scene->attackButton->Draw();
 			app->scene->moveButton->Draw();
 			app->scene->itemButton->Draw();
-			app->scene->escapeButton->Draw();
-			app->scene->splitButton->Draw();
-
-			app->scene->attackText->Draw();
-			app->scene->moveText->Draw();
-			app->scene->itemsText->Draw();
-			app->scene->escapeText->Draw();
-			app->scene->splitText->Draw();
 		}
-	}
-	else if (secondPlayer)
-	{
-		if (combatState != ENEMY_TURN)
+		else if (combatState == SECOND_PLAYER_TURN)
 		{
-			if (combatState == PLAYER_TURN)
-			{
-				app->scene->attackButton->Draw();
-				app->scene->moveButton->Draw();
-				app->scene->itemButton->Draw();
-
-				app->scene->attackText->Draw();
-				app->scene->moveText->Draw();
-				app->scene->itemsText->Draw();
-			}
-			else if (combatState == SECOND_PLAYER_TURN)
-			{
-				app->scene->attackButton->Draw();
-				app->scene->protectButton->Draw();
-				app->scene->buffButton->Draw();
-
-				app->scene->attackText->Draw();
-				app->scene->protectText->Draw();
-				app->scene->buffText->Draw();
-			}
-
-			app->scene->escapeButton->Draw();
-			app->scene->splitButton->Draw();
-			app->scene->escapeText->Draw();
-			app->scene->splitText->Draw();
+			app->scene->attackButton->Draw();
+			app->scene->protectButton->Draw();
+			app->scene->buffButton->Draw();
 		}
+
+		app->scene->escapeButton->Draw();
+		app->scene->splitButton->Draw();
 	}
 }
 
 void Combat::DrawText()
 {
 	turnText->Draw();
+
+	if (!secondPlayer)
+	{
+		attackText->Draw();
+		moveText->Draw();
+		itemsText->Draw();
+		escapeText->Draw();
+		splitText->Draw();
+	}
+	else if (secondPlayer)
+	{
+		if (combatState != SECOND_PLAYER_TURN)
+		{
+			attackText->Draw();
+			moveText->Draw();
+			itemsText->Draw();
+		}
+		else if (combatState == SECOND_PLAYER_TURN)
+		{
+			attackText->Draw();
+			protectText->Draw();
+			buffText->Draw();
+		}
+		escapeText->Draw();
+		splitText->Draw();
+	}
 }
 
 // END
@@ -564,8 +574,8 @@ void Combat::EndBattleSolving()
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		enemy->Refill();
-		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
+		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
 	}
 }
 

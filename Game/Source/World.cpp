@@ -228,24 +228,24 @@ void World::Update()
 
 	WorldChange();
 
-	EnemyLogic();
-
-	NPCLogic();
-
 	if (playerInmuneTime > 0)
 	{
 		PlayerInmunityLogic();
 	}
+
+	EnemyLogic();
+
+	NPCLogic();
 }
 
 void World::EnemyLogic()
 {
 	WorldEnemySpawn();
 
-	if (app->entityManager->enemies.Count() > 0 && !playerInmunity)
+	if (app->entityManager->enemies.Count() > 0)
 	{
 		WorldEnemyChasing();
-		WorldEnemyDetection();
+		if (!playerInmunity) WorldEnemyDetection();
 	}
 }
 
@@ -508,7 +508,7 @@ void World::WorldEnemyDetection()
 void World::WorldEnemyChasing()
 {
 	Player* p = app->scene->player1;
-	if (collisionUtils.CheckCollision(p->collisionRect, { 196, 168, 1120, 1512 }))
+	if (collisionUtils.CheckCollision(p->collisionRect, { 196, 168, 1120, 1512 }) && !playerInmunity)
 	{
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{

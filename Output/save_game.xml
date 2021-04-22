@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<saveState>
+	<Player_Information>
+		<Position x_world="1442" y_world="428" w_world="46" h_world="84" x_coll="1442" y_coll="484" w_coll="46" h_coll="28" player_speed="6" />
+		<Player1_Stats health="20" max_health="20" strength="10" defense="3" velocity="0" luck="0" stab="0" level="0" experience="0" />
+		<Player2_Stats exists="false" health="15" max_health="15" strength="15" defense="0" level="10" experience="0" />
+		<Items small_meat="0" large_meat="0" feather="0" mantis_rod="0" splited_enemy="0" money="0" />
+	</Player_Information>
+	<World_Information>
+		<Position cam_x="0" cam_y="0" previous_x="24" previous_y="200" world_speed="6" />
+		<Place place="2" />
+	</World_Information>
+</saveState>

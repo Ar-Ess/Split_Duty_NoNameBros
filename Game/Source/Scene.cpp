@@ -49,6 +49,8 @@ bool Scene::Awake()
 
 bool Scene::Start()
 {
+	app->fontTTF->Load("Assets/Fonts/manaspace.regular.ttf", 14);
+
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
 
@@ -432,116 +434,167 @@ void Scene::SetCombat(Enemy* enemySet)
 	}
 
 	// INVENTORY BUTTONS
-	if (smallMeatButton == nullptr)
+	if (combatScene->smallMeatButton == nullptr)
 	{
-		smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		smallMeatButton->bounds = { 354, 239, 91, 91 };
-		smallMeatButton->text = "SmallMeatButton";
-		smallMeatButton->SetObserver(this);
+		combatScene->smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->smallMeatButton->bounds = { 303, 220, 108, 108 };
+		combatScene->smallMeatButton->text = "SmallMeatButton";
+		combatScene->smallMeatButton->SetObserver(this);
 	}
 
-	if (largeMeatButton == nullptr)
+	if (combatScene->largeMeatButton == nullptr)
 	{
-		largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		largeMeatButton->bounds = { 354 + (96 * 1), 239, 91, 91 };
-		largeMeatButton->text = "LargeMeatButton";
-		largeMeatButton->SetObserver(this);
+		combatScene->largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->largeMeatButton->bounds = { 303 + (113 * 1), 220, 108, 108 };
+		combatScene->largeMeatButton->text = "LargeMeatButton";
+		combatScene->largeMeatButton->SetObserver(this);
 	}
 
-	if (featherButton == nullptr)
+	if (combatScene->featherButton == nullptr)
 	{
-		featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		featherButton->bounds = { 354 + (96 * 2), 239, 91, 91 };
-		featherButton->text = "FeatherButton";
-		featherButton->SetObserver(this);
+		combatScene->featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->featherButton->bounds = { 303 + (113 * 2), 220, 108, 108 };
+		combatScene->featherButton->text = "FeatherButton";
+		combatScene->featherButton->SetObserver(this);
 	}
 
-	if (mantisButton == nullptr)
+	if (combatScene->mantisButton == nullptr)
 	{
-		mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		mantisButton->bounds = { 354 + (96 * 3), 239, 91, 91 };
-		mantisButton->text = "MantisButton";
-		mantisButton->SetObserver(this);
+		combatScene->mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->mantisButton->bounds = { 303 + (113 * 3), 220, 108, 108 };
+		combatScene->mantisButton->text = "MantisButton";
+		combatScene->mantisButton->SetObserver(this);
 	}
 
-	if (enemySplitButton == nullptr)
+	if (combatScene->enemySplitButton == nullptr)
 	{
-		enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		enemySplitButton->bounds = { 354 + (96 * 4), 239, 91, 91 };
-		enemySplitButton->text = "EnemySplitButton";
-		enemySplitButton->SetObserver(this);
+		combatScene->enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->enemySplitButton->bounds = { 303 + (113 * 4), 220, 108, 108 };
+		combatScene->enemySplitButton->text = "EnemySplitButton";
+		combatScene->enemySplitButton->SetObserver(this);
 	}
 
-	if (moneyButton == nullptr)
+	if (combatScene->moneyButton == nullptr)
 	{
-		moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		moneyButton->bounds = { 354 + (96 * 5), 239, 91, 91 };
-		moneyButton->text = "MoneyButton";
-		moneyButton->SetObserver(this);
+		combatScene->moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->moneyButton->bounds = { 303 + (113 * 5), 220, 108, 108 };
+		combatScene->moneyButton->text = "MoneyButton";
+		combatScene->moneyButton->SetObserver(this);
 	}
 
 	// TEXTS
-	if (attackText == nullptr)
+
+	if (combatScene->attackText == nullptr)
 	{
-		attackText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		attackText->bounds = attackButton->bounds;
-		attackText->SetTextFont(app->fontTTF->defaultFont);
-		attackText->SetString("ATTACK");
-		attackText->CenterAlign();
+		combatScene->attackText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->attackText->bounds = attackButton->bounds;
+		combatScene->attackText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->attackText->SetString("ATTACK");
+		combatScene->attackText->CenterAlign();
 	}
 
-	if (moveText == nullptr)
+	if (combatScene->moveText == nullptr)
 	{
-		moveText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		moveText->bounds = { moveButton->bounds };
-		moveText->SetTextFont(app->fontTTF->defaultFont);
-		moveText->SetString("MOVE");
-		moveText->CenterAlign();
+		combatScene->moveText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->moveText->bounds = { moveButton->bounds };
+		combatScene->moveText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->moveText->SetString("MOVE");
+		combatScene->moveText->CenterAlign();
 	}
 
-	if (itemsText == nullptr)
+	if (combatScene->itemsText == nullptr)
 	{
-		itemsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		itemsText->bounds = { itemButton->bounds };
-		itemsText->SetTextFont(app->fontTTF->defaultFont);
-		itemsText->SetString("ITEM(beta)");
-		itemsText->CenterAlign();
+		combatScene->itemsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->itemsText->bounds = { itemButton->bounds };
+		combatScene->itemsText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->itemsText->SetString("ITEMS");
+		combatScene->itemsText->CenterAlign();
 	}
 
-	if (escapeText == nullptr)
+	if (combatScene->escapeText == nullptr)
 	{
-		escapeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		escapeText->bounds = { escapeButton->bounds };
-		escapeText->SetTextFont(app->fontTTF->defaultFont);
-		escapeText->SetString("ESCAPE");
-		escapeText->CenterAlign();
+		combatScene->escapeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->escapeText->bounds = { escapeButton->bounds };
+		combatScene->escapeText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->escapeText->SetString("ESCAPE");
+		combatScene->escapeText->CenterAlign();
 	}
 
-	if (splitText == nullptr)
+	if (combatScene->splitText == nullptr)
 	{
-		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		splitText->bounds = { splitButton->bounds };
-		splitText->SetTextFont(app->fontTTF->defaultFont);
-		splitText->SetString("SPLIT");
-		splitText->CenterAlign();
+		combatScene->splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->splitText->bounds = { splitButton->bounds };
+		combatScene->splitText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->splitText->SetString("SPLIT");
+		combatScene->splitText->CenterAlign();
 	}
 
-	if (protectText == nullptr)
+	if (combatScene->protectText == nullptr)
 	{
-		protectText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		protectText->bounds = { protectButton->bounds };
-		protectText->SetTextFont(app->fontTTF->defaultFont);
-		protectText->SetString("PROTECT");
-		protectText->CenterAlign();
+		combatScene->protectText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->protectText->bounds = { protectButton->bounds };
+		combatScene->protectText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->protectText->SetString("PROTECT");
+		combatScene->protectText->CenterAlign();
 	}
 
-	if (buffText == nullptr)
+	if (combatScene->buffText == nullptr)
 	{
-		buffText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		buffText->bounds = { buffButton->bounds };
-		buffText->SetTextFont(app->fontTTF->defaultFont);
-		buffText->SetString("BUFFS");
-		buffText->CenterAlign();
+		combatScene->buffText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->buffText->bounds = { buffButton->bounds };
+		combatScene->buffText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->buffText->SetString("BUFFS");
+		combatScene->buffText->CenterAlign();
+	}
+
+	SDL_Rect descriptionRect = { 315, 356, 663, 156 };
+
+	if (combatScene->smallMeatDescription == nullptr)
+	{
+		combatScene->smallMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->smallMeatDescription->bounds = descriptionRect; //NO
+		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->smallMeatDescription->SetString("Small Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 30 percent of the Max Health of the hero you select");
+	}
+
+	if (combatScene->largeMeatDescription == nullptr)
+	{
+		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->largeMeatDescription->bounds = descriptionRect;
+		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 60 percent of the Max Health of the hero you select");
+	}
+
+	if (combatScene->featherDescription == nullptr)
+	{
+		combatScene->featherDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->featherDescription->bounds = descriptionRect;
+		combatScene->featherDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->featherDescription->SetString("Slight Feather: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
+	}
+
+	if (combatScene->mantisRodDescription == nullptr)
+	{
+		combatScene->mantisRodDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->mantisRodDescription->bounds = descriptionRect;
+		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
+	}
+
+	if (combatScene->enemySplitDescription == nullptr)
+	{
+		combatScene->enemySplitDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->enemySplitDescription->bounds = descriptionRect;
+		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
+	}
+
+	if (combatScene->moneyDescription == nullptr)
+	{
+		combatScene->moneyDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->moneyDescription->bounds = descriptionRect;
+		combatScene->moneyDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->moneyDescription->SetString("Coin: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
 	}
 
 	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);

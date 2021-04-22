@@ -261,8 +261,50 @@ public:
     Enemy* enemy = nullptr;
 
     CombatState combatState = NULL_STATE;
-
+    
     bool debugCombat = false;
+
+public: // BUTTONS & TEXT
+
+    // BUTTON
+    GuiButton* smallMeatButton = nullptr;
+
+    GuiButton* largeMeatButton = nullptr;
+
+    GuiButton* featherButton = nullptr;
+
+    GuiButton* mantisButton = nullptr;
+
+    GuiButton* enemySplitButton = nullptr;
+
+    GuiButton* moneyButton = nullptr;
+
+    // TEXT
+    GuiString* attackText = nullptr;
+
+    GuiString* moveText = nullptr;
+
+    GuiString* itemsText = nullptr;
+
+    GuiString* escapeText = nullptr;
+
+    GuiString* splitText = nullptr;
+
+    GuiString* protectText = nullptr;
+
+    GuiString* buffText = nullptr;
+
+    GuiString* smallMeatDescription = nullptr;
+
+    GuiString* largeMeatDescription = nullptr;
+
+    GuiString* featherDescription = nullptr;
+
+    GuiString* mantisRodDescription = nullptr;
+
+    GuiString* enemySplitDescription = nullptr;
+
+    GuiString* moneyDescription = nullptr;
 
 private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };

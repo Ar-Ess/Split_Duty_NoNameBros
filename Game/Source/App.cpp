@@ -342,8 +342,12 @@ bool App::LoadGame()
 		pugi::xml_node pos = playerInfo.child("Position");
 		p1->colliderWorld.x = pos.attribute("x_world").as_int();
 		p1->colliderWorld.y = pos.attribute("y_world").as_int();
+		p1->colliderWorld.w = pos.attribute("w_world").as_int();
+		p1->colliderWorld.h = pos.attribute("h_world").as_int();
 		p1->collisionRect.x = pos.attribute("x_coll").as_int();
 		p1->collisionRect.y = pos.attribute("y_coll").as_int();
+		p1->collisionRect.w = pos.attribute("w_coll").as_int();
+		p1->collisionRect.h = pos.attribute("h_coll").as_int();
 		p1->playerSpeed = pos.attribute("player_speed").as_int();
 
 		pugi::xml_node stats = playerInfo.child("Player1_Stats");
@@ -416,8 +420,12 @@ bool App::SaveGame() const
 		playerInfo = saveNode.append_child("Position");
 		playerInfo.append_attribute("x_world").set_value(scene->player1->colliderWorld.x);
 		playerInfo.append_attribute("y_world").set_value(scene->player1->colliderWorld.y);
+		playerInfo.append_attribute("w_world").set_value(scene->player1->colliderWorld.w);
+		playerInfo.append_attribute("h_world").set_value(scene->player1->colliderWorld.h);
 		playerInfo.append_attribute("x_coll").set_value(scene->player1->collisionRect.x);
 		playerInfo.append_attribute("y_coll").set_value(scene->player1->collisionRect.y);
+		playerInfo.append_attribute("w_coll").set_value(scene->player1->collisionRect.w);
+		playerInfo.append_attribute("h_coll").set_value(scene->player1->collisionRect.h);
 		playerInfo.append_attribute("player_speed").set_value(scene->player1->playerSpeed);
 		playerInfo = saveNode.append_child("Player1_Stats");
 		playerInfo.append_attribute("health").set_value(scene->player1->health);
