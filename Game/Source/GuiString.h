@@ -24,8 +24,10 @@ public:
 	void SetString(const char* newText);
 	void SetTextFont(_TTF_Font* textFont);
 	void CenterAlign();
-	void CenterDialogue();
 	void UnLoadTextTexture();
+
+	void CenterDialogue();
+	void NodePlacing();	
 
 private:
 	_TTF_Font* textFont = nullptr;

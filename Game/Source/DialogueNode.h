@@ -10,27 +10,18 @@ public:
 	//default constructor
 	DialogueNode() {};
 
-	DialogueNode(SString text, int id) : text(text), nodeID(id),
+	DialogueNode(std::string text, int id) : text(text), nodeID(id),
 				 optionsActive(false) {};
 
 	virtual ~DialogueNode() {};
 
-	//Utils
-	void NodePlacing()
-	{
-		uint w, h;
-		app->win->GetWindowSize(w, h);
-
-		this->nodeText->bounds.x = (w / 2) - (this->nodeText->bounds.w / 2);
-		this->nodeText->bounds.y = 5 * (h / 8);
-	}
-
 public:
 	int						nodeID;
+	int						letterCounter = 0;
 	bool					optionsActive = true;
+	bool					nodeEnd = false;
 
-	SString					text;
-	GuiString*				nodeText = nullptr;
+	std::string				text;
 
 	List<DialogueOption*>	optionsList;
 };

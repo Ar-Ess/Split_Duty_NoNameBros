@@ -4,6 +4,8 @@
 #include "DialogueNode.h"
 #include "GuiButton.h"
 
+class DialogueManager;
+
 enum OptionsPos
 {
 	NO_POS = -1,
@@ -25,16 +27,16 @@ public:
 	virtual ~DialogueOption() {};
 
 	//Utils
-	void OptionPlacingX()
+	void OptionPlacingX(SDL_Rect nChart, float scale)
 	{
 		uint w, h;
 		int offset = 35;
 		app->win->GetWindowSize(w, h);
 
 		if (this->optPlacing == POS1 || this->optPlacing == POS3)
-			this->optionButton->bounds.x = (w / 4) - (this->optionButton->bounds.w / 2);
+			this->optionButton->bounds.x = nChart.x;
 		else
-			this->optionButton->bounds.x = 3 * (w / 4) - (this->optionButton->bounds.w / 2);
+			this->optionButton->bounds.x = nChart.x + nChart.w - (this->optionButton->bounds.w * scale) - offset + 7;
 
 		this->optionText->bounds.x = this->optionButton->bounds.x + offset;
 	}

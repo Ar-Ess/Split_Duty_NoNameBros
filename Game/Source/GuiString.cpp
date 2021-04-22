@@ -28,7 +28,7 @@ void GuiString::Draw()
 void GuiString::SetString(const char* newText)
 {
 	SDL_Color white{ 255,255,255,255 };
-	text = newText;
+	text = SString(newText);
 	textTexture = app->fontTTF->Print(text.GetString(), white, textFont, textTexture, app->dialogueManager->endLine);
 }
 
@@ -58,6 +58,15 @@ void GuiString::CenterDialogue()
 
 	bounds.x += (bounds.w / 2) - (width / 2);
 	bounds.y += (bounds.h / 2) - (height / 2);
+}
+
+void GuiString::NodePlacing()
+{
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+	
+	bounds.x = (w / 2) - (bounds.w / 2);
+	bounds.y = 5 * (h / 8);	
 }
 
 void GuiString::UnLoadTextTexture()

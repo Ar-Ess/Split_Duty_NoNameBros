@@ -4,8 +4,6 @@
 #include "App.h"
 #include "Module.h"
 #include "Input.h"
-#include "Dialogue.h"
-#include "DialogueNode.h"
 #include "DialogueOption.h"
 #include "FontTTF.h"
 
@@ -57,14 +55,20 @@ private: //functions
 	void DeleteOptions();
 	void DeleteOptionButtons();
 
+
 public: //variables
 	bool				onDialog = false;
 	int					endLine = 850;
 private: // variables
 	int					offset = 15;
+	int					counter = 0;
 	float				dscale = 1.2f;
+	std::string			tempText;
 
-	Dialogue* currentDialogue;
+	SDL_Rect			textureChart{ 0,0,910,113 };
+	GuiString*			tempString;
+
+	Dialogue*			currentDialogue;
 	List<Dialogue*>		dialoguesList;
 
 	SDL_Color           black = { 0  , 0  , 0  , 150 };
@@ -72,6 +76,8 @@ private: // variables
 	SDL_Color           red =	{ 255, 0  , 0  , 125 };
 	SDL_Color           green = { 0  , 255, 0  , 125 };
 	SDL_Color           blue =	{ 0  , 0  , 255, 125 };
+	SDL_Rect			buttonPrefab{ 0,0,0,0 };
+
 
 	SDL_Texture*		dialogueTexture = nullptr;
 };

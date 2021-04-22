@@ -38,6 +38,7 @@
       </Node>
       <Node ID="7">
         <NPCTalk>PERFECT! TALK WITH ME IF YOU NEED THIS INFO AGAIN!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey, bye!</Option>
       </Node>
       <Node ID="8">
         <NPCTalk>OKEY, TALK WITH ME IF YOU FORGET IT</NPCTalk>
@@ -66,16 +67,19 @@
       </Node>
       <Node ID="4">
         <NPCTalk>OKEY, TAKE CARE OF IT! AND REMEMBER TO TALK WITH MY FRIEND TO HEAL YOU AND THE SECOND PLAYER!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey! Thanks!</Option>
       </Node>
       <Node ID="5">
         <NPCTalk>OKEY, TALK WITH ME AND I'LL GIVE IT TO YOU AGAIN</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey! Thanks!</Option>
       </Node>
       <Node ID="6">
         <NPCTalk>OKEY, YOU MISSED THE OPPORTUNITY</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Oh...</Option>
       </Node>
       <Node ID="7">
         <NPCTalk>BY THE WAY, TALK WITH MY FRIEND TO HEAL YOU AND THE SECOND PLAYER!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Okey, thanks!</Option>
       </Node>
     </Dialog>
     <Dialog ID="3">

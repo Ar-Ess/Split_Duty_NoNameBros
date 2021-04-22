@@ -34,6 +34,9 @@ bool DialogueManager::Awake(pugi::xml_node&)
 bool DialogueManager::Start()
 {	
 	dialogueTexture = app->tex->Load("Assets/Textures/UI/dialogSquare.png");
+	buttonPrefab = app->guiManager->buttonPrefab;
+	tempString = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+	tempText.clear();
 	return true;
 }
 
@@ -80,7 +83,7 @@ DialogueNode* DialogueManager::CreateNode(pugi::xml_node& setter)
 {
 	pugi::xml_node nd = setter.child("NPCTalk");
 
-	DialogueNode* node = new DialogueNode(SString(nd.child_value()), setter.attribute("ID").as_int());
+	DialogueNode* node = new DialogueNode(nd.child_value(), setter.attribute("ID").as_int());
 
 	for (pugi::xml_node optionSetter = setter.child("Option"); optionSetter != nullptr;
 		optionSetter = optionSetter.next_sibling("Option"))
@@ -120,13 +123,9 @@ void DialogueManager::EndDialogue()
 			{
 				DeleteOptions();
 			}		
-			itemNode->data->nodeText->text.Clear();
-			itemNode->data->nodeText->UnLoadTextTexture();
-			itemNode->data->nodeText = nullptr;
 		}
 		currentDialogue->currentNode->optionsActive = false;
 		currentDialogue = nullptr;
-
 		onDialog = false;
 	}
 }
@@ -173,21 +172,11 @@ void DialogueManager::StartDialogue(int dialogueID)
 		for (ListItem<DialogueNode*>* itemNode = currentDialogue->nodeList.start;
 			itemNode != nullptr; itemNode = itemNode->next)
 		{
-			itemNode->data->nodeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-			itemNode->data->nodeText->SetString(itemNode->data->text.GetString());
-			itemNode->data->nodeText->bounds = { 0,0,0,0 };
-			itemNode->data->nodeText->SetTextFont(app->fontTTF->defaultFont);
-
-			app->fontTTF->CalcSize(itemNode->data->nodeText->text.GetString(), itemNode->data->nodeText->bounds.w,
-				itemNode->data->nodeText->bounds.h, app->fontTTF->defaultFont);
-
-			int lineScale = static_cast<int>(ceil(itemNode->data->nodeText->bounds.w / endLine));
-
-			itemNode->data->nodeText->bounds.w = endLine;
-			itemNode->data->nodeText->bounds.h *= lineScale;
-
 			if (itemNode->data->optionsList.Count() != 0)
 			{
+				if(itemNode->data->letterCounter == 0)
+					itemNode->data->letterCounter = 0;
+
 				int optPlace = 0;
 				for (ListItem<DialogueOption*>* itemOption = itemNode->data->optionsList.start;
 					itemOption != nullptr; itemOption = itemOption->next)
@@ -208,28 +197,51 @@ void DialogueManager::StartDialogue(int dialogueID)
 
 void DialogueManager::Draw()
 {
-	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
-	SDL_Rect nodeChart = currentDialogue->currentNode->nodeText->bounds;
-	float scale = 1.2f;
+	////WRITTING MACHINE LOOK//// 	 	 
+	counter++;
+	if(counter % 2 == 0 && currentDialogue->currentNode->nodeEnd == false)
+	{
+		if(currentDialogue->currentNode->letterCounter < currentDialogue->currentNode->text.size())
+		{
+			tempText += currentDialogue->currentNode->text.at(currentDialogue->currentNode->letterCounter);
+			currentDialogue->currentNode->letterCounter++;
+		}
+		else
+		{
+			currentDialogue->currentNode->nodeEnd = true;
+			counter = 0;
+		}
+	}
+	tempString->SetString(tempText.c_str());
+	tempString->SetTextFont(app->fontTTF->defaultFont);
 
-	currentDialogue->currentNode->NodePlacing();
-	currentDialogue->currentNode->nodeText->CenterDialogue();
+	app->fontTTF->CalcSize(currentDialogue->currentNode->text.c_str(), tempString->bounds.w,
+		tempString->bounds.h, app->fontTTF->defaultFont);
+
+	int lineScale = static_cast<int>(ceil(tempString->bounds.w / endLine));
+
+	tempString->bounds.w = endLine;
+	tempString->bounds.h *= lineScale;
+
+	SDL_Rect nodeChart = tempString->bounds;
+
+	tempString->NodePlacing();
+	//tempString->CenterDialogue();
 
 	nodeChart.x -= offset;
 	nodeChart.y -= offset;
 	nodeChart.w += (2 * offset);
 	nodeChart.h += (3 * offset);
-
-	SDL_Rect textureChart{ 0,0,910,113 };
 	
 	//DRAWING NODE
 	SDL_RenderCopy(app->render->renderer, dialogueTexture, &textureChart, &nodeChart);
-	currentDialogue->currentNode->nodeText->Draw();
+	tempString->Draw();
 	
-	if (currentDialogue->currentNode->optionsList.Count() != 0)
-	{
-		if(currentDialogue->currentNode->optionsActive == false)currentDialogue->currentNode->optionsActive = true;
+	if(currentDialogue->currentNode->nodeEnd == true)
+		currentDialogue->currentNode->optionsActive = true;
 
+	if (currentDialogue->currentNode->optionsList.Count() != 0 && currentDialogue->currentNode->optionsActive == true)
+	{
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
@@ -242,13 +254,12 @@ void DialogueManager::Draw()
 			}
 
 			itemOption->data->optionText->bounds = itemOption->data->optionButton->bounds;
-			itemOption->data->OptionPlacingX();
+			itemOption->data->OptionPlacingX(nodeChart, dscale);
 			itemOption->data->OptionPlacingY();
 			itemOption->data->optionText->CenterAlign();
 
-
 			//draw buttons options
-			itemOption->data->optionButton->Draw(scale, false);
+			itemOption->data->optionButton->Draw(dscale, false);
 			itemOption->data->optionText->Draw();	
 		}
 	}
@@ -256,7 +267,7 @@ void DialogueManager::Draw()
 
 void DialogueManager::Input()
 {
-	if (currentDialogue != nullptr && currentDialogue->currentNode->optionsActive == true)
+	if (currentDialogue->currentNode->optionsActive == true)
 	{
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
@@ -265,7 +276,7 @@ void DialogueManager::Input()
 				itemOption->data->optionButton->Update(1.0f);
 		}
 	}
-	else EndDialogue();
+	//else EndDialogue();
 }
 
 bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
@@ -273,19 +284,20 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 	bool ret = true;
 
 	currentDialogue->currentNode->optionsActive = false;
-
-	//bool optionHitted = false;
+	currentDialogue->currentNode->nodeEnd = false;
+	currentDialogue->currentNode->letterCounter = 0;
+	tempText.clear();
+	tempString->UnLoadTextTexture();
 
 	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start; 
 		 itemOption != nullptr; itemOption = itemOption->next)
 	{
-		if (strcmp(option->text.GetString(), itemOption->data->text.GetString()) == 0)//&& !optionHitted)
+		if (strcmp(option->text.GetString(), itemOption->data->text.GetString()) == 0)
 		{
 			if(itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 1)
 			{
 				DeleteOptionButtons();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				//optionHitted = true;
 				return ret;
 			}
 			else if (itemOption->data->returnCode == 0)
@@ -303,28 +315,24 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			{
 				app->scene->combatScene->secondPlayer = true;
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				//optionHitted = true;
 				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 3)
 			{
 				app->scene->combatScene->secondPlayer = false;
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				//optionHitted = true;
 				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 4)
 			{
 				app->scene->player1->Refill();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				//optionHitted = true;
 				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 5)
 			{
 				app->scene->player2->Refill();
 				currentDialogue->currentNode = itemOption->data->nextNode;
-				//optionHitted = true;
 				return ret;
 			}
 		}
