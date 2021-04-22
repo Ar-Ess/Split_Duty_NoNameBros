@@ -225,6 +225,12 @@
     <ClInclude Include="Source\NPC.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\QuestManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quest.h">
+      <Filter>Quests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -250,6 +256,9 @@
     </Filter>
     <Filter Include="Dialogues">
       <UniqueIdentifier>{6329c039-5b8d-48bf-918f-b77e499cc6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quests">
+      <UniqueIdentifier>{1696d940-2766-467a-a826-3ef768bb8e3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
