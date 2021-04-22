@@ -16,13 +16,6 @@ FontTTF::FontTTF() : Module()
 
 FontTTF::~FontTTF()
 {
-	ListItem<_TTF_Font*>* item = fonts.start;
-	while (item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	fonts.Clear();
 }
 
 bool FontTTF::Awake(pugi::xml_node& conf)
@@ -40,7 +33,6 @@ bool FontTTF::Awake(pugi::xml_node& conf)
 		const char* path = conf.child("default_font").attribute("file").as_string();
 		int size = conf.child("default_font").attribute("size").as_int();
 		defaultFont = Load(path, size);
-		fonts.Add(defaultFont);
 	}
 
 	return ret;
@@ -49,13 +41,12 @@ bool FontTTF::Awake(pugi::xml_node& conf)
 bool FontTTF::CleanUp()
 {
 	LOG("Freeing True Type fonts and library");
-	ListItem<_TTF_Font*>* item;
 
+	ListItem<_TTF_Font*>* item;
 	for (item = fonts.start; item != NULL; item = item->next)
 	{
 		TTF_CloseFont(item->data);
 	}
-
 	fonts.Clear();
 	TTF_Quit();
 	return true;

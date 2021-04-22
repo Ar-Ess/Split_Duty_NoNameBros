@@ -344,7 +344,7 @@ void World::DrawCollisions()
 			Enemy* enemy = app->entityManager->enemies[i];
 			if (enemy->active)
 			{
-				app->render->DrawCircle(enemy->dangerRadius.x, enemy->dangerRadius.y, enemy->dangerRadius.radius, { 200, 70, 100, 70 }, false;
+				app->render->DrawCircle(enemy->dangerRadius.x, enemy->dangerRadius.y, enemy->dangerRadius.radius, { 200, 70, 100, 70 }, false);
 				app->render->DrawRectangle(enemy->colliderWorld, { 100, 150, 240, 150 });
 				app->render->DrawRectangle(enemy->colliderRect, { 150, 150, 140, 200 });
 			}
