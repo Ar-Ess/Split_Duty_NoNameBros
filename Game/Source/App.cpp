@@ -156,6 +156,9 @@ bool App::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
+
+	srand(time(NULL));
+
 	return ret;
 }
 

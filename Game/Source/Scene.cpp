@@ -826,6 +826,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "ExitButton") == 0) exit = true;
 		break;
 
+	case OPTIONS_MENU:
+		break;
+
 	case COMBAT:
 		if (strcmp(control->text.GetString(), "AttackButton") == 0) attackPressed = true;
 		else if (strcmp(control->text.GetString(), "MoveButton") == 0) movePressed = true;
