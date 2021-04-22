@@ -215,18 +215,22 @@ void DialogueManager::Draw()
 	tempString->SetString(tempText.c_str());
 	tempString->SetTextFont(app->fontTTF->defaultFont);
 
-	app->fontTTF->CalcSize(currentDialogue->currentNode->text.c_str(), tempString->bounds.w,
+	app->fontTTF->CalcSize(tempString->text.GetString(), tempString->bounds.w,
 		tempString->bounds.h, app->fontTTF->defaultFont);
 
-	int lineScale = static_cast<int>(ceil(tempString->bounds.w / endLine));
-
+	if (tempString->bounds.w >= endLine)
+	{
+		int lineScale = static_cast<int>(ceil(tempString->bounds.w / endLine));
+		tempString->bounds.h *= lineScale;
+	}
+	else
+	{
+		tempString->bounds.h -= (offset + 5);
+	}
 	tempString->bounds.w = endLine;
-	tempString->bounds.h *= lineScale;
-
 	SDL_Rect nodeChart = tempString->bounds;
 
 	tempString->NodePlacing();
-	//tempString->CenterDialogue();
 
 	nodeChart.x -= offset;
 	nodeChart.y -= offset;

@@ -18,7 +18,7 @@ public:
 public:
 	int						nodeID;
 	int						letterCounter = 0;
-	bool					optionsActive = true;
+	bool					optionsActive = false;
 	bool					nodeEnd = false;
 
 	std::string				text;
