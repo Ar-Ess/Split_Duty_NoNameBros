@@ -553,7 +553,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->smallMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->smallMeatDescription->bounds = descriptionRect; //NO
-		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->smallMeatDescription->SetString("Small Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 30 percent of the Max Health of the hero you select");
 	}
 
@@ -561,7 +561,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->largeMeatDescription->bounds = descriptionRect;
-		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 60 percent of the Max Health of the hero you select");
 	}
 
@@ -569,7 +569,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->featherDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->featherDescription->bounds = descriptionRect;
-		combatScene->featherDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->featherDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->featherDescription->SetString("Slight Feather: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
 	}
 
@@ -577,7 +577,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->mantisRodDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->mantisRodDescription->bounds = descriptionRect;
-		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
 	}
 
@@ -585,7 +585,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->enemySplitDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->enemySplitDescription->bounds = descriptionRect;
-		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
 	}
 
@@ -593,7 +593,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->moneyDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->moneyDescription->bounds = descriptionRect;
-		combatScene->moneyDescription->SetTextFont(app->fontTTF->fonts.At(2)->data);
+		combatScene->moneyDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
 		combatScene->moneyDescription->SetString("Coin: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: ");
 	}
 

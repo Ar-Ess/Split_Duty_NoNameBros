@@ -487,7 +487,7 @@ void World::WorldEnemySpawn()
 	{
 		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
 		{
-			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
 			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
 		}
 	}
