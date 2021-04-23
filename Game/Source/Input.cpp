@@ -8,12 +8,14 @@
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
+#define MAX_GAMEPADS 2
 
 Input::Input() : Module()
 {
 	name.Create("input");
 
 	keyboard = new KeyState[MAX_KEYS];
+	gamePad = new KeyState[MAX_GAMEPADS];
 	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
 
