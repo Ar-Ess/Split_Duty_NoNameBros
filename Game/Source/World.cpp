@@ -664,10 +664,10 @@ void World::ChangePlayerState()
 	bool right = false;
 	short unsigned int directionsActive = 0;
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetControl(UP) == KEY_DOWN || app->input->GetControl(UP) == KEY_REPEAT) ford = true;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || app->input->GetControl(DOWN) == KEY_DOWN || app->input->GetControl(DOWN) == KEY_REPEAT) back = true;
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetControl(LEFT) == KEY_DOWN || app->input->GetControl(LEFT) == KEY_REPEAT) left = true;
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetControl(RIGHT) == KEY_DOWN || app->input->GetControl(RIGHT) == KEY_REPEAT) right = true;
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetControl(UP_PAD) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_REPEAT) ford = true;
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || app->input->GetControl(DOWN_PAD) == KEY_DOWN || app->input->GetControl(DOWN_PAD) == KEY_REPEAT) back = true;
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetControl(LEFT_PAD) == KEY_DOWN || app->input->GetControl(LEFT_PAD) == KEY_REPEAT) left = true;
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetControl(RIGHT_PAD) == KEY_DOWN || app->input->GetControl(RIGHT_PAD) == KEY_REPEAT) right = true;
 
 	if (ford && !back && !left && !right) playerState = PlayerState::UP;
 	if (!ford && back && !left && !right) playerState = PlayerState::DOWN;

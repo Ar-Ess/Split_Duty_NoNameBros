@@ -38,12 +38,12 @@ bool GuiButton::Update(float dt)
                     app->audio->SetFx(Effect::BUTTON_FOCUSSED);
                 }
                 state = GuiControlState::FOCUSED;
-                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT || app->input->GetControl(A) == KeyState::KEY_REPEAT)
                 {
                     state = GuiControlState::PRESSED;
                 }
 
-                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP)
                 {
                     app->audio->SetFx(Effect::BUTTON_RELEASED);
                     NotifyObserver();

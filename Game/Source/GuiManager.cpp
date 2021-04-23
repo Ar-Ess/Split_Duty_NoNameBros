@@ -118,11 +118,15 @@ void GuiManager::DrawCursor()
 
 	app->render->DrawTexture(cursorTexture, mouseX, mouseY, &currentCursorAnim->GetCurrentFrame());
 
-	if(app->input->GetMouseButtonDown(1) && currentCursorAnim != &clickCursorAnim)
+	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
 	{
-		currentCursorAnim = &clickCursorAnim;
-		LOG("Clicked");
+		if (currentCursorAnim != &clickCursorAnim)
+		{
+			currentCursorAnim = &clickCursorAnim;
+			LOG("Clicked");
+		}
 	}
+
 	if (currentCursorAnim->HasFinished() && app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP )
 	{
 		currentCursorAnim = &idleCursorAnim;

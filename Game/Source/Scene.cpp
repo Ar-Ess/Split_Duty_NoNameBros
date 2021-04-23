@@ -101,7 +101,7 @@ bool Scene::PreUpdate()
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
 	p = app->map->WorldToMap(p.x, p.y);
 
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN)
 	{
 		if(originSelected == true)
 		{

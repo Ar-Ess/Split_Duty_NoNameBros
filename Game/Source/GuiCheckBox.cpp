@@ -30,12 +30,12 @@ bool GuiCheckBox::Update(float dt)
             }
             state = GuiControlState::FOCUSED;
 
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT || app->input->GetControl(A) == KeyState::KEY_REPEAT)
             {
                 state = GuiControlState::PRESSED;
             }
 
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP)
             {
                 checked = !checked;
                 //app->audio->PlayFx( Click sound);
