@@ -999,7 +999,7 @@ void Combat::PlayerItemChoose()
 	if (itemChoice)
 	{
 		Scene* s = app->scene;
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 		{
 			playerChoice = true;
 			drawInventory = false;
@@ -1314,7 +1314,7 @@ int Combat::EnemyItemDamage()
 
 void Combat::PlayerResponse()
 {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetControl(UP) == KEY_DOWN)
 	{
 		if (!app->scene->player1->jump && playerResponseAble && !app->scene->player1->crouch)
 		{
@@ -1323,7 +1323,7 @@ void Combat::PlayerResponse()
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetControl(DOWN) == KEY_DOWN)
 	{
 		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
 		{

@@ -54,7 +54,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 	{
 		if (collisionUtils.CheckCollision(pCollAmp, contactCollider))
 		{
-			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 			{
 				app->dialogueManager->StartDialogue(dialog);
 			}

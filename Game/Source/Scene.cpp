@@ -739,7 +739,7 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateOptionsMenu()
 {
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) SetScene(MAIN_MENU);
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
 void Scene::UpdateCombat()
@@ -757,7 +757,7 @@ void Scene::UpdateCombat()
 
 void Scene::UpdateLevelUp()
 {
-	/*if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)*/ SetScene(WORLD, world->place);
+	SetScene(WORLD, world->place);
 }
 
 void Scene::UpdateWorld()
@@ -766,10 +766,13 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && !app->dialogueManager->onDialog )
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
-		prevCam = {app->render->camera.x, app->render->camera.y};
-		SetScene(PAUSE_MENU);
+		if (!app->dialogueManager->onDialog)
+		{
+			prevCam = { app->render->camera.x, app->render->camera.y };
+			SetScene(PAUSE_MENU);
+		}
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)

@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "World.h"
 #include "Combat.h"
+#include <time.h>
 
 #include "Defs.h"
 #include "Log.h"
