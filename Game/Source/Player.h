@@ -136,6 +136,7 @@ public:
     
     int lvl = 0;
     int exp = 0;
+    int expTillNextLevel;
 
     int playerSpeed = 8;
 
