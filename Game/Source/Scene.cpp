@@ -186,6 +186,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	else if (currScene == WORLD)
 	{
 		world->Restart(nextScene);
+		inventory->Restart();
 	}
 	else if (currScene == PAUSE_MENU)
 	{
@@ -558,7 +559,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->largeMeatDescription->bounds = descriptionRect;
 		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
-		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 60 percent of the Max Health of the hero you select");
+		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\n");
 	}
 
 	if (combatScene->featherDescription == nullptr)
@@ -604,6 +605,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 void Scene::SetWorld(Places place)
 {
 	world->Start(place);
+	inventory->Start();
 }
 
 void Scene::SetPauseMenu()
@@ -760,7 +762,11 @@ void Scene::UpdateWorld()
 {
 	world->Update();
 
+	if (world->inventoryOpen) inventory->Update();
+
 	world->Draw();
+
+	if (world->inventoryOpen) inventory->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{

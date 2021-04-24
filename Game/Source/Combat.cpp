@@ -479,6 +479,10 @@ void Combat::DrawPopUps()
 	}
 
 	//BUFFS MENU
+	if (drawBuffMenu)
+	{
+
+	}
 }
 
 void Combat::DrawButtons()
@@ -1068,7 +1072,10 @@ void Combat::SecondPlayerProtect()
 
 void Combat::SecondPlayerBuff()
 {
-	EnemyTurn();
+	bool end = true;
+	if (app->input->GetKey(SDL_SCANCODE_1)) end = true;
+
+	if (end) EnemyTurn();
 }
 
 void Combat::ItemUsage()

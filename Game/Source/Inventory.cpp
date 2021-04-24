@@ -36,6 +36,7 @@ void Inventory::Start()
 	currPlayerFaceAnim = &idleFaceAnim;
 
 }
+
 void Inventory::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
@@ -45,24 +46,26 @@ void Inventory::Restart()
 
 void Inventory::Update()
 {
-	if (active)
-	{
-		DrawInterface();
-	}
 	
+}
+
+void Inventory::Draw()
+{
+	DrawInterface();
+
+	DrawItems();
+
+	//DrawFace();
+
+	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
+	DrawBar(expBarPos, app->scene->player1->exp, 1, BLUE);
+
+	DrawText();
 }
 
 void Inventory::DrawInterface()
 {
-	
-	app->render->DrawTexture(interfaceTexture, 0, 0, &fullScreen);
-
-	DrawItems();
-
-	DrawFace();
-
-	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
-	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->expTillNextLevel, BLUE);
+	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
@@ -110,7 +113,3 @@ void Inventory::DrawFace()
 void Inventory::DrawText()
 {
 }
-
-
-
-

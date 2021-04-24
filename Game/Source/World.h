@@ -184,6 +184,8 @@ private:
 
     bool playerInmunity = false;
 
+    bool inventoryOpen = false;
+
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;
     List<SDL_Rect> location1;
