@@ -50,9 +50,11 @@ public:
 
     void DrawItems();
 
+    void DrawFace();
+
     void DrawText();
 
-
+    bool active = false;
 private:
     int playerExp;
     int playerHp;
@@ -75,7 +77,12 @@ private:
 
 private:
     SDL_Texture* interfaceTexture;
+    const SDL_Rect fullScreen = { 0,0,1280,720 };
 
+    const SDL_Rect healthBar = { 0,0,0,0 };
+    const SDL_Rect expBar = { 0,0,0,0 };
+        
+    SDL_Texture* faceAnimationTexture;
     Animation* currPlayerFaceAnim;
     Animation idleFaceAnim;
     Animation angryFaceAnim;
