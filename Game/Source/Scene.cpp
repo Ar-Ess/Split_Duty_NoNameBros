@@ -183,7 +183,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	{
 		combatScene->Restart();
 	}
-	else if (currScene == LEVEL_UP)
+	else if (currScene == PLAYER_MENU)
 	{
 
 	}

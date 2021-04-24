@@ -128,7 +128,7 @@ private:
 	bool windowEvents[WE_COUNT];
 
 	KeyState* keyboard = nullptr;
-	KeyState* gamePad = nullptr;
+	
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 	GamePad pads[MAX_PADS];
 
@@ -136,6 +136,8 @@ private:
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
+public:
+	KeyState* gamePad = nullptr;
 };
 
 #endif // __INPUT_H__

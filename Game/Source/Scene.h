@@ -13,6 +13,7 @@ struct SDL_Texture;
 class Enemy;
 class Player;
 class Combat;
+class PlayerMenu;
 class World;
 enum Places;
 
@@ -22,6 +23,7 @@ enum Scenes
 	LOGO_SCENE,
 	MAIN_MENU,
 	OPTIONS_MENU,
+	PLAYER_MENU,
 	COMBAT,
 	LEVEL_UP,
 	WORLD,
@@ -152,11 +154,13 @@ public:
 	friend class Combat;
 	friend class Enemy;
 	friend class Player;
+	friend class PlayerMenu;
 
 	Player* player1 = nullptr;
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
+	PlayerMenu* playerMenu = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 

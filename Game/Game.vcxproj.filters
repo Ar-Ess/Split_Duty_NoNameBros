@@ -90,6 +90,9 @@
     <ClCompile Include="Source\NPC.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -230,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="Source\Quest.h">
       <Filter>Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerMenu.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
