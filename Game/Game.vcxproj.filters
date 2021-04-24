@@ -90,10 +90,10 @@
     <ClCompile Include="Source\NPC.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerMenu.cpp">
+    <ClCompile Include="Source\QuestManager.cpp" />
+    <ClCompile Include="Source\Inventory.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\QuestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -235,7 +235,7 @@
     <ClInclude Include="Source\Quest.h">
       <Filter>Quests</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlayerMenu.h">
+    <ClInclude Include="Source\Inventory.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

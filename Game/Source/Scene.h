@@ -15,6 +15,7 @@ class Player;
 class Combat;
 class PlayerMenu;
 class World;
+class Inventory;
 enum Places;
 
 enum Scenes
@@ -160,6 +161,7 @@ public:
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
+	Inventory* inventory = nullptr;
 	PlayerMenu* playerMenu = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };

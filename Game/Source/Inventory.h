@@ -1,5 +1,5 @@
-#ifndef __PLAYERMENU_H__
-#define __PLAYERMENU_H__
+#ifndef __INVENTORY_H__
+#define __INVENTORY_H__
 
 #include "Point.h"
 #include "SString.h"
@@ -9,9 +9,6 @@
 #include "GuiButton.h"
 
 #include "Collider.h"
-
-
-
 
 class Player;
 class Scene;
@@ -32,11 +29,11 @@ struct Item
     unsigned int amount;
 };
 
-class PlayerMenu
+class Inventory
 {
 public:
 
-    PlayerMenu();
+    Inventory();
 
     void Start();
 
@@ -101,5 +98,5 @@ private:
 
 };
 
-#endif // __COMBAT_H__
+#endif // __INVENTORY_H__
 

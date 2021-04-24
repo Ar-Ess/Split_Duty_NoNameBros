@@ -8,7 +8,7 @@
 #include "World.h"
 #include "EntityManager.h"
 
-#include "PlayerMenu.h"
+#include "Inventory.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "Collider.h"
@@ -16,12 +16,12 @@
 
 #include "Log.h"
 
-PlayerMenu::PlayerMenu()
+Inventory::Inventory()
 {
 	
 }
 
-void PlayerMenu::Start()
+void Inventory::Start()
 {
 	playerLvl = app->scene->player1->lvl;
 
@@ -36,14 +36,14 @@ void PlayerMenu::Start()
 	currPlayerFaceAnim = &idleFaceAnim;
 
 }
-void PlayerMenu::Restart()
+void Inventory::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(itemsTexture);
 	app->tex->UnLoad(faceAnimationTexture);
 }
 
-void PlayerMenu::Update()
+void Inventory::Update()
 {
 	if (active)
 	{
@@ -52,7 +52,7 @@ void PlayerMenu::Update()
 	
 }
 
-void PlayerMenu::DrawInterface()
+void Inventory::DrawInterface()
 {
 	
 	app->render->DrawTexture(interfaceTexture, 0, 0, &fullScreen);
@@ -65,7 +65,7 @@ void PlayerMenu::DrawInterface()
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->expTillNextLevel, BLUE);
 }
 
-void PlayerMenu::DrawBar(iPoint pos,int current, int max, SDL_Color color)
+void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 {
 	int size = 100;
 	int thickness = 20;
@@ -84,7 +84,7 @@ void PlayerMenu::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 	}
 }
 
-void PlayerMenu::DrawItems()
+void Inventory::DrawItems()
 {
 	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y, &littleBeefRect);
 
@@ -100,14 +100,14 @@ void PlayerMenu::DrawItems()
 
 }
 
-void PlayerMenu::DrawFace()
+void Inventory::DrawFace()
 {
 	currPlayerFaceAnim->Update(1.0f);
 
 	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, &currPlayerFaceAnim->GetCurrentFrame());
 }
 
-void PlayerMenu::DrawText()
+void Inventory::DrawText()
 {
 }
 

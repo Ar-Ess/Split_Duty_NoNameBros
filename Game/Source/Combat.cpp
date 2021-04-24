@@ -1392,10 +1392,7 @@ void Combat::EnemyAttackProbability()
 		else if (random > 8)
 		{
 			if (steps != 3) enemy->attack = 3;
-			else 
-			{
-				enemy->attack = 2;
-			}
+			else enemy->attack = 2;
 		}
 	}
 }
@@ -1645,7 +1642,7 @@ void Combat::PlayerTurn()
 
 	if (app->scene->player2->health <= 0) SecondPlayerDie();
 
-	if (steps < 3) app->scene->moveButton->state = GuiControlState::NORMAL;
+	if (steps < 3 && !playerStepDenied) app->scene->moveButton->state = GuiControlState::NORMAL;
 
 	currentEnemyAnim = &enemy->idleAnim;
 

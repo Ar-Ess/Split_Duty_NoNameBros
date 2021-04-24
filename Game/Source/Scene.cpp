@@ -17,6 +17,7 @@
 #include "Combat.h"
 #include "DialogueManager.h"
 #include "Transition.h"
+#include "Inventory.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -58,6 +59,8 @@ bool Scene::Start()
 
 	combatScene = new Combat();
 
+	inventory = new Inventory();
+
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
 	app->guiManager->debugGui = false;
@@ -66,15 +69,8 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	//app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
-	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
-
 	////ENEMY SET                                            -----------------COMBAT RECT----------------                        ---WORLD RECT---              LVL EXP  HP STR DEF  VEL
 	//app->entityManager->enemies.start->data->SetUp({ SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H }, {1000, 180, SMALLWOLF_W_W, SMALLWOLF_W_H}, 2, 200, 25, 15, 10, 20);
-
-	//app->entityManager->enemies.start->next->data->SetUp( { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H }, { 1200, 180, BIRD_W_W, BIRD_W_H}, 2, 400, 30, 15, 15, 40);
-	//app->entityManager->enemies.start->next->next->data->SetUp( { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H }, { 1400, 180, MANTIS_W_W, MANTIS_W_H }, 2, 400, 40, 20, 5, 20);
 
 	if (FILE* file = fopen("save_game.xml", "r"))
 	{
