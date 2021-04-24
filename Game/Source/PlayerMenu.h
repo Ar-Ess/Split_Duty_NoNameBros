@@ -79,6 +79,18 @@ private:
     Animation* currPlayerFaceAnim;
     Animation idleFaceAnim;
     Animation angryFaceAnim;
+private:
+    SDL_Texture* itemsTexture;
+
+    SDL_Rect littleBeefRect = { 0,0,80,80 };
+    SDL_Rect bigBeefRect = { 80,0,80,80 };
+    SDL_Rect featherRect = { 160,0,80,80 };
+    SDL_Rect mantisRect = { 240,0,80,80 };
+    SDL_Rect coinRect = { 320,0,80,80 };
+    SDL_Rect splitRect = { 400,0,80,80 };
+
+    iPoint itemPos = { 60,60 };
+    iPoint itemOff = { 200,200 };
 
 };
 

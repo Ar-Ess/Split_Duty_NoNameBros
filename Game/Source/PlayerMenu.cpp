@@ -30,10 +30,13 @@ void PlayerMenu::Start()
 	expBarPos = { 600,80 };
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/player-menu.png");
+	itemsTexture = app->tex->Load("Assets/Textures/UI/items/items.png");
+
 }
 void PlayerMenu::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
+	app->tex->UnLoad(itemsTexture);
 }
 
 void PlayerMenu::Update()
@@ -58,6 +61,18 @@ void PlayerMenu::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 
 void PlayerMenu::DrawItems()
 {
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y, &littleBeefRect);
+
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y, &bigBeefRect);
+
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y, &featherRect);
+
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.x, &mantisRect);
+
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x), &coinRect);
+
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x), &splitRect);
+
 }
 
 void PlayerMenu::DrawText()
