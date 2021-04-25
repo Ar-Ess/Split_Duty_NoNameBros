@@ -65,11 +65,9 @@ void Inventory::Draw()
 
 	DrawFace();
 
-	DrawBar(healthBarPos, 100, 100, RED);
+	DrawBar(healthBarPos, 100, 100, { 222,222,0,222 });
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, 1, BLUE);
-
-	
 
 	DrawStats();
 
@@ -96,13 +94,16 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 
 	app->render->DrawRectangle({ 0,0,300,300 }, RED);
 	
+	app->render->DrawTexture(interfaceTexture, 0, 0, &healthBarRect);
+
 	if (color.r > 240) //red
 	{
-		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &healthBar);
+		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &healthBarRect);
+		app->render->DrawTexture(interfaceTexture, 0, 0, &healthBarRect);
 	}
 	else //blue
 	{
-		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &expBar);
+		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &expBarRect);
 	}
 }
 
@@ -134,10 +135,11 @@ void Inventory::DrawStats()
 
 void Inventory::DrawFace()
 {
-	LOG("Draw face...");
 	currPlayerFaceAnim->Update(1.0f);
 
 	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, &currPlayerFaceAnim->GetCurrentFrame());
+
+	
 }
 
 void Inventory::DrawText()

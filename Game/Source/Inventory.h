@@ -73,9 +73,9 @@ private:
     
 private:
     //guide positions
-    iPoint playerFacePos;
-    iPoint healthBarPos;
-    iPoint expBarPos;
+    iPoint playerFacePos = { 844,76 };
+    iPoint healthBarPos = { 960,75 };
+    iPoint expBarPos = { 960,175 };
     
 private:
     GuiString* healthText = nullptr;
@@ -86,8 +86,9 @@ private:
 private:
     SDL_Texture* interfaceTexture;
 
-    const SDL_Rect healthBar = { 0,0,0,0 };
-    const SDL_Rect expBar = { 0,0,0,0 };
+    //const SDL_Rect healthBarRect = { 0,0,261,422 };
+    const SDL_Rect healthBarRect = { 0,720,261,22 };
+    const SDL_Rect expBarRect = { 0,742,261,22 };
         
     SDL_Texture* faceAnimationTexture;
     Animation* currPlayerFaceAnim;

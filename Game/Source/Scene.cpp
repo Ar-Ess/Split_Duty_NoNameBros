@@ -155,8 +155,9 @@ bool Scene::Update(float dt)
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 
 	if (app->scene->inventory->inventoryActive)
+	{
 		app->scene->inventory->Draw();
-
+	}
 	return true;
 }
 
