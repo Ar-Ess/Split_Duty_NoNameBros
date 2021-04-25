@@ -1,5 +1,5 @@
-#ifndef __PLAYERMENU_H__
-#define __PLAYERMENU_H__
+#ifndef __INVENTORY_H__
+#define __INVENTORY_H__
 
 #include "Point.h"
 #include "SString.h"
@@ -9,9 +9,6 @@
 #include "GuiButton.h"
 
 #include "Collider.h"
-
-
-
 
 class Player;
 class Scene;
@@ -32,17 +29,19 @@ struct Item
     unsigned int amount;
 };
 
-class PlayerMenu
+class Inventory
 {
 public:
 
-    PlayerMenu();
+    Inventory();
 
     void Start();
 
     void Restart();
 
     void Update();
+
+    void Draw();
 
     void DrawInterface();
 
@@ -54,7 +53,6 @@ public:
 
     void DrawText();
 
-    bool active = false;
 private:
     int playerExp;
     int playerHp;
@@ -77,7 +75,6 @@ private:
 
 private:
     SDL_Texture* interfaceTexture;
-    const SDL_Rect fullScreen = { 0,0,1280,720 };
 
     const SDL_Rect healthBar = { 0,0,0,0 };
     const SDL_Rect expBar = { 0,0,0,0 };
@@ -101,5 +98,5 @@ private:
 
 };
 
-#endif // __COMBAT_H__
+#endif // __INVENTORY_H__
 

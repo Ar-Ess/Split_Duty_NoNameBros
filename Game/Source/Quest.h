@@ -20,7 +20,6 @@ private: //FUNCTIONS
 
 public: //VARIABLES
 	QuestType		type;
-
 private: //VARIABLES
 };
 #endif // !_QUEST_H_

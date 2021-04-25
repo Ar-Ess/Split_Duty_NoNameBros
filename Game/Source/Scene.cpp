@@ -17,6 +17,7 @@
 #include "Combat.h"
 #include "DialogueManager.h"
 #include "Transition.h"
+#include "Inventory.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -58,6 +59,8 @@ bool Scene::Start()
 
 	combatScene = new Combat();
 
+	inventory = new Inventory();
+
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
 	app->guiManager->debugGui = false;
@@ -66,15 +69,8 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	//app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::BIRD);
-	//app->entityManager->CreateEntity(EntityType::ENEMY,EnemyClass::MANTIS);
-
 	////ENEMY SET                                            -----------------COMBAT RECT----------------                        ---WORLD RECT---              LVL EXP  HP STR DEF  VEL
 	//app->entityManager->enemies.start->data->SetUp({ SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H }, {1000, 180, SMALLWOLF_W_W, SMALLWOLF_W_H}, 2, 200, 25, 15, 10, 20);
-
-	//app->entityManager->enemies.start->next->data->SetUp( { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H }, { 1200, 180, BIRD_W_W, BIRD_W_H}, 2, 400, 30, 15, 15, 40);
-	//app->entityManager->enemies.start->next->next->data->SetUp( { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H }, { 1400, 180, MANTIS_W_W, MANTIS_W_H }, 2, 400, 40, 20, 5, 20);
 
 	if (FILE* file = fopen("save_game.xml", "r"))
 	{
@@ -190,6 +186,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	else if (currScene == WORLD)
 	{
 		world->Restart(nextScene);
+		inventory->Restart();
 	}
 	else if (currScene == PAUSE_MENU)
 	{
@@ -562,7 +559,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->largeMeatDescription->bounds = descriptionRect;
 		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
-		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 60 percent of the Max Health of the hero you select");
+		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\n");
 	}
 
 	if (combatScene->featherDescription == nullptr)
@@ -608,6 +605,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 void Scene::SetWorld(Places place)
 {
 	world->Start(place);
+	inventory->Start();
 }
 
 void Scene::SetPauseMenu()
@@ -764,7 +762,11 @@ void Scene::UpdateWorld()
 {
 	world->Update();
 
+	if (world->inventoryOpen) inventory->Update();
+
 	world->Draw();
+
+	if (world->inventoryOpen) inventory->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{

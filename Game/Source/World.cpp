@@ -225,7 +225,7 @@ void World::Restart(Scenes scene)
 
 void World::Update()
 {
-	if (!app->dialogueManager->onDialog) WorldMovement();
+	if (!app->dialogueManager->onDialog && !inventoryOpen) WorldMovement();
 
 	WorldChange();
 
@@ -237,6 +237,14 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(START) == KEY_DOWN)
+	{
+		if (!app->dialogueManager->onDialog)
+		{
+			inventoryOpen = !inventoryOpen;
+		}
+	}
 }
 
 void World::EnemyLogic()

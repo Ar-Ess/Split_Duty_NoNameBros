@@ -10,11 +10,7 @@
 class QuestManager : public Module
 {
 public://FUNCTIONS
-	QuestManager()
-	{
-		name.Create("questmanager");
-	}
-
+	QuestManager();
 	virtual ~QuestManager() {};
 
 	bool Awake(pugi::xml_node&);
