@@ -32,6 +32,7 @@ void Inventory::Start()
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/player-menu.png");
 	itemsTexture = app->tex->Load("Assets/Textures/UI/items/items.png");
 	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
+	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
@@ -42,6 +43,7 @@ void Inventory::Restart()
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(itemsTexture);
 	app->tex->UnLoad(faceAnimationTexture);
+	app->tex->UnLoad(statsTexture);
 }
 
 void Inventory::Update()
@@ -59,6 +61,8 @@ void Inventory::Draw()
 
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, 1, BLUE);
+
+	DrawStats();
 
 	DrawText();
 }
@@ -101,6 +105,16 @@ void Inventory::DrawItems()
 
 	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x), &splitRect);
 
+}
+
+void Inventory::DrawStats()
+{
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y, &healthStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + statsOff.y, &strenghtStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 2), &defenseStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 3), &velocityStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 4), &luckStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5), &stabStatRect);
 }
 
 void Inventory::DrawFace()

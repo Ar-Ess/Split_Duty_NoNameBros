@@ -111,6 +111,13 @@ bool Scene::PreUpdate()
 		}
 	}
 	*/
+
+	if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		if(app->scene->inventory->inventoryActive)
+			LOG("Inventory");
+		app->scene->inventory->inventoryActive = !app->scene->inventory->inventoryActive;
+	}
 	return true;
 }
 
@@ -141,6 +148,9 @@ bool Scene::Update(float dt)
 	else if (currScene == LEVEL_UP) UpdateLevelUp();
 	else if (currScene == WORLD) UpdateWorld();
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
+
+	if (app->scene->inventory->inventoryActive)
+		app->scene->inventory->Draw();
 
 	return true;
 }

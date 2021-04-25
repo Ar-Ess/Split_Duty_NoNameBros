@@ -18,16 +18,16 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-enum ItemType
-{
-    COINS
-};
-
-struct Item 
-{
-    ItemType itemType;
-    unsigned int amount;
-};
+//enum ItemType
+//{
+//    COINS
+//};
+//
+//struct Item 
+//{
+//    ItemType itemType;
+//    unsigned int amount;
+//};
 
 class Inventory
 {
@@ -49,9 +49,14 @@ public:
 
     void DrawItems();
 
+    void DrawStats();
+
     void DrawFace();
 
     void DrawText();
+
+public:
+    bool inventoryActive = false;
 
 private:
     int playerExp;
@@ -95,6 +100,18 @@ private:
 
     iPoint itemPos = { 60,60 };
     iPoint itemOff = { 200,200 };
+
+    SDL_Texture* statsTexture = nullptr;
+
+    SDL_Rect healthStatRect = { 0,0,60,60 };
+    SDL_Rect strenghtStatRect = { 0,0,60,60 };
+    SDL_Rect defenseStatRect = { 0,0,60,60 };
+    SDL_Rect velocityStatRect = { 0,0,60,60 };
+    SDL_Rect luckStatRect = { 0,0,60,60 };
+    SDL_Rect stabStatRect = { 0,0,60,60 };
+
+    iPoint statsPos = { 60,60 };
+    iPoint statsOff = { 0,80 };
 
 };
 
