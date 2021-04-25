@@ -114,9 +114,14 @@ bool Scene::PreUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
-		if(app->scene->inventory->inventoryActive)
-			LOG("Inventory");
+		
+		world->inventoryOpen = !world->inventoryOpen;
 		app->scene->inventory->inventoryActive = !app->scene->inventory->inventoryActive;
+
+		if (app->scene->inventory->inventoryActive)
+		{
+			LOG("Inventory");
+		}
 	}
 	return true;
 }

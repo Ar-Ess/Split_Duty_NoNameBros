@@ -29,10 +29,16 @@ void Inventory::Start()
 	healthBarPos = { 600,40 };
 	expBarPos = { 600,80 };
 
-	interfaceTexture = app->tex->Load("Assets/Textures/UI/player-menu.png");
+	playerHp = app->scene->player1->health;
+	playerExp = app->scene->player1->exp;
+
+	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
 	itemsTexture = app->tex->Load("Assets/Textures/UI/items/items.png");
 	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
 	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
+
+	idleFaceAnim.PushBack({ 0, 0, 70, 68 });
+	idleFaceAnim.PushBack({ 70, 0, 70, 68 });
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
@@ -57,14 +63,18 @@ void Inventory::Draw()
 
 	DrawItems();
 
-	//DrawFace();
+	DrawFace();
 
+	DrawBar(healthBarPos, 100, 100, RED);
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, 1, BLUE);
+
+	
 
 	DrawStats();
 
 	DrawText();
+
 }
 
 void Inventory::DrawInterface()
@@ -74,12 +84,17 @@ void Inventory::DrawInterface()
 
 void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 {
+	
 	int size = 100;
 	int thickness = 20;
 
 	int percent = current / max;
 
 	app->render->DrawRectangle({pos.x , pos.y , size * percent ,thickness }, MAGENTA);
+
+	app->render->DrawRectangle({ 100,100, 100 ,100 }, { 255,255,0,200 });
+
+	app->render->DrawRectangle({ 0,0,300,300 }, RED);
 	
 	if (color.r > 240) //red
 	{
@@ -119,6 +134,7 @@ void Inventory::DrawStats()
 
 void Inventory::DrawFace()
 {
+	LOG("Draw face...");
 	currPlayerFaceAnim->Update(1.0f);
 
 	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, &currPlayerFaceAnim->GetCurrentFrame());
