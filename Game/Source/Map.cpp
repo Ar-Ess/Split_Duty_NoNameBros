@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Scene.h"
 #include "World.h"
+#include "Collider.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -215,8 +216,6 @@ void Map::DrawLayer(int num)
 {
 	if (num < data.layers.Count())
 	{
-		MapLayer* layer = data.layers[num];
-
 		app->render->scale = scale;
 
 		// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
@@ -224,17 +223,21 @@ void Map::DrawLayer(int num)
 		{
 			for (int x = 0; x < data.width; ++x)
 			{
-				int tileId = layer->Get(x, y);
+				int tileId = data.layers[num]->Get(x, y);
 
 				if (tileId > 0)
 				{
 					// L04: DONE 9: Complete the draw function
 					TileSet* tileset = GetTilesetFromTileId(tileId);
 
-					SDL_Rect rec = tileset->GetTileRect(tileId);
+					SDL_Rect rec = GetTilesetFromTileId(tileId)->GetTileRect(tileId);
 					iPoint pos = MapToWorld(x, y);
 
-					app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, SCALE, &rec);
+					SDL_Rect invertCam = { -app->render->camera.x, -app->render->camera.y, app->render->camera.w, app->render->camera.h };
+
+					if (colliderUtils.CheckCollision(invertCam, { (int)((pos.x + tileset->offsetX) * 1.75), (int)((pos.y + tileset->offsetY) * 1.75), (int)(16 * 1.75), (int)(16 * 1.75) })) app->render->DrawTexture(tileset->texture, pos.x + tileset->offsetX, pos.y + tileset->offsetY, SCALE, &rec);
+
+					tileset = nullptr;
 				}
 			}
 		}

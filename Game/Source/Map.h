@@ -9,11 +9,14 @@
 #include "PQueue.h"
 #include "Point.h"
 #include "DynArray.h"
+#include "Collider.h"
 
 #include "SDL/include/SDL.h"
 #include "PugiXml/src/pugixml.hpp"
 
 #define COST_MAP_SIZE	100
+
+class Collision;
 
 // L03: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
@@ -171,6 +174,8 @@ public:
 
     // L03: DONE 1: Add your struct for map info
 	MapData data;
+
+	Collision colliderUtils;
 
 	bool drawColliders = false;
 
