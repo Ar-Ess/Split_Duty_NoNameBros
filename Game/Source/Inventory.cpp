@@ -72,7 +72,6 @@ void Inventory::Draw()
 	DrawStats();
 
 	DrawText();
-
 }
 
 void Inventory::DrawInterface()
@@ -82,28 +81,27 @@ void Inventory::DrawInterface()
 
 void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 {
-	
 	int size = 100;
 	int thickness = 20;
 
 	int percent = current / max;
 
-	app->render->DrawRectangle({pos.x , pos.y , size * percent ,thickness }, MAGENTA);
+	app->render->DrawRectangle({pos.x , pos.y , size * percent ,thickness }, MAGENTA, true, false);
 
-	app->render->DrawRectangle({ 100,100, 100 ,100 }, { 255,255,0,200 });
+	app->render->DrawRectangle({ 100,100, 100 ,100 }, { 255,255,0,200 }, true, false);
 
-	app->render->DrawRectangle({ 0,0,300,300 }, RED);
+	app->render->DrawRectangle({ 0,0,300,300 }, RED, true, false);
 	
-	app->render->DrawTexture(interfaceTexture, 0, 0, &healthBarRect);
+	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	if (color.r > 240) //red
 	{
-		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &healthBarRect);
+		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 		app->render->DrawTexture(interfaceTexture, 0, 0, &healthBarRect);
 	}
 	else //blue
 	{
-		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, &expBarRect);
+		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	}
 }
 

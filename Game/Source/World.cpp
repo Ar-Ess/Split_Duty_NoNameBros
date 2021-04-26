@@ -238,7 +238,7 @@ void World::Update()
 
 	NPCLogic();
 
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(START) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(Y) == KEY_DOWN)
 	{
 		if (!app->dialogueManager->onDialog)
 		{
