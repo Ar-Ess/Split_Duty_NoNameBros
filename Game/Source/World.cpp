@@ -777,22 +777,47 @@ void World::CameraMovement(bool move)
 	{
 		switch (playerState)
 		{
+<<<<<<< Updated upstream
 		case(PlayerState::IDLE):
 			break;
 
 		case(PlayerState::UP):
 			if (place != HOUSE) app->render->camera.y += worldSpeed;
+=======
+		case(PlayerState::IDLE): break;
+			break;
+		case(PlayerState::UP):
+			if (place != HOUSE)
+			{
+				app->render->camera.y += worldSpeed;
+			}
+>>>>>>> Stashed changes
 			break;
 
 		case(PlayerState::DOWN):
+<<<<<<< Updated upstream
 			if (place != HOUSE) app->render->camera.y -= worldSpeed;
+=======
+			if (place != HOUSE)
+			{
+				app->render->camera.y -= worldSpeed;
+			}
+>>>>>>> Stashed changes
 			break;
 
 		case(PlayerState::LEFT):
+<<<<<<< Updated upstream
 			if (place != TAVERN && place != HOUSE) app->render->camera.x += worldSpeed;
+=======
+			if (place != TAVERN && place != HOUSE)
+			{
+				app->render->camera.x += worldSpeed;
+			}
+>>>>>>> Stashed changes
 			break;
 
 		case(PlayerState::RIGHT):
+<<<<<<< Updated upstream
 			if (place != TAVERN && place != HOUSE) app->render->camera.x -= worldSpeed;
 			break;
 
@@ -825,6 +850,11 @@ void World::CameraMovement(bool move)
 			{
 				app->render->camera.y -= worldSpeed;
 				if (place != TAVERN) app->render->camera.x -= worldSpeed;
+=======
+			if (place != TAVERN && place != HOUSE)
+			{
+				app->render->camera.x -= worldSpeed;
+>>>>>>> Stashed changes
 			}
 			break;
 		}
