@@ -80,6 +80,8 @@ void Combat::Restart()
 	combatState = NULL_STATE;
 	enemy = nullptr;
 
+	SDL_ShowCursor(1);
+
 	app->tex->UnLoad(character1Spritesheet);
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
@@ -111,6 +113,7 @@ void Combat::BoolStart()
 	enemyThrow = false;
 
 	// Player 2
+	buffChoice = true;
 	secondPlayerAttack = false;
 	secondPlayerProtect = false;
 	secondPlayerBuff = false;
@@ -1072,10 +1075,36 @@ void Combat::SecondPlayerProtect()
 
 void Combat::SecondPlayerBuff()
 {
-	bool end = true;
-	if (app->input->GetKey(SDL_SCANCODE_1)) end = true;
+	//if (buffChoice)
+	//{
 
-	if (end) EnemyTurn();
+	//	Scene* s = app->scene;
+	//	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
+	//	{
+	//		secondPlayerChoice = true;
+	//		drawBuffMenu = false;
+	//		secondPlayerBuff = false;
+	//	}
+	//	/*else if (s->attackBuffPressed)
+	//	{
+	//		secondPlayerChoice = true;
+	//		drawBuffMenu = false;
+	//		secondPlayerBuff = false;
+	//	}*/
+	//}
+	//else
+	//{
+	//	drawBuffMenu = false;
+	//	BuffLogic();
+	//}
+
+	Scene* s = app->scene;
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
+	{
+		secondPlayerChoice = true;
+		drawBuffMenu = false;
+		secondPlayerBuff = false;
+	}
 }
 
 void Combat::ItemUsage()
@@ -1209,6 +1238,14 @@ void Combat::ItemUsage()
 		}
 	}
 	}
+}
+
+void Combat::BuffLogic()
+{
+	bool end = true;
+	if (app->input->GetKey(SDL_SCANCODE_1)) end = true;
+
+	if (end) EnemyTurn();
 }
 
 void Combat::PlayerSplit()
