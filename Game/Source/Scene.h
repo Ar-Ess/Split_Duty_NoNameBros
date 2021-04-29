@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Point.h"
+#include "DynArray.h"
 
 
 class GuiButton;
@@ -196,7 +197,8 @@ private: //Scene Manager
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation
-
+	//SDL_Texture* debugPath = nullptr;
+	//DynArray<iPoint>* debugPathList;
 	unsigned short int timer = 0;
 
 private:

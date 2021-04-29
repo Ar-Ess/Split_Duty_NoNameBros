@@ -19,9 +19,6 @@ class PathFinding
 {
 public:
 
-	// NOTE: Constructor is private to avoid new instances creation
-
-	// Get unique instance of the class
 	static PathFinding* GetInstance();
 
 	~PathFinding();
@@ -32,7 +29,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	DynArray<iPoint>* CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(DynArray<iPoint>& path, const iPoint& origin, const iPoint& destination);
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -44,6 +41,7 @@ public:
 	uchar GetTileAt(const iPoint& pos) const;
 
 private:
+	friend class World;
 
 	// Singleton instance
 	static PathFinding* instance;

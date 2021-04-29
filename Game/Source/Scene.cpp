@@ -18,6 +18,8 @@
 #include "DialogueManager.h"
 #include "Transition.h"
 #include "Inventory.h"
+#include "Map.h"
+#include "Pathfinding.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -51,6 +53,8 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	app->fontTTF->Load("Assets/Fonts/manaspace.regular.ttf", 14);
+
+	//debugPath = app->tex->Load("Assets/Maps/collisions.png");
 
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
@@ -87,21 +91,20 @@ bool Scene::Start()
 
 bool Scene::PreUpdate()
 {
-	/*
 	// L12b: Debug pathfing
-	static iPoint origin;
+	/*static iPoint origin;
 	static bool originSelected = false;
 
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
+	p = world->map->WorldToMap(p.x, p.y);
 
 	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN)
 	{
 		if(originSelected == true)
 		{
-			app->pathFinding->CreatePath(origin, p);
+			PathFinding::GetInstance()->CreatePath(*debugPathList, origin, p);
 			originSelected = false;
 		}
 		else
@@ -109,41 +112,29 @@ bool Scene::PreUpdate()
 			origin = p;
 			originSelected = true;
 		}
-	}
-	*/
+	}*/
 
-	if (app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
-	{
-		
-		world->inventoryOpen = !world->inventoryOpen;
-		app->scene->inventory->inventoryActive = !app->scene->inventory->inventoryActive;
-
-		if (app->scene->inventory->inventoryActive)
-		{
-			LOG("Inventory");
-		}
-	}
 	return true;
 }
 
 bool Scene::Update(float dt)
 {
 	// L12b: Debug pathfinding
-	/*
+	/*int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = app->map->WorldToMap(p.x, p.y);
-	p = app->map->MapToWorld(p.x, p.y);
+	p = world->map->WorldToMap(p.x, p.y);
+	p = world->map->MapToWorld(p.x, p.y);
 
-	const DynArray<iPoint>* path = app->pathFinding->GetLastPath();
+	const DynArray<iPoint>* path = debugPathList;
 
+	const SDL_Rect debugPathRect = {0, 0, 16, 16};
 	for(uint i = 0; i < path->Count(); ++i)
 	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(debugTex, pos.x, pos.y);
-	}
-	*/
-
+		iPoint pos = world->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		app->render->DrawTexture(debugPath, pos.x, pos.y, 1, &debugPathRect);
+	}*/
+	
 	//LOG("X:%d Y:%d", player1->colliderWorld.x, player1->colliderWorld.y);
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
@@ -154,10 +145,6 @@ bool Scene::Update(float dt)
 	else if (currScene == WORLD) UpdateWorld();
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 
-	if (app->scene->inventory->inventoryActive)
-	{
-		app->scene->inventory->Draw();
-	}
 	return true;
 }
 
@@ -786,10 +773,17 @@ void Scene::UpdateWorld()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
-		if (!app->dialogueManager->onDialog)
+		if (!world->inventoryOpen)
 		{
-			prevCam = { app->render->camera.x, app->render->camera.y };
-			SetScene(PAUSE_MENU);
+			if (!app->dialogueManager->onDialog)
+			{
+				prevCam = { app->render->camera.x, app->render->camera.y };
+				SetScene(PAUSE_MENU);
+			}
+		}
+		else
+		{
+			world->inventoryOpen = false;
 		}
 	}
 

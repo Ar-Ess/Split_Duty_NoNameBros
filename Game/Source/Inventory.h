@@ -61,8 +61,6 @@ public:
 
     void DrawText();
 
-public:
-    bool inventoryActive = false;
 private:
     int playerExp;
     int playerHp;

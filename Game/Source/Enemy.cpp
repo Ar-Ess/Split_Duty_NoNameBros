@@ -12,12 +12,12 @@
 
 Enemy::Enemy() : Entity(EntityType::ENEMY)
 {
-    path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
+    PathFinding::GetInstance()->CreatePath(*path, iPoint(0, 0), iPoint(0, 0));
 }
 
 Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
 {
-    path = PathFinding::GetInstance()->CreatePath(iPoint(0, 0), iPoint(0, 0));
+    PathFinding::GetInstance()->CreatePath(*path, iPoint(0, 0), iPoint(0, 0));
 
     //Load enemies textures
     //wolf
