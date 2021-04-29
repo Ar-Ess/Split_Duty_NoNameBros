@@ -72,8 +72,8 @@ private:
 private:
     //guide positions
     iPoint playerFacePos = { 844,76 };
-    iPoint healthBarPos = { 960,75 };
-    iPoint expBarPos = { 960,175 };
+    iPoint healthBarPos = { 1060,75 };
+    iPoint expBarPos = { 1060,230 };
     
 private:
     GuiString* healthText = nullptr;
@@ -107,15 +107,18 @@ private:
 
     SDL_Texture* statsTexture = nullptr;
 
-    SDL_Rect healthStatRect = { 0,0,60,60 };
-    SDL_Rect strenghtStatRect = { 0,0,60,60 };
-    SDL_Rect defenseStatRect = { 0,0,60,60 };
-    SDL_Rect velocityStatRect = { 0,0,60,60 };
-    SDL_Rect luckStatRect = { 0,0,60,60 };
-    SDL_Rect stabStatRect = { 0,0,60,60 };
+	iPoint statsPos = { 60,60 };
+	iPoint statsOff = { 0,80 };
 
-    iPoint statsPos = { 60,60 };
-    iPoint statsOff = { 0,80 };
+	int sprite = 80;
+    SDL_Rect healthStatRect = { 0,0,60,60 };
+    SDL_Rect strenghtStatRect = { sprite,0,60,60 };
+    SDL_Rect defenseStatRect = { sprite * 2,0,60,60 };
+    SDL_Rect velocityStatRect = { sprite * 3,0,60,60 };
+    SDL_Rect luckStatRect = { sprite * 4,0,60,60 };
+    SDL_Rect stabStatRect = { sprite * 5,0,60,60 };
+
+    
 
 };
 

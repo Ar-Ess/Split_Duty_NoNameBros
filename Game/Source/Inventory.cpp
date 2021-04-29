@@ -65,9 +65,9 @@ void Inventory::Draw()
 
 	DrawFace();
 
-	DrawBar(healthBarPos, 100, 100, { 222,222,0,222 });
+	
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
-	DrawBar(expBarPos, app->scene->player1->exp, 1, BLUE);
+	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
 	DrawStats();
 
@@ -83,52 +83,52 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 {
 	int size = 100;
 	int thickness = 20;
+	int percent = 1;
 
-	int percent = current / max;
-
-	app->render->DrawRectangle({pos.x , pos.y , size * percent ,thickness }, MAGENTA, true, false);
-
-	app->render->DrawRectangle({ 100,100, 100 ,100 }, { 255,255,0,200 }, true, false);
-
-	app->render->DrawRectangle({ 0,0,300,300 }, RED, true, false);
+	if ((current && max) > 0)
+	{
+		 percent = current / max;
+	}
 	
-	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+
 
 	if (color.r > 240) //red
 	{
+		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, RED, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-		app->render->DrawTexture(interfaceTexture, 0, 0, &healthBarRect);
 	}
 	else //blue
 	{
+		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);  
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+
 	}
 }
 
 void Inventory::DrawItems()
 {
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y, &littleBeefRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y,1,false, &littleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y, &bigBeefRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x ,1,false, itemPos.y, &bigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y, &featherRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y,1,false, &featherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.x, &mantisRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.x,1,false, &mantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x), &coinRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x),1,false, &coinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x), &splitRect);
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x),1,false, &splitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 }
 
 void Inventory::DrawStats()
 {
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y, &healthStatRect);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + statsOff.y, &strenghtStatRect);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 2), &defenseStatRect);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 3), &velocityStatRect);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 4), &luckStatRect);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5), &stabStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y,1,false, &healthStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + statsOff.y, 1,false,&strenghtStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 2),1,false, &defenseStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 3),1,false, &velocityStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 4),1,false, &luckStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5),1,false, &stabStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::DrawFace()
