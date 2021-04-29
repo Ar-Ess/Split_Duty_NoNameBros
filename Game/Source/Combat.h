@@ -111,6 +111,8 @@ public:
 
     void ItemUsage();
 
+	void BuffLogic();
+
     int HealPlayer(int typeOfHeal);
 
     int EnemyItemDamage();
@@ -209,6 +211,7 @@ public:
     bool secondPlayerBuff = false;
     bool secondPlayerChoice = true;
 
+	bool buffChoice = true;
     bool drawBuffMenu = false;
 
 //Items

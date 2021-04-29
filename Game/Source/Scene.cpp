@@ -363,6 +363,8 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
+	SDL_ShowCursor(0);
+
 	combatScene->enemy = enemySet;
 	combatScene->Start();
 
