@@ -61,6 +61,10 @@ public:
 
     void DrawFace();
 
+	void AddButtons();
+
+	void SetText();
+
     void DrawText();
 
 private:
@@ -84,6 +88,10 @@ private:
     GuiString* expText = nullptr;
     GuiString* lvlText = nullptr;
 
+	GuiString* upgradeText = nullptr;
+
+private:
+	GuiString* questText = nullptr;
 
 private:
     SDL_Texture* interfaceTexture;
@@ -104,14 +112,22 @@ private:
     SDL_Texture* itemsTexture;
 
     SDL_Rect littleBeefRect = { 0,0,80,80 };
+	GuiString* littleBeefText = nullptr;
     SDL_Rect bigBeefRect = { 80,0,80,80 };
+	GuiString* bigBeefText = nullptr;
     SDL_Rect featherRect = { 160,0,80,80 };
+	GuiString* featherText = nullptr;
     SDL_Rect mantisRect = { 240,0,80,80 };
+	GuiString* mantisText = nullptr;
     SDL_Rect coinRect = { 320,0,80,80 };
+	GuiString* coinText = nullptr;
     SDL_Rect splitRect = { 400,0,80,80 };
+	GuiString* splitText = nullptr;
 
     iPoint itemPos = { 60,160 };
     iPoint itemOff = { 200,200 };
+	iPoint numberItemPos = { 60,200 };
+	iPoint numberItemOff = { 200,150 };
 
     SDL_Texture* statsTexture = nullptr;
 
