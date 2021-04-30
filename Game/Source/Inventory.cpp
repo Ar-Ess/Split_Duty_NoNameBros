@@ -52,6 +52,10 @@ void Inventory::Start()
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
+	//texts
+	SetText();
+	
+
 }
 
 void Inventory::Restart()
@@ -169,8 +173,112 @@ void Inventory::DrawFace()
 	
 }
 
+void Inventory::AddButtons()
+{
+
+}
+
+void Inventory::SetText()
+{
+	//player
+	if (lvlText == nullptr)
+	{
+		lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		lvlText->bounds = { 541, 43, 200, 50 };
+		lvlText->SetTextFont(app->fontTTF->defaultFont);
+		lvlText->SetString("Current level ");
+	}
+	
+	if (healthText == nullptr)
+	{
+		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		healthText->bounds = { 900, 153, 200, 50 };
+		healthText->SetTextFont(app->fontTTF->defaultFont);
+		healthText->SetString("HP: 23 / 50");
+	}
+	
+	if (expText == nullptr)
+	{
+		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		expText->bounds = { 900, 220, 200, 50 };
+		expText->SetTextFont(app->fontTTF->defaultFont);
+		expText->SetString("XP: 34 / 70");
+	}
+
+	if (upgradeText == nullptr)
+	{
+		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		upgradeText->bounds = { 900,100, 100, 100 };
+		upgradeText->SetTextFont(app->fontTTF->defaultFont);
+		upgradeText->SetString("14");
+	}
+	
+	//ITEMS
+	if (littleBeefText == nullptr)
+	{
+		littleBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
+		littleBeefText->SetTextFont(app->fontTTF->defaultFont);
+		littleBeefText->SetString("12");
+	}
+	if (bigBeefText == nullptr)
+	{
+		bigBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
+		bigBeefText->SetTextFont(app->fontTTF->defaultFont);
+		bigBeefText->SetString("12");
+	}
+	if (featherText == nullptr)
+	{
+		featherText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
+		featherText->SetTextFont(app->fontTTF->defaultFont);
+		featherText->SetString("12");
+	}
+	if (mantisText == nullptr)
+	{
+		mantisText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 100, 100 };
+		mantisText->SetTextFont(app->fontTTF->defaultFont);
+		mantisText->SetString("12");
+	}
+	if (coinText == nullptr)
+	{
+		coinText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y*2, 100, 100 };
+		coinText->SetTextFont(app->fontTTF->defaultFont);
+		coinText->SetString("12");
+	}
+	if (splitText == nullptr)
+	{
+		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
+		splitText->SetTextFont(app->fontTTF->defaultFont);
+		splitText->SetString("12");
+	}
+	//quest
+	if (questText == nullptr)
+	{
+		questText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		questText->bounds = { 60,600, 100, 100 };
+		questText->SetTextFont(app->fontTTF->defaultFont);
+		questText->SetString("Dale ostias a un lobo");
+	}
+}
+
 void Inventory::DrawText()
 {
-	
+	lvlText->Draw();
+	healthText->Draw();
+	expText->Draw();
+	upgradeText->Draw();
 
+	littleBeefText->Draw();
+	bigBeefText->Draw();
+	featherText->Draw();
+	mantisText->Draw();
+	coinText->Draw();
+	splitText->Draw();
+
+	questText->Draw();
 }
