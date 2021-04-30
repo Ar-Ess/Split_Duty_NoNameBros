@@ -90,11 +90,11 @@ void Inventory::DrawInterface()
 
 void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 {
-	int size = 100;
+	int size = 261;
 	int thickness = 20;
 	int percent = 1;
 
-	if ((current && max) > 0)
+	if (current > 0 && max > 0)
 	{
 		 percent = current / max;
 	}
@@ -147,13 +147,13 @@ void Inventory::UpdateFace()
 	if (counter % 60 == 0)
 	{
 		seconds++;
-		LOG("seconds : %d", seconds);
+		//LOG("seconds : %d", seconds);
 	}
 		
-	if (seconds >= 5)
+	if (seconds >= 3)
 	{
 		blinkFaceAnim.Reset();
-		currPlayerFaceAnim = &angryFaceAnim;
+		currPlayerFaceAnim = &blinkFaceAnim;
 		seconds = 0;
 	}
 }
@@ -171,4 +171,6 @@ void Inventory::DrawFace()
 
 void Inventory::DrawText()
 {
+	
+
 }

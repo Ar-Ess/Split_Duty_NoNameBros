@@ -77,7 +77,7 @@ private:
     //guide positions
     iPoint playerFacePos = { 844,76 };
     iPoint healthBarPos = { 960,60 };
-    iPoint expBarPos = { 960,130 };
+    iPoint expBarPos = { 960,120 };
     
 private:
     GuiString* healthText = nullptr;
