@@ -253,8 +253,6 @@ private:
     friend class Enemy;
     friend class Player;
 
-    const SDL_Rect test = {52, 52, 70, 88};
-
     GuiString* turnText = nullptr;
 
     Animation* currentPlayerAnim = nullptr;

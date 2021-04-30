@@ -82,6 +82,9 @@ void Combat::Restart()
 
 	SDL_ShowCursor(1);
 
+	buffChoice = 0;
+	UpdateBuffs();
+
 	app->tex->UnLoad(character1Spritesheet);
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
@@ -111,18 +114,29 @@ void Combat::BoolStart()
 	featherPlayerTurn = false;
 	protectPlayerTurn = false;
 	enemyThrow = false;
+	moneyThrow = false;
+
+	drawInventory = false;
+
+	playerStepDenied = false;
+	protectPlayerTurn = false;
 
 	// Player 2
 	buffChoice = true;
 	secondPlayerAttack = false;
 	secondPlayerProtect = false;
+	secondPlayerProtection = false;
 	secondPlayerBuff = false;
 	secondPlayerChoice = true;
-
-	secondPlayerAttack = false;
-	secondPlayerProtect = false;
-	secondPlayerBuff = false;
 	drawBuffMenu = false;
+	secondPlayerReturning = false;
+
+	attackBuff = false;
+	defenseBuff = false;
+	thirdBuff = false;
+
+	// ENEMY
+	enemyAttack = false;
 
 	//Items
 	wearFeather = false;
