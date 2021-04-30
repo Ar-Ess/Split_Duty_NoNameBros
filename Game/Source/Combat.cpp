@@ -165,6 +165,8 @@ void Combat::Update()
 
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 	else app->scene->splitButton->state = GuiControlState::LOCKED;
+
+	LOG("P_Str:%d", app->scene->player1->strength);
 }
 
 void Combat::UpdateButtons()
@@ -484,7 +486,7 @@ void Combat::DrawPopUps()
 	//BUFFS MENU
 	if (drawBuffMenu)
 	{
-
+		app->render->DrawRectangle({ 300, 200, 600, 400 }, {100, 210, 70, 200});
 	}
 }
 
@@ -1075,35 +1077,55 @@ void Combat::SecondPlayerProtect()
 
 void Combat::SecondPlayerBuff()
 {
-	//if (buffChoice)
-	//{
-
-	//	Scene* s = app->scene;
-	//	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
-	//	{
-	//		secondPlayerChoice = true;
-	//		drawBuffMenu = false;
-	//		secondPlayerBuff = false;
-	//	}
-	//	/*else if (s->attackBuffPressed)
-	//	{
-	//		secondPlayerChoice = true;
-	//		drawBuffMenu = false;
-	//		secondPlayerBuff = false;
-	//	}*/
-	//}
-	//else
-	//{
-	//	drawBuffMenu = false;
-	//	BuffLogic();
-	//}
-
-	Scene* s = app->scene;
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
+	if (buffChoice)
 	{
-		secondPlayerChoice = true;
+		Scene* s = app->scene;
+		Player* p = s->player1;
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
+		{
+			secondPlayerChoice = true;
+			drawBuffMenu = false;
+			secondPlayerBuff = false;
+		}
+		else if (buffChoice && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+		{
+			buffChoice = false;
+			attackBuff = true;
+			buffCooldown = 2;
+			lastStatNotBuffed = p->strength;
+			p->strength += (p->strength * (ATTACK_BUFF / 100.0f));
+		}
+		else if (buffChoice && app->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
+		{
+			buffChoice = false;
+			defenseBuff = true;
+			buffCooldown = 2;
+			lastStatNotBuffed = p->defense;
+			p->defense += (p->defense * (DEFENSE_BUFF / 100.0f));
+		}
+		else if (buffChoice && app->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
+		{
+			buffChoice = false;
+			thirdBuff = true;
+			buffCooldown = 1;
+			//lastStatNotBuffed = p->strength;
+			//p->elquesigui += (p->elquesigui * (THIRD_BUFF / 100.0f));
+		}
+	}
+	else
+	{
 		drawBuffMenu = false;
-		secondPlayerBuff = false;
+		if (buffGenerationTime < 100)
+		{
+			buffGenerationTime++;
+		}
+		else
+		{
+			buffGenerationTime = 0;
+			secondPlayerBuff = false;
+			buffChoice = true;
+			EnemyTurn();
+		}
 	}
 }
 
@@ -1214,38 +1236,30 @@ void Combat::ItemUsage()
 	}
 	else if (moneyThrow)
 	{
-	if (playerTimeMoneyThrow < 120)
-	{
-		playerTimeMoneyThrow++;
-	}
-	else
-	{
-		playerTimeMoneyThrow = 0;
-		playerItem = false;
-		itemChoice = true;
-		moneyThrow = false;
-
-		enemy->health -= 1;
-
-		if (enemy->health > 0)
+		if (playerTimeMoneyThrow < 120)
 		{
-			if (!secondPlayer) EnemyTurn();
-			else if (secondPlayer) SecondPlayerTurn();
+			playerTimeMoneyThrow++;
 		}
-		else if (enemy->health <= 0)
+		else
 		{
-			PlayerWin();
+			playerTimeMoneyThrow = 0;
+			playerItem = false;
+			itemChoice = true;
+			moneyThrow = false;
+
+			enemy->health -= 1;
+
+			if (enemy->health > 0)
+			{
+				if (!secondPlayer) EnemyTurn();
+				else if (secondPlayer) SecondPlayerTurn();
+			}
+			else if (enemy->health <= 0)
+			{
+				PlayerWin();
+			}
 		}
 	}
-	}
-}
-
-void Combat::BuffLogic()
-{
-	bool end = true;
-	if (app->input->GetKey(SDL_SCANCODE_1)) end = true;
-
-	if (end) EnemyTurn();
 }
 
 void Combat::PlayerSplit()
@@ -1634,6 +1648,37 @@ void Combat::ItemDrop(EnemyClass enemy)
 	}
 }
 
+void Combat::UpdateBuffs()
+{
+	if (buffCooldown > 0)
+	{
+		buffCooldown--;
+		app->scene->buffButton->state = GuiControlState::LOCKED;
+	}
+	else
+	{
+		app->scene->buffButton->state = GuiControlState::NORMAL;
+
+		if (attackBuff)
+		{
+			attackBuff = false;
+			app->scene->player1->strength = lastStatNotBuffed;
+		}
+		else if (defenseBuff)
+		{
+			defenseBuff = false;
+			app->scene->player1->defense = lastStatNotBuffed;
+		}
+		else if (thirdBuff)
+		{
+			thirdBuff = false;
+			//app->scene->player1->strength = lastStatNotBuffed;
+		}
+
+		lastStatNotBuffed = 0;
+	}
+}
+
 // State Changing Functions
 
 void Combat::EnemyTurn()
@@ -1691,6 +1736,8 @@ void Combat::PlayerTurn()
 	currentEnemyAnim = &enemy->idleAnim;
 
 	turnText->SetString("PLAYER TURN");
+
+	if (attackBuff || defenseBuff || thirdBuff) UpdateBuffs();
 }
 
 void Combat::SecondPlayerTurn()

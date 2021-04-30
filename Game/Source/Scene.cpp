@@ -432,7 +432,6 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
-		buffButton->state = GuiControlState::LOCKED;
 	}
 
 	// INVENTORY BUTTONS

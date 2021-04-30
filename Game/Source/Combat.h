@@ -13,6 +13,10 @@
 #define MAX_MEAT 10
 #define MAX_COMBATITEM 5
 
+#define ATTACK_BUFF 25.0f
+#define DEFENSE_BUFF 25.0f
+#define THIRD_BUFF 25.0f
+
 class Enemy;
 enum EnemyClass;
 class Player;
@@ -135,6 +139,8 @@ public:
 
     void ItemDrop(EnemyClass enemy);
 
+	void UpdateBuffs();
+
 private: //STATE CHANGING FUNCTIONS
 
     void EnemyTurn();
@@ -213,6 +219,14 @@ public:
 
 	bool buffChoice = true;
     bool drawBuffMenu = false;
+	short int buffCooldown = 0;
+
+	bool attackBuff = false;
+	bool defenseBuff = false;
+	bool thirdBuff = false;
+
+	short int lastStatNotBuffed = 0;
+	short int buffGenerationTime = 0;
 
 //Items
     bool wearFeather = false;
