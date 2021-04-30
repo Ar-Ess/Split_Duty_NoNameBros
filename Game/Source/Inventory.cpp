@@ -24,10 +24,8 @@ Inventory::Inventory()
 void Inventory::Start()
 {
 	playerLvl = app->scene->player1->lvl;
-
-	playerFacePos = { 30,30 };
-	healthBarPos = { 600,40 };
-	expBarPos = { 600,80 };
+	//healthPercent = app->scene->player1->health / app->scene->player1->maxHealth;
+	
 
 	playerHp = app->scene->player1->health;
 	playerExp = app->scene->player1->exp;
@@ -38,7 +36,19 @@ void Inventory::Start()
 	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
 
 	idleFaceAnim.PushBack({ 0, 0, 70, 68 });
-	idleFaceAnim.PushBack({ 70, 0, 70, 68 });
+
+	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
+	blinkFaceAnim.PushBack({ 70, 0, 70, 68 });
+	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
+	blinkFaceAnim.speed = 0.1f;
+	blinkFaceAnim.loop = false;
+
+	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
+	angryFaceAnim.PushBack({ 0, 70, 70, 68 });
+	angryFaceAnim.PushBack({ 70, 70, 70, 68 });
+	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
+	angryFaceAnim.speed = 0.1f;
+	angryFaceAnim.loop = false;
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
@@ -65,7 +75,6 @@ void Inventory::Draw()
 
 	DrawFace();
 
-	
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
@@ -123,7 +132,7 @@ void Inventory::DrawItems()
 
 void Inventory::DrawStats()
 {
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y,1,false, &healthStatRect);
+	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y,1,false, &healthStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + statsOff.y, 1,false,&strenghtStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 2),1,false, &defenseStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 3),1,false, &velocityStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
@@ -131,11 +140,31 @@ void Inventory::DrawStats()
 	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5),1,false, &stabStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
+void Inventory::UpdateFace()
+{
+	counter++;
+	
+	if (counter % 60 == 0)
+	{
+		seconds++;
+		LOG("seconds : %d", seconds);
+	}
+		
+	if (seconds >= 5)
+	{
+		blinkFaceAnim.Reset();
+		currPlayerFaceAnim = &angryFaceAnim;
+		seconds = 0;
+	}
+}
+
 void Inventory::DrawFace()
 {
+	UpdateFace();
+
 	currPlayerFaceAnim->Update(1.0f);
 
-	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, &currPlayerFaceAnim->GetCurrentFrame());
+	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y,1,false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	
 }

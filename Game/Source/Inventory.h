@@ -57,6 +57,8 @@ public:
 
     void DrawStats();
 
+	void UpdateFace();
+
     void DrawFace();
 
     void DrawText();
@@ -68,12 +70,14 @@ private:
 
     
     int playerItems;
+
+	int healthPercent = 1;
     
 private:
     //guide positions
     iPoint playerFacePos = { 844,76 };
-    iPoint healthBarPos = { 1060,75 };
-    iPoint expBarPos = { 1060,230 };
+    iPoint healthBarPos = { 960,60 };
+    iPoint expBarPos = { 960,130 };
     
 private:
     GuiString* healthText = nullptr;
@@ -91,7 +95,11 @@ private:
     SDL_Texture* faceAnimationTexture;
     Animation* currPlayerFaceAnim;
     Animation idleFaceAnim;
+	Animation blinkFaceAnim;
     Animation angryFaceAnim;
+
+	int counter = 0;
+	int seconds = 0;
 private:
     SDL_Texture* itemsTexture;
 
@@ -102,13 +110,13 @@ private:
     SDL_Rect coinRect = { 320,0,80,80 };
     SDL_Rect splitRect = { 400,0,80,80 };
 
-    iPoint itemPos = { 60,60 };
+    iPoint itemPos = { 60,160 };
     iPoint itemOff = { 200,200 };
 
     SDL_Texture* statsTexture = nullptr;
 
-	iPoint statsPos = { 60,60 };
-	iPoint statsOff = { 0,80 };
+	iPoint statsPos = { 850,200 };
+	iPoint statsOff = { 0,60 };
 
 	int sprite = 80;
     SDL_Rect healthStatRect = { 0,0,60,60 };
