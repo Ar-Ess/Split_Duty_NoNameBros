@@ -90,9 +90,11 @@
     <ClCompile Include="Source\NPC.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Source\QuestManager.cpp" />
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\QuestManager.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
