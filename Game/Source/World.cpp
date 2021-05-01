@@ -264,7 +264,7 @@ void World::Draw()
 	if (debugCollisions) DrawCollisions();
 	DrawNPC();
 	DrawEnemy();
-	DrawPlayer();
+	if (place != MAIN_VILLAGE) DrawPlayer();
 }
 
 void World::DrawPlayer()

@@ -14,7 +14,13 @@
 #include "SDL/include/SDL.h"
 #include "PugiXml/src/pugixml.hpp"
 
+#include "Defs.h"
+#include "Log.h"
+
+#include <math.h>
+
 #define COST_MAP_SIZE	100
+#define MAX_LAYERS 26
 
 class Collision;
 
@@ -119,6 +125,7 @@ struct MapData
 
 	// L04: DONE 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
+	DynArray<MapLayer*> orgLayers;
 };
 
 class Map : public Entity
@@ -144,6 +151,8 @@ public:
     // Load new map
     bool Load(const char* path);
 
+	void UpdateLayers();
+
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
@@ -151,6 +160,8 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	SDL_Rect GetTilemapRec(int x, int y) const;
+
+	MapLayer* GetLayerFromY(int y) const;
 	
 	// L12b: Create walkability map for pathfinding
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;

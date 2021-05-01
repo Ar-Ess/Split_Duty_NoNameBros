@@ -194,22 +194,70 @@ void Map::PropagateAStar(int heuristic)
 }
 */
 
+void Map::UpdateLayers()
+{
+	data.orgLayers.Clear();
+	List<int> list;
+	for (int i = 0; i < data.layers.Count(); i++) list.Add(data.layers[i]->properties.GetProperty("y"));
+	list.BubbleSort();
+	for (int i = 0; i < list.Count(); i++) data.orgLayers.PushBack(GetLayerFromY(list[i]));
+	//data.orgLayers.Flip();
+}
+
 // Draw the map (all requried layers)
 void Map::Draw()
 {
+	Player* p = app->scene->player1;
+	World* w = app->scene->world;
+	bool playerDraw = false;
 	if (mapLoaded == false) return;
 
 	camOffset.x = app->render->camera.x;
 	camOffset.y = app->render->camera.y;
 
-	// L06: DONE 4: Make sure we draw all the layers and not just the first one
-	for (int i = 0; i < data.layers.Count(); i++)
+	UpdateLayers();
+
+	if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE)
 	{
-		if (strcmp(data.layers[i]->name.GetString(), "colliders") != 0)
+		// L06: DONE 4: Make sure we draw all the layers and not just the first one
+		for (int i = 0; i < data.orgLayers.Count(); i++)
 		{
-			if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+			MapLayer* layer = data.orgLayers[i];
+			if (strcmp(layer->name.GetString(), "colliders") != 0)
+			{
+				if (layer->properties.GetProperty("y") * SCALE < p->collisionRect.y)
+				{
+					if ((layer->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+				}
+				else
+				{
+					if (!playerDraw)
+					{
+						w->DrawPlayer();
+						playerDraw = true;
+						i--;
+					}
+					else
+					{
+						if ((layer->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+					}
+				}
+			}
+			layer = nullptr;
 		}
 	}
+	else
+	{
+		for (int i = 0; i < data.layers.Count(); i++)
+		{
+			if (strcmp(data.layers[i]->name.GetString(), "colliders") != 0)
+			{
+				if ((data.layers[i]->properties.GetProperty("drawable", 1) != 0) || drawColliders) DrawLayer(i);
+			}
+		}
+	}
+
+	p = nullptr;
 }
 
 void Map::DrawLayer(int num)
@@ -223,7 +271,14 @@ void Map::DrawLayer(int num)
 		{
 			for (int x = 0; x < data.width; ++x)
 			{
-				int tileId = data.layers[num]->Get(x, y);
+				//CANVIAR
+				int tileId = 0;
+				if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE) tileId = data.orgLayers[num]->Get(x, y);
+				else
+				{
+					tileId = data.layers[num]->Get(x, y);
+				}
+				//-----
 
 				if (tileId > 0)
 				{
@@ -308,6 +363,25 @@ SDL_Rect Map::GetTilemapRec(int x, int y) const
 	return rec;
 }
 
+MapLayer* Map::GetLayerFromY(int y) const
+{
+	ListItem<MapLayer*>* item = data.layers.start;
+	MapLayer* set = item->data;
+
+	while (item)
+	{
+		if (y == item->data->properties.GetProperty("y"))
+		{
+			set = item->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
+
+	return set;
+}
+
 // L06: DONE 3: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int id) const
 {
@@ -372,6 +446,8 @@ bool Map::CleanUp()
 		item2 = item2->next;
 	}
 	data.layers.Clear();
+
+	data.orgLayers.Clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
