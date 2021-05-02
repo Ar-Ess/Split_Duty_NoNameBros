@@ -262,9 +262,12 @@ void World::Draw()
 {
 	map->Draw();
 	if (debugCollisions) DrawCollisions();
-	DrawNPC();
-	DrawEnemy();
-	if (place != MAIN_VILLAGE) DrawPlayer();
+	if (place != MAIN_VILLAGE)
+	{
+		DrawNPC();
+		DrawEnemy();
+		DrawPlayer();
+	}
 }
 
 void World::DrawPlayer()

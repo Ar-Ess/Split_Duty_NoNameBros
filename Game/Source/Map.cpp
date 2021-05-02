@@ -233,6 +233,8 @@ void Map::Draw()
 				{
 					if (!playerDraw)
 					{
+						w->DrawNPC();
+						w->DrawEnemy();
 						w->DrawPlayer();
 						playerDraw = true;
 						i--;
