@@ -186,6 +186,8 @@ private:
 
     bool inventoryOpen = false;
 
+    bool levelUpOpen = false;
+
     List<SDL_Rect> houses;
     List<SDL_Rect> collisions;
     List<SDL_Rect> location1;

@@ -225,7 +225,7 @@ void World::Restart(Scenes scene)
 
 void World::Update()
 {
-	if (!app->dialogueManager->onDialog && !inventoryOpen) WorldMovement();
+	if (!app->dialogueManager->onDialog && !inventoryOpen && !levelUpOpen) WorldMovement();
 
 	WorldChange();
 
@@ -243,6 +243,15 @@ void World::Update()
 		if (!app->dialogueManager->onDialog)
 		{
 			inventoryOpen = !inventoryOpen;
+		}
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_L)==KEY_DOWN)
+	{
+		if (!app->dialogueManager->onDialog)
+		{
+			levelUpOpen = !levelUpOpen;
+			if (levelUpOpen) LOG("level up scene");
 		}
 	}
 }

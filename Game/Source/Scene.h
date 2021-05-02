@@ -16,6 +16,7 @@ class Player;
 class Combat;
 class World;
 class Inventory;
+class LevelUp;
 enum Places;
 
 enum Scenes
@@ -156,12 +157,14 @@ public:
 	friend class Enemy;
 	friend class Player;
 	friend class Inventory;
+	friend class LevelUp;
 
 	Player* player1 = nullptr;
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
 	Inventory* inventory = nullptr;
+	LevelUp* levelUp = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 

@@ -40,10 +40,22 @@ public:
 
     void Draw();
 
+    void UpdateButtons();
+
+    void DrawButtons();
   
+private:
+    SDL_Texture* interfaceTexture = nullptr;
 
+private:
+    GuiButton* upgradeHealthButton = nullptr;
+    GuiButton* upgradeDefenseButton = nullptr;
+    GuiButton* upgradeAttackButton = nullptr;
+    GuiButton* upgradeSpeedButton = nullptr;
+    GuiButton* upgradeLuckButton = nullptr;
+    GuiButton* upgradeStabButton = nullptr;
 
-
+    GuiString* upgradeText = nullptr;
 
 };
 

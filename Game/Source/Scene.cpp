@@ -18,6 +18,7 @@
 #include "DialogueManager.h"
 #include "Transition.h"
 #include "Inventory.h"
+#include "LevelUp.h"
 #include "Map.h"
 #include "Pathfinding.h"
 
@@ -64,6 +65,8 @@ bool Scene::Start()
 	combatScene = new Combat();
 
 	inventory = new Inventory();
+
+	levelUp = new LevelUp();
 
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
@@ -768,9 +771,13 @@ void Scene::UpdateWorld()
 
 	if (world->inventoryOpen) inventory->Update();
 
+	if (world->levelUpOpen) levelUp->Update();
+
 	world->Draw();
 
 	if (world->inventoryOpen) inventory->Draw();
+
+	if (world->levelUpOpen) levelUp->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{

@@ -96,6 +96,9 @@
     <ClCompile Include="Source\QuestManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LevelUp.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -238,6 +241,9 @@
       <Filter>Quests</Filter>
     </ClInclude>
     <ClInclude Include="Source\Inventory.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelUp.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
