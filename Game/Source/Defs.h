@@ -2,6 +2,7 @@
 #define __DEFS_H__
 
 #include <stdio.h>
+#include <map>
 
 //  NULL just in case ----------------------
 
@@ -38,6 +39,7 @@
 
 typedef unsigned int uint;
 typedef unsigned char uchar;
+typedef unsigned __int16 uint16;
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 

@@ -47,7 +47,7 @@ bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	sp = false;
 	return ret;
 }
 
@@ -88,6 +88,9 @@ bool Scene::Start()
 	{
 		activeContinue = false;
 	}
+	////DEBUGGING SPLINE////
+	pugi::xml_document doc;
+	spline.LoadSplines(doc);
 
 	return true;
 }
@@ -139,6 +142,7 @@ bool Scene::Update(float dt)
 	}*/
 	
 	//LOG("X:%d Y:%d", player1->colliderWorld.x, player1->colliderWorld.y);
+	
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
@@ -148,6 +152,20 @@ bool Scene::Update(float dt)
 	else if (currScene == WORLD) UpdateWorld();
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 
+	//DEBUGGING SPLINE
+	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		if (sp == true)
+			sp = false;
+		else
+			sp = true;
+	}
+	if (sp == true)
+	{
+		spline.splinesList.start->data.DrawSpline();
+		spline.splinesList.start->data.DrawSplineControlPoints();
+		spline.splinesList.start->data.HandleInput();
+	}
 	return true;
 }
 
@@ -198,6 +216,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	{
 		app->tex->UnLoad(pause);
 	}
+
 	return true;
 }
 

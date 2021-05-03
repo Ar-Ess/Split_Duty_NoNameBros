@@ -99,6 +99,7 @@
     <ClCompile Include="Source\LevelUp.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Spline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -245,6 +246,18 @@
     </ClInclude>
     <ClInclude Include="Source\LevelUp.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KillQuest.h">
+      <Filter>Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GatherQuest.h">
+      <Filter>Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FindQuest.h">
+      <Filter>Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Spline.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

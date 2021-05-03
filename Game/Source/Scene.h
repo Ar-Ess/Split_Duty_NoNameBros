@@ -5,6 +5,7 @@
 #include "Point.h"
 #include "DynArray.h"
 
+#include "Spline.h"
 
 class GuiButton;
 class GuiSlider;
@@ -203,6 +204,9 @@ private: //debug
 	//SDL_Texture* debugPath = nullptr;
 	//DynArray<iPoint>* debugPathList;
 	unsigned short int timer = 0;
+
+	Spline spline;
+	bool sp = false;
 
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);
