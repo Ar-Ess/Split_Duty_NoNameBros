@@ -158,14 +158,14 @@ public:
 	friend class Enemy;
 	friend class Player;
 	friend class Inventory;
-	friend class LevelUp;
+	friend class LevelUpScene;
 
 	Player* player1 = nullptr;
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
 	Inventory* inventory = nullptr;
-	LevelUp* levelUp = nullptr;
+	LevelUpScene* levelUpScene = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 
@@ -186,6 +186,7 @@ private: //Scene Manager
 	void SetMainMenu();
 	void SetOptionsMenu();
 	void SetCombat(Enemy* enemy);
+	void SetInventory();
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
 	void SetPauseMenu();

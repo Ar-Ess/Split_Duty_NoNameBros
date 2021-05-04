@@ -8,7 +8,7 @@
 #include "World.h"
 #include "EntityManager.h"
 
-#include "LevelUp.h"
+#include "LevelUpScene.h"
 #include "Enemy.h"
 #include "Player.h"
 #include "Collider.h"
@@ -16,34 +16,46 @@
 
 #include "Log.h"
 
-LevelUp::LevelUp()
+LevelUpScene::LevelUpScene()
 {	
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/level-up.png");
 }
 
-void LevelUp::Start()
+void LevelUpScene::Start()
 {
-	
+	SetButtons();
 }
 
-void LevelUp::Restart()
+void LevelUpScene::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
 }
 
-void LevelUp::Update()
+void LevelUpScene::Update()
 {
 }
 
-void LevelUp::Draw()
+void LevelUpScene::Draw()
 {
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	DrawButtons();
+
+	app->guiManager->DrawCursor();
 }
 
-void LevelUp::UpdateButtons()
+void LevelUpScene::SetButtons()
 {
+	
+
+}
+
+void LevelUpScene::DrawButtons()
+{
+
+
+	SetButtons();
+
 	/*void Combat::UpdateButtons()
 	{
 		Scene* s = app->scene;
@@ -65,12 +77,6 @@ void LevelUp::UpdateButtons()
 		}
 		s = nullptr;
 	}*/
-}
-
-void LevelUp::DrawButtons()
-{
-	UpdateButtons();
-
 	upgradeHealthButton->Draw(1, true, false);
 	upgradeDefenseButton->Draw(1, true, false);
 	upgradeAttackButton->Draw(1, true, false);

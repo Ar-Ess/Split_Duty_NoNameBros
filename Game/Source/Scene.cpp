@@ -18,7 +18,7 @@
 #include "DialogueManager.h"
 #include "Transition.h"
 #include "Inventory.h"
-#include "LevelUp.h"
+#include "LevelUpScene.h"
 #include "Map.h"
 #include "Pathfinding.h"
 
@@ -66,7 +66,7 @@ bool Scene::Start()
 
 	inventory = new Inventory();
 
-	levelUp = new LevelUp();
+	levelUpScene = new LevelUpScene();
 
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
@@ -623,8 +623,68 @@ void Scene::SetCombat(Enemy* enemySet)
 	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
 }
 
+void Scene::SetInventory()
+{
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
+
+	if (app->scene->inventory->quitButton == nullptr)
+	{
+		app->scene->inventory->quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->inventory->quitButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->inventory->quitButton->text = "Quit quest";
+		app->scene->inventory->quitButton->SetObserver(this);
+	}
+}
+
 void Scene::SetLevelUp(unsigned short int exp)
 {
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
+	if (app->scene->levelUpScene->upgradeHealthButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeHealthButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeHealthButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeHealthButton->text = "+";
+		app->scene->levelUpScene->upgradeHealthButton->SetObserver(this);
+	}
+	if (app->scene->levelUpScene->upgradeAttackButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeAttackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeAttackButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeAttackButton->text = "+";
+		app->scene->levelUpScene->upgradeAttackButton->SetObserver(this);
+	}
+	if (app->scene->levelUpScene->upgradeDefenseButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeDefenseButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeDefenseButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeDefenseButton->text = "+";
+		app->scene->levelUpScene->upgradeDefenseButton->SetObserver(this);
+	}
+	if (app->scene->levelUpScene->upgradeSpeedButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeSpeedButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeSpeedButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeSpeedButton->text = "+";
+		app->scene->levelUpScene->upgradeSpeedButton->SetObserver(this);
+	}
+	if (app->scene->levelUpScene->upgradeLuckButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeLuckButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeLuckButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeLuckButton->text = "+";
+		app->scene->levelUpScene->upgradeLuckButton->SetObserver(this);
+	}
+	if (app->scene->levelUpScene->upgradeStabButton == nullptr)
+	{
+		app->scene->levelUpScene->upgradeStabButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		app->scene->levelUpScene->upgradeStabButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
+		app->scene->levelUpScene->upgradeStabButton->text = "+";
+		app->scene->levelUpScene->upgradeStabButton->SetObserver(this);
+	}
+
+	
 
 }
 
@@ -790,13 +850,13 @@ void Scene::UpdateWorld()
 
 	if (world->inventoryOpen) inventory->Update();
 
-	if (world->levelUpOpen) levelUp->Update();
+	if (world->levelUpOpen) levelUpScene->Update();
 
 	world->Draw();
 
 	if (world->inventoryOpen) inventory->Draw();
 
-	if (world->levelUpOpen) levelUp->Draw();
+	if (world->levelUpOpen) levelUpScene->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{

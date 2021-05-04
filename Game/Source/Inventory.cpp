@@ -85,6 +85,8 @@ void Inventory::Draw()
 	DrawStats();
 
 	DrawText();
+
+	app->guiManager->DrawCursor();
 }
 
 void Inventory::DrawInterface()
@@ -175,7 +177,9 @@ void Inventory::DrawFace()
 
 void Inventory::AddButtons()
 {
+		
 
+		
 }
 
 void Inventory::SetText()

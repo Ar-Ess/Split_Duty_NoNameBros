@@ -108,6 +108,7 @@ private:
 
 	int counter = 0;
 	int seconds = 0;
+
 private:
     SDL_Texture* itemsTexture;
 
@@ -142,7 +143,8 @@ private:
     SDL_Rect luckStatRect = { sprite * 4,0,60,60 };
     SDL_Rect stabStatRect = { sprite * 5,0,60,60 };
 
-    
+public:
+    GuiButton* quitButton = nullptr;
 
 };
 

@@ -48,7 +48,7 @@ public:
 
 	void DrawCombatInterface(Enemy* enemy);
 	
-	void DrawCombatButtons();
+	
 
 public:
 

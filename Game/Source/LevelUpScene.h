@@ -1,5 +1,5 @@
-#ifndef __LEVELUP_H__
-#define __LEVELUP_H__
+#ifndef __LEVELUPSCENE_H__
+#define __LEVELUPSCENE_H__
 
 #include "Point.h"
 #include "SString.h"
@@ -26,11 +26,11 @@ class GuiString;
 
 
 
-class LevelUp
+class LevelUpScene
 {
 public:
 
-    LevelUp();
+    LevelUpScene();
 
     void Start();
 
@@ -40,14 +40,14 @@ public:
 
     void Draw();
 
-    void UpdateButtons();
+    void SetButtons();
 
     void DrawButtons();
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
 
-private:
+public:
     GuiButton* upgradeHealthButton = nullptr;
     GuiButton* upgradeDefenseButton = nullptr;
     GuiButton* upgradeAttackButton = nullptr;
