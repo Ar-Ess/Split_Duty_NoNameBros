@@ -839,9 +839,16 @@ void Scene::UpdateCombat()
 	DebugSteps();
 }
 
+void Scene::UpdateInventory()
+{
+	app->scene->inventory->Update();
+}
+
 void Scene::UpdateLevelUp()
 {
 	SetScene(WORLD, world->place);
+
+	app->scene->levelUpScene->Update();
 }
 
 void Scene::UpdateWorld()

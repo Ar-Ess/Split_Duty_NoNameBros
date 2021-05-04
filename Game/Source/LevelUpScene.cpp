@@ -33,6 +33,12 @@ void LevelUpScene::Restart()
 
 void LevelUpScene::Update()
 {
+	upgradeHealthButton->Update(1.0f);
+	upgradeAttackButton->Update(1.0f);
+	upgradeDefenseButton->Update(1.0f);
+	upgradeSpeedButton->Update(1.0f);
+	upgradeLuckButton->Update(1.0f);
+	upgradeStabButton->Update(1.0f);
 }
 
 void LevelUpScene::Draw()

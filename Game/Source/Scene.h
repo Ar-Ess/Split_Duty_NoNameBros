@@ -196,6 +196,7 @@ private: //Scene Manager
 	void UpdateMainMenu();
 	void UpdateOptionsMenu();
 	void UpdateCombat();
+	void UpdateInventory();
 	void UpdateLevelUp();
 	void UpdateWorld();
 	void UpdatePauseMenu();
