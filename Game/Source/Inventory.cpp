@@ -68,7 +68,7 @@ void Inventory::Restart()
 
 void Inventory::Update()
 {
-	
+	quitButton->Update(1.0f);
 }
 
 void Inventory::Draw()
@@ -83,6 +83,8 @@ void Inventory::Draw()
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
 	DrawStats();
+
+	DrawButtons();
 
 	DrawText();
 
@@ -146,6 +148,11 @@ void Inventory::DrawStats()
 	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5),1,false, &stabStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
+void Inventory::DrawButtons()
+{
+	quitButton->Draw();
+}
+
 void Inventory::UpdateFace()
 {
 	counter++;
@@ -175,12 +182,7 @@ void Inventory::DrawFace()
 	
 }
 
-void Inventory::AddButtons()
-{
-		
 
-		
-}
 
 void Inventory::SetText()
 {

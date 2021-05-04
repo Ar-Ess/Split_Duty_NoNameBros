@@ -685,7 +685,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 	}
 
 	
-
+	LOG("level up scene buttons init");
 }
 
 void Scene::SetWorld(Places place)

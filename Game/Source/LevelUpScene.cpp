@@ -53,7 +53,7 @@ void LevelUpScene::Draw()
 void LevelUpScene::SetButtons()
 {
 	
-
+	app->scene->SetLevelUp(1);
 }
 
 void LevelUpScene::DrawButtons()

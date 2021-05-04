@@ -57,11 +57,11 @@ public:
 
     void DrawStats();
 
+    void DrawButtons();
+
 	void UpdateFace();
 
     void DrawFace();
-
-	void AddButtons();
 
 	void SetText();
 
