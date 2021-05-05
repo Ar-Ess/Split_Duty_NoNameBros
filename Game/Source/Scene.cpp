@@ -848,8 +848,10 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (world->inventoryOpen) world->inventory->Draw();
-
+	if (world->inventoryOpen)
+	{
+		world->inventory->Draw();
+	}
 	if (world->levelUpOpen) levelUpScene->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)

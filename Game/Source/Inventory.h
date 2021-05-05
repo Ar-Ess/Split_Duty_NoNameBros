@@ -24,16 +24,7 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-//enum ItemType
-//{
-//    COINS
-//};
-//
-//struct Item 
-//{
-//    ItemType itemType;
-//    unsigned int amount;
-//};
+
 
 class Inventory
 {
