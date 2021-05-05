@@ -26,7 +26,6 @@ enum Scenes
 	LOGO_SCENE,
 	MAIN_MENU,
 	OPTIONS_MENU,
-	PLAYER_MENU,
 	COMBAT,
 	LEVEL_UP,
 	WORLD,
@@ -164,7 +163,6 @@ public:
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
-	Inventory* inventory = nullptr;
 	LevelUpScene* levelUpScene = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
@@ -186,7 +184,6 @@ private: //Scene Manager
 	void SetMainMenu();
 	void SetOptionsMenu();
 	void SetCombat(Enemy* enemy);
-	void SetInventory();
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
 	void SetPauseMenu();
@@ -196,7 +193,6 @@ private: //Scene Manager
 	void UpdateMainMenu();
 	void UpdateOptionsMenu();
 	void UpdateCombat();
-	void UpdateInventory();
 	void UpdateLevelUp();
 	void UpdateWorld();
 	void UpdatePauseMenu();

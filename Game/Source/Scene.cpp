@@ -64,7 +64,7 @@ bool Scene::Start()
 
 	combatScene = new Combat();
 
-	inventory = new Inventory();
+	world->inventory = new Inventory();
 
 	levelUpScene = new LevelUpScene();
 
@@ -203,14 +203,10 @@ bool Scene::CleanUp(Scenes nextScene)
 	{
 		combatScene->Restart();
 	}
-	else if (currScene == PLAYER_MENU)
-	{
-
-	}
 	else if (currScene == WORLD)
 	{
 		world->Restart(nextScene);
-		inventory->Restart();
+		world->inventory->Restart();
 	}
 	else if (currScene == PAUSE_MENU)
 	{
@@ -623,20 +619,6 @@ void Scene::SetCombat(Enemy* enemySet)
 	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
 }
 
-void Scene::SetInventory()
-{
-	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
-
-
-	if (app->scene->inventory->quitButton == nullptr)
-	{
-		app->scene->inventory->quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->inventory->quitButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
-		app->scene->inventory->quitButton->text = "Quit quest";
-		app->scene->inventory->quitButton->SetObserver(this);
-	}
-}
-
 void Scene::SetLevelUp(unsigned short int exp)
 {
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
@@ -691,7 +673,17 @@ void Scene::SetLevelUp(unsigned short int exp)
 void Scene::SetWorld(Places place)
 {
 	world->Start(place);
-	inventory->Start();
+	world->inventory->Start();
+
+	//inventory buttons
+	SDL_Rect buttonPrefab = { 614,36,60,60 };
+	if (world->inventory->quitButton == nullptr)
+	{
+		world->inventory->quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		world->inventory->quitButton->bounds = buttonPrefab;
+		world->inventory->quitButton->text = "Quit quest";
+		world->inventory->quitButton->SetObserver(this);
+	}
 }
 
 void Scene::SetPauseMenu()
@@ -839,11 +831,6 @@ void Scene::UpdateCombat()
 	DebugSteps();
 }
 
-void Scene::UpdateInventory()
-{
-	app->scene->inventory->Update();
-}
-
 void Scene::UpdateLevelUp()
 {
 	SetScene(WORLD, world->place);
@@ -855,13 +842,13 @@ void Scene::UpdateWorld()
 {
 	world->Update();
 
-	if (world->inventoryOpen) inventory->Update();
+	if (world->inventoryOpen) world->inventory->Update();
 
 	if (world->levelUpOpen) levelUpScene->Update();
 
 	world->Draw();
 
-	if (world->inventoryOpen) inventory->Draw();
+	if (world->inventoryOpen) world->inventory->Draw();
 
 	if (world->levelUpOpen) levelUpScene->Draw();
 

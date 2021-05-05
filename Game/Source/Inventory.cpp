@@ -89,6 +89,7 @@ void Inventory::Draw()
 	DrawText();
 
 	app->guiManager->DrawCursor();
+	
 }
 
 void Inventory::DrawInterface()

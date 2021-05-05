@@ -176,6 +176,8 @@ private:
 
     PlayerState playerState;
 
+    Inventory* inventory = nullptr;
+
     iPoint prevPosition = { 0, 0 };
 
     bool debugCollisions = false;
