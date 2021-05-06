@@ -151,7 +151,7 @@ void Inventory::DrawStats()
 
 void Inventory::DrawButtons()
 {
-	quitButton->Draw();
+	quitButton->Draw(1, false, true);
 }
 
 void Inventory::UpdateFace()
