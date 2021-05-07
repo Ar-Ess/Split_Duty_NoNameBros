@@ -5,67 +5,68 @@ void Spline::CreateSplines(pugi::xml_node& node)
 	splinesList.Clear();
 	for (pugi::xml_node sp = node.child("Spline"); sp != nullptr; sp = sp.next_sibling("Spline"))
 	{
-		Spline spline;
+		sSpline spline;
 		spline.selectedPoint = sp.attribute("SelectedPoint").as_int();
+		spline.loop = sp.attribute("loop").as_bool();
 
 		for (pugi::xml_node pt = sp.child("Point"); pt != nullptr; pt = pt.next_sibling("Point"))
 		{
-			spline.path.points.push_back({ pt.attribute("x").as_float(), pt.attribute("y").as_float() });
+			spline.points.push_back(fPoint{ pt.attribute("x").as_float(), pt.attribute("y").as_float() });
 		}
 		splinesList.Add(spline);
 	}
 }
 
-void Spline::DrawSpline()
+void Spline::DrawSpline(uint i)
 {
-	for (float t = 0.0f; t < this->path.points.size(); t+=0.005f)
+	for (float t = 0.0f; t < splinesList[i].points.size(); t+=0.005f)
 	{
-		fPoint pos = this->path.GetSplinePoint(t, true);
+		fPoint pos = splinesList[i].GetSplinePoint(t, true);
 		SDL_SetRenderDrawColor(app->render->renderer, red.r, red.g, red.g, red.a);
 		SDL_RenderDrawPoint(app->render->renderer, pos.x, pos.y);
 	}
 }
 
-void Spline::DrawSplineControlPoints()
+void Spline::DrawSplineControlPoints(uint i)
 {
 	SDL_Rect r{ 0,0,10,10 };
-	for (int i = 0; i < this->path.points.size(); i++)
+	for (int j = 0; j < splinesList[i].points.size(); ++j)
 	{
-		r.x = this->path.points[i].x - r.w / 2;
-		r.y = this->path.points[i].y - r.h / 2;
+		r.x = splinesList[i].points[j].x - r.w / 2;
+		r.y = splinesList[i].points[j].y - r.h / 2;
 
-		if (i == selectedPoint)
+		if (j == splinesList[i].selectedPoint)
 			app->render->DrawRectangle(r, green);
 		else
 			app->render->DrawRectangle(r, red);
 	}
 }
 
-void Spline::HandleInput()
+void Spline::HandleInput(uint i)
 {
 	if (app->input->GetKey(SDL_SCANCODE_X) == KEY_UP)
 	{
-		selectedPoint++;
-		if (selectedPoint >= this->path.points.size())
-			selectedPoint = 0;
+		splinesList[i].selectedPoint++;
+		if (splinesList[i].selectedPoint >= splinesList[i].points.size())
+			splinesList[i].selectedPoint = 0;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Z) == KEY_UP)
 	{
-		selectedPoint--;
-		if (selectedPoint < 0)
-			selectedPoint = this->path.points.size() - 1;
+		splinesList[i].selectedPoint--;
+		if (splinesList[i].selectedPoint < 0)
+			splinesList[i].selectedPoint = splinesList[i].points.size() - 1;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		this->path.points[selectedPoint].x -= 10.0f;
+		splinesList[i].points[splinesList[i].selectedPoint].x -= 10.0f;
 
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		this->path.points[selectedPoint].x += 10.0f;
+		splinesList[i].points[splinesList[i].selectedPoint].x += 10.0f;
 
 	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		this->path.points[selectedPoint].y -= 10.0f;
+		splinesList[i].points[splinesList[i].selectedPoint].y -= 10.0f;
 
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		this->path.points[selectedPoint].y += 10.0f;
+		splinesList[i].points[splinesList[i].selectedPoint].y += 10.0f;
 
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		fMarker -= 5.0f;
@@ -91,7 +92,8 @@ void Spline::HandleInput()
 
 void Spline::Clear()
 {
-	path.points.clear();
+	for(int i = 0; i < splinesList.Count(); ++i)
+		splinesList[i].points.clear();
 }
 
 pugi::xml_node Spline::LoadSplineConfig(pugi::xml_document& configfile)
@@ -112,21 +114,20 @@ void Spline::SaveSplines()
 	pugi::xml_node sp;
 	pugi::xml_node pt;
 
-	for (ListItem<Spline>* it = splinesList.start; it != nullptr; it = it->next)
+	for (ListItem<sSpline>* it = splinesList.start; it != nullptr; it = it->next)
 	{
 		sp = root.append_child("Spline");
-		sp.append_attribute("SelectedPoint").set_value(selectedPoint);
+		sp.append_attribute("SelectedPoint").set_value(it->data.selectedPoint);
+		sp.append_attribute("loop").set_value(it->data.loop);
 
-		for (int i = 0; i < it->data.path.points.size(); ++i)
+		for (int i = 0; i < it->data.points.size(); ++i)
 		{
 			pt = sp.append_child("Point");
-			pt.append_attribute("x").set_value(it->data.path.points[i].x);
-			pt.append_attribute("y").set_value(it->data.path.points[i].y);
+			pt.append_attribute("x").set_value(it->data.points[i].x);
+			pt.append_attribute("y").set_value(it->data.points[i].y);
 		}
 	}
-
 	save.save_file("Splines.xml");
-	save.reset();
 }
 
 void Spline::LoadSplines(pugi::xml_document& configfile)

@@ -51,10 +51,13 @@ private: //functions
 
 	pugi::xml_node LoadDialogueConfig(pugi::xml_document&) const;
 
-	void EndDialogue();
-	void DeleteOptions();
-	void DeleteOptionButtons();
+	void WrittingMachineLook();
+	void AccelerateAnim();
+	void SkipDialogue();
 
+	void EndDialogue();
+	void DeleteOptions(DialogueNode* node);
+	void DeleteOptionButtons();
 
 public: //variables
 	bool				onDialog = false;

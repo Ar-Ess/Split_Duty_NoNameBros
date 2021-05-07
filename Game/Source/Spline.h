@@ -12,6 +12,8 @@
 struct sSpline
 {
 	std::vector<fPoint>	points;
+	int					selectedPoint = 0;
+	bool				loop = false;
 
 	fPoint GetSplinePoint(float t, bool looped = false)
 	{
@@ -89,16 +91,15 @@ public:
 
 	void CreateSplines(pugi::xml_node& node);
 	//DEBUG
-	void DrawSpline();
-	void DrawSplineControlPoints();
+	void DrawSpline(uint i);
+	void DrawSplineControlPoints(uint i);
 
-	void HandleInput();
+	void HandleInput(uint i);
 
 	void Clear();
 	void LoadSplines(pugi::xml_document&);
 public:
-	sSpline path;
-	List<Spline> splinesList;
+	List<sSpline> splinesList;
 
 private:
 
@@ -107,8 +108,7 @@ private: //SPLINE CONSTRUCTION AND MODIFICATION
 
 	void SaveSplines();
 
-	float fMarker = 0;
-	int selectedPoint = 0;
+	float				fMarker = 0;
 
 	SDL_Color           black = { 0  , 0  , 0  , 255 };
 	SDL_Color           white = { 255, 255, 255, 255 };
