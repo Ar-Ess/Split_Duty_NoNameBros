@@ -1,5 +1,5 @@
-#ifndef __LEVELUPSCENE_H__
-#define __LEVELUPSCENE_H__
+#ifndef __LEVELUP_H__
+#define __LEVELUP_H__
 
 #include "Point.h"
 #include "SString.h"
@@ -26,11 +26,11 @@ class GuiString;
 
 
 
-class LevelUpScene
+class LevelUp
 {
 public:
 
-    LevelUpScene();
+    LevelUp();
 
     void Start();
 
@@ -39,8 +39,6 @@ public:
     void Update();
 
     void Draw();
-
-    void SetButtons();
 
     void DrawButtons();
   
@@ -59,6 +57,6 @@ public:
 
 };
 
-#endif // __INVENTORY_H__
+#endif // __LEVELUP_H__
 
 

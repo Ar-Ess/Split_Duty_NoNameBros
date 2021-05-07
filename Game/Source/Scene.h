@@ -18,6 +18,7 @@ class Combat;
 class World;
 class Inventory;
 class LevelUp;
+class OptionsMenu;
 enum Places;
 
 enum Scenes
@@ -163,9 +164,13 @@ public:
 	Player* player2 = nullptr;
 	Combat* combatScene = nullptr;
 	World* world = nullptr;
-	LevelUpScene* levelUpScene = nullptr;
+	LevelUp* levelUpScene = nullptr;
+	OptionsMenu* optionsMenu = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
+	Spline spline;
+
+	bool sp = false;
 
 private: //Scene Manager
 	friend class World;
@@ -202,9 +207,6 @@ private: //debug
 	//SDL_Texture* debugPath = nullptr;
 	//DynArray<iPoint>* debugPathList;
 	unsigned short int timer = 0;
-
-	Spline spline;
-	bool sp = false;
 
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);

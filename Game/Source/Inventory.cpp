@@ -183,8 +183,6 @@ void Inventory::DrawFace()
 	
 }
 
-
-
 void Inventory::SetText()
 {
 	//player

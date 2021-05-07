@@ -5,7 +5,7 @@
 #include "Defs.h"
 #include "Log.h"
 
-#define VSYNC true
+#define VSYNC false
 
 Render::Render() : Module()
 {
@@ -47,6 +47,9 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = 0;
 	}
+
+	vSync = VSYNC;
+
 	return ret;
 }
 
@@ -55,6 +58,9 @@ bool Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+
+	SetVSync(vSync);
+
 	return true;
 }
 
@@ -66,14 +72,6 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		if (vSync) SetVSync(false);
-		else if (!vSync) SetVSync(true);
-
-		vSync = !vSync;
-	}
-
 	return true;
 }
 

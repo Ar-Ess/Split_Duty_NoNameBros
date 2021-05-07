@@ -18,7 +18,8 @@
 #include "DialogueManager.h"
 #include "Transition.h"
 #include "Inventory.h"
-#include "LevelUpScene.h"
+#include "LevelUp.h"
+#include "OptionsMenu.h"
 #include "Map.h"
 #include "Pathfinding.h"
 
@@ -66,7 +67,9 @@ bool Scene::Start()
 
 	world->inventory = new Inventory();
 
-	levelUpScene = new LevelUpScene();
+	levelUpScene = new LevelUp();
+
+	optionsMenu = new OptionsMenu();
 
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
@@ -228,7 +231,7 @@ void Scene::SetScene(Scenes scene)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == OPTIONS_MENU) SetOptionsMenu();
-	//else if (scene == COMBAT) SetCombat();
+	else if (scene == COMBAT) SetCombat(nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -260,7 +263,7 @@ void Scene::SetScene(Scenes scene, Places place)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == OPTIONS_MENU) SetOptionsMenu();
-	//else if (scene == COMBAT) SetCombat();
+	else if (scene == COMBAT) SetCombat(nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(place);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -275,7 +278,7 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
-	//else if (scene == COMBAT) SetCombat();
+	else if (scene == COMBAT) SetCombat(nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(exp);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -319,7 +322,6 @@ void Scene::SetMainMenu()
 		optionsButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
 		optionsButton->text = "OptionsButton";
 		optionsButton->SetObserver(this);
-		optionsButton->state = GuiControlState::LOCKED;
 	}
 
 	if (exitButton == nullptr)
@@ -369,7 +371,59 @@ void Scene::SetMainMenu()
 
 void Scene::SetOptionsMenu()
 {
+	if (optionsMenu->dFullScreenCheckBox == nullptr)
+	{
+		optionsMenu->dFullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
+		optionsMenu->dFullScreenCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->dFullScreenCheckBox->text = "DesktopFullScreenCheckBox";
+		optionsMenu->dFullScreenCheckBox->SetObserver(this);
+	}
 
+	if (optionsMenu->fullScreenCheckBox == nullptr)
+	{
+		optionsMenu->fullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
+		optionsMenu->fullScreenCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->fullScreenCheckBox->text = "FullScreenCheckBox";
+		optionsMenu->fullScreenCheckBox->SetObserver(this);
+	}
+
+	if (optionsMenu->vSyncCheckBox == nullptr)
+	{
+		optionsMenu->vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
+		optionsMenu->vSyncCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->vSyncCheckBox->text = "VSyncCheckBox";
+		optionsMenu->vSyncCheckBox->SetObserver(this);
+	}
+
+	if (optionsMenu->fxVolumeSlider == nullptr)
+	{
+		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
+		optionsMenu->fxVolumeSlider->bounds = { 0, 0, 100, 20 };
+		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x, optionsMenu->fxVolumeSlider->bounds.y, 20, 20});
+		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
+		optionsMenu->fxVolumeSlider->SetMaxValue(100);
+		optionsMenu->fxVolumeSlider->SetMinValue(0);
+		optionsMenu->fxVolumeSlider->SetObserver(this);
+	}
+
+	if (optionsMenu->musicVolumeSlider == nullptr)
+	{
+		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
+		optionsMenu->musicVolumeSlider->bounds = { 0, 0, 100, 20 };
+		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x, optionsMenu->musicVolumeSlider->bounds.y, 20, 20 });
+		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
+		optionsMenu->musicVolumeSlider->SetMaxValue(100);
+		optionsMenu->musicVolumeSlider->SetMinValue(0);
+		optionsMenu->musicVolumeSlider->SetObserver(this);
+	}
+
+	if (optionsMenu->returnMenuButton == nullptr)
+	{
+		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		optionsMenu->returnMenuButton->bounds = { 0, 0, 105, 27 };
+		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
+		optionsMenu->returnMenuButton->SetObserver(this);
+	}
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -925,6 +979,20 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		break;
 
 	case OPTIONS_MENU:
+		if (strcmp(control->text.GetString(), "ReturnMenuButton") == 0)
+		{
+			if (prevScene == MAIN_MENU) SetScene(MAIN_MENU);
+			else if (prevScene == PAUSE_MENU) SetScene(PAUSE_MENU);
+		}
+		else if (strcmp(control->text.GetString(), "DesktopFullScreenCheckBox") == 0)
+		{
+
+		}
+		else if (strcmp(control->text.GetString(), "FullScreenCheckBox") == 0)
+		{
+
+		}
+		else if (strcmp(control->text.GetString(), "VSyncCheckBox") == 0) app->render->SetVSync(!app->render->vSync);
 		break;
 
 	case COMBAT:
