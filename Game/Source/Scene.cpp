@@ -162,10 +162,11 @@ bool Scene::Update(float dt)
 	}
 	if (sp == true)
 	{
-		spline.splinesList.start->data.DrawSpline();
-		spline.splinesList.start->data.DrawSplineControlPoints();
-		spline.splinesList.start->data.HandleInput();
+		spline.DrawSpline(0);
+		spline.DrawSplineControlPoints(0);
+		spline.HandleInput(0);
 	}
+
 	return true;
 }
 
