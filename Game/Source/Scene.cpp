@@ -177,7 +177,7 @@ bool Scene::PostUpdate()
 {
 	app->win->FullScreenLogic();
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -870,6 +870,8 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateOptionsMenu()
 {
+	optionsMenu->Update();
+	optionsMenu->Draw();
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
