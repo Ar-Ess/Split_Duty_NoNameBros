@@ -52,8 +52,6 @@ void LevelUp::Draw()
 
 void LevelUp::DrawButtons()
 {
-	SetButtons();
-
 	upgradeHealthButton->Draw(1, true, false);
 	upgradeDefenseButton->Draw(1, true, false);
 	upgradeAttackButton->Draw(1, true, false);

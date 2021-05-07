@@ -102,13 +102,14 @@
     <ClCompile Include="Source\GuiSlider.cpp" />
     <ClCompile Include="Source\GuiString.cpp" />
     <ClCompile Include="Source\Item.cpp" />
-    <ClCompile Include="Source\LevelUpScene.cpp" />
+    <ClCompile Include="Source\LevelUp.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\NPC.cpp" />
+    <ClCompile Include="Source\OptionsMenu.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
@@ -144,9 +145,10 @@
     <ClInclude Include="Source\GuiString.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\KillQuest.h" />
-    <ClInclude Include="Source\LevelUpScene.h" />
+    <ClInclude Include="Source\LevelUp.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\NPC.h" />
+    <ClInclude Include="Source\OptionsMenu.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\Player.h" />

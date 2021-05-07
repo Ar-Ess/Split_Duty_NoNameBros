@@ -96,11 +96,14 @@
     <ClCompile Include="Source\QuestManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LevelUpScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Spline.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelUp.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OptionsMenu.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,7 +261,10 @@
     <ClInclude Include="Source\Spline.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LevelUpScene.h">
+    <ClInclude Include="Source\LevelUp.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OptionsMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
