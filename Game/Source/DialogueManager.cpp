@@ -121,10 +121,10 @@ void DialogueManager::EndDialogue()
 		{
 			if (itemNode->data->optionsList.Count() != 0)
 			{
-				DeleteOptions();
-			}		
+				DeleteOptions(itemNode->data);
+			}
+			itemNode->data->optionsActive = false;
 		}
-		currentDialogue->currentNode->optionsActive = false;
 		currentDialogue = nullptr;
 		onDialog = false;
 	}
@@ -143,9 +143,9 @@ void DialogueManager::DeleteOptionButtons()
 	}
 }
 
-void DialogueManager::DeleteOptions()
+void DialogueManager::DeleteOptions(DialogueNode* node)
 {
-	for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
+	for (ListItem<DialogueOption*>* itemOption = node->optionsList.start;
 		itemOption != nullptr; itemOption = itemOption->next)
 	{
 		if (itemOption->data->optionButton != nullptr)
@@ -166,7 +166,7 @@ void DialogueManager::StartDialogue(int dialogueID)
 {	
 	if (currentDialogue == nullptr)
 	{
-		currentDialogue = dialoguesList.At(--dialogueID)->data;
+		currentDialogue = dialoguesList[--dialogueID];
 		currentDialogue->currentNode = currentDialogue->nodeList.start->data;
 
 		for (ListItem<DialogueNode*>* itemNode = currentDialogue->nodeList.start;
@@ -197,21 +197,16 @@ void DialogueManager::StartDialogue(int dialogueID)
 
 void DialogueManager::Draw()
 {
-	////WRITTING MACHINE LOOK//// 	 	 
-	counter++;
-	if(counter % 2 == 0 && currentDialogue->currentNode->nodeEnd == false)
-	{
-		if(currentDialogue->currentNode->letterCounter < currentDialogue->currentNode->text.size())
-		{
-			tempText += currentDialogue->currentNode->text.at(currentDialogue->currentNode->letterCounter);
-			currentDialogue->currentNode->letterCounter++;
-		}
-		else
-		{
-			currentDialogue->currentNode->nodeEnd = true;
-			counter = 0;
-		}
-	}
+	////WRITTING MACHINE LOOK////
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) 
+		AccelerateAnim();
+	else 
+		WrittingMachineLook();
+	
+	//SKIP DIALOGUE
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)	
+		SkipDialogue();
+
 	tempString->SetString(tempText.c_str());
 	tempString->SetTextFont(app->fontTTF->defaultFont);
 
@@ -355,4 +350,50 @@ pugi::xml_node DialogueManager::LoadDialogueConfig(pugi::xml_document& configFil
 
 	return ret;
 	
+}
+
+void DialogueManager::WrittingMachineLook()
+{
+	counter++;
+	if (counter % 2 == 0 && currentDialogue->currentNode->nodeEnd == false)
+	{
+		if (currentDialogue->currentNode->letterCounter <= currentDialogue->currentNode->text.size())
+		{
+			tempText = currentDialogue->currentNode->text.substr(0, currentDialogue->currentNode->letterCounter);
+			currentDialogue->currentNode->letterCounter++;
+		}
+		else
+		{
+			currentDialogue->currentNode->nodeEnd = true;
+			counter = 0;
+		}
+	}
+}
+
+void DialogueManager::AccelerateAnim()
+{
+	if (counter % 1 == 0 && currentDialogue->currentNode->nodeEnd == false)
+	{
+		if (currentDialogue->currentNode->letterCounter <= currentDialogue->currentNode->text.size())
+		{
+			tempText = currentDialogue->currentNode->text.substr(0, currentDialogue->currentNode->letterCounter);
+			currentDialogue->currentNode->letterCounter += 2;
+		}
+		else if (currentDialogue->currentNode->letterCounter > currentDialogue->currentNode->text.size() && strcmp(tempText.c_str(), currentDialogue->currentNode->text.c_str()) != 0)
+		{
+			tempText = currentDialogue->currentNode->text;
+		}
+		else
+		{
+			currentDialogue->currentNode->nodeEnd = true;
+			counter = 0;
+		}
+	}
+}
+
+void DialogueManager::SkipDialogue()
+{
+	tempText = currentDialogue->currentNode->text;
+	currentDialogue->currentNode->nodeEnd = true;
+	counter = 0;	
 }
