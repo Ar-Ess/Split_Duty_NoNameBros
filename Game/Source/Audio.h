@@ -68,9 +68,16 @@ public:
 		return st;
 	}
 
-	void ChangeVolumeMusic();
+	int GetMusicVolume();
+	int GetFxVolume();
+
+	void TransitionVolumeMusic();
+	void ChangeVolumeMusic(int volume);
+	void ChangeVolumeFx(int volume);
 	void TogglePauseMusic();
 	void StopMusic();
+	int ValueToVolume(int value, int maxPercent = 100);
+	int VolumeToValue(int volume, int maxPercent = 100);
 
 private:
 

@@ -270,13 +270,18 @@ void World::EnemyLogic()
 void World::Draw()
 {
 	map->Draw();
-	if (debugCollisions) DrawCollisions();
+
+	if (debugCollisions)
+	{
+		DrawCollisions();
+	}
 	if (place != MAIN_VILLAGE)
 	{
 		DrawNPC();
 		DrawEnemy();
 		DrawPlayer();
 	}
+	return;
 }
 
 void World::DrawPlayer()
@@ -499,6 +504,8 @@ void World::WorldChange()
 			}
 		}
 	}
+
+	return;
 }
 
 void World::WorldEnemySpawn()

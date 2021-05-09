@@ -56,6 +56,8 @@ bool AudioManager::Awake(pugi::xml_node& config)
 	Mix_AllocateChannels(360);
 	SetChannelAngles();
 
+	Mix_VolumeMusic(128);
+
 	return ret;
 }
 
@@ -168,12 +170,52 @@ void AudioManager::SetChannelAngles()
 	}
 }
 
-void AudioManager::ChangeVolumeMusic()
+int AudioManager::GetMusicVolume()
+{
+	return Mix_VolumeMusic(-1);
+}
+
+int AudioManager::GetFxVolume()
+{
+	return Mix_VolumeChunk(fx[0], -1);
+}
+
+void AudioManager::TransitionVolumeMusic()
 {
 	if (Mix_VolumeMusic(-1) == MIX_MAX_VOLUME)
 		Mix_VolumeMusic(MIX_MAX_VOLUME / 3);
 	else
-		Mix_VolumeMusic(MIX_MAX_VOLUME);		
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+}
+
+void AudioManager::ChangeVolumeMusic(int volume)
+{
+	volume = ValueToVolume(volume);
+
+	if (volume < 0) volume = 0;
+	else if (volume > 128) volume = 128;
+
+	Mix_VolumeMusic(volume);
+}
+
+void AudioManager::ChangeVolumeFx(int volume)
+{
+	volume = ValueToVolume(volume);
+
+	if (volume < 0) volume = 0;
+	else if (volume > 128) volume = 128;
+
+	for (int i = 0; i < fx.Count(); i++) Mix_VolumeChunk(fx[i], volume);
+}
+
+int AudioManager::ValueToVolume(int value, int maxPercent)
+{
+	return ((128 * value) / maxPercent);
+}
+
+int AudioManager::VolumeToValue(int volume, int maxPercent)
+{
+	return ((maxPercent * volume) / 128);
 }
 
 void AudioManager::TogglePauseMusic()
@@ -250,6 +292,8 @@ void AudioManager::LoadAllFx(pugi::xml_node& fx_node)
 		const char* path = sound.child_value();
 		LoadFx(path);
 	}
+
+	for (int i = 0; i < fx.Count(); i++) Mix_VolumeChunk(fx[i], 128);
 }
 
 unsigned int AudioManager::LoadFx(const char* path)

@@ -95,6 +95,8 @@ bool Scene::Start()
 	pugi::xml_document doc;
 	spline.LoadSplines(doc);
 
+	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 98, i m'entero, no viu un dia més :) <3
+
 	return true;
 }
 
@@ -372,10 +374,12 @@ void Scene::SetMainMenu()
 
 void Scene::SetOptionsMenu()
 {
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
 	if (optionsMenu->dFullScreenCheckBox == nullptr)
 	{
 		optionsMenu->dFullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->dFullScreenCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->dFullScreenCheckBox->bounds = { 30, 50, 105, 27 };
 		optionsMenu->dFullScreenCheckBox->text = "DesktopFullScreenCheckBox";
 		optionsMenu->dFullScreenCheckBox->SetObserver(this);
 	}
@@ -383,7 +387,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fullScreenCheckBox == nullptr)
 	{
 		optionsMenu->fullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->fullScreenCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->fullScreenCheckBox->bounds = { 130, 150, 105, 27 };
 		optionsMenu->fullScreenCheckBox->text = "FullScreenCheckBox";
 		optionsMenu->fullScreenCheckBox->SetObserver(this);
 	}
@@ -391,7 +395,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->vSyncCheckBox == nullptr)
 	{
 		optionsMenu->vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->vSyncCheckBox->bounds = { 0, 0, 105, 27 };
+		optionsMenu->vSyncCheckBox->bounds = { 230, 250, 105, 27 };
 		optionsMenu->vSyncCheckBox->text = "VSyncCheckBox";
 		optionsMenu->vSyncCheckBox->SetObserver(this);
 	}
@@ -399,7 +403,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fxVolumeSlider == nullptr)
 	{
 		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->fxVolumeSlider->bounds = { 0, 0, 100, 20 };
+		optionsMenu->fxVolumeSlider->bounds = { 330, 350, 100, 20 };
 		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x, optionsMenu->fxVolumeSlider->bounds.y, 20, 20});
 		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
 		optionsMenu->fxVolumeSlider->SetMaxValue(100);
@@ -410,7 +414,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->musicVolumeSlider == nullptr)
 	{
 		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->musicVolumeSlider->bounds = { 0, 0, 100, 20 };
+		optionsMenu->musicVolumeSlider->bounds = { 430, 450, 100, 20 };
 		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x, optionsMenu->musicVolumeSlider->bounds.y, 20, 20 });
 		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
 		optionsMenu->musicVolumeSlider->SetMaxValue(100);
@@ -421,10 +425,15 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->returnMenuButton == nullptr)
 	{
 		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsMenu->returnMenuButton->bounds = { 0, 0, 105, 27 };
+		optionsMenu->returnMenuButton->bounds = { 530, 550, buttonPrefab.w, buttonPrefab.h};
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
 	}
+
+	optionsMenu->fxVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetFxVolume(), optionsMenu->fxVolumeSlider->GetMaxValue()));
+	optionsMenu->musicVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetMusicVolume(), optionsMenu->musicVolumeSlider->GetMaxValue()));
+	optionsMenu->fxVolumeSlider->UpdatePosition();
+	optionsMenu->musicVolumeSlider->UpdatePosition();
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -743,7 +752,7 @@ void Scene::SetWorld(Places place)
 
 void Scene::SetPauseMenu()
 {
-	app->audio->ChangeVolumeMusic();
+	app->audio->TransitionVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 	pause = app->tex->Load("Assets/Screens/pause_menu_screen.png");
 
@@ -872,6 +881,7 @@ void Scene::UpdateOptionsMenu()
 {
 	optionsMenu->Update();
 	optionsMenu->Draw();
+
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN) SetScene(MAIN_MENU);
 }
 
@@ -1023,7 +1033,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			continuePressed = false;
 			app->render->camera.x = prevCam.x;
 			app->render->camera.y = prevCam.y;
-			app->audio->ChangeVolumeMusic();
+			app->audio->TransitionVolumeMusic();
 		}
 		else if (strcmp(control->text.GetString(), "SaveGameButton") == 0)
 		{
@@ -1041,7 +1051,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			}
 			app->entityManager->enemies.Clear();
 			SetScene(MAIN_MENU);
-			app->audio->ChangeVolumeMusic();
+			app->audio->TransitionVolumeMusic();
 		}
 		break;
 	}

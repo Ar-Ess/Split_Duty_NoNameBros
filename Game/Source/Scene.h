@@ -8,8 +8,6 @@
 #include "Spline.h"
 
 class GuiButton;
-class GuiSlider;
-class GuiCheckBox;
 class GuiString;
 struct SDL_Texture;
 class Enemy;
@@ -175,6 +173,7 @@ public:
 private: //Scene Manager
 	friend class World;
 	friend class App;
+	friend class Map; //Erase, just test
 
 	Scenes currScene = NONE;
 	Scenes prevScene = NONE;

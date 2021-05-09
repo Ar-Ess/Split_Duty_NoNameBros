@@ -3,6 +3,8 @@
 #include "GuiManager.h"
 #include "Audio.h"
 
+#include "Log.h"
+
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
@@ -30,6 +32,12 @@ bool GuiSlider::Update(float dt)
             }
             state = GuiControlState::FOCUSED;
 
+            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN) sliderClicked = true;
+        }
+        else if (!sliderClicked) state = GuiControlState::NORMAL;
+
+        if (sliderClicked)
+        {
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT || app->input->GetControl(A) == KeyState::KEY_REPEAT)
             {
                 if (state == GuiControlState::FOCUSED)
@@ -37,28 +45,14 @@ bool GuiSlider::Update(float dt)
                     //app->audio->PlayFx(Click Sound);
                 }
                 state = GuiControlState::SELECTED;
-                if (mouseX > (bounds.x + slider.w / 2)  && mouseX < (bounds.x + bounds.w - slider.w / 2))
-                {
-                    //you can move sliderbox
-                    slider.x = mouseX - (slider.w * 0.5);
-                }
-                else if (mouseX + (int)(slider.w * 0.5) > (bounds.x + bounds.w))
-                {
-                    slider.x = (bounds.x + bounds.w) - slider.w;
-                }
-                else if ((mouseX - (int)(slider.w * 0.5)) < bounds.x)
-                {
-                    slider.x = bounds.x;
-                }
+
+                if (mouseX > (bounds.x + slider.w / 2) && mouseX < (bounds.x + bounds.w - slider.w / 2)) slider.x = mouseX - (slider.w * 0.5);
+                else if (mouseX + (int)(slider.w * 0.5) > (bounds.x + bounds.w)) slider.x = (bounds.x + bounds.w) - slider.w;
+                else if ((mouseX - (int)(slider.w * 0.5)) < bounds.x) slider.x = bounds.x;
                 UpdateValue();
             }
-
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP)
-            {
-                NotifyObserver();
-            }
+            else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP) sliderClicked = false;
         }
-        else state = GuiControlState::NORMAL;
     }
 
     return false;
@@ -191,11 +185,22 @@ void GuiSlider::SetValue(int val)
 void GuiSlider::UpdateValue()
 {
     float sliderPos = ((slider.x + (slider.w / 2)) - (bounds.x + (slider.w / 2)));
-    float totalWidth = ((bounds.x + bounds.w - slider.w / 2) - (bounds.x + slider.w / 2));
+    float totalWidth = bounds.w - slider.w;
 
     percentValue = sliderPos / totalWidth;
 
     value = (int)floor(percentValue * maxValue);
+
+    LOG("%d", value);
+}
+
+void GuiSlider::UpdatePosition()
+{
+    float totalWidth = bounds.w - slider.w;
+    float val = value;
+    float maxVal = maxValue;
+    percentValue = val / maxVal;
+    slider.x = bounds.x + (percentValue * totalWidth);
 }
 
 int GuiSlider::GetMinValue() const

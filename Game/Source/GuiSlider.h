@@ -21,6 +21,7 @@ public:
     void SetMaxValue(int val);
     void SetValue(int val);
     void UpdateValue();
+    void UpdatePosition();
 
     int GetMinValue() const;
     int GetMaxValue() const;
@@ -36,6 +37,8 @@ private:
 
     int minValue;
     int maxValue;
+
+    bool sliderClicked = false;
 
     const SDL_Rect normalBar = { 0, 0, 0, 0 };
     const SDL_Rect pressedBar = { 0, 0, 0, 0 };
