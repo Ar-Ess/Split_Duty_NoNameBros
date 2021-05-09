@@ -28,12 +28,15 @@ public:
 
 	void SetWinFullScreen(bool fullScreen);
 
+	void SetWinDFullScreen(bool fullScreen);
+
 public:
 	SDL_Window* window;
 
 	SDL_Surface* screenSurface;
 
-	bool fullScreen;
+	bool fullScreen = false;
+	bool dFullScreen = false;
 
 private:
 	SString title;

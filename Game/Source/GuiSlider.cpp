@@ -190,17 +190,6 @@ void GuiSlider::UpdateValue()
     percentValue = sliderPos / totalWidth;
 
     value = (int)floor(percentValue * maxValue);
-
-    LOG("%d", value);
-}
-
-void GuiSlider::UpdatePosition()
-{
-    float totalWidth = bounds.w - slider.w;
-    float val = value;
-    float maxVal = maxValue;
-    percentValue = val / maxVal;
-    slider.x = bounds.x + (percentValue * totalWidth);
 }
 
 int GuiSlider::GetMinValue() const

@@ -21,7 +21,6 @@ public:
     void SetMaxValue(int val);
     void SetValue(int val);
     void UpdateValue();
-    void UpdatePosition();
 
     int GetMinValue() const;
     int GetMaxValue() const;

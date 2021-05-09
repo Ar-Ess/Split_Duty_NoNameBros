@@ -177,8 +177,6 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
-	app->win->FullScreenLogic();
-
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
@@ -404,10 +402,11 @@ void Scene::SetOptionsMenu()
 	{
 		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
 		optionsMenu->fxVolumeSlider->bounds = { 330, 350, 100, 20 };
-		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x, optionsMenu->fxVolumeSlider->bounds.y, 20, 20});
+		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w - 20, optionsMenu->fxVolumeSlider->bounds.y, 20, 20});
 		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
 		optionsMenu->fxVolumeSlider->SetMaxValue(100);
 		optionsMenu->fxVolumeSlider->SetMinValue(0);
+		optionsMenu->fxVolumeSlider->SetValue(100);
 		optionsMenu->fxVolumeSlider->SetObserver(this);
 	}
 
@@ -415,10 +414,11 @@ void Scene::SetOptionsMenu()
 	{
 		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
 		optionsMenu->musicVolumeSlider->bounds = { 430, 450, 100, 20 };
-		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x, optionsMenu->musicVolumeSlider->bounds.y, 20, 20 });
+		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w - 20, optionsMenu->musicVolumeSlider->bounds.y, 20, 20 });
 		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
 		optionsMenu->musicVolumeSlider->SetMaxValue(100);
 		optionsMenu->musicVolumeSlider->SetMinValue(0);
+		optionsMenu->musicVolumeSlider->SetValue(100);
 		optionsMenu->musicVolumeSlider->SetObserver(this);
 	}
 
@@ -430,10 +430,10 @@ void Scene::SetOptionsMenu()
 		optionsMenu->returnMenuButton->SetObserver(this);
 	}
 
-	optionsMenu->fxVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetFxVolume(), optionsMenu->fxVolumeSlider->GetMaxValue()));
-	optionsMenu->musicVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetMusicVolume(), optionsMenu->musicVolumeSlider->GetMaxValue()));
-	optionsMenu->fxVolumeSlider->UpdatePosition();
-	optionsMenu->musicVolumeSlider->UpdatePosition();
+	//optionsMenu->fxVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetFxVolume(), optionsMenu->fxVolumeSlider->GetMaxValue()));
+	//optionsMenu->musicVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetMusicVolume(), optionsMenu->musicVolumeSlider->GetMaxValue()));
+	//optionsMenu->fxVolumeSlider->UpdatePosition();
+	//optionsMenu->musicVolumeSlider->UpdatePosition();
 }
 
 void Scene::SetCombat(Enemy* enemySet)
@@ -999,11 +999,19 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		}
 		else if (strcmp(control->text.GetString(), "DesktopFullScreenCheckBox") == 0)
 		{
+			app->win->dFullScreen = !app->win->dFullScreen;
+			app->win->SetWinDFullScreen(app->win->dFullScreen);
 
+			if (app->win->dFullScreen) optionsMenu->fullScreenCheckBox->state = GuiControlState::DISABLED;
+			else optionsMenu->fullScreenCheckBox->state = GuiControlState::NORMAL;
 		}
 		else if (strcmp(control->text.GetString(), "FullScreenCheckBox") == 0)
 		{
+			app->win->fullScreen = !app->win->fullScreen;
+			app->win->SetWinFullScreen(app->win->fullScreen);
 
+			if (app->win->fullScreen) optionsMenu->dFullScreenCheckBox->state = GuiControlState::DISABLED;
+			else optionsMenu->dFullScreenCheckBox->state = GuiControlState::NORMAL;
 		}
 		else if (strcmp(control->text.GetString(), "VSyncCheckBox") == 0) app->render->SetVSync(!app->render->vSync);
 		break;
