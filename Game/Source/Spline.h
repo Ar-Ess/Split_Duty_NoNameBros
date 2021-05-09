@@ -13,6 +13,7 @@ struct sSpline
 {
 	std::vector<fPoint>	points;
 	int					selectedPoint = 0;
+	float				splineLength = 0.0f;
 	bool				loop = false;
 
 	fPoint GetSplinePoint(float t, bool looped = false)
@@ -48,7 +49,8 @@ struct sSpline
 
 		return{ tx, ty };
 	}
-	/*fPoint GetSplineGradient(float t, bool bLooped = false)
+
+	fPoint GetSplineGradient(float t, bool bLooped = false)
 	{
 		int p0, p1, p2, p3;
 		if (!bLooped)
@@ -80,8 +82,40 @@ struct sSpline
 		float ty = 0.5f * (points[p0].y * q1 + points[p1].y * q2 + points[p2].y * q3 + points[p3].y * q4);
 
 		return{ tx, ty };
-	}*/
+	}
 
+	float CalculateSegmentLength(int node, bool bLooped = false)
+	{
+		float fLength = 0.0f;
+		float fStepSize = 0.005;
+
+		fPoint old_point, new_point;
+		old_point = GetSplinePoint((float)node, bLooped);
+
+		for (float t = 0; t < 1.0f; t += fStepSize)
+		{
+			new_point = GetSplinePoint((float)node + t, bLooped);
+			fLength += sqrtf((new_point.x - old_point.x) * (new_point.x - old_point.x)
+				+ (new_point.y - old_point.y) * (new_point.y - old_point.y));
+			old_point = new_point;
+		}
+
+		return fLength;
+	}
+
+	float GetNormalisedOffset(float p)
+	{
+		// Which node is the base?
+		int i = 0;
+		while (p > points[i].length)
+		{
+			p -= points[i].length;
+			i++;
+		}
+
+		// The fractional is the offset 
+		return (float)i + (p / points[i].length);
+	}
 };
 class Spline
 {
@@ -89,12 +123,11 @@ public:
 	Spline() {}
 	~Spline() {}
 
-	void CreateSplines(pugi::xml_node& node);
 	//DEBUG
-	void DrawSpline(uint i);
-	void DrawSplineControlPoints(uint i);
+	void DrawSpline(uint id);
+	void DrawSplineControlPoints(uint id);
 
-	void HandleInput(uint i);
+	void HandleInput(uint id);
 
 	void Clear();
 	void LoadSplines(pugi::xml_document&);
@@ -104,9 +137,11 @@ public:
 private:
 
 private: //SPLINE CONSTRUCTION AND MODIFICATION
-	pugi::xml_node LoadSplineConfig(pugi::xml_document&);
 
+	void CreateSplines(pugi::xml_node& node);
 	void SaveSplines();
+
+	pugi::xml_node LoadSplineConfig(pugi::xml_document&);
 
 	float				fMarker = 0;
 

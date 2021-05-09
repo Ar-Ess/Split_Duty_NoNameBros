@@ -11,6 +11,7 @@ class Point
 public:
 
 	TYPE x, y;
+	float length = 0;
 
 	Point()
 	{}
