@@ -24,7 +24,7 @@ public:
 
     void Draw();
 
-    void DrawButtons();
+    void DrawGui();
 
     void DrawText();
 

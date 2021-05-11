@@ -868,6 +868,27 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
+				{
+					switch (tileId)
+					{
+					case 1799: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+					case 1796: // GRAVEYARD
+						app->scene->world->location1.Add(r);
+						break;
+					case 1798: // Nothing
+						app->scene->world->location2.Add(r);
+						break;
+					case 1795: // IMMERSIVE GROUND
+						app->scene->world->collisionsOnOff.Add(r);
+						break;
+					case 1800: // FLOWER SWITCH
+						app->scene->world->switchFlowers.Add(r);
+						break;
+					}
+				}
 			}
 		}
 	}

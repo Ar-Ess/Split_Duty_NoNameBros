@@ -41,16 +41,18 @@ void OptionsMenu::Update()
 
 void OptionsMenu::Draw()
 {
+	DrawGui();
+	DrawText();
+}
+
+void OptionsMenu::DrawGui()
+{
 	dFullScreenCheckBox->Draw();
 	fullScreenCheckBox->Draw();
 	vSyncCheckBox->Draw();
 	fxVolumeSlider->Draw();
 	musicVolumeSlider->Draw();
 	returnMenuButton->Draw();
-}
-
-void OptionsMenu::DrawButtons()
-{
 }
 
 void OptionsMenu::DrawText()
