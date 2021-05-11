@@ -157,6 +157,8 @@ private:
 
     void AsignPrevPosition();
 
+public:
+    bool inventoryOpen = false;
 private:
 
     friend class Map;
@@ -185,8 +187,6 @@ private:
     unsigned short int playerInmuneTime = 0;
 
     bool playerInmunity = false;
-
-    bool inventoryOpen = false;
 
     bool levelUpOpen = false;
 

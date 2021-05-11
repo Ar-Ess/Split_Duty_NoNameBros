@@ -740,7 +740,7 @@ void Scene::SetWorld(Places place)
 	world->inventory->Start();
 
 	//inventory buttons
-	SDL_Rect buttonPrefab = { 55,606,60,60 };
+	SDL_Rect buttonPrefab = { 255,606,60,60 };
 	if (world->inventory->quitQuestButton == nullptr)
 	{
 		world->inventory->quitQuestButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);

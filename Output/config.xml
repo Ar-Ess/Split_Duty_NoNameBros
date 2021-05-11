@@ -8,6 +8,7 @@
 
   <fonts>
     <default_font file="Assets/Fonts/manaspace.regular.ttf" size="20"/>
+    <inventory_font file="Assets/Fonts/squarely.ttf" size="34"/>
   </fonts>
 
   <renderer>

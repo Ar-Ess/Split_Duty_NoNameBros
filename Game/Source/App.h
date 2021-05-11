@@ -12,6 +12,12 @@
 #define CONFIG_FILENAME		"config.xml"
 #define SAVE_STATE_FILENAME "save_game.xml"
 
+#define WHITE  { 255,255,255,255 }
+#define BLACK  { 0,0,0,255 }
+#define YELLOW  { 255,192,0,255}
+#define ORANGE  { 134,60,0,255 }
+#define BROWN	{153,113,99,255}
+
 // Modules
 class Window;
 class Input;

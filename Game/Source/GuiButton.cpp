@@ -1,4 +1,6 @@
 #include "App.h"
+#include "World.h"
+#include "Scene.h"
 #include "GuiButton.h"
 #include "GuiManager.h"
 #include "Audio.h"
@@ -65,24 +67,46 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             switch (type)
             {
             case ButtonType::INVENTORY:
-            { 
-               LOG("Drawing inventory buttons...");
-                switch (state)
             {
+                LOG("Drawing inventory buttons...");
+                switch (state)
+                {
 
-            case GuiControlState::NORMAL:
-                app->render->DrawTexture(texture, bounds.x, bounds.y, &Normal);
-                break;
-            case GuiControlState::FOCUSED:
-                app->render->DrawTexture(texture, bounds.x, bounds.y, &Focused);
-                break;
-            case GuiControlState::PRESSED:
-                app->render->DrawTexture(texture, bounds.x, bounds.y, &Pressed);
-                break;
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryFocused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
 
 
-                break;
+                    break;
+                }
             }
+            case ButtonType::QUEST:
+            {
+                LOG("Drawing inventory buttons...");
+                switch (state)
+                {
+
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitFocused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    LOG("Quit quest...");
+                    break;
+
+
+                    break;
+                }
             }
             case ButtonType::MENU:
             {
@@ -112,12 +136,12 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 }
             }
 
-        }
-                
+            }
 
 
 
-        if (app->guiManager->debugGui)
+
+            if (app->guiManager->debugGui)
             {
                 switch (state)
                 {
@@ -138,6 +162,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 }
             }
         }
+    }
         else if (!useCamera)
         {
             if (drawTexture)
@@ -189,7 +214,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             }
         }
         return false;
-    }
+    
 }
 
 void GuiButton::ChangeTexture(const char* path)

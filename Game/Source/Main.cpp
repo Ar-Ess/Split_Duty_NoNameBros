@@ -12,6 +12,8 @@
 
 #include <stdlib.h>
 
+
+
 enum MainState
 {
 	CREATE = 1,

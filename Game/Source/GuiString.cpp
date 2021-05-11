@@ -1,18 +1,20 @@
 #include "GuiString.h"
 #include "Textures.h"
 #include "DialogueManager.h"
+#include "App.h"
 
 GuiString::GuiString(uint32 id, SDL_Rect bounds, const char* text, _TTF_Font* textFont) : GuiControl(GuiControlType::TEXT, id)
 {
 	this->bounds = bounds;
 	this->text = text;
 	this->textFont = textFont;
-	textTexture = app->fontTTF->Print(this->text.GetString(), { 255,255,255,255 }, textFont);
+	textTexture = app->fontTTF->Print(this->text.GetString(), YELLOW, textFont);
+	
 }
 
 GuiString::GuiString() : GuiControl(GuiControlType::TEXT, id), textFont(app->fontTTF->defaultFont)
 {
-	textTexture = app->fontTTF->Print(this->text.GetString(), { 255,255,255,255 }, textFont);
+	textTexture = app->fontTTF->Print(this->text.GetString(), YELLOW, textFont);	
 }
 
 GuiString::~GuiString()
@@ -25,11 +27,10 @@ void GuiString::Draw()
 	app->render->DrawTexture(textTexture, bounds.x - app->render->camera.x, bounds.y - app->render->camera.y);
 }
 
-void GuiString::SetString(const char* newText)
+void GuiString::SetString(const char* newText,SDL_Color color)
 {
-	SDL_Color white{ 255,255,255,255 };
 	text = SString(newText);
-	textTexture = app->fontTTF->Print(text.GetString(), white, textFont, textTexture, app->dialogueManager->endLine);
+	textTexture = app->fontTTF->Print(text.GetString(), color, textFont, textTexture, app->dialogueManager->endLine);
 }
 
 void GuiString::SetTextFont(_TTF_Font* textFont)

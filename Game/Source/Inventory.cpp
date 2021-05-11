@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Collider.h"
 #include "Player.h"
+#include "Defs.h"
 
 #include "Log.h"
 
@@ -71,6 +72,11 @@ void Inventory::Update()
 	quitQuestButton->Update(1.0f);
 
 	exitInventoryButton->Update(1.0f);
+
+}
+
+void Inventory::UseItems()
+{
 }
 
 void Inventory::Draw()
@@ -146,21 +152,13 @@ void Inventory::DrawItems()
 	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, itemPos.y + (2 * itemOff.y), 1, false, &mSplitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
-void Inventory::DrawStats()
-{
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y,1,false, &healthStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + statsOff.y, 1,false,&strenghtStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 2),1,false, &defenseStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 3),1,false, &velocityStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 4),1,false, &luckStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(statsTexture, statsPos.x, statsPos.y + (statsOff.y * 5),1,false, &stabStatRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-}
+
 
 void Inventory::DrawButtons()
 {
-	quitQuestButton->Draw(1, false, true,ButtonType::QUEST);
+	quitQuestButton->Draw(1, true, true,ButtonType::QUEST);
 
-	exitInventoryButton->Draw(1,false,true,ButtonType::MENU);
+	exitInventoryButton->Draw(1,true,true,ButtonType::INVENTORY);
 }
 
 void Inventory::UpdateFace()
@@ -199,31 +197,31 @@ void Inventory::SetText()
 	{
 		lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		lvlText->bounds = { 541, 43, 200, 50 };
-		lvlText->SetTextFont(app->fontTTF->defaultFont);
-		lvlText->SetString("Current level ");
+		lvlText->SetTextFont(app->fontTTF->inventoryFont);
+		lvlText->SetString("Current level ",YELLOW);
 	}
 	
 	if (healthText == nullptr)
 	{
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		healthText->bounds = { 900, 153, 200, 50 };
-		healthText->SetTextFont(app->fontTTF->defaultFont);
-		healthText->SetString("HP: 23 / 50");
+		healthText->SetTextFont(app->fontTTF->inventoryFont);
+		healthText->SetString("HP: 23 / 50",  YELLOW );
 	}
 	
 	if (expText == nullptr)
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		expText->bounds = { 900, 220, 200, 50 };
-		expText->SetTextFont(app->fontTTF->defaultFont);
-		expText->SetString("XP: 34 / 70");
+		expText->SetTextFont(app->fontTTF->inventoryFont);
+		expText->SetString("XP: 34 / 70",YELLOW);
 	}
 
 	if (upgradeText == nullptr)
 	{
 		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		upgradeText->bounds = { 900,100, 100, 100 };
-		upgradeText->SetTextFont(app->fontTTF->defaultFont);
+		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
 		upgradeText->SetString("14");
 	}
 	
@@ -232,44 +230,88 @@ void Inventory::SetText()
 	{
 		littleBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
-		littleBeefText->SetTextFont(app->fontTTF->defaultFont);
-		littleBeefText->SetString("12");
+		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
+		littleBeefText->SetString("12",BROWN);
 	}
 	if (bigBeefText == nullptr)
 	{
 		bigBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
-		bigBeefText->SetTextFont(app->fontTTF->defaultFont);
-		bigBeefText->SetString("12");
+		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
+		bigBeefText->SetString("12",BROWN);
 	}
 	if (featherText == nullptr)
 	{
 		featherText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
-		featherText->SetTextFont(app->fontTTF->defaultFont);
-		featherText->SetString("12");
+		featherText->SetTextFont(app->fontTTF->inventoryFont);
+		featherText->SetString("12",BROWN);
 	}
 	if (mantisText == nullptr)
 	{
 		mantisText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 100, 100 };
-		mantisText->SetTextFont(app->fontTTF->defaultFont);
-		mantisText->SetString("12");
+		mantisText->SetTextFont(app->fontTTF->inventoryFont);
+		mantisText->SetString("12",BROWN);
 	}
 	if (coinText == nullptr)
 	{
 		coinText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y*2, 100, 100 };
-		coinText->SetTextFont(app->fontTTF->defaultFont);
-		coinText->SetString("12");
+		coinText->SetTextFont(app->fontTTF->inventoryFont);
+		coinText->SetString("12",BROWN);
 	}
 	if (splitText == nullptr)
 	{
 		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
-		splitText->SetTextFont(app->fontTTF->defaultFont);
-		splitText->SetString("12");
+		splitText->SetTextFont(app->fontTTF->inventoryFont);
+		splitText->SetString("12",BROWN);
 	}
+	//Stats
+	if (healthStatText == nullptr)
+	{
+		healthStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		healthStatText->bounds = {statsPos.x,statsPos.y,100,100};
+		healthStatText->SetTextFont(app->fontTTF->inventoryFont);
+		healthStatText->SetString("12",BROWN);
+	}
+	if (strenghtStatText == nullptr)
+	{
+		strenghtStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		strenghtStatText->bounds = { statsPos.x,statsPos.y + statsOff.y,100,100 };
+		strenghtStatText->SetTextFont(app->fontTTF->inventoryFont);
+		strenghtStatText->SetString("12", BROWN);
+	}
+	if (defenseStatText == nullptr)
+	{
+		defenseStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y*2,100,100 };
+		defenseStatText->SetTextFont(app->fontTTF->inventoryFont);
+		defenseStatText->SetString("12", BROWN);
+	}
+	if (velocityStatText == nullptr)
+	{
+		velocityStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		velocityStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 3,100,100 };
+		velocityStatText->SetTextFont(app->fontTTF->inventoryFont);
+		velocityStatText->SetString("12", BROWN);
+	}
+	if (luckStatText == nullptr)
+	{
+		luckStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		luckStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 4,100,100 };
+		luckStatText->SetTextFont(app->fontTTF->inventoryFont);
+		luckStatText->SetString("12", BROWN);
+	}
+	if (stabStatText == nullptr)
+	{
+		stabStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,100,100 };
+		stabStatText->SetTextFont(app->fontTTF->inventoryFont);
+		stabStatText->SetString("12", BROWN);
+	}	
+
 	//quest
 	if (questText == nullptr)
 	{
@@ -293,6 +335,13 @@ void Inventory::DrawText()
 	mantisText->Draw();
 	coinText->Draw();
 	splitText->Draw();
+
+	healthStatText->Draw();
+	strenghtStatText->Draw();
+	defenseStatText->Draw();
+	velocityStatText->Draw();
+	stabStatText->Draw();
+	luckStatText->Draw();
 
 	questText->Draw();
 }

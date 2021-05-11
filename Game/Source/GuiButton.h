@@ -31,9 +31,14 @@ private:
     const SDL_Rect Locked = { 162 * 3, 720, 162, 60 };
     SDL_Texture* texture = nullptr;
 
-    const SDL_Rect inventoryNormal = { 665,720,50,54 };
-    const SDL_Rect inventoryFocused = { 665+50,720,50,54 };
-    const SDL_Rect inventoryPressed = { 665+100,720,50,54 };
+    const SDL_Rect inventoryNormal = { 665,720,49,54 };
+    const SDL_Rect inventoryFocused = { 665+49,720,49,54 };
+    const SDL_Rect inventoryPressed = { 665+98,720,49,54 };
+
+    const SDL_Rect quitNormal = { 0,793,128,60 };
+    const SDL_Rect quitFocused = { 0 + 128,793,128,60 };
+    const SDL_Rect quitPressed = { 0 + 256,793,128,60 };
+
 };
 
 #endif // __GUIBUTTON_H__

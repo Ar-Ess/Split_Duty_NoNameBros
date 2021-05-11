@@ -21,7 +21,7 @@ public:
 public:
 
 	void Draw();
-	void SetString(const char* newText);
+	void SetString(const char* newText, SDL_Color color = { 255,255,255,255 });
 	void SetTextFont(_TTF_Font* textFont);
 	void CenterAlign();
 	void UnLoadTextTexture();

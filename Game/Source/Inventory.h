@@ -38,6 +38,8 @@ public:
 
     void Update();
 
+    void UseItems();
+
     void Draw();
 
     void DrawInterface();
@@ -45,8 +47,6 @@ public:
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
 
     void DrawItems();
-
-    void DrawStats();
 
     void DrawButtons();
 
@@ -131,9 +131,6 @@ private:
 
     SDL_Texture* statsTexture = nullptr;
 
-	iPoint statsPos = { 850,200 };
-	iPoint statsOff = { 0,60 };
-
 	int sprite = 80;
     SDL_Rect healthStatRect = { 0,0,60,60 };
     SDL_Rect strenghtStatRect = { sprite,0,60,60 };
@@ -142,10 +139,25 @@ private:
     SDL_Rect luckStatRect = { sprite * 4,0,60,60 };
     SDL_Rect stabStatRect = { sprite * 5,0,60,60 };
 
+    GuiString* healthStatText = nullptr;
+    GuiString* strenghtStatText = nullptr;
+    GuiString* defenseStatText = nullptr;
+    GuiString* velocityStatText = nullptr;
+    GuiString* luckStatText = nullptr;
+    GuiString* stabStatText = nullptr;
+    iPoint statsPos = { 1175,257 };
+    iPoint statsOff = { 0,68 };
+
 public:
     GuiButton* quitQuestButton = nullptr;
 
     GuiButton* exitInventoryButton = nullptr;
+
+    //items
+    GuiButton* bigBeefButton = nullptr;
+    GuiButton* littlebeefButton = nullptr;
+    GuiButton* featherButton = nullptr;
+    GuiButton* splitButton;
 };
 
 #endif // __INVENTORY_H__
