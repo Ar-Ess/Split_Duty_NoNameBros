@@ -740,14 +740,24 @@ void Scene::SetWorld(Places place)
 	world->inventory->Start();
 
 	//inventory buttons
-	SDL_Rect buttonPrefab = { 614,36,60,60 };
-	if (world->inventory->quitButton == nullptr)
+	SDL_Rect buttonPrefab = { 55,606,60,60 };
+	if (world->inventory->quitQuestButton == nullptr)
 	{
-		world->inventory->quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->quitButton->bounds = buttonPrefab;
-		world->inventory->quitButton->text = "Quit quest";
-		world->inventory->quitButton->SetObserver(this);
+		world->inventory->quitQuestButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		world->inventory->quitQuestButton->bounds = buttonPrefab;
+		world->inventory->quitQuestButton->text = "Quit quest";
+		world->inventory->quitQuestButton->SetObserver(this);
 	}
+
+	buttonPrefab = { 614, 36, 49, 54 };
+	if (world->inventory->exitInventoryButton == nullptr)
+	{
+		world->inventory->exitInventoryButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		world->inventory->exitInventoryButton->bounds = buttonPrefab;
+		world->inventory->exitInventoryButton->text = "Exit inventory";
+		world->inventory->exitInventoryButton->SetObserver(this);
+	}
+
 }
 
 void Scene::SetPauseMenu()

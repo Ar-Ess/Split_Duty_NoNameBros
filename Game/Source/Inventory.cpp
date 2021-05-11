@@ -68,7 +68,9 @@ void Inventory::Restart()
 
 void Inventory::Update()
 {
-	quitButton->Update(1.0f);
+	quitQuestButton->Update(1.0f);
+
+	exitInventoryButton->Update(1.0f);
 }
 
 void Inventory::Draw()
@@ -156,7 +158,9 @@ void Inventory::DrawStats()
 
 void Inventory::DrawButtons()
 {
-	quitButton->Draw(1, false, true);
+	quitQuestButton->Draw(1, false, true);
+
+	exitInventoryButton->Draw(1, false, true);
 }
 
 void Inventory::UpdateFace()

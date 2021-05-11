@@ -5,6 +5,12 @@
 
 #include "Point.h"
 
+enum ButtonType {
+    MENU,
+    INVENTORY,
+    QUEST,
+    UPGRADE
+};
 class GuiButton : public GuiControl
 {
 public:
@@ -13,7 +19,7 @@ public:
     virtual ~GuiButton();
 
     bool Update(float dt);
-    bool Draw(float scale = 1, bool useCamera = true, bool drawTexture = true);
+    bool Draw(float scale = 1, bool useCamera = true, bool drawTexture = true,ButtonType=ButtonType::MENU);
     void ChangeTexture(const char* path);
 
 private:
@@ -24,6 +30,10 @@ private:
     const SDL_Rect Pressed = { 162 *2, 720, 162, 60 };
     const SDL_Rect Locked = { 162 * 3, 720, 162, 60 };
     SDL_Texture* texture = nullptr;
+
+    const SDL_Rect inventoryNormal = { 665,720,50,54 };
+    const SDL_Rect inventoryFocused = { 665+50,720,50,54 };
+    const SDL_Rect inventoryPressed = { 665+100,720,50,54 };
 };
 
 #endif // __GUIBUTTON_H__

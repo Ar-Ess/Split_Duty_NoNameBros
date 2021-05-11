@@ -143,8 +143,9 @@ private:
     SDL_Rect stabStatRect = { sprite * 5,0,60,60 };
 
 public:
-    GuiButton* quitButton = nullptr;
+    GuiButton* quitQuestButton = nullptr;
 
+    GuiButton* exitInventoryButton = nullptr;
 };
 
 #endif // __INVENTORY_H__
