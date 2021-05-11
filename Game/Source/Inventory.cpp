@@ -82,7 +82,7 @@ void Inventory::Draw()
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
-	DrawStats();
+	//DrawStats();
 
 	DrawButtons();
 
@@ -125,18 +125,23 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 
 void Inventory::DrawItems()
 {
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y,1,false, &littleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if(app->scene->player1->playerInventory->littleBeef >=1) app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y,1,false, &littleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y, 1, false, &mLittleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	
+	if (app->scene->player1->playerInventory->bigBeef >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x ,1,false, itemPos.y, &bigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	else app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, 1, false, itemPos.y, &mBigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	
+	if (app->scene->player1->playerInventory->feather >= 1)	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y,1,false, &featherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y, 1, false, &mFeatherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x ,1,false, itemPos.y, &bigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->playerInventory->mantisLeg >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.y,1,false, &mantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	else app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, itemPos.y + itemOff.y, 1, false, &mMantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y,1,false, &featherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.x,1,false, &mantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x),1,false, &coinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x),1,false, &splitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
+	if (app->scene->player1->playerInventory->coins >= 1)app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x),1,false, &coinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2 * itemOff.y), 1, false, &mCoinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	
+	if (app->scene->player1->playerInventory->split >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x),1,false, &splitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, itemPos.y + (2 * itemOff.y), 1, false, &mSplitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::DrawStats()
@@ -178,7 +183,7 @@ void Inventory::DrawFace()
 
 	currPlayerFaceAnim->Update(1.0f);
 
-	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y,1,false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y,1.4f,false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	
 }

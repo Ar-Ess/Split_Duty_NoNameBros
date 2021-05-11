@@ -38,6 +38,8 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
         colliderCombat.y = INIT2_COMBAT_POSY;
     }
 
+    playerInventory = new PlayerInventory();
+
     if (enType == EntityType::PLAYER1)
     {
         // Define Player animations

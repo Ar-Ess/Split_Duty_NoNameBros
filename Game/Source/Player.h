@@ -31,7 +31,36 @@
 
 class Animation;
 
+class PlayerInventory {
+ 
+public:
+    unsigned int littleBeef;
+    unsigned int bigBeef;
+    unsigned int feather;
+    unsigned int mantisLeg;
+    unsigned int coins;
+    unsigned int split;
 
+    PlayerInventory()
+    {
+        littleBeef = 0;
+        bigBeef = 0;
+        feather = 0;
+        mantisLeg = 0;
+        coins = 0;
+        split = 0;
+    }
+
+    void PlayerInventory::Reset()
+    {
+        littleBeef = 0;
+        bigBeef = 0;
+        feather = 0;
+        mantisLeg = 0;
+        coins = 0;
+        split = 0;
+    }
+};
 
 class Player : public Entity
 {
@@ -98,6 +127,8 @@ public:
         return colliderWorld.h;
     }
 
+public:
+    PlayerInventory* playerInventory;
 public:
     //player 1 animations
     Animation walkLeftAnim;
