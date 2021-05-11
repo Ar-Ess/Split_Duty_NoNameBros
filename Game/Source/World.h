@@ -52,7 +52,8 @@ enum Places
     TAVERN,
     SHOP,
     GOLEM_STONES,
-    GRASSY_LAND,
+    GRASSY_LAND_1,
+    GRASSY_LAND_2,
     AUTUM_FALL,
     MOSSY_ROCKS
 };
@@ -197,6 +198,8 @@ private:
     List<SDL_Rect> location3;
     List<SDL_Rect> tavern;
     List<SDL_Rect> shop;
+    List<SDL_Rect> collisionsOnOff;
+    List<SDL_Rect> switchFlowers;
 
     const SDL_Rect sensor1House = { 392, 616, 112, 56 };
     const SDL_Rect sensor2House = { 924, 616, 112, 56 };

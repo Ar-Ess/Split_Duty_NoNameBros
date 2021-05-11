@@ -164,6 +164,22 @@ void World::Start(Places placex)
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
+	else if (placex == GRASSY_LAND_2)
+	{
+		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+		place = placex;
+		map->Load("grassy_lands_2.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			p->colliderWorld = { 616, 1428, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+			p->collisionRect = { 616, 1428 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
 
@@ -491,7 +507,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
-				ChangeMap(GRASSY_LAND);
+				ChangeMap(GRASSY_LAND_2);
 				return;
 			}
 		}
@@ -929,6 +945,13 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1068) app->render->camera.x = 1280 - 1680;
+	}
+	else if (placex == GRASSY_LAND_2)
+	{
+		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 1110) app->render->camera.y = 720 - 1512;
+		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 675) app->render->camera.x = 1280 - 1288; //1680
 	}
 }
 
