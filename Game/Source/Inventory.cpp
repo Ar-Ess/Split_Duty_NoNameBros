@@ -73,6 +73,12 @@ void Inventory::Update()
 
 	exitInventoryButton->Update(1.0f);
 
+	bigBeefButton->Update(1.0f);
+	littlebeefButton->Update(1.0f);
+	featherButton->Update(1.0f);
+	mantisButton->Update(1.0f);
+	coinButton->Update(1.0f);
+	splitButton->Update(1.0f);
 }
 
 void Inventory::UseItems()
@@ -159,6 +165,13 @@ void Inventory::DrawButtons()
 	quitQuestButton->Draw(1, true, true,ButtonType::QUEST);
 
 	exitInventoryButton->Draw(1,true,true,ButtonType::INVENTORY);
+
+	littlebeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
+	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
+	featherButton->Draw(1, true, true, ButtonType::FEATHER_B);
+	mantisButton->Draw(1, true, true, ButtonType::MANTIS_B);
+	coinButton->Draw(1, true, true, ButtonType::COIN_B);
+	splitButton->Draw(1, true, true, ButtonType::SPLIT_B);
 }
 
 void Inventory::UpdateFace()

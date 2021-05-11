@@ -157,7 +157,9 @@ public:
     GuiButton* bigBeefButton = nullptr;
     GuiButton* littlebeefButton = nullptr;
     GuiButton* featherButton = nullptr;
-    GuiButton* splitButton;
+    GuiButton* mantisButton = nullptr;
+    GuiButton* coinButton = nullptr;
+    GuiButton* splitButton = nullptr;
 };
 
 #endif // __INVENTORY_H__
