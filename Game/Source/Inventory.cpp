@@ -158,9 +158,9 @@ void Inventory::DrawStats()
 
 void Inventory::DrawButtons()
 {
-	quitQuestButton->Draw(1, false, true);
+	quitQuestButton->Draw(1, false, true,ButtonType::QUEST);
 
-	exitInventoryButton->Draw(1, false, true);
+	exitInventoryButton->Draw(1,false,true,ButtonType::MENU);
 }
 
 void Inventory::UpdateFace()

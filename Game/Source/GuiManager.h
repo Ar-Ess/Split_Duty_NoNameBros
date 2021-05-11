@@ -38,6 +38,8 @@ public:
 
 	void AddGuiControl(GuiControl* entity);
 
+	void CenterCursor();
+
 	void DrawCursor();
 
 	void DrawPlayerLifeBar(int life, int maxLife, int x, int y);

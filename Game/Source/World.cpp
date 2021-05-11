@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Render.h"
+#include "GuiManager.h"
 #include "EntityManager.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -243,6 +244,7 @@ void World::Update()
 		if (!app->dialogueManager->onDialog)
 		{
 			inventoryOpen = !inventoryOpen;
+			app->guiManager->CenterCursor();
 		}
 	}
 

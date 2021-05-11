@@ -131,7 +131,8 @@ private:
 	
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 	GamePad pads[MAX_PADS];
-
+public:
+		
 	int	mouseMotionX;
 	int mouseMotionY;
 	int mouseX;

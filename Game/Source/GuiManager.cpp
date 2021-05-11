@@ -106,6 +106,11 @@ bool GuiManager::Update(float dt)
 	return true;
 }
 
+void GuiManager::CenterCursor()
+{
+	
+}
+
 void GuiManager::DrawCursor()
 {
 	currentCursorAnim->Update(1.0f);
@@ -120,7 +125,7 @@ void GuiManager::DrawCursor()
 		if (currentCursorAnim != &clickCursorAnim)
 		{
 			currentCursorAnim = &clickCursorAnim;
-			LOG("Clicked");
+			
 		}
 	}
 
@@ -128,7 +133,7 @@ void GuiManager::DrawCursor()
 	{
 		currentCursorAnim = &idleCursorAnim;
 		clickCursorAnim.Reset();
-		LOG("change cursor anim");
+		
 		
 	}
 }

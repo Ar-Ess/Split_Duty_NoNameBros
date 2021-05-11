@@ -65,23 +65,28 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             switch (type)
             {
             case ButtonType::INVENTORY:
+            { 
+               LOG("Drawing inventory buttons...");
                 switch (state)
-                {
+            {
 
-                case GuiControlState::NORMAL:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, &Normal);
-                    break;
-                case GuiControlState::FOCUSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, &Focused);
-                    break;
-                case GuiControlState::PRESSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, &Pressed);
-                    break;
+            case GuiControlState::NORMAL:
+                app->render->DrawTexture(texture, bounds.x, bounds.y, &Normal);
+                break;
+            case GuiControlState::FOCUSED:
+                app->render->DrawTexture(texture, bounds.x, bounds.y, &Focused);
+                break;
+            case GuiControlState::PRESSED:
+                app->render->DrawTexture(texture, bounds.x, bounds.y, &Pressed);
+                break;
 
 
-                    break;
-                }
+                break;
+            }
+            }
             case ButtonType::MENU:
+            {
+                LOG("Drawing menu buttons...");
                 switch (state)
                 {
                 case GuiControlState::DISABLED:
@@ -105,8 +110,9 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 default:
                     break;
                 }
-                
             }
+
+        }
                 
 
 
