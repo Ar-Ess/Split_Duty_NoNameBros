@@ -37,6 +37,10 @@ bool FontTTF::Awake(pugi::xml_node& conf)
 		const char* path1 = conf.child("inventory_font").attribute("file").as_string();
 		int size1 = conf.child("inventory_font").attribute("size").as_int();
 		inventoryFont = Load(path1, size1);
+
+		const char* path2 = conf.child("alkhemikal").attribute("file").as_string();
+		int size2 = conf.child("alkhemikal").attribute("size").as_int();
+		inventoryFont = Load(path2, size2);
 	}
 
 	return ret;

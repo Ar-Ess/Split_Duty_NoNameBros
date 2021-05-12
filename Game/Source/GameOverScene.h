@@ -45,6 +45,9 @@ public:
     GuiButton* respawnButton;
     GuiButton* backToMenuButton;
    
+    GuiString* gameOverText;
+    GuiString* defeatedText;
+
 };
 
 #endif // __LEVELUP_H__

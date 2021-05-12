@@ -9,6 +9,8 @@
   <fonts>
     <default_font file="Assets/Fonts/manaspace.regular.ttf" size="20"/>
     <inventory_font file="Assets/Fonts/squarely.ttf" size="34"/>
+    <win_lose_font file="Assets/Fonts/alkhemikal.ttf" size="80"/>
+      
   </fonts>
 
   <renderer>

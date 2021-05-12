@@ -55,6 +55,8 @@ public:
 
     GuiString* upgradeText = nullptr;
 
+    GuiString* battleOvercomeText = nullptr;
+
 };
 
 #endif // __LEVELUP_H__
