@@ -23,6 +23,7 @@ LevelUp::LevelUp()
 
 void LevelUp::Start()
 {
+	SetText();
 
 }
 
@@ -33,12 +34,7 @@ void LevelUp::Restart()
 
 void LevelUp::Update()
 {
-	upgradeHealthButton->UpdateOnClick(1.0f);
-	upgradeAttackButton->UpdateOnClick(1.0f);
-	upgradeDefenseButton->UpdateOnClick(1.0f);
-	upgradeSpeedButton->UpdateOnClick(1.0f);
-	upgradeLuckButton->UpdateOnClick(1.0f);
-	upgradeStabButton->UpdateOnClick(1.0f);
+	//UpdateButtons();
 }
 
 void LevelUp::Draw()
@@ -47,7 +43,52 @@ void LevelUp::Draw()
 
 	DrawButtons();
 
+	//DrawText();
+
 	app->guiManager->DrawCursor();
+
+	
+}
+
+void LevelUp::SetButtons()
+{
+	
+}
+
+void LevelUp::UpdateButtons()
+{
+	upgradeHealthButton->UpdateOnClick(1.0f);
+	upgradeAttackButton->UpdateOnClick(1.0f);
+	upgradeDefenseButton->UpdateOnClick(1.0f);
+	upgradeSpeedButton->UpdateOnClick(1.0f);
+	upgradeLuckButton->UpdateOnClick(1.0f);
+	upgradeStabButton->UpdateOnClick(1.0f);
+}
+
+void LevelUp::SetText()
+{
+	if (upgradePointsText == nullptr)
+	{
+		upgradePointsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		upgradePointsText->bounds = { 1100,200, 300, 100 };
+		upgradePointsText->SetTextFont(app->fontTTF->inventoryFont);
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->featherCount);
+		upgradePointsText->SetString(str, BROWN);
+	}
+}
+
+void LevelUp::UpdateText()
+{
+	char str[5] = {};
+	sprintf(str, "%d", app->scene->player1->featherCount);
+	upgradePointsText->SetString(str, BROWN);
+}
+
+void LevelUp::DrawText()
+{
+	upgradePointsText->Draw();
 }
 
 void LevelUp::DrawButtons()

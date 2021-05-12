@@ -122,7 +122,7 @@
     <ClCompile Include="Source\Spline.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
-    <ClCompile Include="Source\Transition.cpp" />
+    <ClCompile Include="Source\Transitions.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\World.cpp" />
     <ClInclude Include="Source\Animation.h" />
@@ -170,7 +170,7 @@
     <ClInclude Include="Source\Spline.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Timer.h" />
-    <ClInclude Include="Source\Transition.h" />
+    <ClInclude Include="Source\Transitions.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\List.h" />

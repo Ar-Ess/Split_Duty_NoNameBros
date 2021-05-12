@@ -30,6 +30,8 @@ public:
 
 	void SetWinDFullScreen(bool fullScreen);
 
+	int GetWidth() { return width; }
+
 public:
 	SDL_Window* window;
 

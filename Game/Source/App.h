@@ -29,7 +29,7 @@ class GuiManager;
 class FontTTF;
 class Scene;
 class DialogueManager;
-class Transition;
+class Transitions;
 
 class App
 {
@@ -99,7 +99,8 @@ public:
 	FontTTF* fontTTF;
 	Scene* scene;
 	DialogueManager* dialogueManager;
-	Transition* transition;
+	Transitions* transitions;
+
 
 private:
 

@@ -16,7 +16,7 @@
 #include "Enemy.h"
 #include "Combat.h"
 #include "DialogueManager.h"
-#include "Transition.h"
+#include "Transitions.h"
 #include "Inventory.h"
 #include "LevelUp.h"
 #include "OptionsMenu.h"
@@ -685,6 +685,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetLevelUp(unsigned short int exp)
 {
+	app->scene->levelUpScene->Start();
+
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	if (app->scene->levelUpScene->upgradeHealthButton == nullptr)
@@ -884,31 +886,9 @@ void Scene::SetPauseMenu()
 
 void Scene::UpdateLogoScene()
 {
-	if (timer >= 50) app->render->DrawTexture(logo, 0, 0);
-
-	if (timer < 50)
-	{
-		timer++;
-	}
-	else if (timer < 80)
-	{
-		app->transition->FadeToBlackEffect(true, 30.0f);
-		timer++;
-		if (timer == 51) app->audio->SetFx(Effect::LOGO_SCENE_FX);
-	}
-	else if (timer < 250)
-	{
-		timer++;
-	}
-	else if (timer >= 250 && timer < 280)
-	{
-		app->transition->FadeToBlackEffect(false, 30.0f);
-		timer++;
-	}
-	else
-	{
-		SetScene(MAIN_MENU);
-	}
+	app->transitions->FadeToBlackEffect(false, 60.0f);
+	SetScene(MAIN_MENU);
+	
 }
 
 void Scene::UpdateMainMenu()
