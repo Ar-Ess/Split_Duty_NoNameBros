@@ -5,6 +5,7 @@
 #include "Animation.h"
 
 #include "Point.h"
+#include "Log.h"
 
 #include "SDL/include/SDL.h"
 
@@ -97,6 +98,7 @@ public:
 
     void UseItem(ItemType type)
     {
+        LOG("Item used...");
         switch (type)
         {
         case ItemType::LITTLE_BEEF_I:

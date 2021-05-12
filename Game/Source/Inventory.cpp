@@ -21,14 +21,14 @@
 
 Inventory::Inventory()
 {
-	
+
 }
 
 void Inventory::Start()
 {
 	playerLvl = app->scene->player1->lvl;
 	//healthPercent = app->scene->player1->health / app->scene->player1->maxHealth;
-	
+
 
 	playerHp = app->scene->player1->health;
 	playerExp = app->scene->player1->exp;
@@ -57,7 +57,7 @@ void Inventory::Start()
 
 	//texts
 	SetText();
-	
+
 
 }
 
@@ -66,7 +66,7 @@ void Inventory::Restart()
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(faceAnimationTexture);
 	app->tex->UnLoad(statsTexture);
-	
+
 }
 
 void Inventory::Update()
@@ -75,12 +75,12 @@ void Inventory::Update()
 
 	exitInventoryButton->Update(1.0f);
 
-	bigBeefButton->Update(1.0f);
-	littlebeefButton->Update(1.0f);
-	featherButton->Update(1.0f);
-	mantisButton->Update(1.0f);
-	coinButton->Update(1.0f);
-	splitButton->Update(1.0f);
+	bigBeefButton->UpdateOnClick(1.0f);
+	littlebeefButton->UpdateOnClick(1.0f);
+	featherButton->UpdateOnClick(1.0f);
+	mantisButton->UpdateOnClick(1.0f);
+	coinButton->UpdateOnClick(1.0f);
+	splitButton->UpdateOnClick(1.0f);
 }
 
 void Inventory::UseItems()
@@ -102,10 +102,12 @@ void Inventory::Draw()
 
 	DrawButtons();
 
+	UpdateText();
+
 	DrawText();
 
 	app->guiManager->DrawCursor();
-	
+
 }
 
 void Inventory::DrawInterface()
@@ -113,7 +115,7 @@ void Inventory::DrawInterface()
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
-void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
+void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 {
 	int size = 261;
 	int thickness = 20;
@@ -121,9 +123,9 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 
 	if (current > 0 && max > 0)
 	{
-		 percent = current / max;
+		percent = current / max;
 	}
-	
+
 
 
 	if (color.r > 240) //red
@@ -133,7 +135,7 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 	}
 	else //blue
 	{
-		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);  
+		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	}
@@ -153,23 +155,23 @@ void Inventory::SetButtons()
 	else coinButton->state = GuiControlState::NORMAL;
 	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
 	else splitButton->state = GuiControlState::NORMAL;
-	
+
 }
 
 void Inventory::UpdateButtons()
 {
 	if (app->scene->player1->playerInventory->littleBeef == 0) littlebeefButton->state = GuiControlState::DISABLED;
-	
+
 	if (app->scene->player1->playerInventory->bigBeef == 0) bigBeefButton->state = GuiControlState::DISABLED;
-	
+
 	if (app->scene->player1->playerInventory->feather == 0) featherButton->state = GuiControlState::DISABLED;
-	
+
 	if (app->scene->player1->playerInventory->mantisLeg == 0) mantisButton->state = GuiControlState::DISABLED;
-	
+
 	if (app->scene->player1->playerInventory->coins == 0) coinButton->state = GuiControlState::DISABLED;
-	
+
 	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
-	
+
 }
 
 void Inventory::SetInventoryValues()
@@ -182,9 +184,9 @@ void Inventory::SetInventoryValues()
 
 void Inventory::DrawButtons()
 {
-	quitQuestButton->Draw(1, true, true,ButtonType::QUEST);
+	quitQuestButton->Draw(1, true, true, ButtonType::QUEST);
 
-	exitInventoryButton->Draw(1,true,true,ButtonType::INVENTORY);
+	exitInventoryButton->Draw(1, true, true, ButtonType::INVENTORY);
 
 	littlebeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
 	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
@@ -197,13 +199,13 @@ void Inventory::DrawButtons()
 void Inventory::UpdateFace()
 {
 	counter++;
-	
+
 	if (counter % 60 == 0)
 	{
 		seconds++;
 		//LOG("seconds : %d", seconds);
 	}
-		
+
 	if (seconds >= 3)
 	{
 		blinkFaceAnim.Reset();
@@ -218,9 +220,9 @@ void Inventory::DrawFace()
 
 	currPlayerFaceAnim->Update(1.0f);
 
-	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y,1.4f,false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	
+
 }
 
 void Inventory::SetText()
@@ -231,23 +233,23 @@ void Inventory::SetText()
 		lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		lvlText->bounds = { 541, 43, 200, 50 };
 		lvlText->SetTextFont(app->fontTTF->inventoryFont);
-		lvlText->SetString("Current level ",YELLOW);
+		lvlText->SetString("Current level ", YELLOW);
 	}
-	
+
 	if (healthText == nullptr)
 	{
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		healthText->bounds = { 900, 153, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->inventoryFont);
-		healthText->SetString("HP: 23 / 50",  YELLOW );
+		healthText->SetString("HP: 23 / 50", YELLOW);
 	}
-	
+
 	if (expText == nullptr)
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		expText->bounds = { 900, 220, 200, 50 };
 		expText->SetTextFont(app->fontTTF->inventoryFont);
-		expText->SetString("XP: 34 / 70",YELLOW);
+		expText->SetString("XP: 34 / 70", YELLOW);
 	}
 
 	if (upgradeText == nullptr)
@@ -257,7 +259,7 @@ void Inventory::SetText()
 		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
 		upgradeText->SetString("14");
 	}
-	
+
 	//ITEMS
 	if (littleBeefText == nullptr)
 	{
@@ -266,7 +268,7 @@ void Inventory::SetText()
 		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef,2);
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef, 2);
 		littleBeefText->SetString(str, BROWN);
 	}
 	if (bigBeefText == nullptr)
@@ -274,7 +276,7 @@ void Inventory::SetText()
 		bigBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
 		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
-		
+
 		char str[2] = { "" };
 		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->bigBeef, 2);
 		bigBeefText->SetString(str, BROWN);
@@ -284,7 +286,7 @@ void Inventory::SetText()
 		featherText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
 		featherText->SetTextFont(app->fontTTF->inventoryFont);
-		
+
 		char str[2] = { "" };
 		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->feather, 2);
 		featherText->SetString(str, BROWN);
@@ -302,7 +304,7 @@ void Inventory::SetText()
 	if (coinText == nullptr)
 	{
 		coinText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y*2, 100, 100 };
+		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
 		coinText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[2] = { "" };
@@ -314,7 +316,7 @@ void Inventory::SetText()
 		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
 		splitText->SetTextFont(app->fontTTF->inventoryFont);
-		
+
 		char str[2] = { "" };
 		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
 		splitText->SetString(str, BROWN);
@@ -323,9 +325,9 @@ void Inventory::SetText()
 	if (healthStatText == nullptr)
 	{
 		healthStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		healthStatText->bounds = {statsPos.x,statsPos.y,100,100};
+		healthStatText->bounds = { statsPos.x,statsPos.y,100,100 };
 		healthStatText->SetTextFont(app->fontTTF->inventoryFont);
-		healthStatText->SetString("12",BROWN);
+		healthStatText->SetString("12", BROWN);
 	}
 	if (strenghtStatText == nullptr)
 	{
@@ -337,7 +339,7 @@ void Inventory::SetText()
 	if (defenseStatText == nullptr)
 	{
 		defenseStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y*2,100,100 };
+		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 2,100,100 };
 		defenseStatText->SetTextFont(app->fontTTF->inventoryFont);
 		defenseStatText->SetString("12", BROWN);
 	}
@@ -361,7 +363,7 @@ void Inventory::SetText()
 		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,100,100 };
 		stabStatText->SetTextFont(app->fontTTF->inventoryFont);
 		stabStatText->SetString("12", BROWN);
-	}	
+	}
 
 	//quest
 	if (questText == nullptr)
@@ -371,6 +373,34 @@ void Inventory::SetText()
 		questText->SetTextFont(app->fontTTF->defaultFont);
 		questText->SetString("Dale ostias a un lobo");
 	}
+}
+
+void Inventory::UpdateText()
+{
+
+	char str[2] = { "" };
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef, 2);
+	littleBeefText->SetString(str, BROWN);
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->bigBeef, 2);
+	bigBeefText->SetString(str, BROWN);
+
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->feather, 2);
+	featherText->SetString(str, BROWN);
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->mantisLeg, 2);
+	mantisText->SetString(str, BROWN);
+
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->coins, 2);
+	coinText->SetString(str, BROWN);
+
+
+	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
+	splitText->SetString(str, BROWN);
+
 }
 
 void Inventory::DrawText()

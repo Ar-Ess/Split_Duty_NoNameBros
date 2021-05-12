@@ -1,5 +1,6 @@
 #include "App.h"
 #include "World.h"
+#include "Inventory.h"
 #include "Scene.h"
 #include "GuiButton.h"
 #include "GuiManager.h"
@@ -60,6 +61,46 @@ bool GuiButton::Update(float dt)
     return true;
 }
 
+bool GuiButton::UpdateOnClick(float dt)
+{
+    if (state != GuiControlState::DISABLED)
+    {
+        if (state == GuiControlState::PRESSED)
+        {
+            state = GuiControlState::NORMAL;
+        }
+
+        if (state == GuiControlState::LOCKED)
+        {
+
+        }
+        else
+        {
+            int mouseX, mouseY;
+            app->input->GetMousePosition(mouseX, mouseY);
+
+            if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+                (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+            {
+                if (state == GuiControlState::NORMAL)
+                {
+                    app->audio->SetFx(Effect::BUTTON_FOCUSSED);
+                }
+                state = GuiControlState::FOCUSED;
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN || (app->input->GetControl(A) == KeyState::KEY_DOWN && app->input->gamePad != nullptr))
+                {
+                    state = GuiControlState::PRESSED;
+                }
+
+               
+            }
+            else state = GuiControlState::NORMAL;
+        }
+    }
+
+    return true;
+}
+
 bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType type)
 {
     if (useCamera)
@@ -70,7 +111,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             {
             case ButtonType::INVENTORY:
             {
-                LOG("Drawing inventory buttons...");
+                
                 switch (state)
                 {
 
@@ -91,7 +132,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             }
             case ButtonType::QUEST:
             {
-                LOG("Drawing inventory buttons...");
+               
                 switch (state)
                 {
 
@@ -112,7 +153,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             }
             case ButtonType::MENU:
             {
-                LOG("Drawing menu buttons...");
+                
                 switch (state)
                 {
                 case GuiControlState::DISABLED:
@@ -156,7 +197,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::LITTLE_BEEF_I);
                     break;
                     }
                 }
@@ -181,7 +222,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::BIF_BEEF_I);
                     break;
                     }
                 }
@@ -207,6 +248,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     app->scene->player1->playerInventory->UseItem(ItemType::FEATHER_I);
+                    app->scene->world->inventory->featherButton->state = GuiControlState::NORMAL;
                     break;
                     }
                 }
@@ -231,7 +273,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::MANTIS_I);
                     break;
                     }
                 }
@@ -257,7 +299,8 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::COINS_I);
+                    app->scene->world->inventory->coinButton->state = GuiControlState::NORMAL;
                     break;
                     }
                 }
@@ -284,7 +327,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::SPLIT_I);
                     break;
                     }
                 }

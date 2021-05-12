@@ -60,6 +60,8 @@ public:
 
 	void SetText();
 
+    void UpdateText();
+
     void DrawText();
 
 private:
@@ -120,7 +122,7 @@ private:
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};
-	iPoint numberItemPos = {170,205 };
+	iPoint numberItemPos = {172,200 };
 	iPoint numberItemOff = { 190,132 };
 
     SDL_Texture* statsTexture = nullptr;

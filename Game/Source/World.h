@@ -164,6 +164,7 @@ private:
 
     friend class Map;
     friend class Scene;
+    friend class Inventory;
 
     int worldSpeed;
 
@@ -178,9 +179,9 @@ private:
     Places place;
 
     PlayerState playerState;
-
+public:
     Inventory* inventory = nullptr;
-
+private:
     iPoint prevPosition = { 0, 0 };
 
     bool debugCollisions = false;
