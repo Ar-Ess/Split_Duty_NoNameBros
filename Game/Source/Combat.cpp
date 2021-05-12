@@ -60,7 +60,7 @@ void Combat::Start()
 	FirstTurnLogic();
 
 	//LuckArray fill
-	int pLuck = p->luck;
+	int pLuck = p->luckStat;
 	if (pLuck > 0)
 	{
 		for (int i = 0; i < 100; i++)
@@ -151,7 +151,7 @@ void Combat::BoolStart()
 
 void Combat::FirstTurnLogic()
 {
-	if (app->scene->player1->velocity <= enemy->velocity)
+	if (app->scene->player1->velocityStat <= enemy->velocity)
 	{
 		combatState = ENEMY_TURN;
 		turnText->SetString("ENEMY TURN");
@@ -180,7 +180,7 @@ void Combat::Update()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 	else app->scene->splitButton->state = GuiControlState::LOCKED;
 
-	LOG("P_Str:%d", app->scene->player1->strength);
+	LOG("P_Str:%d", app->scene->player1->strengthStat);
 }
 
 void Combat::UpdateButtons()
@@ -671,8 +671,8 @@ void Combat::SecondPlayerChoiceLogic()
 int Combat::PlayerDamageLogic()
 {
 	int damage = 0;
-	int pDamage = app->scene->player1->strength - enemy->defense;
-	int pLuck = app->scene->player1->luck;
+	int pDamage = app->scene->player1->strengthStat - enemy->defense;
+	int pLuck = app->scene->player1->luckStat;
 
 	if (steps == 0) damage += floor(15 * pDamage / 100);
 	else if (steps == 1) damage += floor(35 * pDamage / 100);
@@ -700,7 +700,7 @@ int Combat::PlayerDamageLogic()
 
 int Combat::SecondPlayerDamageLogic()
 {
-	int damage = app->scene->player2->strength - enemy->defense;
+	int damage = app->scene->player2->strengthStat - enemy->defense;
 
 	int variation = rand() % 3;
 	bool negative = (bool)(rand() % 2);
@@ -716,7 +716,7 @@ int Combat::SecondPlayerDamageLogic()
 int Combat::EnemyDamageLogic()
 {
 	int damage = 0;
-	damage += enemy->strength - app->scene->player1->defense;
+	damage += enemy->strength - app->scene->player1->defenseStat;
 
 	if (damage < 1) damage = 1;
 
@@ -726,7 +726,7 @@ int Combat::EnemyDamageLogic()
 int Combat::BulletDamageLogic()
 {
 	int damage = 0;
-	damage += enemy->strength - app->scene->player1->defense;
+	damage += enemy->strength - app->scene->player1->defenseStat;
 
 	if (damage != 0) damage = ceil(damage / 5);
 	if (damage < 1) damage = 1;
@@ -1106,16 +1106,16 @@ void Combat::SecondPlayerBuff()
 			buffChoice = false;
 			attackBuff = true;
 			buffCooldown = 2;
-			lastStatNotBuffed = p->strength;
-			p->strength += (p->strength * (ATTACK_BUFF / 100.0f));
+			lastStatNotBuffed = p->strengthStat;
+			p->strengthStat += (p->strengthStat * (ATTACK_BUFF / 100.0f));
 		}
 		else if (buffChoice && app->input->GetKey(SDL_SCANCODE_KP_2) == KEY_DOWN)
 		{
 			buffChoice = false;
 			defenseBuff = true;
 			buffCooldown = 2;
-			lastStatNotBuffed = p->defense;
-			p->defense += (p->defense * (DEFENSE_BUFF / 100.0f));
+			lastStatNotBuffed = p->defenseStat;
+			p->defenseStat += (p->defenseStat * (DEFENSE_BUFF / 100.0f));
 		}
 		else if (buffChoice && app->input->GetKey(SDL_SCANCODE_KP_3) == KEY_DOWN)
 		{
@@ -1290,7 +1290,7 @@ void Combat::PlayerSplit()
 		int random = rand() % 5;
 
 		// USING LUCK
-		if (app->scene->player1->luck > 0)
+		if (app->scene->player1->luckStat > 0)
 		{
 			int luck = rand() % 100;
 
@@ -1374,7 +1374,7 @@ int Combat::HealPlayer(int typeOfHeal)
 int Combat::EnemyItemDamage()
 {
 	int itemDamage = 25;
-	int damage = itemDamage + floor(app->scene->player1->strength / 5) - enemy->defense;
+	int damage = itemDamage + floor(app->scene->player1->strengthStat / 5) - enemy->defense;
 
 	int damagePlus = rand() % 5;
 	int negOrPos = rand() % 2;
@@ -1537,8 +1537,8 @@ void Combat::PlayerHitLogic()
 				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
 				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defense) / 2);
-					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defense) / 2);
+					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
+					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
 					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
 
@@ -1676,12 +1676,12 @@ void Combat::UpdateBuffs()
 		if (attackBuff)
 		{
 			attackBuff = false;
-			app->scene->player1->strength = lastStatNotBuffed;
+			app->scene->player1->strengthStat = lastStatNotBuffed;
 		}
 		else if (defenseBuff)
 		{
 			defenseBuff = false;
-			app->scene->player1->defense = lastStatNotBuffed;
+			app->scene->player1->defenseStat = lastStatNotBuffed;
 		}
 		else if (thirdBuff)
 		{

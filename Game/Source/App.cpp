@@ -357,11 +357,11 @@ bool App::LoadGame()
 		pugi::xml_node stats = playerInfo.child("Player1_Stats");
 		p1->health = stats.attribute("health").as_int();
 		p1->maxHealth = stats.attribute("max_health").as_int();
-		p1->strength = stats.attribute("strength").as_int();
-		p1->defense = stats.attribute("defense").as_int();
-		p1->velocity = stats.attribute("velocity").as_int();
-		p1->luck = stats.attribute("luck").as_int();
-		p1->stab = stats.attribute("stab").as_int();
+		p1->strengthStat = stats.attribute("strength").as_int();
+		p1->defenseStat = stats.attribute("defense").as_int();
+		p1->velocityStat = stats.attribute("velocity").as_int();
+		p1->luckStat = stats.attribute("luck").as_int();
+		p1->stabStat = stats.attribute("stab").as_int();
 		p1->lvl = stats.attribute("level").as_int();
 		p1->exp = stats.attribute("experience").as_int();
 
@@ -369,8 +369,8 @@ bool App::LoadGame()
 		app->scene->combatScene->secondPlayer = stats.attribute("exists").as_bool();
 		p2->health = stats.attribute("health").as_int();
 		p2->maxHealth = stats.attribute("max_health").as_int();
-		p2->strength = stats.attribute("strength").as_int();
-		p2->defense = stats.attribute("defense").as_int();
+		p2->strengthStat = stats.attribute("strength").as_int();
+		p2->defenseStat = stats.attribute("defense").as_int();
 		p2->lvl = stats.attribute("level").as_int();
 		p2->exp = stats.attribute("experience").as_int();
 
@@ -434,19 +434,19 @@ bool App::SaveGame() const
 		playerInfo = saveNode.append_child("Player1_Stats");
 		playerInfo.append_attribute("health").set_value(scene->player1->health);
 		playerInfo.append_attribute("max_health").set_value(scene->player1->maxHealth);
-		playerInfo.append_attribute("strength").set_value(scene->player1->strength);
-		playerInfo.append_attribute("defense").set_value(scene->player1->defense);
-		playerInfo.append_attribute("velocity").set_value(scene->player1->velocity);
-		playerInfo.append_attribute("luck").set_value(scene->player1->luck);
-		playerInfo.append_attribute("stab").set_value(scene->player1->stab);
+		playerInfo.append_attribute("strength").set_value(scene->player1->strengthStat);
+		playerInfo.append_attribute("defense").set_value(scene->player1->defenseStat);
+		playerInfo.append_attribute("velocity").set_value(scene->player1->velocityStat);
+		playerInfo.append_attribute("luck").set_value(scene->player1->luckStat);
+		playerInfo.append_attribute("stab").set_value(scene->player1->stabStat);
 		playerInfo.append_attribute("level").set_value(scene->player1->lvl);
 		playerInfo.append_attribute("experience").set_value(scene->player1->exp);
 		playerInfo = saveNode.append_child("Player2_Stats");
 		playerInfo.append_attribute("exists").set_value(scene->combatScene->secondPlayer);
 		playerInfo.append_attribute("health").set_value(scene->player2->health);
 		playerInfo.append_attribute("max_health").set_value(scene->player2->maxHealth);
-		playerInfo.append_attribute("strength").set_value(scene->player2->strength);
-		playerInfo.append_attribute("defense").set_value(scene->player2->defense);
+		playerInfo.append_attribute("strength").set_value(scene->player2->strengthStat);
+		playerInfo.append_attribute("defense").set_value(scene->player2->defenseStat);
 		playerInfo.append_attribute("level").set_value(scene->player2->lvl);
 		playerInfo.append_attribute("experience").set_value(scene->player2->exp);
 		playerInfo = saveNode.append_child("Items");

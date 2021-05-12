@@ -241,7 +241,11 @@ void Inventory::SetText()
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		healthText->bounds = { 900, 153, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->inventoryFont);
-		healthText->SetString("HP: 23 / 50", YELLOW);
+		
+		/*char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->health, 2);
+		
+		littleBeefText->SetString(str, BROWN);*/
 	}
 
 	if (expText == nullptr)
@@ -321,12 +325,16 @@ void Inventory::SetText()
 		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
 		splitText->SetString(str, BROWN);
 	}
+
 	//Stats
 	if (healthStatText == nullptr)
 	{
 		healthStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		healthStatText->bounds = { statsPos.x,statsPos.y,100,100 };
 		healthStatText->SetTextFont(app->fontTTF->inventoryFont);
+
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->healthStat, 2);
 		healthStatText->SetString("12", BROWN);
 	}
 	if (strenghtStatText == nullptr)
@@ -334,35 +342,50 @@ void Inventory::SetText()
 		strenghtStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		strenghtStatText->bounds = { statsPos.x,statsPos.y + statsOff.y,100,100 };
 		strenghtStatText->SetTextFont(app->fontTTF->inventoryFont);
-		strenghtStatText->SetString("12", BROWN);
+		
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->strengthStat, 2);
+		strenghtStatText->SetString(str, BROWN);
 	}
 	if (defenseStatText == nullptr)
 	{
 		defenseStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 2,100,100 };
 		defenseStatText->SetTextFont(app->fontTTF->inventoryFont);
-		defenseStatText->SetString("12", BROWN);
+
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->defenseStat, 2);
+		defenseStatText->SetString(str, BROWN);
 	}
 	if (velocityStatText == nullptr)
 	{
 		velocityStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		velocityStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 3,100,100 };
 		velocityStatText->SetTextFont(app->fontTTF->inventoryFont);
-		velocityStatText->SetString("12", BROWN);
+		
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->velocityStat, 2);
+		velocityStatText->SetString(str, BROWN);
 	}
 	if (luckStatText == nullptr)
 	{
 		luckStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		luckStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 4,100,100 };
 		luckStatText->SetTextFont(app->fontTTF->inventoryFont);
-		luckStatText->SetString("12", BROWN);
+		
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->luckStat, 2);
+		luckStatText->SetString(str, BROWN);
 	}
 	if (stabStatText == nullptr)
 	{
 		stabStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,100,100 };
 		stabStatText->SetTextFont(app->fontTTF->inventoryFont);
-		stabStatText->SetString("12", BROWN);
+		
+		char str[12] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->stabStat, 2);
+		stabStatText->SetString(str, BROWN);
 	}
 
 	//quest

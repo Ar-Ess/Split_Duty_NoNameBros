@@ -135,7 +135,7 @@ public:
 
     bool Draw();
 
-    void SetUp(short int healthx, short int maxHealthx, short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx, short int moneyx);
+    void SetUp(short int healthx, short int maxHealthx,short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx, short int moneyx);
 
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
 
@@ -220,11 +220,13 @@ public:
 
     int health = 0;
     int maxHealth = 0;
-    int defense = 0;
-    int strength = 0;
-    int velocity = 0;
-    int luck = 0;
-    int stab = 0;
+
+    int healthStat = 1;
+    int defenseStat = 1;
+    int strengthStat = 1;
+    int velocityStat = 1;
+    int luckStat = 1;
+    int stabStat = 1;
     
     int lvl = 0;
     int exp = 0;
