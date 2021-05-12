@@ -96,6 +96,7 @@
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\FontTTF.cpp" />
+    <ClCompile Include="Source\GameOverScene.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiCheckBox.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Source\FindQuest.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\FontTTF.h" />
+    <ClInclude Include="Source\GameOverScene.h" />
     <ClInclude Include="Source\GatherQuest.h" />
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiCheckBox.h" />

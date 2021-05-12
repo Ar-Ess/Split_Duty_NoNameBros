@@ -151,6 +151,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 }
             }
+
             case ButtonType::MENU:
             {
                 
