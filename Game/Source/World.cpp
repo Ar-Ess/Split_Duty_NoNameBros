@@ -25,11 +25,13 @@ World::World()
 
 void World::Start(Places placex)
 {
+	Places prevPlace = place;
+	place = placex;
 	Player* p = app->scene->player1;
+
 	if (placex == MAIN_VILLAGE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		place = placex;
 		map->Load("main_village.tmx");
 
 		if (!app->scene->continuePressed)
@@ -83,7 +85,6 @@ void World::Start(Places placex)
 	else if (placex == HOUSE)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		place = placex;
 		map->Load("house.tmx");
 
 		if (!app->scene->continuePressed)
@@ -98,7 +99,6 @@ void World::Start(Places placex)
 	else if (placex == TAVERN)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		place = placex;
 		map->Load("tavern.tmx");
 
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
@@ -116,40 +116,42 @@ void World::Start(Places placex)
 	else if (placex == ENEMY_FIELD)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		place = placex;
 		map->Load("graveyard.tmx");
 
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
 		{
-			if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
+			if (prevPlace == MAIN_VILLAGE)
 			{
-				p->colliderWorld = { 1580, 150, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 1580, 150 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField1))
+				{
+					p->colliderWorld = { 1580, 150, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+					p->collisionRect = { 1580, 150 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
-				AlignCameraPosition();
-				RectifyCameraPosition(placex);
+					AlignCameraPosition();
+					RectifyCameraPosition(placex);
 
-				app->render->camera.y = -140;
+					app->render->camera.y = -140;
 
-				p->colliderWorld.y += 140;
-				p->collisionRect.y += 140;
+					p->colliderWorld.y += 140;
+					p->collisionRect.y += 140;
+				}
+				else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField2))
+				{
+					p->colliderWorld = { 1580, 150, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+					p->collisionRect = { 1580, 150 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+
+					AlignCameraPosition();
+
+					RectifyCameraPosition(placex);
+
+					app->render->camera.y = -1216;
+
+					p->colliderWorld.y += 1356; //1316
+					p->collisionRect.y += 1356; //1316
+				}
 			}
-			else if (collisionUtils.CheckCollision({ prevPosition.x, prevPosition.y, 1, 1 }, sensorVillageField2))
-			{
-				p->colliderWorld = { 1580, 150, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 1580, 150 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
-
-				AlignCameraPosition();
-
-				RectifyCameraPosition(placex);
-
-				app->render->camera.y = -1216;
-
-				p->colliderWorld.y += 1356; //1316
-				p->collisionRect.y += 1356; //1316
-			}
-			else
+			else if (prevPlace == GRASSY_LAND_2)
 			{
 				p->colliderWorld = { prevPosition.x, prevPosition.y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { prevPosition.x, prevPosition.y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
@@ -167,7 +169,6 @@ void World::Start(Places placex)
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
-		place = placex;
 		map->Load("grassy_lands_2.tmx");
 
 		if (!app->scene->continuePressed)
@@ -209,6 +210,10 @@ void World::Restart(Scenes scene)
 	location2.Clear();
 
 	location3.Clear();
+
+	switchFlowers.Clear();
+
+	collisionsOnOff.Clear();
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
@@ -518,6 +523,17 @@ void World::WorldChange()
 			{
 				AsignPrevPosition();
 				ChangeMap(MAIN_VILLAGE);
+				return;
+			}
+		}
+	}
+	else if (place == GRASSY_LAND_2)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(ENEMY_FIELD);
 				return;
 			}
 		}

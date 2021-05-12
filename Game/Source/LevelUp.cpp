@@ -33,12 +33,12 @@ void LevelUp::Restart()
 
 void LevelUp::Update()
 {
-	upgradeHealthButton->Update(1.0f);
-	upgradeAttackButton->Update(1.0f);
-	upgradeDefenseButton->Update(1.0f);
-	upgradeSpeedButton->Update(1.0f);
-	upgradeLuckButton->Update(1.0f);
-	upgradeStabButton->Update(1.0f);
+	upgradeHealthButton->UpdateOnClick(1.0f);
+	upgradeAttackButton->UpdateOnClick(1.0f);
+	upgradeDefenseButton->UpdateOnClick(1.0f);
+	upgradeSpeedButton->UpdateOnClick(1.0f);
+	upgradeLuckButton->UpdateOnClick(1.0f);
+	upgradeStabButton->UpdateOnClick(1.0f);
 }
 
 void LevelUp::Draw()
