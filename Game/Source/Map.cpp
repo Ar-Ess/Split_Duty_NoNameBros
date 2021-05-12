@@ -884,8 +884,8 @@ void Map::LoadColliders(MapLayer* layer)
 					case 1795: // IMMERSIVE GROUND
 						app->scene->world->collisionsOnOff.Add(r);
 						break;
-					case 1800: // FLOWER SWITCH
-						app->scene->world->switchFlowers.Add(r);
+					case 1800: //Whatever we need
+						//app->scene->world->lilipadPuzzle1->switchFlowers.Add(r);
 						break;
 					}
 				}

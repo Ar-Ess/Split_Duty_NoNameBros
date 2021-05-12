@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Player.h"
 #include "NPC.h"
+#include "LilipadPuzzle.h"
 
 #include "Log.h"
 #include <time.h>
@@ -153,8 +154,8 @@ void World::Start(Places placex)
 			}
 			else if (prevPlace == GRASSY_LAND_2)
 			{
-				p->colliderWorld = { prevPosition.x, prevPosition.y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { prevPosition.x, prevPosition.y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				p->colliderWorld = { 812, 50, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 812, 50 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
 				AlignCameraPosition();
 
@@ -171,10 +172,17 @@ void World::Start(Places placex)
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
 		map->Load("grassy_lands_2.tmx");
 
+		if (lilipadPuzzle1 == nullptr)
+		{
+			lilipadPuzzle1 = new LilipadPuzzle(2, {840 + 14, 1092 + 14, 28, 28}, {980 + 14, 1092 + 14, 28, 28});
+			lilipadPuzzle1->lilipad.At(0)->data.SetPosition(644, 924);
+			lilipadPuzzle1->lilipad.At(1)->data.SetPosition(252, 616);
+		}
+
 		if (!app->scene->continuePressed)
 		{
-			p->colliderWorld = { 616, 1428, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-			p->collisionRect = { 616, 1428 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			p->colliderWorld = { 616, 1390, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+			p->collisionRect = { 616, 1390 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 		}
 
 		AlignCameraPosition();
@@ -211,8 +219,6 @@ void World::Restart(Scenes scene)
 
 	location3.Clear();
 
-	switchFlowers.Clear();
-
 	collisionsOnOff.Clear();
 
 	app->render->camera.x = 0;
@@ -243,6 +249,11 @@ void World::Restart(Scenes scene)
 		item1 = item1->next;
 	}
 	app->entityManager->NPCs.Clear();
+
+	if (lilipadPuzzle1 != nullptr && !lilipadPuzzle1->finished)
+	{
+		lilipadPuzzle1->Restart();
+	}
 }
 
 void World::Update()
@@ -259,6 +270,11 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	if (place == GRASSY_LAND_2)
+	{
+		lilipadPuzzle1->Update();
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(Y) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
@@ -300,6 +316,7 @@ void World::Draw()
 	}
 	if (place != MAIN_VILLAGE)
 	{
+		if (place == GRASSY_LAND_2) lilipadPuzzle1->Draw();
 		DrawNPC();
 		DrawEnemy();
 		DrawPlayer();
@@ -401,6 +418,8 @@ void World::DrawCollisions()
 	}
 
 	app->render->DrawRectangle(contactPlayerZone, { 0, 0, 0, 150 });
+
+	if (lilipadPuzzle1 != nullptr) lilipadPuzzle1->DebugDraw();
 }
 
 //-------------------------------------------------------------------

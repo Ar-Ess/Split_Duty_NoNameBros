@@ -104,6 +104,7 @@
     <ClCompile Include="Source\GuiString.cpp" />
     <ClCompile Include="Source\Item.cpp" />
     <ClCompile Include="Source\LevelUp.cpp" />
+    <ClCompile Include="Source\LilipadPuzzle.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\Audio.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\KillQuest.h" />
     <ClInclude Include="Source\LevelUp.h" />
+    <ClInclude Include="Source\LilipadPuzzle.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\NPC.h" />
     <ClInclude Include="Source\OptionsMenu.h" />

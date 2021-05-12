@@ -29,6 +29,7 @@ class Map;
 struct SDL_Texture;
 struct SDL_Rect;
 struct Animation;
+class LilipadPuzzle;
 
 enum PlayerState
 {
@@ -174,6 +175,8 @@ private:
 
     Map* map = nullptr;
 
+    LilipadPuzzle* lilipadPuzzle1 = nullptr;
+
 	DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
 
     Places place;
@@ -200,7 +203,6 @@ private:
     List<SDL_Rect> tavern;
     List<SDL_Rect> shop;
     List<SDL_Rect> collisionsOnOff;
-    List<SDL_Rect> switchFlowers;
 
     const SDL_Rect sensor1House = { 392, 616, 112, 56 };
     const SDL_Rect sensor2House = { 924, 616, 112, 56 };
