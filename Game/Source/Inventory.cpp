@@ -242,12 +242,10 @@ void Inventory::SetText()
 		healthText->bounds = { 900, 153, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->inventoryFont);
 		healthText->SetString("XP: 34 / 70", YELLOW);
-		
 
-		char str[12];
-	
-
-		sprintf(str, "%s", 67);
+		/*char str[12] = {};
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->health, 2);
+		littleBeefText->SetString(str, BROWN);*/
 	}
 
 	if (expText == nullptr)
@@ -272,9 +270,8 @@ void Inventory::SetText()
 		littleBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
 		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
-
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->smallMeatCount);
 		littleBeefText->SetString(str, BROWN);
 	}
 	if (bigBeefText == nullptr)
@@ -283,8 +280,8 @@ void Inventory::SetText()
 		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
 		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->bigBeef, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->largeMeatCount);
 		bigBeefText->SetString(str, BROWN);
 	}
 	if (featherText == nullptr)
@@ -293,8 +290,8 @@ void Inventory::SetText()
 		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
 		featherText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->feather, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->featherCount);
 		featherText->SetString(str, BROWN);
 	}
 	if (mantisText == nullptr)
@@ -303,8 +300,8 @@ void Inventory::SetText()
 		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 100, 100 };
 		mantisText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->mantisLeg, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->mantisRodCount);
 		mantisText->SetString(str, BROWN);
 	}
 	if (coinText == nullptr)
@@ -313,8 +310,8 @@ void Inventory::SetText()
 		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
 		coinText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->coins, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->moneyCount);
 		coinText->SetString(str, BROWN);
 	}
 	if (splitText == nullptr)
@@ -323,8 +320,8 @@ void Inventory::SetText()
 		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
 		splitText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[2] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->splitedEnemyCount);
 		splitText->SetString(str, BROWN);
 	}
 
@@ -335,8 +332,8 @@ void Inventory::SetText()
 		healthStatText->bounds = { statsPos.x,statsPos.y,100,100 };
 		healthStatText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->healthStat, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->healthStat);
 		healthStatText->SetString("12", BROWN);
 	}
 	if (strenghtStatText == nullptr)
@@ -344,9 +341,9 @@ void Inventory::SetText()
 		strenghtStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		strenghtStatText->bounds = { statsPos.x,statsPos.y + statsOff.y,100,100 };
 		strenghtStatText->SetTextFont(app->fontTTF->inventoryFont);
-		
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->strengthStat, 2);
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->strengthStat);
 		strenghtStatText->SetString(str, BROWN);
 	}
 	if (defenseStatText == nullptr)
@@ -355,8 +352,8 @@ void Inventory::SetText()
 		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 2,100,100 };
 		defenseStatText->SetTextFont(app->fontTTF->inventoryFont);
 
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->defenseStat, 2);
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->defenseStat);
 		defenseStatText->SetString(str, BROWN);
 	}
 	if (velocityStatText == nullptr)
@@ -364,9 +361,9 @@ void Inventory::SetText()
 		velocityStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		velocityStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 3,100,100 };
 		velocityStatText->SetTextFont(app->fontTTF->inventoryFont);
-		
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->velocityStat, 2);
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->velocityStat);
 		velocityStatText->SetString(str, BROWN);
 	}
 	if (luckStatText == nullptr)
@@ -374,9 +371,9 @@ void Inventory::SetText()
 		luckStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		luckStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 4,100,100 };
 		luckStatText->SetTextFont(app->fontTTF->inventoryFont);
-		
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->luckStat, 2);
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->luckStat);
 		luckStatText->SetString(str, BROWN);
 	}
 	if (stabStatText == nullptr)
@@ -384,9 +381,9 @@ void Inventory::SetText()
 		stabStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,100,100 };
 		stabStatText->SetTextFont(app->fontTTF->inventoryFont);
-		
-		char str[12] = { "" };
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->stabStat, 2);
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->stabStat);
 		stabStatText->SetString(str, BROWN);
 	}
 
@@ -403,28 +400,29 @@ void Inventory::SetText()
 void Inventory::UpdateText()
 {
 
-	char str[2] = { "" };
-
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef, 2);
+	char str[5] = {};
+	sprintf(str, "%d", app->scene->player1->smallMeatCount);
 	littleBeefText->SetString(str, BROWN);
 
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->bigBeef, 2);
-	bigBeefText->SetString(str, BROWN);
+	char str1[5] = {};
+	sprintf(str1, "%d", app->scene->player1->largeMeatCount);
+	bigBeefText->SetString(str1, BROWN);
 
+	char str2[5] = {};
+	sprintf(str2, "%d", app->scene->player1->featherCount);
+	featherText->SetString(str2, BROWN);
 
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->feather, 2);
-	featherText->SetString(str, BROWN);
+	char str3[5] = {};
+	sprintf(str3, "%d", app->scene->player1->mantisRodCount);
+	mantisText->SetString(str3, BROWN);
 
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->mantisLeg, 2);
-	mantisText->SetString(str, BROWN);
+	char str4[5] = {};
+	sprintf(str4, "%d", app->scene->player1->moneyCount);
+	coinText->SetString(str4, BROWN);
 
-
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->coins, 2);
-	coinText->SetString(str, BROWN);
-
-
-	app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
-	splitText->SetString(str, BROWN);
+	char str5[5] = {};
+	sprintf(str5, "%d", app->scene->player1->splitedEnemyCount);
+	splitText->SetString(str5, BROWN);
 
 }
 
