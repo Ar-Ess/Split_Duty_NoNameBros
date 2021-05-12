@@ -70,6 +70,24 @@ public:
 		return true;
 	}
 
+	void Disable() {
+		if (this != nullptr) {
+			if (active == true) {
+				active = false;
+				CleanUp();
+			}
+		}
+	}
+
+	void Enable() {
+		if (this != nullptr) {
+			if (active == false) {
+				active = true;
+				Start();
+			}
+		}
+	}
+
 public:
 
 	SString name;

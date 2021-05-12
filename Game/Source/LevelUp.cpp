@@ -43,7 +43,7 @@ void LevelUp::Draw()
 
 	DrawButtons();
 
-	DrawText();
+	//DrawText();
 
 	app->guiManager->DrawCursor();
 
