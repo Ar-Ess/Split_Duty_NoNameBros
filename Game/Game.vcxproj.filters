@@ -81,9 +81,6 @@
     <ClCompile Include="Source\Dialogue.cpp">
       <Filter>Dialogues</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Transition.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Source\World.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -235,9 +232,6 @@
       <Filter>Dialogues</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Transition.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\World.h">

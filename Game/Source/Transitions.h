@@ -6,7 +6,7 @@
 #include "SDL\include\SDL_rect.h"
 
 //this enum will manage all the transitions, using it to indicate which type of transition we're using
-enum which_animation {
+enum TransitionType {
 	none,
 	fade_to_black,
 	fade_to_white,
@@ -22,6 +22,8 @@ public:
 	Transitions();
 	~Transitions();
 
+	bool FadeToBlackEffect(bool fadeIn, float frames = 60);
+
 	bool Start();
 	bool PostUpdate();
 
@@ -36,7 +38,7 @@ public:
 	} ongoingstep = fade_step::none;
 
 
-	bool Transition(which_animation type, Module* module_offp, Module* module_onp, float time = 2, float target_scalep = 2);
+	bool Transition(TransitionType type, Module* module_offp, Module* module_onp, float time = 2, float target_scalep = 2);
 
 	//the following calculates the percentatge of the transition that is done
 	float LerpValue(float percent, float start, float end);
@@ -46,7 +48,16 @@ public:
 
 
 private:
-	which_animation w_anim = which_animation::none;
+
+	enum FadeToBlackStep
+	{
+		NONE,
+		TO_BLACK,
+		FROM_BLACK
+	}
+	currentStep = FadeToBlackStep::NONE;
+
+	TransitionType tranistionType = TransitionType::none;
 
 	//desactivate and activate the modules
 	Module* module_on = nullptr;
@@ -79,7 +90,11 @@ private:
 	float percentatge2 = 0;
 	float percent3 = 0;
 
-
+public:
+	bool isFading = false;
+private:
+	uint32 frameCount;
+	uint32 maxFadeFrames;
 };
 
 #endif //__MODULEFADETOBLACK_H__

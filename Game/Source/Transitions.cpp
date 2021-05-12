@@ -64,24 +64,24 @@ bool Transitions::PostUpdate()
 	}
 
 	//the following switch decides which animation we're doing
-	switch (w_anim) {
+	switch (tranistionType) {
 
 		//FADE TO BLACK TRANSITION
-	case(which_animation::fade_to_black):
+	case(TransitionType::fade_to_black):
 		// Finally render the black square with alpha on the screen
 		SDL_SetRenderDrawColor(app->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 		SDL_RenderFillRect(app->render->renderer, &screen);
 		break;
 
 		//FADE TO WHITE TRANSITION
-	case(which_animation::fade_to_white):
+	case(TransitionType::fade_to_white):
 		// Finally render the white square with alpha on the screen
 		SDL_SetRenderDrawColor(app->render->renderer, 255, 255, 255, (Uint8)(normalized * 255.0f));
 		SDL_RenderFillRect(app->render->renderer, &screen);
 		break;
 
 		//WIPE TRANSITION
-	case (which_animation::wipe):
+	case (TransitionType::wipe):
 		if (ongoingstep == fade_step::entering) {
 			percentatge = timer.ReadSec() * (1 / (globaltime));
 			float normalized_x_position = LerpValue(percentatge, -(int)app->win->GetWidth(), 0);
@@ -109,7 +109,7 @@ bool Transitions::PostUpdate()
 		break;
 
 		//ZOOM TRANSITION
-	case (which_animation::zoom):
+	case (TransitionType::zoom):
 
 		if (ongoingstep == fade_step::entering) {
 			percentatge2 = timer.ReadSec() * (1 / globaltime);
@@ -138,7 +138,7 @@ bool Transitions::PostUpdate()
 		break;
 
 		//CURTAIN TRANSITION
-	case (which_animation::curtain):
+	case (TransitionType::curtain):
 		if (ongoingstep == fade_step::entering) {
 
 			percentatge = timer.ReadSec() * (1 / (globaltime));
@@ -189,11 +189,11 @@ bool Transitions::PostUpdate()
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool Transitions::Transition(which_animation type, Module* module_offp, Module* module_onp, float time, float target_scalep)
+bool Transitions::Transition(TransitionType type, Module* module_offp, Module* module_onp, float time, float target_scalep)
 {
 	bool ret = false;
 
-	w_anim = type;
+	tranistionType = type;
 
 	if (ongoingstep == fade_step::none)
 	{
@@ -229,4 +229,29 @@ float Transitions::LerpValue(float percent, float start, float end)
 void Transitions::SetTargetScale(int target_scalep)
 {
 	target_scale = target_scalep;
+}
+
+bool Transitions::FadeToBlackEffect(bool fadeIn, float frames)
+{
+	// If we are already in a fade process, ignore this call
+	if (currentStep == FadeToBlackStep::NONE)
+	{
+		if (fadeIn == false)
+		{
+			isFading = true;
+			currentStep = FadeToBlackStep::TO_BLACK;
+			frameCount = 0;
+			maxFadeFrames = frames;
+			return true;
+		}
+		else
+		{
+			currentStep = FadeToBlackStep::FROM_BLACK;
+			frameCount = frames;
+			maxFadeFrames = frames;
+			return true;
+		}
+	}
+
+	return false;
 }
