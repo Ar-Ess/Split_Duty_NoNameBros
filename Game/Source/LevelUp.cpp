@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "App.h"
 
 #include "Scene.h"
@@ -24,7 +26,6 @@ LevelUp::LevelUp()
 void LevelUp::Start()
 {
 	SetText();
-
 }
 
 void LevelUp::Restart()

@@ -170,7 +170,6 @@ void World::Start(Places placex)
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
-		map->Load("grassy_lands_2.tmx");
 
 		if (lilipadPuzzle1 == nullptr)
 		{
@@ -178,6 +177,8 @@ void World::Start(Places placex)
 			lilipadPuzzle1->lilipad.At(0)->data.SetPosition(644, 924);
 			lilipadPuzzle1->lilipad.At(1)->data.SetPosition(252, 616);
 		}
+
+		map->Load("grassy_lands_2.tmx");
 
 		if (!app->scene->continuePressed)
 		{
@@ -253,6 +254,8 @@ void World::Restart(Scenes scene)
 	if (lilipadPuzzle1 != nullptr && !lilipadPuzzle1->finished)
 	{
 		lilipadPuzzle1->Restart();
+		delete lilipadPuzzle1;
+		lilipadPuzzle1 = nullptr;
 	}
 }
 
@@ -728,6 +731,38 @@ bool World::CollisionSolver(iPoint prevPos)
 
 			p = nullptr;
 			return false; //Player Can Not Move
+		}
+	}
+
+	if (place == GRASSY_LAND_2)
+	{
+		for (int i = 0; i < lilipadPuzzle1->riverTracks.Count(); i++)
+		{
+			if (lilipadPuzzle1->riverTracks[i].active && collisionUtils.CheckCollision(p->collisionRect, lilipadPuzzle1->riverTracks[i].rect))
+			{
+				//Millorar perquè no es quedi parat sense tocar la valla
+				//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
+
+				if (prevPos.y - p->collisionRect.y < 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+				}
+				if (prevPos.x - p->collisionRect.x < 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+				}
+				if (prevPos.y - p->collisionRect.y > 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+				}
+				if (prevPos.x - p->collisionRect.x > 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+				}
+
+				p = nullptr;
+				return false; //Player Can Not Move
+			}
 		}
 	}
 

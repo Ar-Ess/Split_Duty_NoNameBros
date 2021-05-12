@@ -35,6 +35,19 @@ struct Lilipad
 
 };
 
+struct RiverTracks
+{
+    RiverTracks() {}
+    RiverTracks(SDL_Rect riverRect, bool activex)
+    {
+        rect = riverRect;
+        active = activex;
+    }
+
+    SDL_Rect rect = {};
+    bool active = true;
+};
+
 class LilipadPuzzle
 {
 public:
@@ -54,6 +67,8 @@ public:
 
     void SwitchLogic();
 
+    void RiverTrackLogic();
+
     Lilipad GetLiliFromId(uint id);
 
 public:
@@ -62,6 +77,8 @@ public:
 
     SDL_Rect leftSwitch = {};
     SDL_Rect rightSwitch = {};
+
+    List<RiverTracks> riverTracks;
 
     Collision collisionUtils;
 

@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "World.h"
 #include "Collider.h"
+#include "LilipadPuzzle.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -885,7 +886,7 @@ void Map::LoadColliders(MapLayer* layer)
 						app->scene->world->collisionsOnOff.Add(r);
 						break;
 					case 1800: //Whatever we need
-						//app->scene->world->lilipadPuzzle1->switchFlowers.Add(r);
+						app->scene->world->lilipadPuzzle1->riverTracks.Add({ r, true });
 						break;
 					}
 				}
