@@ -40,12 +40,25 @@ public:
 
     void Draw();
 
+    void SetButtons();
+
+    void UpdateButtons();
+
+    void SetText();
+
+    void UpdateText();
+
+    void DrawText();
+
     void DrawButtons();
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
 
 public:
+    iPoint buttonPos = { 1000,200 };
+    iPoint buttonOff = { 0,30 };
+
     GuiButton* upgradeHealthButton = nullptr;
     GuiButton* upgradeDefenseButton = nullptr;
     GuiButton* upgradeAttackButton = nullptr;
@@ -56,6 +69,8 @@ public:
     GuiString* upgradeText = nullptr;
 
     GuiString* battleOvercomeText = nullptr;
+
+    GuiString* upgradePointsText = nullptr;
 
 };
 

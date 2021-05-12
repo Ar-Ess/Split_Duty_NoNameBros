@@ -685,6 +685,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetLevelUp(unsigned short int exp)
 {
+	app->scene->levelUpScene->Start();
+
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	if (app->scene->levelUpScene->upgradeHealthButton == nullptr)
