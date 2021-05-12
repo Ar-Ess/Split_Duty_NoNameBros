@@ -106,3 +106,19 @@ bool FontTTF::CalcSize(const char* text, int& width, int& height, _TTF_Font* fon
 
 	return ret;
 }
+
+void FontTTF::IntToDynamicString(char* buffer, int k,int lenght) {
+
+	for (int i = 0; i < lenght; i++) {
+		buffer[i] = '0';
+	}
+
+	buffer[lenght] = 0;
+
+	int i = lenght - 1;
+	while (k != 0) {
+		if (i < 0) break;
+		buffer[i--] += k % 10;
+		k /= 10;
+	}
+}

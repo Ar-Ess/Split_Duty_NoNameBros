@@ -759,7 +759,7 @@ void Scene::SetWorld(Places place)
 	}
 
 	//
-	buttonPrefab = { 80,150,134,88 };
+	buttonPrefab = { 100,150,134,88 };
 	iPoint off = { 188,133 };
 	if (world->inventory->littlebeefButton == nullptr)
 	{
@@ -803,7 +803,7 @@ void Scene::SetWorld(Places place)
 		//world->inventory->exitInventoryButton->text = "Exit inventory";
 		world->inventory->splitButton->SetObserver(this);
 	}
-
+	world->inventory->SetButtons();
 }
 
 void Scene::SetPauseMenu()
@@ -1084,7 +1084,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		else if (strcmp(control->text.GetString(), "SmallMeatButton") == 0) smallMeatPressed = true;
 		else if (strcmp(control->text.GetString(), "LargeMeatButton") == 0) largeMeatPressed = true;
 		else if (strcmp(control->text.GetString(), "FeatherButton") == 0) featherPressed = true;
-		else if (strcmp(control->text.GetString(), "MantisButton") == 0) mantisPressed = true;
+		else if (strcmp(control->text.GetString(), "Button") == 0) mantisPressed = true;
 		else if (strcmp(control->text.GetString(), "EnemySplitButton") == 0) enemySplitPressed = true;
 		else if (strcmp(control->text.GetString(), "MoneyButton") == 0) moneyPressed = true;
 		break;

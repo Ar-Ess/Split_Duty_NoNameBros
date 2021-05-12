@@ -39,6 +39,8 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     }
 
     playerInventory = new PlayerInventory();
+    playerInventory->AddItem(ItemType::FEATHER_I, 2);
+    playerInventory->AddItem(ItemType::COINS_I, 2);
 
     if (enType == EntityType::PLAYER1)
     {

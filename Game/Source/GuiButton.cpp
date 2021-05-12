@@ -11,6 +11,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
     this->bounds = bounds;
     this->text = text;
     this->texture = app->guiManager->GuiTexture;
+    this->itemsTexture = app->guiManager->itemsTexture;
+    
 }
 
 GuiButton::~GuiButton()
@@ -137,29 +139,158 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
 
 
             case ButtonType::LITTLE_BEEF_B:
-
+            {
                 switch (state)
                 {
 
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
                 case GuiControlState::NORMAL:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     break;
                 case GuiControlState::FOCUSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryFocused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     break;
                 case GuiControlState::PRESSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     app->scene->world->inventoryOpen = false;
                     break;
+                    }
+                }
+                break;
+            }
 
+            case ButtonType::BIG_BEEF_B:
+            {
+                switch (state)
+                {
 
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
+                    }
+                }
+                break;
+            }
 
+            case ButtonType::FEATHER_B:
+            {
+                switch (state)
+                {
+
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
+                    }
+                }
+                break;
+            }
+
+            case ButtonType::MANTIS_B:
+            {
+                switch (state)
+                {
+
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
+                    }
                 }
 
                 break;
+            }
 
+            case ButtonType::COIN_B:
+            {
+                switch (state)
+                {
 
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
+                    }
+                }
 
+                break;
+            }
+
+            case ButtonType::SPLIT_B:
+            {
+                switch (state)
+                {
+
+                case GuiControlState::DISABLED:
+                 app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->scene->world->inventoryOpen = false;
+                    break;
+                    }
+                }
+
+                break;
+            }
 
                 if (app->guiManager->debugGui)
                 {

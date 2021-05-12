@@ -46,7 +46,9 @@ public:
 
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
 
-    void DrawItems();
+    void SetButtons();
+
+    void SetInventoryValues();
 
     void DrawButtons();
 
@@ -103,31 +105,21 @@ private:
 private:
     SDL_Texture* itemsTexture;
 
-    SDL_Rect littleBeefRect = { 0,0,80,80 };
+    
 	GuiString* littleBeefText = nullptr;
-    SDL_Rect bigBeefRect = { 0,0,80,80 };
 	GuiString* bigBeefText = nullptr;
-    SDL_Rect featherRect = { 160,0,80,80 };
 	GuiString* featherText = nullptr;
-    SDL_Rect mantisRect = { 240,0,80,80 };
 	GuiString* mantisText = nullptr;
-    SDL_Rect coinRect = { 320,0,80,80 };
 	GuiString* coinText = nullptr;
-    SDL_Rect splitRect = { 400,0,80,80 };
 	GuiString* splitText = nullptr;
 
-    SDL_Rect mLittleBeefRect = { 0,81,80,80 };
-    SDL_Rect mBigBeefRect = { 0,81,80,80 };
-    SDL_Rect mFeatherRect = { 160,81,80,80 };
-    SDL_Rect mMantisRect = { 240,81,80,80 };
-    SDL_Rect mCoinRect = { 320,81,80,80 };
-    SDL_Rect mSplitRect = { 400,81,80,80 };
+    
  
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};
-	iPoint numberItemPos = { 83,222 };
-	iPoint numberItemOff = { 180,110 };
+	iPoint numberItemPos = {170,205 };
+	iPoint numberItemOff = { 190,132 };
 
     SDL_Texture* statsTexture = nullptr;
 

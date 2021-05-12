@@ -61,6 +61,7 @@ public: //Textures
 	SDL_Texture* buttonSpriteSheet = nullptr;
 	SDL_Texture* checkBoxSpriteSheet = nullptr;
 	SDL_Texture* sliderSpriteSheet = nullptr;
+	
 
 public: //Others
 
@@ -79,6 +80,7 @@ private:
 	SDL_Rect lifeBar;
 public:
 	SDL_Texture* GuiTexture;
+	SDL_Texture* itemsTexture;
 	
 private:
 	SDL_Texture* faceAnimationsTexture;

@@ -16,6 +16,8 @@
 #include "Defs.h"
 
 #include "Log.h"
+#include <string>
+#include <stdio.h>
 
 Inventory::Inventory()
 {
@@ -32,7 +34,6 @@ void Inventory::Start()
 	playerExp = app->scene->player1->exp;
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
-	itemsTexture = app->tex->Load("Assets/Textures/UI/items/items.png");
 	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
 	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
 
@@ -53,6 +54,7 @@ void Inventory::Start()
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
+
 	//texts
 	SetText();
 	
@@ -62,9 +64,9 @@ void Inventory::Start()
 void Inventory::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
-	app->tex->UnLoad(itemsTexture);
 	app->tex->UnLoad(faceAnimationTexture);
 	app->tex->UnLoad(statsTexture);
+	
 }
 
 void Inventory::Update()
@@ -88,8 +90,6 @@ void Inventory::UseItems()
 void Inventory::Draw()
 {
 	DrawInterface();
-
-	DrawItems();
 
 	DrawFace();
 
@@ -137,26 +137,27 @@ void Inventory::DrawBar(iPoint pos,int current, int max, SDL_Color color)
 	}
 }
 
-void Inventory::DrawItems()
+void Inventory::SetButtons()
 {
-	if(app->scene->player1->playerInventory->littleBeef >=1) app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y,1,false, &littleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y, 1, false, &mLittleBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	
-	if (app->scene->player1->playerInventory->bigBeef >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x ,1,false, itemPos.y, &bigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	else app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, 1, false, itemPos.y, &mBigBeefRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	
-	if (app->scene->player1->playerInventory->feather >= 1)	app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y,1,false, &featherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + itemOff.y, 1, false, &mFeatherRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-	if (app->scene->player1->playerInventory->mantisLeg >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + itemOff.y,1,false, &mantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	else app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, itemPos.y + itemOff.y, 1, false, &mMantisRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-	if (app->scene->player1->playerInventory->coins >= 1)app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2*itemOff.x),1,false, &coinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	else app->render->DrawTexture(itemsTexture, itemPos.x, itemPos.y + (2 * itemOff.y), 1, false, &mCoinRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	
-	if (app->scene->player1->playerInventory->split >= 1)app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x , itemPos.y + (2 * itemOff.x),1,false, &splitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-	app->render->DrawTexture(itemsTexture, itemPos.x + itemOff.x, itemPos.y + (2 * itemOff.y), 1, false, &mSplitRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->playerInventory->littleBeef == 0) littlebeefButton->state = GuiControlState::DISABLED;
+	else littlebeefButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->playerInventory->bigBeef == 0) bigBeefButton->state = GuiControlState::DISABLED;
+	else bigBeefButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->playerInventory->feather == 0) featherButton->state = GuiControlState::DISABLED;
+	else featherButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->playerInventory->mantisLeg == 0) mantisButton->state = GuiControlState::DISABLED;
+	else mantisButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->playerInventory->coins == 0) coinButton->state = GuiControlState::DISABLED;
+	else coinButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
+	else splitButton->state = GuiControlState::NORMAL;
 }
+
+void Inventory::SetInventoryValues()
+{
+}
+
+
 
 
 
@@ -244,42 +245,60 @@ void Inventory::SetText()
 		littleBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
 		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
-		littleBeefText->SetString("12",BROWN);
+
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->littleBeef,2);
+		littleBeefText->SetString(str, BROWN);
 	}
 	if (bigBeefText == nullptr)
 	{
 		bigBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
 		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
-		bigBeefText->SetString("12",BROWN);
+		
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->bigBeef, 2);
+		bigBeefText->SetString(str, BROWN);
 	}
 	if (featherText == nullptr)
 	{
 		featherText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
 		featherText->SetTextFont(app->fontTTF->inventoryFont);
-		featherText->SetString("12",BROWN);
+		
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->feather, 2);
+		featherText->SetString(str, BROWN);
 	}
 	if (mantisText == nullptr)
 	{
 		mantisText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 100, 100 };
 		mantisText->SetTextFont(app->fontTTF->inventoryFont);
-		mantisText->SetString("12",BROWN);
+
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->mantisLeg, 2);
+		mantisText->SetString(str, BROWN);
 	}
 	if (coinText == nullptr)
 	{
 		coinText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y*2, 100, 100 };
 		coinText->SetTextFont(app->fontTTF->inventoryFont);
-		coinText->SetString("12",BROWN);
+
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->coins, 2);
+		coinText->SetString(str, BROWN);
 	}
 	if (splitText == nullptr)
 	{
 		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
 		splitText->SetTextFont(app->fontTTF->inventoryFont);
-		splitText->SetString("12",BROWN);
+		
+		char str[2] = { "" };
+		app->fontTTF->IntToDynamicString(str, app->scene->player1->playerInventory->split, 2);
+		splitText->SetString(str, BROWN);
 	}
 	//Stats
 	if (healthStatText == nullptr)

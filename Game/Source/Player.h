@@ -31,6 +31,15 @@
 
 class Animation;
 
+enum ItemType {
+    LITTLE_BEEF_I,
+    BIF_BEEF_I,
+    FEATHER_I,
+    MANTIS_I,
+    COINS_I,
+    SPLIT_I
+};
+
 class PlayerInventory {
  
 public:
@@ -59,6 +68,56 @@ public:
         mantisLeg = 0;
         coins = 0;
         split = 0;
+    }
+
+    void AddItem(ItemType type, int amount)
+    {
+        switch (type)
+        {
+        case ItemType::LITTLE_BEEF_I:
+            littleBeef += amount;
+            break;
+        case ItemType::BIF_BEEF_I:
+            bigBeef += amount;
+            break;
+        case ItemType::FEATHER_I:
+            feather += amount;
+            break;
+        case ItemType::MANTIS_I:
+            mantisLeg += amount;
+            break;
+        case ItemType::COINS_I:
+            coins += amount;
+            break;
+        case ItemType::SPLIT_I:
+            split += amount;
+            break;
+        }
+    }
+
+    void UseItem(ItemType type, int amount)
+    {
+        switch (type)
+        {
+        case ItemType::LITTLE_BEEF_I:
+            littleBeef--;
+            break;
+        case ItemType::BIF_BEEF_I:
+            bigBeef--;
+            break;
+        case ItemType::FEATHER_I:
+            feather--;
+            break;
+        case ItemType::MANTIS_I:
+            mantisLeg--;
+            break;
+        case ItemType::COINS_I:
+            coins--;
+            break;
+        case ItemType::SPLIT_I:
+            split--;
+            break;
+        }
     }
 };
 

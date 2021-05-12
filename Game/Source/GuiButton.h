@@ -36,6 +36,8 @@ private:
     const SDL_Rect Pressed = { 162 * 2, 720, 162, 60 };
     const SDL_Rect Locked = { 162 * 3, 720, 162, 60 };
     SDL_Texture* texture = nullptr;
+    SDL_Texture* itemsTexture = nullptr;
+
 
     const SDL_Rect inventoryNormal = { 665,720,49,54 };
     const SDL_Rect inventoryFocused = { 665 + 49,720,49,54 };
@@ -47,8 +49,37 @@ private:
 
     iPoint itemsPos = { 0,853 };
     iPoint itemsOff = { 180, 110 };
+    iPoint tile = { 80,81 };
 
+    const SDL_Rect lb_normal = { 0,0,tile.x,tile.y };
+    const SDL_Rect lb_disabled = { 0,tile.y,tile.x,tile.y };
+    const SDL_Rect lb_focused = { 0,tile.y*2,tile.x,tile.y };
+    const SDL_Rect lb_pressed = { 0,tile.y * 3,tile.x,tile.y };
 
+    const SDL_Rect bb_normal = { tile.x,0,tile.x,tile.y };
+    const SDL_Rect bb_disabled = { tile.x,tile.y,tile.x,tile.y };
+    const SDL_Rect bb_focused = { tile.x,tile.y * 2,tile.x,tile.y };
+    const SDL_Rect bb_pressed = { tile.x,tile.y * 3,tile.x,tile.y };
+
+    const SDL_Rect f_normal = { tile.x*2,tile.y,tile.x,tile.y };
+    const SDL_Rect f_disabled = { tile.x*2,tile.y,tile.x,tile.y };
+    const SDL_Rect f_focused = { tile.x*2,tile.y * 2,tile.x,tile.y };
+    const SDL_Rect f_pressed = { tile.x*2,tile.y * 3,tile.x,tile.y };
+
+    const SDL_Rect m_normal = { tile.x * 3,tile.y,tile.x,tile.y };
+    const SDL_Rect m_disabled = { tile.x * 3,tile.y,tile.x,tile.y };
+    const SDL_Rect m_focused = { tile.x * 3,tile.y * 2,tile.x,tile.y };
+    const SDL_Rect m_pressed = { tile.x * 3,tile.y * 3,tile.x,tile.y };
+
+    const SDL_Rect c_normal = { tile.x * 4,tile.y,tile.x,tile.y };
+    const SDL_Rect c_disabled = { tile.x * 4,tile.y,tile.x,tile.y };
+    const SDL_Rect c_focused = { tile.x * 4,tile.y * 2,tile.x,tile.y };
+    const SDL_Rect c_pressed = { tile.x * 4,tile.y * 3,tile.x,tile.y };
+
+    const SDL_Rect s_normal = { tile.x * 5,tile.y,tile.x,tile.y };
+    const SDL_Rect s_disabled = { tile.x * 5,tile.y,tile.x,tile.y };
+    const SDL_Rect s_focused = { tile.x * 5,tile.y * 2,tile.x,tile.y };
+    const SDL_Rect s_pressed = { tile.x * 3,tile.y * 3,tile.x,tile.y };
 
 };
 

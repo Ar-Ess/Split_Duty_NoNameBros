@@ -65,6 +65,8 @@ bool GuiManager::Start()
 	cursorTexture = app->tex->Load("Assets/Textures/UI/grab_hand.png");
 	GuiTexture = app->tex->Load("Assets/Textures/UI/GUI.png");
 	faceAnimationsTexture = app->tex->Load("Assets/Textures/UI/face_animations.png");
+	itemsTexture = app->tex->Load("Assets/Textures/UI/Items/Items.png");
+	
 
 	idleCursorAnim.PushBack({ 0,0,30,30});
 

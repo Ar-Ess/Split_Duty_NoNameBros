@@ -7,6 +7,7 @@
 
 #define DEFAULT_FONT "Assets/Fonts/kenvector_future_thin.ttf"
 #define DEFAULT_FONT_SIZE 12
+#define DYNAMIC_TEXT_LEN 12
 
 struct SDL_Texture;
 struct _TTF_Font;
@@ -27,6 +28,8 @@ public:
 	SDL_Texture* Print(const char* text, SDL_Color color, _TTF_Font* font = NULL, SDL_Texture* tex = nullptr, int endLine = 800);
 
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
+
+	void FontTTF::IntToDynamicString(char* buffer, int k,int lenght);
 
 public:
 
