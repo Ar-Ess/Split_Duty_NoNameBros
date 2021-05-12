@@ -48,6 +48,8 @@ public:
 
     void SetButtons();
 
+    void UpdateButtons();
+            
     void SetInventoryValues();
 
     void DrawButtons();

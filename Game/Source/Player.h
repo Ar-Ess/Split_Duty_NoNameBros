@@ -95,7 +95,7 @@ public:
         }
     }
 
-    void UseItem(ItemType type, int amount)
+    void UseItem(ItemType type)
     {
         switch (type)
         {

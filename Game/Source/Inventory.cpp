@@ -98,6 +98,8 @@ void Inventory::Draw()
 
 	//DrawStats();
 
+	UpdateButtons();
+
 	DrawButtons();
 
 	DrawText();
@@ -151,6 +153,23 @@ void Inventory::SetButtons()
 	else coinButton->state = GuiControlState::NORMAL;
 	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
 	else splitButton->state = GuiControlState::NORMAL;
+	
+}
+
+void Inventory::UpdateButtons()
+{
+	if (app->scene->player1->playerInventory->littleBeef == 0) littlebeefButton->state = GuiControlState::DISABLED;
+	
+	if (app->scene->player1->playerInventory->bigBeef == 0) bigBeefButton->state = GuiControlState::DISABLED;
+	
+	if (app->scene->player1->playerInventory->feather == 0) featherButton->state = GuiControlState::DISABLED;
+	
+	if (app->scene->player1->playerInventory->mantisLeg == 0) mantisButton->state = GuiControlState::DISABLED;
+	
+	if (app->scene->player1->playerInventory->coins == 0) coinButton->state = GuiControlState::DISABLED;
+	
+	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
+	
 }
 
 void Inventory::SetInventoryValues()

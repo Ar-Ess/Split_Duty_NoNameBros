@@ -206,7 +206,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
+                    app->scene->player1->playerInventory->UseItem(ItemType::FEATHER_I);
                     break;
                     }
                 }

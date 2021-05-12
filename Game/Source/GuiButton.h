@@ -61,22 +61,22 @@ private:
     const SDL_Rect bb_focused = { tile.x,tile.y * 2,tile.x,tile.y };
     const SDL_Rect bb_pressed = { tile.x,tile.y * 3,tile.x,tile.y };
 
-    const SDL_Rect f_normal = { tile.x*2,tile.y,tile.x,tile.y };
+    const SDL_Rect f_normal = { tile.x*2,0,tile.x,tile.y };
     const SDL_Rect f_disabled = { tile.x*2,tile.y,tile.x,tile.y };
     const SDL_Rect f_focused = { tile.x*2,tile.y * 2,tile.x,tile.y };
     const SDL_Rect f_pressed = { tile.x*2,tile.y * 3,tile.x,tile.y };
 
-    const SDL_Rect m_normal = { tile.x * 3,tile.y,tile.x,tile.y };
+    const SDL_Rect m_normal = { tile.x * 3,0,tile.x,tile.y };
     const SDL_Rect m_disabled = { tile.x * 3,tile.y,tile.x,tile.y };
     const SDL_Rect m_focused = { tile.x * 3,tile.y * 2,tile.x,tile.y };
     const SDL_Rect m_pressed = { tile.x * 3,tile.y * 3,tile.x,tile.y };
 
-    const SDL_Rect c_normal = { tile.x * 4,tile.y,tile.x,tile.y };
+    const SDL_Rect c_normal = { tile.x * 4,0,tile.x,tile.y };
     const SDL_Rect c_disabled = { tile.x * 4,tile.y,tile.x,tile.y };
     const SDL_Rect c_focused = { tile.x * 4,tile.y * 2,tile.x,tile.y };
     const SDL_Rect c_pressed = { tile.x * 4,tile.y * 3,tile.x,tile.y };
 
-    const SDL_Rect s_normal = { tile.x * 5,tile.y,tile.x,tile.y };
+    const SDL_Rect s_normal = { tile.x * 5,0,tile.x,tile.y };
     const SDL_Rect s_disabled = { tile.x * 5,tile.y,tile.x,tile.y };
     const SDL_Rect s_focused = { tile.x * 5,tile.y * 2,tile.x,tile.y };
     const SDL_Rect s_pressed = { tile.x * 3,tile.y * 3,tile.x,tile.y };
