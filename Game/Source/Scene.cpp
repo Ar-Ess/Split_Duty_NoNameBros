@@ -158,7 +158,7 @@ bool Scene::Update(float dt)
 	else if (currScene == WORLD) UpdateWorld();
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 
-	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	//LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
 	//DEBUGGING SPLINE
 	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
 	{
@@ -239,7 +239,7 @@ void Scene::SetScene(Scenes scene)
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
-	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
@@ -947,7 +947,7 @@ void Scene::UpdateLevelUp()
 
 void Scene::UpdateWorld()
 {
-	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	//LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
 	world->Update();
 
 	if (world->inventoryOpen) world->inventory->Update();
@@ -986,7 +986,7 @@ void Scene::UpdateWorld()
 		if (player1->godMode) player1->playerSpeed = 14;
 		else player1->playerSpeed = PLAYER_SPEED;
 	}
-	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	//LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
 }
 
 void Scene::UpdatePauseMenu()

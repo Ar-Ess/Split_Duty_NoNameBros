@@ -5,6 +5,7 @@
 #include "EntityManager.h"
 #include "Enemy.h"
 #include "Input.h"
+#include "Transitions.h"
 #include "DialogueManager.h"
 
 #include "World.h"
@@ -327,11 +328,14 @@ void World::Update()
 
 	if (app->input->GetKey(SDL_SCANCODE_L)==KEY_DOWN)
 	{
-		if (!app->dialogueManager->onDialog)
+		/*if (!app->dialogueManager->onDialog)
 		{
 			levelUpOpen = !levelUpOpen;
 			if (levelUpOpen) LOG("level up scene");
-		}
+		}*/
+
+		app->transitions->Transition(TransitionType::fade_to_black,(Module*) app->scene->world, (Module*)app->scene->combatScene, 3.0f);
+
 	}
 }
 
