@@ -63,5 +63,5 @@ public:
     bool stoneInWater = false;
 };
 
-#endif // __ITEM_H__#pragma once
+#endif // __STONEPUZZLE_H_
 

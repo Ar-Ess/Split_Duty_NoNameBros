@@ -31,6 +31,7 @@ struct SDL_Rect;
 struct Animation;
 class LilipadPuzzle;
 class StonePuzzle;
+class ButtonPuzzle;
 
 enum PlayerState
 {
@@ -184,6 +185,8 @@ private:
     LilipadPuzzle* lilipadPuzzle1 = nullptr;
 
     StonePuzzle* stonePuzzle1 = nullptr;
+
+    ButtonPuzzle* buttonPuzzle1 = nullptr;
 
 	DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
 

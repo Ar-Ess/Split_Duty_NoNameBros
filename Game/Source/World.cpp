@@ -13,6 +13,7 @@
 #include "NPC.h"
 #include "LilipadPuzzle.h"
 #include "StonePuzzle.h"
+#include "ButtonsPuzzle.h"
 
 #include "Log.h"
 #include <time.h>
@@ -185,6 +186,15 @@ void World::Start(Places placex)
 			stonePuzzle1->stone.At(0)->data.SetPosition(504, 728);
 		}
 
+		if (buttonPuzzle1 == nullptr)
+		{
+			buttonPuzzle1 = new ButtonPuzzle(4, 28, 28);
+			buttonPuzzle1->button.At(0)->data.SetPosition(196 + 14, 1064 + 14);
+			buttonPuzzle1->button.At(1)->data.SetPosition(336 + 14, 1148 + 14);
+			buttonPuzzle1->button.At(2)->data.SetPosition(392 + 14, 1372 + 14);
+			buttonPuzzle1->button.At(3)->data.SetPosition(224 + 14, 1288 + 14);
+		}
+
 		map->Load("grassy_lands_2.tmx");
 
 		if (!app->scene->continuePressed)
@@ -292,6 +302,7 @@ void World::Update()
 	{
 		lilipadPuzzle1->Update();
 		stonePuzzle1->Update();
+		buttonPuzzle1->Update();
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(Y) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
@@ -338,6 +349,7 @@ void World::Draw()
 		{
 			lilipadPuzzle1->Draw();
 			stonePuzzle1->Draw();
+			buttonPuzzle1->Draw();
 		}
 		DrawNPC();
 		DrawEnemy();
@@ -443,6 +455,7 @@ void World::DrawCollisions()
 
 	if (lilipadPuzzle1 != nullptr) lilipadPuzzle1->DebugDraw();
 	if (stonePuzzle1 != nullptr) stonePuzzle1->DebugDraw();
+	if (buttonPuzzle1 != nullptr) buttonPuzzle1->DebugDraw();
 }
 
 //-------------------------------------------------------------------
