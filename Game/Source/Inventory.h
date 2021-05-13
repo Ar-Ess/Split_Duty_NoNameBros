@@ -81,9 +81,10 @@ private:
     iPoint expBarPos = { 960,120 };
     
 private:
+    iPoint barOff = { 30,60 };
     GuiString* healthText = nullptr;
     GuiString* expText = nullptr;
-    GuiString* lvlText = nullptr;
+    
 
 	GuiString* upgradeText = nullptr;
 
@@ -141,6 +142,7 @@ private:
     GuiString* velocityStatText = nullptr;
     GuiString* luckStatText = nullptr;
     GuiString* stabStatText = nullptr;
+
     iPoint statsPos = { 1175,257 };
     iPoint statsOff = { 0,68 };
 

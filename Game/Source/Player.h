@@ -219,7 +219,7 @@ public:
     friend class Combat;
 
     int health = 0;
-    int maxHealth = 0;
+    int maxHealth = 100;
 
     int healthStat = 1;
     int defenseStat = 1;

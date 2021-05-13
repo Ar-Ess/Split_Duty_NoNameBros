@@ -104,7 +104,7 @@ void Inventory::Draw()
 
 	DrawButtons();
 
-	UpdateText();
+	//UpdateText();
 
 	DrawText();
 
@@ -180,10 +180,6 @@ void Inventory::SetInventoryValues()
 {
 }
 
-
-
-
-
 void Inventory::DrawButtons()
 {
 	quitQuestButton->Draw(1, true, true, ButtonType::QUEST);
@@ -230,41 +226,51 @@ void Inventory::DrawFace()
 void Inventory::SetText()
 {
 	//player
-	if (lvlText == nullptr)
-	{
-		lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		lvlText->bounds = { 541, 43, 200, 50 };
-		lvlText->SetTextFont(app->fontTTF->inventoryFont);
-		lvlText->SetString("Current level ", YELLOW);
-	}
-
 	if (healthText == nullptr)
 	{
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		healthText->bounds = { 900, 153, 200, 50 };
+		healthText->bounds = { healthBarPos.x, healthBarPos.y+barOff.x, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->inventoryFont);
-		healthText->SetString("XP: 34 / 70", YELLOW);
+		
+		char hp[5] = {};
+		char mhp[5] = {};
+		char slash[2] = {"/"};
+		char t[6] = { "HP : " };
+		sprintf(hp, "%d", app->scene->player1->health);
+		sprintf(mhp, "%d", app->scene->player1->maxHealth);
+		
+		char* str;
+		char* str1;
+		str=strcat(hp, slash);
+		str1 = strcat(str, mhp);
+		str = strcat(t, str1);
 
-		/*char str[12] = {};
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->health, 2);
-		littleBeefText->SetString(str, BROWN);*/
+		healthText->SetString(str, YELLOW);
 	}
 
 	if (expText == nullptr)
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		expText->bounds = { 900, 220, 200, 50 };
+		expText->bounds = { expBarPos.x,expBarPos.y+barOff.x, 200, 50 };
 		expText->SetTextFont(app->fontTTF->inventoryFont);
-		expText->SetString("XP: 34 / 70", YELLOW);
+		
+		char xp[5] = {};
+		char mxp[5] = {};
+		char slash[2] = { "/" };
+		char t[6] = { "XP : " };
+		sprintf(xp, "%d", app->scene->player1->exp);
+		sprintf(mxp, "%d", app->scene->player1->exp);
+
+		char* str;
+		char* str1;
+		str = strcat(xp, slash);
+		str1 = strcat(str, mxp);
+		str = strcat(t, str1);
+
+		expText->SetString(str, YELLOW);
 	}
 
-	if (upgradeText == nullptr)
-	{
-		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		upgradeText->bounds = { 900,100, 100, 100 };
-		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
-		upgradeText->SetString("14");
-	}
+
 
 	//ITEMS
 	if (littleBeefText == nullptr)
@@ -394,7 +400,7 @@ void Inventory::SetText()
 	{
 		questText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		questText->bounds = { 60,600, 100, 100 };
-		questText->SetTextFont(app->fontTTF->defaultFont);
+		questText->SetTextFont(app->fontTTF->inventoryFont);
 		questText->SetString("Dale ostias a un lobo");
 	}
 }
@@ -430,10 +436,8 @@ void Inventory::UpdateText()
 
 void Inventory::DrawText()
 {
-	lvlText->Draw();
 	healthText->Draw();
 	expText->Draw();
-	upgradeText->Draw();
 
 	littleBeefText->Draw();
 	bigBeefText->Draw();
