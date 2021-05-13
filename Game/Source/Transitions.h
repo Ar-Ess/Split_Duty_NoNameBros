@@ -2,7 +2,6 @@
 #define __MODULEFADETOBLACK_H__
 
 #include "Module.h"
-#include "Scene.h";
 #include "PerfTimer.h"
 #include "SDL\include\SDL_rect.h"
 
@@ -15,8 +14,6 @@ enum TransitionType {
 	zoom,
 	curtain
 };
-
-enum Scenes;
 
 class Transitions : public Module
 {
