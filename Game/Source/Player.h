@@ -53,12 +53,12 @@ public:
 
     PlayerInventory()
     {
-        int smallMeatCount = 0;
+        int smallMeatCount = 4;
         int largeMeatCount = 0;
         int featherCount = 0;
         int mantisRodCount = 0;
         int splitedEnemyCount = 0;
-        int moneyCount = 0;
+        int moneyCount = 10;
     }
 
     void PlayerInventory::Reset()
