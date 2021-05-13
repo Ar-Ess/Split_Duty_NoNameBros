@@ -105,9 +105,6 @@
     <ClCompile Include="Source\GameOverScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Transitions.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Source\LilipadPuzzle.cpp">
       <Filter>Puzzles</Filter>
     </ClCompile>
@@ -116,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Source\ButtonsPuzzle.cpp">
       <Filter>Puzzles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transition.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,9 +279,6 @@
     <ClInclude Include="Source\GameOverScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Transitions.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Source\LilipadPuzzle.h">
       <Filter>Puzzles</Filter>
     </ClInclude>
@@ -290,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="Source\ButtonsPuzzle.h">
       <Filter>Puzzles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transition.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

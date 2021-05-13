@@ -10,7 +10,7 @@
 #include "FontTTF.h"
 #include "DialogueManager.h"
 #include "Scene.h"
-#include "Transitions.h"
+#include "Transition.h"
 #include "Player.h"
 #include "World.h"
 #include "Combat.h"
@@ -36,7 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	fontTTF = new FontTTF();
 	scene = new Scene();
 	dialogueManager = new DialogueManager();
-	transitions = new Transitions();
+	transition = new Transition();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -49,7 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fontTTF);
 	AddModule(scene);
 	AddModule(dialogueManager);
-	AddModule(transitions);
+	AddModule(transition);
 
 	// Render last to swap buffer
 	AddModule(render);
