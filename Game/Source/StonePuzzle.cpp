@@ -22,7 +22,7 @@ StonePuzzle::~StonePuzzle() {}
 
 void StonePuzzle::Restart()
 {
-	for (int i = 0; i < stone.Count(); i++) app->tex->UnLoad(lilipad[i].texture);
+	for (int i = 0; i < stone.Count(); i++) app->tex->UnLoad(stone[i].texture);
 	stone.Clear();
 }
 

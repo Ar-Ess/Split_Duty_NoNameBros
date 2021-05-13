@@ -188,11 +188,11 @@ void World::Start(Places placex)
 
 		if (buttonPuzzle1 == nullptr)
 		{
-			buttonPuzzle1 = new ButtonPuzzle(4, 28, 28);
-			buttonPuzzle1->button.At(0)->data.SetPosition(196 + 14, 1064 + 14);
-			buttonPuzzle1->button.At(1)->data.SetPosition(336 + 14, 1148 + 14);
-			buttonPuzzle1->button.At(2)->data.SetPosition(392 + 14, 1372 + 14);
-			buttonPuzzle1->button.At(3)->data.SetPosition(224 + 14, 1288 + 14);
+			buttonPuzzle1 = new ButtonPuzzle(4, 28, 28, {392, 308, 56, 56}, { 616, 308, 56, 56 }, { 840, 308, 56, 56 });
+			buttonPuzzle1->button.At(0)->data.SetPosition(196 + 14, 1064 + 14, 1);
+			buttonPuzzle1->button.At(1)->data.SetPosition(336 + 14, 1148 + 14, 2);
+			buttonPuzzle1->button.At(2)->data.SetPosition(392 + 14, 1372 + 14, 3);
+			buttonPuzzle1->button.At(3)->data.SetPosition(224 + 14, 1288 + 14, 4);
 		}
 
 		map->Load("grassy_lands_2.tmx");
@@ -280,6 +280,13 @@ void World::Restart(Scenes scene)
 		stonePuzzle1->Restart();
 		delete stonePuzzle1;
 		stonePuzzle1 = nullptr;
+	}
+
+	if (buttonPuzzle1 != nullptr && !buttonPuzzle1->finished)
+	{
+		buttonPuzzle1->Restart();
+		delete buttonPuzzle1;
+		buttonPuzzle1 = nullptr;
 	}
 }
 
@@ -851,6 +858,32 @@ bool World::CollisionSolver(iPoint prevPos)
 
 			p = nullptr;
 			return false; //Player Can Not Move
+		}
+
+		if (!buttonPuzzle1->resultActive)
+		{
+			if (collisionUtils.CheckCollision(p->collisionRect, buttonPuzzle1->bridge1) || collisionUtils.CheckCollision(p->collisionRect, buttonPuzzle1->bridge2) || collisionUtils.CheckCollision(p->collisionRect, buttonPuzzle1->bridge3))
+			{
+				if (prevPos.y - p->collisionRect.y < 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+				}
+				if (prevPos.x - p->collisionRect.x < 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+				}
+				if (prevPos.y - p->collisionRect.y > 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+				}
+				if (prevPos.x - p->collisionRect.x > 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+				}
+
+				p = nullptr;
+				return false; //Player Can Not Move
+			}
 		}
 	}
 

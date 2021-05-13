@@ -7,7 +7,7 @@
 
 struct SDL_Rect;
 struct SDL_Texture;
-struct Collision;
+class Collision;
 
 struct Button
 {
@@ -33,7 +33,7 @@ class ButtonPuzzle
 {
 public:
     ButtonPuzzle();
-    ButtonPuzzle(int stoneAmount, uint width, uint height);
+    ButtonPuzzle(int stoneAmount, int width, int height, SDL_Rect bridge1x, SDL_Rect bridge2x, SDL_Rect bridge3x);
     ~ButtonPuzzle();
 
     void Restart();
@@ -44,12 +44,23 @@ public:
 
     void DebugDraw();
 
+    void ResetButtons();
+
 public:
     List<Button> button;
     bool finished = false;
 
     Collision collisionUtils;
 
+    uint step = 1;
+
+    bool resultActive = false;
+
+    SDL_Rect bridge1 = {};
+    SDL_Rect bridge2 = {};
+    SDL_Rect bridge3 = {};
+
+    SDL_Texture* bridge = nullptr;
 };
 
 #endif // __BUTTONPUZZLE_H_

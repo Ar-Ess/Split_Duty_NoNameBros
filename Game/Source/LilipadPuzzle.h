@@ -9,7 +9,7 @@
 
 struct SDL_Rect;
 struct SDL_Texture;
-struct Collision;
+class Collision;
 
 struct Lilipad
 {
