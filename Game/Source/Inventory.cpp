@@ -183,6 +183,7 @@ void Inventory::UpdateButtons()
 
 	if (app->scene->player1->playerInventory->splitedEnemyCount == 0) splitButton->state = GuiControlState::DISABLED;
 
+	coinButton->state = GuiControlState::NORMAL;
 }
 
 void Inventory::SetInventoryValues()
@@ -191,7 +192,7 @@ void Inventory::SetInventoryValues()
 
 void Inventory::DrawButtons()
 {
-	quitQuestButton->Draw(1, true, true, ButtonType::QUEST);
+	quitQuestButton->Draw(1, true, true, ButtonType::QUIT);
 
 	exitInventoryButton->Draw(1, true, true, ButtonType::INVENTORY);
 
@@ -445,9 +446,6 @@ void Inventory::UpdateText()
 
 void Inventory::DrawText()
 {
-	healthText->Draw();
-	expText->Draw();
-
 	littleBeefText->Draw();
 	bigBeefText->Draw();
 	featherText->Draw();
