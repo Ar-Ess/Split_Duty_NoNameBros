@@ -18,15 +18,12 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     colliderCombat = collCombat;
 
-    smallMeatCount = 0;
-    largeMeatCount = 0;
-    featherCount = 0;
-    mantisRodCount = 0;
-    splitedEnemyCount = 0;
-    moneyCount = 0;
-
-    //stats
-    health=
+    smallMeatCount = 1;
+    largeMeatCount = 1;
+    featherCount = 1;
+    mantisRodCount = 1;
+    splitedEnemyCount = 1;
+    moneyCount = 1;
 
     playerSpeed = PLAYER_SPEED;
 
@@ -40,10 +37,6 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
         colliderCombat.x = INIT2_COMBAT_POSX;
         colliderCombat.y = INIT2_COMBAT_POSY;
     }
-
-    playerInventory = new PlayerInventory();
-    playerInventory->AddItem(ItemType::FEATHER_I, 2);
-    playerInventory->AddItem(ItemType::COINS_I, 2);
 
     if (enType == EntityType::PLAYER1)
     {
@@ -148,7 +141,7 @@ bool Player::Draw()
     return false;
 }
 
-void Player::SetUp(short int healthx, short int maxHealthx,short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx, short int moneyx)
+void Player::SetUp(short int healthx, short int maxHealthx,short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx)
 {
     health = healthx;
     maxHealth = maxHealthx;
@@ -160,7 +153,6 @@ void Player::SetUp(short int healthx, short int maxHealthx,short int strengthx, 
     stabStat = stabx;
     lvl = lvlx;
     exp = expx;
-    moneyCount = moneyx;
 }
 
 void Player::SetTexture(SDL_Texture *tex)
@@ -246,27 +238,29 @@ void Player::Refill()
     health = maxHealth;
 }
 
+
+
 void Player::RestartPlayer()
 {
     app->scene->player1->colliderWorld = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
     app->scene->player1->collisionRect = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
-    smallMeatCount = 0;
-    largeMeatCount = 0;
-    featherCount = 0;
-    mantisRodCount = 0;
-    splitedEnemyCount = 0;
-    moneyCount = 0;
+    smallMeatCount = 1;
+    largeMeatCount = 1;
+    featherCount = 1;
+    mantisRodCount = 1;
+    splitedEnemyCount = 1;
+    moneyCount = 1;
 
     if (type == EntityType::PLAYER1)
     {
-        SetUp(20, 20, 10, 3, 0, 0, 0, 0, 0, 0);
+        SetUp(20, 20, 10, 3, 0, 0, 0, 0, 0);
         colliderCombat.x = INIT_COMBAT_POSX;
         colliderCombat.y = INIT_COMBAT_POSY;
     }
     else if (type == EntityType::PLAYER2)
     {
-        SetUp(15, 15, 15, 0, 0, 0, 0, 10, 0, 0);
+        SetUp(15, 15, 15, 0, 0, 0, 0, 10, 0);
         colliderCombat.x = INIT2_COMBAT_POSX;
         colliderCombat.y = INIT2_COMBAT_POSY;
     }

@@ -38,15 +38,11 @@ public:
 
     void Update();
 
-    void UseItems();
-
     void Draw();
 
     void DrawInterface();
 
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
-
-    void SetButtons();
 
     void UpdateButtons();
             

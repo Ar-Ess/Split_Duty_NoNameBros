@@ -765,21 +765,21 @@ void Scene::SetWorld(Places place)
 	{
 		world->inventory->littlebeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->littlebeefButton->bounds = buttonPrefab;
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		world->inventory->littlebeefButton->text = "EatSmallMeat";
 		world->inventory->littlebeefButton->SetObserver(this);
 	}
 	if (world->inventory->bigBeefButton == nullptr)
 	{
 		world->inventory->bigBeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->bigBeefButton->bounds = { buttonPrefab.x + off.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		world->inventory->bigBeefButton->text = "EatLargeMeat";
 		world->inventory->bigBeefButton->SetObserver(this);
 	}
 	if (world->inventory->featherButton == nullptr)
 	{
 		world->inventory->featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->featherButton->bounds = { buttonPrefab.x ,buttonPrefab.y + off.y,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		//world->inventory->littlebeefButton->text = "EatSmallMeat";
 		world->inventory->featherButton->SetObserver(this);
 	}
 	if (world->inventory->mantisButton == nullptr)
@@ -803,7 +803,6 @@ void Scene::SetWorld(Places place)
 		//world->inventory->exitInventoryButton->text = "Exit inventory";
 		world->inventory->splitButton->SetObserver(this);
 	}
-	world->inventory->SetButtons();
 }
 
 void Scene::SetPauseMenu()
@@ -971,10 +970,8 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (world->inventoryOpen)
-	{
-		world->inventory->Draw();
-	}
+	if (world->inventoryOpen) world->inventory->Draw();
+
 	if (world->levelUpOpen) levelUpScene->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
@@ -1116,6 +1113,21 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			app->entityManager->enemies.Clear();
 			SetScene(MAIN_MENU);
 			app->audio->TransitionVolumeMusic();
+		}
+		break;
+
+	case WORLD:
+		if (strcmp(control->text.GetString(), "EatSmallMeat") == 0)
+		{
+			player1->smallMeatCount--;
+			player1->health += floor((30 * player1->maxHealth) / 100);
+			if (player1->health > player1->maxHealth) player1->health = player1->maxHealth;
+		}
+		else if (strcmp(control->text.GetString(), "EatLargeMeat") == 0)
+		{
+			player1->largeMeatCount--;
+			player1->health += floor((60 * player1->maxHealth) / 100);
+			if (player1->health > player1->maxHealth) player1->health = player1->maxHealth;
 		}
 		break;
 	}

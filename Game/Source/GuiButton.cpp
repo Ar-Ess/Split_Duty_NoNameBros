@@ -123,7 +123,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &inventoryPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->world->inventoryOpen = false;
                     break;
 
 
@@ -144,7 +143,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    LOG("Quit quest...");
                     break;
 
 
@@ -198,7 +196,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &lb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::LITTLE_BEEF_I);
                     break;
                     }
                 }
@@ -223,7 +220,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &bb_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::BIF_BEEF_I);
                     break;
                     }
                 }
@@ -248,8 +244,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &f_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::FEATHER_I);
-                    app->scene->world->inventory->featherButton->state = GuiControlState::NORMAL;
                     break;
                     }
                 }
@@ -274,7 +268,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &m_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::MANTIS_I);
                     break;
                     }
                 }
@@ -300,8 +293,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &c_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::COINS_I);
-                    app->scene->world->inventory->coinButton->state = GuiControlState::NORMAL;
                     break;
                     }
                 }
@@ -328,7 +319,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    app->scene->player1->playerInventory->UseItem(ItemType::SPLIT_I);
                     break;
                     }
                 }
