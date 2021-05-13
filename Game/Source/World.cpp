@@ -28,6 +28,8 @@ World::World()
 
 void World::Start(Places placex)
 {
+	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
+
 	Places prevPlace = place;
 	place = placex;
 	Player* p = app->scene->player1;
@@ -213,6 +215,8 @@ void World::Start(Places placex)
 	LoadNPCs(placex);
 
 	currentPlayerAnimation = &p->walkDownAnim;
+
+	LOG("current: %d , mac : %d", app->scene->player1->health, app->scene->player1->maxHealth);
 
 	UpdateWorldSpeed();
 
