@@ -75,7 +75,7 @@ void LevelUp::SetText()
 		upgradePointsText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->featherCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->featherCount);
 		upgradePointsText->SetString(str, BROWN);
 	}
 }
@@ -83,7 +83,7 @@ void LevelUp::SetText()
 void LevelUp::UpdateText()
 {
 	char str[5] = {};
-	sprintf(str, "%d", app->scene->player1->featherCount);
+	sprintf(str, "%d", app->scene->player1->playerInventory->featherCount);
 	upgradePointsText->SetString(str, BROWN);
 }
 

@@ -375,12 +375,12 @@ bool App::LoadGame()
 		p2->exp = stats.attribute("experience").as_int();
 
 		pugi::xml_node items = playerInfo.child("Items");
-		p1->smallMeatCount = stats.attribute("small_meat").as_int();
-		p1->largeMeatCount = stats.attribute("large_meat").as_int();
-		p1->featherCount = stats.attribute("feather").as_int();
-		p1->mantisRodCount = stats.attribute("mantis_rod").as_int();
-		p1->splitedEnemyCount = stats.attribute("splited_enemy").as_int();
-		p1->moneyCount = stats.attribute("money").as_int();
+		p1->playerInventory->smallMeatCount = stats.attribute("small_meat").as_int();
+		p1->playerInventory->largeMeatCount = stats.attribute("large_meat").as_int();
+		p1->playerInventory->featherCount = stats.attribute("feather").as_int();
+		p1->playerInventory->mantisRodCount = stats.attribute("mantis_rod").as_int();
+		p1->playerInventory->splitedEnemyCount = stats.attribute("splited_enemy").as_int();
+		p1->playerInventory->moneyCount = stats.attribute("money").as_int();
 
 		worldInfo = data.child("saveState").child("World_Information");
 		pugi::xml_node world = worldInfo.child("Position");
@@ -450,12 +450,12 @@ bool App::SaveGame() const
 		playerInfo.append_attribute("level").set_value(scene->player2->lvl);
 		playerInfo.append_attribute("experience").set_value(scene->player2->exp);
 		playerInfo = saveNode.append_child("Items");
-		playerInfo.append_attribute("small_meat").set_value(scene->player1->smallMeatCount);
-		playerInfo.append_attribute("large_meat").set_value(scene->player1->largeMeatCount);
-		playerInfo.append_attribute("feather").set_value(scene->player1->featherCount);
-		playerInfo.append_attribute("mantis_rod").set_value(scene->player1->mantisRodCount);
-		playerInfo.append_attribute("splited_enemy").set_value(scene->player1->splitedEnemyCount);
-		playerInfo.append_attribute("money").set_value(scene->player1->moneyCount);
+		playerInfo.append_attribute("small_meat").set_value(scene->player1->playerInventory->smallMeatCount);
+		playerInfo.append_attribute("large_meat").set_value(scene->player1->playerInventory->largeMeatCount);
+		playerInfo.append_attribute("feather").set_value(scene->player1->playerInventory->featherCount);
+		playerInfo.append_attribute("mantis_rod").set_value(scene->player1->playerInventory->mantisRodCount);
+		playerInfo.append_attribute("splited_enemy").set_value(scene->player1->playerInventory->splitedEnemyCount);
+		playerInfo.append_attribute("money").set_value(scene->player1->playerInventory->moneyCount);
 
 		//WORLD INFO
 		saveNode = root.append_child("World_Information");
