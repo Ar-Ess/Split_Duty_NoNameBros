@@ -5,6 +5,8 @@
 #include "PerfTimer.h"
 #include "SDL\include\SDL_timer.h"
 
+#include "Log.h"
+
 uint64 PerfTimer::frequency = 0;
 
 // L07: DONE 2: Fill Constructor, Start(),ReadMs() and ReadTicks() methods
@@ -34,5 +36,24 @@ uint64 PerfTimer::ReadTicks() const
 
 float PerfTimer::ReadSec() const
 {
-	return float(SDL_GetTicks() - started_at) / 1000.0f;
+	
+	return float(SDL_GetTicks() - started_at) / 1000.0f * offset;;
+}
+
+float PerfTimer::ReadSeconds() 
+{
+	counter++;
+	if (counter % 60 == 0)
+	{
+		seconds++;
+
+		LOG("Seconds since start: %d", seconds);
+	}
+	return seconds;
+}
+
+void PerfTimer::ResetSeconds()
+{
+	counter = 0;
+	seconds = 0;
 }
