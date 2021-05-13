@@ -45,8 +45,6 @@ public:
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
 
     void UpdateButtons();
-            
-    void SetInventoryValues();
 
     void DrawButtons();
 
@@ -65,10 +63,7 @@ private:
     int playerHp;
     int playerLvl;
 
-    
     int playerItems;
-
-	int healthPercent = 1;
     
 private:
     //guide positions
@@ -93,7 +88,7 @@ private:
     const SDL_Rect healthBarRect = { 0,720,261,22 };
     const SDL_Rect expBarRect = { 0,742,261,22 };
         
-    SDL_Texture* faceAnimationTexture;
+    SDL_Texture* faceAnimationTexture = nullptr;
     Animation* currPlayerFaceAnim;
     Animation idleFaceAnim;
 	Animation blinkFaceAnim;
