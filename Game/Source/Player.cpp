@@ -20,9 +20,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     playerInventory = new PlayerInventory();
     playerInventory->Reset();
-    playerInventory->AddItem(ItemType::COINS_I, 12);
-    playerInventory->AddItem(ItemType::LITTLE_BEEF_I, 4);
-
+    playerInventory->AddItem(ItemType::COINS_I, 3);
     //stats
     health=
 
