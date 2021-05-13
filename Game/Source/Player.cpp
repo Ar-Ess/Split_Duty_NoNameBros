@@ -18,19 +18,10 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 
     colliderCombat = collCombat;
 
-<<<<<<< HEAD
     playerInventory = new PlayerInventory();
     playerInventory->Reset();
     playerInventory->AddItem(ItemType::COINS_I, 10);
     playerInventory->AddItem(ItemType::LITTLE_BEEF_I, 5);
-=======
-    smallMeatCount = 0;
-    largeMeatCount = 0;
-    featherCount = 0;
-    mantisRodCount = 0;
-    splitedEnemyCount = 0;
-    moneyCount = 0;
->>>>>>> parent of 04a6ed9 (items logic fixed)
 
     //stats
     health = maxHealth-20;
@@ -48,9 +39,8 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
         colliderCombat.y = INIT2_COMBAT_POSY;
     }
 
-    playerInventory = new PlayerInventory();
-    playerInventory->AddItem(ItemType::FEATHER_I, 2);
-    playerInventory->AddItem(ItemType::COINS_I, 2);
+    
+    
 
     if (enType == EntityType::PLAYER1)
     {
@@ -167,7 +157,7 @@ void Player::SetUp(short int healthx, short int maxHealthx,short int strengthx, 
     stabStat = stabx;
     lvl = lvlx;
     exp = expx;
-    moneyCount = moneyx;
+    playerInventory->moneyCount = moneyx;
 }
 
 void Player::SetTexture(SDL_Texture *tex)
@@ -177,12 +167,12 @@ void Player::SetTexture(SDL_Texture *tex)
 
 void Player::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
 {
-    smallMeatCount = xsmallMeat;
-    largeMeatCount = xlargeMeat;
-    featherCount = xfeather;
-    mantisRodCount = xmantisLeg;
-    splitedEnemyCount = xsplitedEnemy;
-    moneyCount = xmoney;
+    playerInventory->smallMeatCount = xsmallMeat;
+    playerInventory->largeMeatCount = xlargeMeat;
+    playerInventory->featherCount = xfeather;
+    playerInventory->mantisRodCount = xmantisLeg;
+    playerInventory->splitedEnemyCount = xsplitedEnemy;
+    playerInventory->moneyCount = xmoney;
 }
 
 void Player::Jump()
@@ -258,12 +248,12 @@ void Player::RestartPlayer()
     app->scene->player1->colliderWorld = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
     app->scene->player1->collisionRect = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
-    smallMeatCount = 0;
-    largeMeatCount = 0;
-    featherCount = 0;
-    mantisRodCount = 0;
-    splitedEnemyCount = 0;
-    moneyCount = 0;
+    playerInventory->smallMeatCount = 0;
+    playerInventory->largeMeatCount = 0;
+    playerInventory->featherCount = 0;
+    playerInventory->mantisRodCount = 0;
+    playerInventory->splitedEnemyCount = 0;
+    playerInventory->moneyCount = 0;
 
     if (type == EntityType::PLAYER1)
     {

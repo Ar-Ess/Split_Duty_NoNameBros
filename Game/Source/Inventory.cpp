@@ -154,34 +154,34 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 
 void Inventory::SetButtons()
 {
-	if (app->scene->player1->playerInventory->littleBeef == 0) littlebeefButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->smallMeatCount == 0) littlebeefButton->state = GuiControlState::DISABLED;
 	else littlebeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->playerInventory->bigBeef == 0) bigBeefButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->largeMeatCount == 0) bigBeefButton->state = GuiControlState::DISABLED;
 	else bigBeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->playerInventory->feather == 0) featherButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->featherCount == 0) featherButton->state = GuiControlState::DISABLED;
 	else featherButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->playerInventory->mantisLeg == 0) mantisButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->mantisRodCount == 0) mantisButton->state = GuiControlState::DISABLED;
 	else mantisButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->playerInventory->coins == 0) coinButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->moneyCount == 0) coinButton->state = GuiControlState::DISABLED;
 	else coinButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->splitedEnemyCount == 0) splitButton->state = GuiControlState::DISABLED;
 	else splitButton->state = GuiControlState::NORMAL;
 
 }
 
 void Inventory::UpdateButtons()
 {
-	if (app->scene->player1->playerInventory->littleBeef == 0) littlebeefButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->smallMeatCount == 0) littlebeefButton->state = GuiControlState::DISABLED;
 
-	if (app->scene->player1->playerInventory->bigBeef == 0) bigBeefButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->largeMeatCount == 0) bigBeefButton->state = GuiControlState::DISABLED;
 
-	if (app->scene->player1->playerInventory->feather == 0) featherButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->featherCount == 0) featherButton->state = GuiControlState::DISABLED;
 
-	if (app->scene->player1->playerInventory->mantisLeg == 0) mantisButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->mantisRodCount == 0) mantisButton->state = GuiControlState::DISABLED;
 
-	if (app->scene->player1->playerInventory->coins == 0) coinButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->moneyCount == 0) coinButton->state = GuiControlState::DISABLED;
 
-	if (app->scene->player1->playerInventory->split == 0) splitButton->state = GuiControlState::DISABLED;
+	if (app->scene->player1->playerInventory->splitedEnemyCount == 0) splitButton->state = GuiControlState::DISABLED;
 
 }
 
@@ -288,7 +288,7 @@ void Inventory::SetText()
 		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
 		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->smallMeatCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->smallMeatCount);
 		littleBeefText->SetString(str, BROWN);
 	}
 	if (bigBeefText == nullptr)
@@ -298,7 +298,7 @@ void Inventory::SetText()
 		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->largeMeatCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->largeMeatCount);
 		bigBeefText->SetString(str, BROWN);
 	}
 	if (featherText == nullptr)
@@ -308,7 +308,7 @@ void Inventory::SetText()
 		featherText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->featherCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->featherCount);
 		featherText->SetString(str, BROWN);
 	}
 	if (mantisText == nullptr)
@@ -318,7 +318,7 @@ void Inventory::SetText()
 		mantisText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->mantisRodCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->mantisRodCount);
 		mantisText->SetString(str, BROWN);
 	}
 	if (coinText == nullptr)
@@ -328,7 +328,7 @@ void Inventory::SetText()
 		coinText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->moneyCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->moneyCount);
 		coinText->SetString(str, BROWN);
 	}
 	if (splitText == nullptr)
@@ -338,7 +338,7 @@ void Inventory::SetText()
 		splitText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
-		sprintf(str, "%d", app->scene->player1->splitedEnemyCount);
+		sprintf(str, "%d", app->scene->player1->playerInventory->splitedEnemyCount);
 		splitText->SetString(str, BROWN);
 	}
 
@@ -418,27 +418,27 @@ void Inventory::UpdateText()
 {
 
 	char str[5] = {};
-	sprintf(str, "%d", app->scene->player1->smallMeatCount);
+	sprintf(str, "%d", app->scene->player1->playerInventory->smallMeatCount);
 	littleBeefText->SetString(str, BROWN);
 
 	char str1[5] = {};
-	sprintf(str1, "%d", app->scene->player1->largeMeatCount);
+	sprintf(str1, "%d", app->scene->player1->playerInventory->largeMeatCount);
 	bigBeefText->SetString(str1, BROWN);
 
 	char str2[5] = {};
-	sprintf(str2, "%d", app->scene->player1->featherCount);
+	sprintf(str2, "%d", app->scene->player1->playerInventory->featherCount);
 	featherText->SetString(str2, BROWN);
 
 	char str3[5] = {};
-	sprintf(str3, "%d", app->scene->player1->mantisRodCount);
+	sprintf(str3, "%d", app->scene->player1->playerInventory->mantisRodCount);
 	mantisText->SetString(str3, BROWN);
 
 	char str4[5] = {};
-	sprintf(str4, "%d", app->scene->player1->moneyCount);
+	sprintf(str4, "%d", app->scene->player1->playerInventory->moneyCount);
 	coinText->SetString(str4, BROWN);
 
 	char str5[5] = {};
-	sprintf(str5, "%d", app->scene->player1->splitedEnemyCount);
+	sprintf(str5, "%d", app->scene->player1->playerInventory->splitedEnemyCount);
 	splitText->SetString(str5, BROWN);
 
 }

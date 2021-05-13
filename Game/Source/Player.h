@@ -44,40 +44,31 @@ enum ItemType {
 class PlayerInventory {
  
 public:
-    unsigned int littleBeef;
-    unsigned int bigBeef;
-    unsigned int feather;
-    unsigned int mantisLeg;
-    unsigned int coins;
-    unsigned int split;
+    unsigned int smallMeatCount;;
+    unsigned int largeMeatCount;
+    unsigned int featherCount;
+    unsigned int mantisRodCount;
+    unsigned int splitedEnemyCount;
+    unsigned int moneyCount;
 
     PlayerInventory()
     {
-<<<<<<< HEAD
         int smallMeatCount = 4;
         int largeMeatCount = 0;
         int featherCount = 0;
         int mantisRodCount = 0;
         int splitedEnemyCount = 0;
         int moneyCount = 10;
-=======
-        littleBeef = 0;
-        bigBeef = 0;
-        feather = 0;
-        mantisLeg = 0;
-        coins = 0;
-        split = 0;
->>>>>>> parent of 04a6ed9 (items logic fixed)
     }
 
     void PlayerInventory::Reset()
     {
-        littleBeef = 0;
-        bigBeef = 0;
-        feather = 0;
-        mantisLeg = 0;
-        coins = 0;
-        split = 0;
+        int smallMeatCount = 0;
+        int largeMeatCount = 0;
+        int featherCount = 0;
+        int mantisRodCount = 0;
+        int splitedEnemyCount = 0;
+        int moneyCount = 0;
     }
 
     void AddItem(ItemType type, int amount)
@@ -85,22 +76,22 @@ public:
         switch (type)
         {
         case ItemType::LITTLE_BEEF_I:
-            littleBeef += amount;
+            smallMeatCount += amount;
             break;
         case ItemType::BIF_BEEF_I:
-            bigBeef += amount;
+            largeMeatCount += amount;
             break;
         case ItemType::FEATHER_I:
-            feather += amount;
+            featherCount += amount;
             break;
         case ItemType::MANTIS_I:
-            mantisLeg += amount;
+            mantisRodCount += amount;
             break;
         case ItemType::COINS_I:
-            coins += amount;
+            moneyCount += amount;
             break;
         case ItemType::SPLIT_I:
-            split += amount;
+            splitedEnemyCount += amount;
             break;
         }
     }
@@ -111,22 +102,22 @@ public:
         switch (type)
         {
         case ItemType::LITTLE_BEEF_I:
-            littleBeef--;
+            smallMeatCount--;
             break;
         case ItemType::BIF_BEEF_I:
-            bigBeef--;
+            largeMeatCount--;
             break;
         case ItemType::FEATHER_I:
-            feather--;
+            featherCount--;
             break;
         case ItemType::MANTIS_I:
-            mantisLeg--;
+            mantisRodCount--;
             break;
         case ItemType::COINS_I:
-            coins--;
+            moneyCount--;
             break;
         case ItemType::SPLIT_I:
-            split--;
+            splitedEnemyCount--;
             break;
         }
     }
@@ -243,12 +234,7 @@ public:
     int playerSpeed = 8;
 
 public: //Items
-    int smallMeatCount = 0;
-    int largeMeatCount = 0;
-    int featherCount = 0;
-    int mantisRodCount = 0;
-    int splitedEnemyCount = 0;
-    int moneyCount = 0;
+    
 
 public:
     SDL_Texture* texture;
