@@ -67,7 +67,15 @@ public:
 
     void DrawText();
 
+private:
+    int playerExp;
+    int playerHp;
+    int playerLvl;
 
+    
+    int playerItems;
+
+	int healthPercent = 1;
     
 private:
     //guide positions

@@ -28,7 +28,12 @@ Inventory::Inventory()
 
 void Inventory::Start()
 {
-	
+	playerLvl = app->scene->player1->lvl;
+	//healthPercent = app->scene->player1->health / app->scene->player1->maxHealth;
+
+
+	playerHp = app->scene->player1->health;
+	playerExp = app->scene->player1->exp;
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
 	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
@@ -90,9 +95,7 @@ void Inventory::Draw()
 
 	DrawFace();
 
-	
-
-	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
+	DrawBar(healthBarPos, 20, 100, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
 	//DrawStats();
@@ -120,13 +123,14 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 	int thickness = 20;
 	float percent = 1;
 	
+	
 	float c = current;
 	float m = max;
 
 	if (current > 0 && max > 0)
 	{
 		percent = (c / m)*100;
-		//LOG("current: %d,max: %d  =  inv: %f", current, max, percent);
+		LOG("current: %d,max: %d  =  inv: %f", current, max, percent);
 	}
 
 	if (color.r > 240) //red
@@ -409,7 +413,6 @@ void Inventory::SetText()
 		questText->SetTextFont(app->fontTTF->inventoryFont);
 		questText->SetString("Dale ostias a un lobo");
 	}
-
 }
 
 void Inventory::UpdateText()
