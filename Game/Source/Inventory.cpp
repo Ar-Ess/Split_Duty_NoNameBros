@@ -95,7 +95,7 @@ void Inventory::Draw()
 
 	DrawFace();
 
-	DrawBar(healthBarPos, 20, 100, RED);
+	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
 	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
 
 	//DrawStats();
@@ -121,32 +121,23 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 {
 	int size = 261;
 	int thickness = 20;
-	float percent = 1;
-	
-	
-	float c = current;
-	float m = max;
+	int percent = 1;
 
 	if (current > 0 && max > 0)
 	{
-		percent = (c / m)*100;
-		LOG("current: %d,max: %d  =  inv: %f", current, max, percent);
+		percent = current / max;
 	}
+
+
 
 	if (color.r > 240) //red
 	{
-		app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, DARK_RED, true, false);
-
-		int lenght = size * percent/100;
-		app->render->DrawRectangle({ pos.x,pos.y,lenght,thickness }, RED, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, RED, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	}
 	else //blue
 	{
-		app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, DARK_BLUE, true, false);
-
-		int lenght = size * percent / 100;
-		app->render->DrawRectangle({ pos.x,pos.y,lenght ,thickness }, BLUE, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	}
