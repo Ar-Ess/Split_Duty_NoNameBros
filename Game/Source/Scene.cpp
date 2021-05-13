@@ -755,11 +755,11 @@ void Scene::SetWorld(Places place)
 		world->inventory->quitQuestButton->SetObserver(this);
 	}
 
-	buttonPrefab = { 614, 36, 49, 54 };
+	SDL_Rect buttonPrefab1 = { 614, 36, 49, 54 };
 	if (world->inventory->exitInventoryButton == nullptr)
 	{
 		world->inventory->exitInventoryButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->exitInventoryButton->bounds = buttonPrefab;
+		world->inventory->exitInventoryButton->bounds = buttonPrefab1;
 		world->inventory->exitInventoryButton->text = "Exit inventory";
 		world->inventory->exitInventoryButton->SetObserver(this);
 	}
@@ -771,44 +771,45 @@ void Scene::SetWorld(Places place)
 	{
 		world->inventory->littlebeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->littlebeefButton->bounds = buttonPrefab;
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->littlebeefButton->SetObserver(this);
 	}
 	if (world->inventory->bigBeefButton == nullptr)
 	{
 		world->inventory->bigBeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->bigBeefButton->bounds = { buttonPrefab.x + off.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->bigBeefButton->SetObserver(this);
 	}
 	if (world->inventory->featherButton == nullptr)
 	{
 		world->inventory->featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->featherButton->bounds = { buttonPrefab.x ,buttonPrefab.y + off.y,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->featherButton->SetObserver(this);
 	}
 	if (world->inventory->mantisButton == nullptr)
 	{
 		world->inventory->mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->mantisButton->bounds = { buttonPrefab.x + off.x,buttonPrefab.y + off.y,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->mantisButton->SetObserver(this);
 	}
 	if (world->inventory->coinButton == nullptr)
 	{
 		world->inventory->coinButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->coinButton->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->coinButton->SetObserver(this);
 	}
 	if (world->inventory->splitButton == nullptr)
 	{
 		world->inventory->splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		world->inventory->splitButton->bounds = { buttonPrefab.x + off.x,buttonPrefab.y + off.y * 2,buttonPrefab.w,buttonPrefab.y };
-		//world->inventory->exitInventoryButton->text = "Exit inventory";
+		
 		world->inventory->splitButton->SetObserver(this);
 	}
+
 	world->inventory->SetButtons();
 }
 

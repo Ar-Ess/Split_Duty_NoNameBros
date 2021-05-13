@@ -24,7 +24,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     playerInventory->AddItem(ItemType::LITTLE_BEEF_I, 5);
 
     //stats
-    health = maxHealth-20;
+    health = maxHealth-60;
 
     playerSpeed = PLAYER_SPEED;
 

@@ -111,7 +111,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
             {
             case ButtonType::INVENTORY:
             {
-                
+
                 switch (state)
                 {
 
@@ -130,31 +130,32 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 }
             }
-            case ButtonType::QUEST:
+
+             case ButtonType::QUIT:
             {
-               
-                switch (state)
-                {
 
-                case GuiControlState::NORMAL:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::FOCUSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitFocused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::PRESSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    LOG("Quit quest...");
-                    break;
+                    switch (state)
+                    {
+
+                    case GuiControlState::NORMAL:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                        break;
+                    case GuiControlState::FOCUSED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitFocused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                        break;
+                    case GuiControlState::PRESSED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.0f, scale, false, &quitPressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                        LOG("Quit quest...");
+                        break;
 
 
-                    break;
+                        break;
+                    }
                 }
-            }
 
             case ButtonType::MENU:
             {
-                
+
                 switch (state)
                 {
                 case GuiControlState::DISABLED:
@@ -178,7 +179,6 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 }
                 break;
             }
-
 
             case ButtonType::LITTLE_BEEF_B:
             {
@@ -315,7 +315,7 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 {
 
                 case GuiControlState::DISABLED:
-                 app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     break;
                     if (state != GuiControlState::DISABLED)
                     {
@@ -336,54 +336,60 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 break;
             }
 
-                if (app->guiManager->debugGui)
+
+
+            if (app->guiManager->debugGui)
+            {
+                switch (state)
+                {
+                case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, { 100, 100, 100, 80 });
+                    break;
+                case GuiControlState::NORMAL: app->render->DrawRectangle(bounds, { 0, 255, 0, 80 });
+                    break;
+                case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, { 255, 255, 0, 80 });
+                    break;
+                case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, { 0, 255, 255, 80 });
+                    break;
+                case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, { 0, 255, 0, 80 });
+                    break;
+                case GuiControlState::LOCKED: app->render->DrawRectangle(bounds, { 220, 155, 0, 80 });
+                    break;
+                default:
+                    break;
+                }
+            }
+            }
+        }
+    }
+    else if (!useCamera)
+        {
+            if (drawTexture)
+            {
+                if (type != ButtonType::INVENTORY && type!=ButtonType::QUIT)
                 {
                     switch (state)
                     {
-                    case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, { 100, 100, 100, 80 });
+                    case GuiControlState::DISABLED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                            break;
+                    case GuiControlState::NORMAL:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                            break;
+                    case GuiControlState::FOCUSED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                         break;
-                    case GuiControlState::NORMAL: app->render->DrawRectangle(bounds, { 0, 255, 0, 80 });
+                    case GuiControlState::PRESSED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                         break;
-                    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, { 255, 255, 0, 80 });
+                    case GuiControlState::SELECTED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                         break;
-                    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, { 0, 255, 255, 80 });
-                        break;
-                    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, { 0, 255, 0, 80 });
-                        break;
-                    case GuiControlState::LOCKED: app->render->DrawRectangle(bounds, { 220, 155, 0, 80 });
+                    case GuiControlState::LOCKED:
+                        app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Locked, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                         break;
                     default:
                         break;
                     }
-                }
-            }
-        }
-        else if (!useCamera)
-        {
-            if (drawTexture)
-            {
-                switch (state)
-                {
-                case GuiControlState::DISABLED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Disabled, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::NORMAL:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Normal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::FOCUSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Focused, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::PRESSED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::SELECTED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                case GuiControlState::LOCKED:
-                    app->render->DrawTexture(texture, bounds.x, bounds.y, scale + 0.4f, scale, false, &Locked, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-                    break;
-                default:
-                    break;
                 }
             }
 
@@ -408,9 +414,10 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                 }
             }
         }
-        return false;
+        
+    return false;
 
-    }
+    
 }
 
 void GuiButton::ChangeTexture(const char* path)
