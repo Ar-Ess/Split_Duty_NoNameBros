@@ -51,7 +51,7 @@ void Combat::Start()
 	currentEnemyAnim = &enemy->idleAnim;
 
 	//Item Inventory amount
-	ItemSetup(p->playerInventory->smallMeatCount, p->playerInventory->largeMeatCount, p->playerInventory->featherCount, p->playerInventory->mantisRodCount, p->playerInventory->splitedEnemyCount, p->playerInventory->moneyCount);
+	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
 
 	//Bool preparation for combat
 	BoolStart();
@@ -1472,9 +1472,9 @@ void Combat::EnemyAttackProbability()
 void Combat::PlayerMoneyLose()
 {
 	int lostMoney = ceil(app->scene->player1->lvl / 10);
-	app->scene->player1->playerInventory->moneyCount -= lostMoney;
+	app->scene->player1->moneyCount -= lostMoney;
 
-	if (app->scene->player1->playerInventory->moneyCount < 0) app->scene->player1->playerInventory->moneyCount = 0;
+	if (app->scene->player1->moneyCount < 0) app->scene->player1->moneyCount = 0;
 }
 
 void Combat::EscapeProbability(short int probabilityRange)
