@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      RELEASE_NAME: NoNameBros-Split_Duty_v0.8
+      RELEASE_NAME: NoNameBros-Split_Duty
       GNUTARGET: default
 
     steps:
@@ -19,7 +19,7 @@ jobs:
     
     - name: Setup Release Version
       run: |
-        echo "RELEASE_NAME=NoNameBros-Split_Duty_v0.8" >> $GITHUB_ENV
+        echo "RELEASE_NAME=NoNameBros-Split_Duty_$" >> $GITHUB_ENV
       shell: bash
       if: github.event_name == 'release' && github.event.action == 'published'
 
