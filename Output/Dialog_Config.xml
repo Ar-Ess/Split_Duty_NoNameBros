@@ -198,5 +198,27 @@
         <Option NextNode="0" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="5">
+      <Node ID="0">
+        <NPCTalk>FLOWERS ARE BEAUTIFUL, I LIKE THE "SOUTH-WEST" ONES</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Next line</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>I LOVE TO "INTERACT" WITH THEM, SOMETHING IS "HIDDEN" IN THEM</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Next line</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>THEY HAVE NO "PRESS"URE LIKE A "BUTTON", IT "RETURN"S PEACE</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">Next line</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>I LIKE THEIR COLOURS TOO, THEY ARE "IN ORDER" WITH NATURE</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Next line</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>REMINDS ME TO THE "RGB" PALETTE WITH "PURPLE" AT THE END</NPCTalk>
+        <Option NextNode="5" ReturnCode="-1">End</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

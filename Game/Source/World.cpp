@@ -1115,6 +1115,11 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::OLD, placex, 4);
 	}
+	else if (placex == GRASSY_LAND_2)
+	{
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
+	}
 }
 
 void World::RectifyCameraPosition(Places placex)

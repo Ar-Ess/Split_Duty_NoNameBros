@@ -18,7 +18,8 @@ enum NPCtype
 {
     KNIGHT,
     OLD,
-    PRIEST
+    PRIEST,
+    NO_NPC
 };
 
 class NPC : public Entity

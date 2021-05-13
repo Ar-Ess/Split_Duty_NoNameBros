@@ -44,8 +44,6 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest_spritesheet.png");
 		break;
 	}
-	
-
 }
 
 void NPC::Update(SDL_Rect pCollAmp)
@@ -65,8 +63,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 void NPC::Draw()
 {
 	const SDL_Rect sprite = { 0,0,32,32 };
-	app->render->DrawTexture(texture, collider.x -10, collider.y, 2.3f, &sprite,false);
-	
+	if (npcType != NO_NPC) app->render->DrawTexture(texture, collider.x -10, collider.y, 2.3f, &sprite,false);
 }
 
 void NPC::Delete()
