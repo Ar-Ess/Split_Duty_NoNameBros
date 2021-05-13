@@ -35,9 +35,6 @@ bool Transitions::Start()
 // Update: draw background
 bool Transitions::PostUpdate()
 {
-
-	//LOG("Timer: %f  Global Time: %f",timer.ReadSec(),globaltime);
-	
 	if (ongoingstep == fade_step::none)
 		return true;
 
@@ -47,8 +44,7 @@ bool Transitions::PostUpdate()
 	{
 	case fade_step::entering:
 	{
-		LOG("Entering transition... ");
-		if (timer.ReadSeconds() >= globaltime)
+		if (timer.ReadSec() >= globaltime)
 		{
 			module_off->Disable();
 			module_on->Enable();
@@ -60,7 +56,6 @@ bool Transitions::PostUpdate()
 
 	case fade_step::exiting:
 	{
-		LOG("Exiting transition...");
 		normalized = 1.0f - normalized;
 
 		if (timer.ReadSec() >= globaltime)
@@ -211,13 +206,13 @@ bool Transitions::Transition(TransitionType type, Module* module_offp, Module* m
 		timer.Start();
 
 		//for zoom
-		/*target_scale = target_scalep;
+		target_scale = target_scalep;
 		original_width = app->render->camera.w;
 		original_height = app->render->camera.h;
 		final_width = app->render->camera.w / target_scalep;
 		final_height = app->render->camera.h / target_scalep;
 		current_width = app->render->camera.w;
-		current_height = app->render->camera.h;*/
+		current_height = app->render->camera.h;
 
 		ret = true;
 	}
@@ -229,6 +224,8 @@ float Transitions::LerpValue(float percent, float start, float end)
 {
 	return start + percent * (end - start);
 }
+
+
 void Transitions::SetTargetScale(int target_scalep)
 {
 	target_scale = target_scalep;
