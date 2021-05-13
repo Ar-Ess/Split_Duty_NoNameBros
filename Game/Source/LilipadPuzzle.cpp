@@ -3,10 +3,7 @@
 #include "Textures.h"
 #include "LilipadPuzzle.h"
 
-LilipadPuzzle::LilipadPuzzle()
-{
-
-}
+LilipadPuzzle::LilipadPuzzle() {}
 
 LilipadPuzzle::LilipadPuzzle(int lilipadAmount, SDL_Rect leftSwitchRect, SDL_Rect rightSwitchRect)
 {
@@ -19,13 +16,7 @@ LilipadPuzzle::LilipadPuzzle(int lilipadAmount, SDL_Rect leftSwitchRect, SDL_Rec
 	rightSwitch = rightSwitchRect;
 }
 
-LilipadPuzzle::~LilipadPuzzle()
-{
-}
-
-void LilipadPuzzle::Start()
-{
-}
+LilipadPuzzle::~LilipadPuzzle() {}
 
 void LilipadPuzzle::Restart()
 {
@@ -123,10 +114,7 @@ Lilipad LilipadPuzzle::GetLiliFromId(uint id)
 	return {};
 }
 
-Lilipad::Lilipad()
-{
-
-}
+Lilipad::Lilipad() {}
 
 Lilipad::Lilipad(SDL_Rect rectx, SDL_Texture* texx, uint idx)
 {
@@ -135,9 +123,7 @@ Lilipad::Lilipad(SDL_Rect rectx, SDL_Texture* texx, uint idx)
 	id = idx;
 }
 
-Lilipad::~Lilipad()
-{
-}
+Lilipad::~Lilipad() {}
 
 void Lilipad::MoveLeft()
 {

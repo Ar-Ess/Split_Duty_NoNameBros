@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "NPC.h"
 #include "LilipadPuzzle.h"
+#include "StonePuzzle.h"
 
 #include "Log.h"
 #include <time.h>
@@ -178,6 +179,12 @@ void World::Start(Places placex)
 			lilipadPuzzle1->lilipad.At(1)->data.SetPosition(252, 616);
 		}
 
+		if (stonePuzzle1 == nullptr)
+		{
+			stonePuzzle1 = new StonePuzzle(1, {280, 896, 112, 84});
+			stonePuzzle1->stone.At(0)->data.SetPosition(504, 728);
+		}
+
 		map->Load("grassy_lands_2.tmx");
 
 		if (!app->scene->continuePressed)
@@ -257,6 +264,13 @@ void World::Restart(Scenes scene)
 		delete lilipadPuzzle1;
 		lilipadPuzzle1 = nullptr;
 	}
+
+	if (stonePuzzle1 != nullptr && !stonePuzzle1->finished)
+	{
+		stonePuzzle1->Restart();
+		delete stonePuzzle1;
+		stonePuzzle1 = nullptr;
+	}
 }
 
 void World::Update()
@@ -277,6 +291,7 @@ void World::Update()
 	if (place == GRASSY_LAND_2)
 	{
 		lilipadPuzzle1->Update();
+		stonePuzzle1->Update();
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(Y) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
@@ -319,7 +334,11 @@ void World::Draw()
 	}
 	if (place != MAIN_VILLAGE)
 	{
-		if (place == GRASSY_LAND_2) lilipadPuzzle1->Draw();
+		if (place == GRASSY_LAND_2)
+		{
+			lilipadPuzzle1->Draw();
+			stonePuzzle1->Draw();
+		}
 		DrawNPC();
 		DrawEnemy();
 		DrawPlayer();
@@ -423,6 +442,7 @@ void World::DrawCollisions()
 	app->render->DrawRectangle(contactPlayerZone, { 0, 0, 0, 150 });
 
 	if (lilipadPuzzle1 != nullptr) lilipadPuzzle1->DebugDraw();
+	if (stonePuzzle1 != nullptr) stonePuzzle1->DebugDraw();
 }
 
 //-------------------------------------------------------------------
@@ -764,6 +784,61 @@ bool World::CollisionSolver(iPoint prevPos)
 				return false; //Player Can Not Move
 			}
 		}
+
+		for (int i = 0; i < stonePuzzle1->stone.Count(); i++)
+		{
+			if (!stonePuzzle1->stoneInWater && collisionUtils.CheckCollision(p->collisionRect, stonePuzzle1->stone[i].rect))
+			{
+				//Millorar perquè no es quedi parat sense tocar la valla
+				//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
+
+				if (prevPos.y - p->collisionRect.y < 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+				}
+				if (prevPos.x - p->collisionRect.x < 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+				}
+				if (prevPos.y - p->collisionRect.y > 0)
+				{
+					p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+				}
+				if (prevPos.x - p->collisionRect.x > 0)
+				{
+					p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+				}
+
+				p = nullptr;
+				return false; //Player Can Not Move
+			}
+		}
+
+		if (!stonePuzzle1->stoneInWater && collisionUtils.CheckCollision(p->collisionRect, stonePuzzle1->path))
+		{
+			//Millorar perquè no es quedi parat sense tocar la valla
+			//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
+
+			if (prevPos.y - p->collisionRect.y < 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+			}
+			if (prevPos.x - p->collisionRect.x < 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+			}
+			if (prevPos.y - p->collisionRect.y > 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+			}
+			if (prevPos.x - p->collisionRect.x > 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+			}
+
+			p = nullptr;
+			return false; //Player Can Not Move
+		}
 	}
 
 	p = nullptr;
@@ -868,6 +943,7 @@ bool World::PlayerMovement()
 	}
 	
 	bool move = true;
+
 	if (!godMode) move = CollisionSolver(previousPosition);
 
 	p->colliderWorld.x = p->collisionRect.x;

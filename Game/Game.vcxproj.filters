@@ -108,6 +108,15 @@
     <ClCompile Include="Source\Transitions.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LilipadPuzzle.cpp">
+      <Filter>Puzzles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StonePuzzle.cpp">
+      <Filter>Puzzles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ButtonsPuzzle.cpp">
+      <Filter>Puzzles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -273,6 +282,15 @@
     <ClInclude Include="Source\Transitions.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LilipadPuzzle.h">
+      <Filter>Puzzles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StonePuzzle.h">
+      <Filter>Puzzles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ButtonsPuzzle.h">
+      <Filter>Puzzles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -301,6 +319,9 @@
     </Filter>
     <Filter Include="Quests">
       <UniqueIdentifier>{1696d940-2766-467a-a826-3ef768bb8e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Puzzles">
+      <UniqueIdentifier>{1d1d5f3b-3205-4fb6-9695-605f1777b097}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
