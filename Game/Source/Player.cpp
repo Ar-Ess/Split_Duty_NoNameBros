@@ -21,6 +21,7 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
 <<<<<<< HEAD
     playerInventory = new PlayerInventory();
     playerInventory->Reset();
+<<<<<<< HEAD
     playerInventory->AddItem(ItemType::COINS_I, 10);
     playerInventory->AddItem(ItemType::LITTLE_BEEF_I, 5);
 =======
@@ -32,6 +33,9 @@ Player::Player(SDL_Rect collCombat, EntityType enType) : Entity(enType)
     moneyCount = 0;
 >>>>>>> parent of 04a6ed9 (items logic fixed)
 
+=======
+    playerInventory->AddItem(ItemType::COINS_I, 3);
+>>>>>>> parent of 4e0e6d4 (dont hit the function)
     //stats
     health = maxHealth-20;
 

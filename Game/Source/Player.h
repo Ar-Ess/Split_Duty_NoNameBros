@@ -54,11 +54,16 @@ public:
     PlayerInventory()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         int smallMeatCount = 4;
+=======
+        int smallMeatCount = 0;
+>>>>>>> parent of 4e0e6d4 (dont hit the function)
         int largeMeatCount = 0;
         int featherCount = 0;
         int mantisRodCount = 0;
         int splitedEnemyCount = 0;
+<<<<<<< HEAD
         int moneyCount = 10;
 =======
         littleBeef = 0;
@@ -68,6 +73,9 @@ public:
         coins = 0;
         split = 0;
 >>>>>>> parent of 04a6ed9 (items logic fixed)
+=======
+        int moneyCount = 0;
+>>>>>>> parent of 4e0e6d4 (dont hit the function)
     }
 
     void PlayerInventory::Reset()
