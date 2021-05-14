@@ -150,7 +150,8 @@ private: // Textures
 	SDL_Texture* logo = nullptr;
 	SDL_Texture* menu = nullptr;
 	SDL_Texture* pause = nullptr;
-
+public:
+	SDL_Texture* optionsBackground = nullptr;
 public:
 	friend class Combat;
 	friend class Enemy;

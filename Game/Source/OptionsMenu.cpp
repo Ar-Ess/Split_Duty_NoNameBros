@@ -41,6 +41,9 @@ void OptionsMenu::Update()
 
 void OptionsMenu::Draw()
 {
+	app->render->DrawTexture(app->scene->optionsBackground, 0, 0);
+	
+
 	DrawGui();
 	DrawText();
 }
@@ -50,11 +53,14 @@ void OptionsMenu::DrawGui()
 	dFullScreenCheckBox->Draw();
 	fullScreenCheckBox->Draw();
 	vSyncCheckBox->Draw();
-	fxVolumeSlider->Draw();
-	musicVolumeSlider->Draw();
+	fxVolumeSlider->Draw(SliderType::FX);
+	musicVolumeSlider->Draw(SliderType::MUSIC);
 	returnMenuButton->Draw();
 }
 
 void OptionsMenu::DrawText()
 {
+	vSyncText->Draw();
+	fullScreenText->Draw();
+	dFullScreenText->Draw();
 }

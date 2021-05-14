@@ -3,6 +3,8 @@
 
 #include "SString.h"
 
+enum SliderType;
+
 class Scene;
 struct SDL_Texture;
 class GuiString;
@@ -30,13 +32,20 @@ public:
 
 private:
     friend class Scene;
-
+  
     GuiCheckBox* dFullScreenCheckBox = nullptr;
     GuiCheckBox* fullScreenCheckBox = nullptr;
     GuiCheckBox* vSyncCheckBox = nullptr;
+    GuiButton* returnMenuButton = nullptr;
+public:
     GuiSlider* musicVolumeSlider = nullptr;
     GuiSlider* fxVolumeSlider = nullptr;
-    GuiButton* returnMenuButton = nullptr;
+    
+
+public:
+    GuiString* fullScreenText = nullptr;
+    GuiString* dFullScreenText = nullptr;
+    GuiString* vSyncText = nullptr;
 };
 
 #endif // __OPTIONS_MENU_H__

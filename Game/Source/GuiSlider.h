@@ -5,6 +5,11 @@
 
 #include "Point.h"
 
+enum SliderType {
+    MUSIC,
+    FX,
+};
+
 class GuiSlider : public GuiControl
 {
 public:
@@ -13,7 +18,7 @@ public:
     virtual ~GuiSlider();
 
     bool Update(float dt);
-    bool Draw();
+    bool Draw(SliderType type);
     bool CleanUp();
     bool Destroy();
 
@@ -39,10 +44,32 @@ private:
 
     bool sliderClicked = false;
 
-    const SDL_Rect normalBar = { 0, 0, 0, 0 };
-    const SDL_Rect pressedBar = { 0, 0, 0, 0 };
+    const SDL_Rect normalBar = { 0, 0, 430, 20 };
+    const SDL_Rect pressedBar = normalBar;
     const SDL_Rect normalSlider = { 0, 0, 0, 0 };
     const SDL_Rect pressedSlider = { 0, 0, 0, 0 };
+
+    iPoint oTile = { 30 * 2,32 * 2 };
+
+    const SDL_Rect musicNormal = { 0,0,oTile.x,oTile.y };
+    const SDL_Rect musicFocused = { oTile.x,0,oTile.x,oTile.y };
+    const SDL_Rect musicPressed = { oTile.x * 2,0,oTile.x,oTile.y };
+
+    const SDL_Rect lowMusicNormal = { 0,380,oTile.x,oTile.y };
+    const SDL_Rect lowMusicFocused = { oTile.x,380,oTile.x,oTile.y };
+    const SDL_Rect lowMusicPressed = { oTile.x * 2,380,oTile.x,oTile.y };
+
+    const SDL_Rect mutedMusicNormal = { 0,oTile.y,oTile.x,oTile.y };
+    const SDL_Rect mutedMusicFocused = { oTile.x,oTile.y,oTile.x,oTile.y };
+    const SDL_Rect mutedMusicPressed = { oTile.x * 2,oTile.y,oTile.x,oTile.y };
+
+    const SDL_Rect fxNormal = { 0,oTile.y * 2,oTile.x,oTile.y };
+    const SDL_Rect fxFocused = { oTile.x,oTile.y * 2,oTile.x,oTile.y };
+    const SDL_Rect fxPressed = { oTile.x * 2,oTile.y * 2,oTile.x,oTile.y };
+
+    const SDL_Rect mutedFxNormal = { 0,oTile.y * 3,oTile.x,oTile.y };
+    const SDL_Rect mutedFxFocused = { oTile.x,oTile.y * 3,oTile.x,oTile.y };
+    const SDL_Rect mutedFxPressed = { oTile.x * 2,oTile.y * 3,oTile.x,oTile.y };
 };
 
 #endif // __GUISLIDER_H__

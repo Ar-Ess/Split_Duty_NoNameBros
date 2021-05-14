@@ -1,6 +1,7 @@
 #include "App.h"
 #include "GuiSlider.h"
 #include "GuiManager.h"
+#include "OptionsMenu.h"
 #include "Audio.h"
 
 #include "Log.h"
@@ -58,8 +59,10 @@ bool GuiSlider::Update(float dt)
     return false;
 }
 
-bool GuiSlider::Draw()
+bool GuiSlider::Draw(SliderType type)
 {
+    iPoint off = { 0,0 };
+
     switch (state)
     {
     case GuiControlState::DISABLED:
@@ -72,28 +75,80 @@ bool GuiSlider::Draw()
     case GuiControlState::NORMAL:
     {
         app->render->DrawTexture(app->guiManager->sliderSpriteSheet, bounds.x, bounds.y, &normalBar);
-        app->render->DrawTexture(app->guiManager->sliderSpriteSheet, slider.x, slider.y, &normalSlider);
+        if (type == SliderType::MUSIC)
+        {
+            if(app->scene->optionsMenu->musicVolumeSlider->GetValue() >65)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicNormal);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue()  >0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicNormal);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicNormal);
+
+        }
+        else
+        {
+            if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxNormal);
+            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxNormal);
+            
+        }
     }
     break;
 
     case GuiControlState::FOCUSED:
     {
         app->render->DrawTexture(app->guiManager->sliderSpriteSheet, bounds.x, bounds.y, &pressedBar);
-        app->render->DrawTexture(app->guiManager->sliderSpriteSheet, slider.x, slider.y, &normalSlider);
+        if (type == SliderType::MUSIC)
+        {
+            if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 65)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicFocused);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicFocused);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicFocused);
+
+        }
+        else
+        {
+            if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxFocused);
+            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxFocused);
+
+        }
     }
     break;
 
     case GuiControlState::PRESSED:
     {
         app->render->DrawTexture(app->guiManager->sliderSpriteSheet, bounds.x, bounds.y, &normalBar);
-        app->render->DrawTexture(app->guiManager->sliderSpriteSheet, slider.x, slider.y, &normalSlider);
+        if (type == SliderType::MUSIC)
+        {
+            if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 65)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicPressed);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicPressed);
+            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicPressed);
+
+        }
+        else
+        {
+            if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxPressed);
+            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+                app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxPressed);
+
+        }
     }
     break;
 
     case GuiControlState::SELECTED:
     {
         app->render->DrawTexture(app->guiManager->sliderSpriteSheet, bounds.x, bounds.y, &pressedBar);
-        app->render->DrawTexture(app->guiManager->sliderSpriteSheet, slider.x, slider.y, &pressedSlider);
+        if (type == SliderType::MUSIC)app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x-off.x, slider.y-off.y, &musicPressed);
+        else app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x-off.x, slider.y-off.y, &fxPressed);
     }
     break;
 

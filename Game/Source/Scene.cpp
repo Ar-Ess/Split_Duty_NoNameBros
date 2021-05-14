@@ -201,7 +201,9 @@ bool Scene::CleanUp(Scenes nextScene)
 	}
 	else if (currScene == OPTIONS_MENU)
 	{
-		
+		app->tex->UnLoad(app->guiManager->buttonSpriteSheet);
+		app->tex->UnLoad(app->guiManager->sliderSpriteSheet);
+		app->tex->UnLoad(optionsBackground);
 	}
 	else if (currScene == COMBAT)
 	{
@@ -372,12 +374,20 @@ void Scene::SetMainMenu()
 
 void Scene::SetOptionsMenu()
 {
-	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+	optionsBackground = app->tex->Load("Assets/Screens/options.png");
+	app->guiManager->buttonSpriteSheet = app->tex->Load("Assets/Textures/UI/options.png");
+	app->guiManager->sliderSpriteSheet = app->tex->Load("Assets/Textures/UI/slider.png");
+
+	SDL_Rect buttonPrefab = { 740,140,60,60 };
+	SDL_Rect textPrefab = { 480,buttonPrefab.y +20 ,130,30 };
+	SDL_Rect sliderPrefab = { 470,150,335,40 };
+	iPoint off = { 0,85 };
+	iPoint sliderOff = { 20,20 };
 
 	if (optionsMenu->dFullScreenCheckBox == nullptr)
 	{
 		optionsMenu->dFullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->dFullScreenCheckBox->bounds = { 30, 50, 105, 27 };
+		optionsMenu->dFullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h};
 		optionsMenu->dFullScreenCheckBox->text = "DesktopFullScreenCheckBox";
 		optionsMenu->dFullScreenCheckBox->SetObserver(this);
 	}
@@ -385,7 +395,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fullScreenCheckBox == nullptr)
 	{
 		optionsMenu->fullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->fullScreenCheckBox->bounds = { 130, 150, 105, 27 };
+		optionsMenu->fullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y+off.y,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->fullScreenCheckBox->text = "FullScreenCheckBox";
 		optionsMenu->fullScreenCheckBox->SetObserver(this);
 	}
@@ -393,7 +403,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->vSyncCheckBox == nullptr)
 	{
 		optionsMenu->vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->vSyncCheckBox->bounds = { 230, 250, 105, 27 };
+		optionsMenu->vSyncCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->vSyncCheckBox->text = "VSyncCheckBox";
 		optionsMenu->vSyncCheckBox->SetObserver(this);
 	}
@@ -401,8 +411,8 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fxVolumeSlider == nullptr)
 	{
 		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->fxVolumeSlider->bounds = { 330, 350, 100, 20 };
-		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w - 20, optionsMenu->fxVolumeSlider->bounds.y, 20, 20});
+		optionsMenu->fxVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*3,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w -sliderOff.x, optionsMenu->fxVolumeSlider->bounds.y-sliderOff.y, buttonPrefab.w, buttonPrefab.h});
 		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
 		optionsMenu->fxVolumeSlider->SetMaxValue(100);
 		optionsMenu->fxVolumeSlider->SetMinValue(0);
@@ -413,8 +423,8 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->musicVolumeSlider == nullptr)
 	{
 		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->musicVolumeSlider->bounds = { 430, 450, 100, 20 };
-		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w - 20, optionsMenu->musicVolumeSlider->bounds.y, 20, 20 });
+		optionsMenu->musicVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*4,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w -sliderOff.x, optionsMenu->musicVolumeSlider->bounds.y-sliderOff.y,  buttonPrefab.w, buttonPrefab.h });
 		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
 		optionsMenu->musicVolumeSlider->SetMaxValue(100);
 		optionsMenu->musicVolumeSlider->SetMinValue(0);
@@ -425,9 +435,33 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->returnMenuButton == nullptr)
 	{
 		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsMenu->returnMenuButton->bounds = { 530, 550, buttonPrefab.w, buttonPrefab.h};
+		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*5,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
+	}
+
+	if (optionsMenu->fullScreenText == nullptr)
+	{
+		optionsMenu->fullScreenText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsMenu->fullScreenText->bounds = { textPrefab.x,textPrefab.y,textPrefab.w,textPrefab.h };
+		optionsMenu->fullScreenText->SetTextFont(app->fontTTF->defaultFont);
+		optionsMenu->fullScreenText->SetString("FULL SCREEN");
+	}
+
+	if (optionsMenu->dFullScreenText == nullptr)
+	{
+		optionsMenu->dFullScreenText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsMenu->dFullScreenText->bounds = { textPrefab.x,textPrefab.y+off.y,textPrefab.w,textPrefab.h };
+		optionsMenu->dFullScreenText->SetTextFont(app->fontTTF->defaultFont);
+		optionsMenu->dFullScreenText->SetString("D FULL SCREEN");
+	}
+
+	if (optionsMenu->vSyncText == nullptr)
+	{
+		optionsMenu->vSyncText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsMenu->vSyncText->bounds = { textPrefab.x,textPrefab.y+off.y*2,textPrefab.w,textPrefab.h };
+		optionsMenu->vSyncText->SetTextFont(app->fontTTF->defaultFont);
+		optionsMenu->vSyncText->SetString("V SYNC");
 	}
 
 	//optionsMenu->fxVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetFxVolume(), optionsMenu->fxVolumeSlider->GetMaxValue()));

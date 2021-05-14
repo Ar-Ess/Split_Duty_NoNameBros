@@ -24,10 +24,19 @@ public:
 private:
 
     bool checked;
-    const SDL_Rect Normal = { 0, 0, 0, 0};
-    const SDL_Rect NormalC = { 0, 0, 0, 0 };
-    const SDL_Rect Focused = { 0, 0, 0, 0 };
-    const SDL_Rect FocusedC = { 0, 0, 0, 0 };
+    //options menu
+
+    
+    iPoint oTile = { 30 * 2,32 * 2 };
+    iPoint cTile = { 28*2,31*2 };
+
+    const SDL_Rect checkedNormal = { 0,oTile.y * 4,cTile.x,cTile.y };
+    const SDL_Rect checkedFocused = { cTile.x,oTile.y * 4,cTile.x,cTile.y };
+    const SDL_Rect checkedPressed = { cTile.x * 2,oTile.y * 4,cTile.x,cTile.y };
+
+    const SDL_Rect uncheckedNormal = { 0,oTile.y * 4 + cTile.y,cTile.x,cTile.y };
+    const SDL_Rect uncheckedFocused = { cTile.x,oTile.y * 4 + cTile.y,cTile.x,cTile.y };
+    const SDL_Rect uncheckedPressed = { cTile.x * 2,oTile.y * 4 + cTile.y,cTile.x,cTile.y };
 };
 
 #endif // __GUICHECKBOX_H__

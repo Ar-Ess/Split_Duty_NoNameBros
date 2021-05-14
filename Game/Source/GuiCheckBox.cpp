@@ -61,20 +61,20 @@ bool GuiCheckBox::Draw()
 
     case GuiControlState::NORMAL:
     {
-        if (checked) app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &NormalC);
-        else app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &Normal);
+        if (checked) app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &checkedNormal);
+        else app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &uncheckedNormal);
     } break;
 
     case GuiControlState::FOCUSED:
     {
-        if (checked) app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &FocusedC);
-        else app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &Focused);
+        if (checked) app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &checkedFocused);
+        else app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &uncheckedFocused);
     }break;
 
     case GuiControlState::PRESSED:
     {
-        if (checked) app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &FocusedC);
-        else app->render->DrawTexture(app->guiManager->checkBoxSpriteSheet, bounds.x, bounds.y, &Focused);
+        if (checked) app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &checkedPressed);
+        else app->render->DrawTexture(app->guiManager->buttonSpriteSheet, bounds.x, bounds.y, &uncheckedPressed);
     } break;
 
     case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, { 0, 255, 0, 255 });
