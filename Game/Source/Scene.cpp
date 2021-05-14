@@ -378,7 +378,7 @@ void Scene::SetOptionsMenu()
 	app->guiManager->buttonSpriteSheet = app->tex->Load("Assets/Textures/UI/options.png");
 	app->guiManager->sliderSpriteSheet = app->tex->Load("Assets/Textures/UI/slider.png");
 
-	SDL_Rect buttonPrefab = { 740,140,60,60 };
+	SDL_Rect buttonPrefab = { 740,140 -12,60,60 };
 	SDL_Rect textPrefab = { 480,buttonPrefab.y +20 ,130,30 };
 	SDL_Rect sliderPrefab = { 470,150,335,40 };
 	iPoint off = { 0,85 };
@@ -411,33 +411,34 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fxVolumeSlider == nullptr)
 	{
 		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->fxVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*3,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->fxVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*4,sliderPrefab.w,sliderPrefab.h };
 		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w -sliderOff.x, optionsMenu->fxVolumeSlider->bounds.y-sliderOff.y, buttonPrefab.w, buttonPrefab.h});
 		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
 		optionsMenu->fxVolumeSlider->SetMaxValue(100);
 		optionsMenu->fxVolumeSlider->SetMinValue(0);
-		optionsMenu->fxVolumeSlider->SetValue(100);
+		optionsMenu->fxVolumeSlider->SetValue(90);
 		optionsMenu->fxVolumeSlider->SetObserver(this);
 	}
 
 	if (optionsMenu->musicVolumeSlider == nullptr)
 	{
 		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->musicVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*4,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->musicVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*3,sliderPrefab.w,sliderPrefab.h };
 		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w -sliderOff.x, optionsMenu->musicVolumeSlider->bounds.y-sliderOff.y,  buttonPrefab.w, buttonPrefab.h });
 		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
 		optionsMenu->musicVolumeSlider->SetMaxValue(100);
 		optionsMenu->musicVolumeSlider->SetMinValue(0);
-		optionsMenu->musicVolumeSlider->SetValue(100);
+		optionsMenu->musicVolumeSlider->SetValue(90);
 		optionsMenu->musicVolumeSlider->SetObserver(this);
 	}
 
 	if (optionsMenu->returnMenuButton == nullptr)
 	{
 		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*5,buttonPrefab.w,buttonPrefab.h };
+		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x -175  ,buttonPrefab.y + off.y*5 -15,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
+		
 	}
 
 	if (optionsMenu->fullScreenText == nullptr)
@@ -462,6 +463,15 @@ void Scene::SetOptionsMenu()
 		optionsMenu->vSyncText->bounds = { textPrefab.x,textPrefab.y+off.y*2,textPrefab.w,textPrefab.h };
 		optionsMenu->vSyncText->SetTextFont(app->fontTTF->defaultFont);
 		optionsMenu->vSyncText->SetString("V SYNC");
+	}
+
+	if (optionsMenu->returnText == nullptr)
+	{
+		optionsMenu->returnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		optionsMenu->returnText->bounds = { textPrefab.x,textPrefab.y + off.y * 5 -25,325,textPrefab.h };
+		optionsMenu->returnText->SetTextFont(app->fontTTF->defaultFont);
+		optionsMenu->returnText->SetString("RETURN");
+		optionsMenu->returnText->CenterAlign();
 	}
 
 	//optionsMenu->fxVolumeSlider->SetValue(app->audio->VolumeToValue(app->audio->GetFxVolume(), optionsMenu->fxVolumeSlider->GetMaxValue()));

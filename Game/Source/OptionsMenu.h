@@ -46,6 +46,8 @@ public:
     GuiString* fullScreenText = nullptr;
     GuiString* dFullScreenText = nullptr;
     GuiString* vSyncText = nullptr;
+
+    GuiString* returnText = nullptr;
 };
 
 #endif // __OPTIONS_MENU_H__

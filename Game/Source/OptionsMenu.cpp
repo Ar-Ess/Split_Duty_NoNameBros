@@ -63,4 +63,5 @@ void OptionsMenu::DrawText()
 	vSyncText->Draw();
 	fullScreenText->Draw();
 	dFullScreenText->Draw();
+	returnText->Draw();
 }
