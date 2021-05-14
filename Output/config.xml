@@ -39,6 +39,16 @@
       <sound>Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_MainMenuScene_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_PlayerTurn_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_PlayerAttack_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_PlayerHurt_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_WolfTurn_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_WolfAttack_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_WolfHurt_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_BirdTurn_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_MantisTurn_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_MantisAttack_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_MantisHurt_Fx.wav</sound>
     </fx>
   </audio>
 </config>

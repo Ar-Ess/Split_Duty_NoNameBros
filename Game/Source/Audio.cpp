@@ -104,6 +104,18 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	{
 		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MainCombat_Soundtrack.mp3", fadeTime);
 	}
+	else if (sc == OPTIONSMENU_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_OptionsMenu_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == LEVELUP_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_LevelUpScene_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == ENDSCENE_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_EndScreen_Soundtrack.mp3", fadeTime);
+	}
 
 	st = sc;
 }
@@ -125,6 +137,46 @@ void AudioManager::SetFx(Effect fx)
 	else if (fx == MAIN_MENU_FX)
 	{
 		PlayFx(4);
+	}
+	else if (fx == PLAYER_TURN_FX)
+	{
+		PlayFx(5);
+	}
+	else if (fx == PLAYER_ATTACK_FX)
+	{
+		PlayFx(6);
+	}
+	else if (fx == PLAYER_HURT_FX)
+	{
+		PlayFx(7);
+	}
+	else if (fx == WOLF_TURN_FX)
+	{
+		PlayFx(8);
+	}
+	else if (fx == WOLF_ATTACK_FX)
+	{
+		PlayFx(9);
+	}
+	else if (fx == WOLF_HURT_FX)
+	{
+		PlayFx(10);
+	}
+	else if (fx == BIRD_TURN_FX)
+	{
+		PlayFx(11);
+	}
+	else if (fx == MANTIS_TURN_FX)
+	{
+		PlayFx(12);
+	}
+	else if (fx == MANTIS_ATTACK_FX)
+	{
+		PlayFx(13);
+	}
+	else if (fx == MANTIS_HURT_FX)
+	{
+		PlayFx(14);
 	}
 }
 

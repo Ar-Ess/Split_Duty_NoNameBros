@@ -610,8 +610,21 @@ void World::WorldEnemySpawn()
 	{
 		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
 		{
-			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+			if (app->entityManager->enemies.Count() < 3)
+			{
+				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+			}
+			else if (app->entityManager->enemies.Count() == 3)
+			{
+				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
+				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+			}
+			else if (app->entityManager->enemies.Count() == 4)
+			{
+				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+			}
 		}
 	}
 }

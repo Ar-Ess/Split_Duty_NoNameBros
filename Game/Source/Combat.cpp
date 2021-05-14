@@ -6,6 +6,7 @@
 #include "GuiButton.h"
 #include "GuiString.h"
 #include "World.h"
+#include "Audio.h"
 #include "EntityManager.h"
 
 #include "Combat.h"
@@ -229,6 +230,13 @@ void Combat::CombatLogic()
 			{
 				EnemyAttackProbability();
 				currentEnemyAnim = &enemy->moveAnim;
+
+				switch (enemy->enemyClass)
+				{
+				case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_ATTACK_FX); break;
+				case(EnemyClass::BIRD): /*app->audio->SetFx(Effect::BIRD_ATTACK_FX);*/ break;
+				case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_ATTACK_FX); break;
+				}
 			}
 		}
 		else
@@ -611,6 +619,7 @@ void Combat::PlayerChoiceLogic()
 	{
 		playerAttack = true;
 		playerChoice = false;
+		app->audio->SetFx(Effect::PLAYER_ATTACK_FX);
 		return;
 	}
 	else if (app->scene->movePressed && steps < 3)
@@ -936,6 +945,13 @@ void Combat::PlayerAttack()
 	}
 	else
 	{
+		switch (enemy->enemyClass)
+		{
+		case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_HURT_FX); break;
+		case(EnemyClass::BIRD): /*app->audio->SetFx(Effect::BIRD_HURT_FX);*/ break;
+		case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_HURT_FX); break;
+		}
+
 		enemy->health -= PlayerDamageLogic();
 		LOG("Enemy Hit, EH: %d", enemy->health);
 
@@ -1543,6 +1559,9 @@ void Combat::PlayerHitLogic()
 				}
 
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
+
+				app->audio->SetFx(Effect::PLAYER_HURT_FX);
+				
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
 		}
@@ -1732,6 +1751,13 @@ void Combat::EnemyTurn()
 	app->scene->splitButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("ENEMY TURN");
+
+	switch (enemy->enemyClass)
+	{
+	case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_TURN_FX); break;
+	case(EnemyClass::BIRD): app->audio->SetFx(Effect::BIRD_TURN_FX); break;
+	case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_TURN_FX); break;
+	}
 }
 
 void Combat::PlayerTurn()
@@ -1752,6 +1778,8 @@ void Combat::PlayerTurn()
 	turnText->SetString("PLAYER TURN");
 
 	if (attackBuff || defenseBuff || thirdBuff) UpdateBuffs();
+
+	app->audio->SetFx(Effect::PLAYER_TURN_FX);
 }
 
 void Combat::SecondPlayerTurn()
