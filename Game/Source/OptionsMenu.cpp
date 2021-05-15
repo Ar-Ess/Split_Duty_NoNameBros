@@ -42,7 +42,6 @@ void OptionsMenu::Update()
 void OptionsMenu::Draw()
 {
 	app->render->DrawTexture(app->scene->optionsBackground, 0, 0);
-	
 
 	DrawGui();
 	DrawText();

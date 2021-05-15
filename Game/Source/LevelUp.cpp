@@ -36,6 +36,10 @@ void LevelUp::Start(short int exp)
 	sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
 	upgradeText->SetString(str, BROWN);
 
+	char str1[24] = {};
+	sprintf(str1, "Gained %d exp", exp);
+	expGainedText->SetString(str1, WHITE);
+
 	levelUpBool = false;
 
 	plusExp = exp; //Experience given by the enemy
@@ -96,7 +100,7 @@ void LevelUp::Draw()
 
 	DrawText();
 
-	DrawBar({500, 400}, app->scene->player1->exp, maxExp, BLUE);
+	DrawBar({530, 400}, app->scene->player1->exp, maxExp, BLUE);
 
 	//app->guiManager->DrawCursor();
 }
@@ -147,6 +151,17 @@ void LevelUp::SetText()
 
 		winText->SetString("YOU WON!", WHITE);
 	}
+
+	if (expGainedText == nullptr)
+	{
+		expGainedText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		expGainedText->bounds = { 600, 220, 300, 100 };
+		expGainedText->SetTextFont(app->fontTTF->inventoryFont);
+
+		char str[24] = {};
+		sprintf(str, "Gained %d exp", 0);
+		expGainedText->SetString(str, WHITE);
+	}
 }
 
 void LevelUp::DrawText()
@@ -158,5 +173,5 @@ void LevelUp::DrawText()
 
 void LevelUp::DrawButtons()
 {
-	skipButton->Draw(1, false);
+	skipButton->Draw();
 }

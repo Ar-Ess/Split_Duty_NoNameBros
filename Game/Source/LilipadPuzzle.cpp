@@ -9,7 +9,7 @@ LilipadPuzzle::LilipadPuzzle(int lilipadAmount, SDL_Rect leftSwitchRect, SDL_Rec
 {
 	for (int i = 0; i < lilipadAmount; i++)
 	{
-		lilipad.Add(Lilipad({ 0, 0, 56, 56 }, nullptr, (uint)i));
+		lilipad.Add(Lilipad({ 0, 0, 56, 56 }, "Assets/Textures/Environment/nenuphar.png", (uint)i));
 	}
 
 	leftSwitch = leftSwitchRect;
@@ -34,7 +34,7 @@ void LilipadPuzzle::Update()
 
 void LilipadPuzzle::Draw()
 {
-	for (int i = 0; i < lilipad.Count(); i++) app->render->DrawRectangle(lilipad[i].rect, { 40, 255, 40, 150 });
+	for (int i = 0; i < lilipad.Count(); i++) app->render->DrawTexture(lilipad[i].texture, lilipad[i].rect.x, lilipad[i].rect.y);
 }
 
 void LilipadPuzzle::DebugDraw()
@@ -116,10 +116,10 @@ Lilipad LilipadPuzzle::GetLiliFromId(uint id)
 
 Lilipad::Lilipad() {}
 
-Lilipad::Lilipad(SDL_Rect rectx, SDL_Texture* texx, uint idx)
+Lilipad::Lilipad(SDL_Rect rectx, const char* path, uint idx)
 {
 	rect = rectx;
-	texture = texx;
+	texture = app->tex->Load(path);
 	id = idx;
 }
 

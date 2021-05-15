@@ -14,7 +14,7 @@ class Collision;
 struct Lilipad
 {
     Lilipad();
-    Lilipad(SDL_Rect rectx, SDL_Texture* texx, uint idx);
+    Lilipad(SDL_Rect rectx, const char* path, uint idx);
     ~Lilipad();
 
     void SetPosition(int x, int y)

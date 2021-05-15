@@ -665,7 +665,7 @@ void World::WorldEnemyChasing()
 void World::EnemyStatsGeneration(Enemy* e, Player* p)
 {
 	int eHealth = p->maxHealth;
-	int eStrength = p->strengthStat - 2;
+	int eStrength = p->strengthStat + 2;
 	int eDefense = p->defenseStat - 2;
 	int eVelocity = 10;
 	int eLevel = p->lvl + 1;
@@ -1122,7 +1122,7 @@ void World::LoadNPCs(Places placex)
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
+		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SIGN, placex, 5);
 	}
 }
 

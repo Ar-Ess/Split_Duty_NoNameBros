@@ -15,6 +15,9 @@
 #include "Collider.h"
 #include "Player.h"
 
+#include "Textures.h"
+#include "Render.h"
+
 #include "Log.h"
 
 GameOverScene::GameOverScene()
@@ -23,20 +26,33 @@ GameOverScene::GameOverScene()
 
 void GameOverScene::Start()
 {
+	background = app->tex->Load("Assets/Screens/end_screen.png");
+
+	if (backToMenuText == nullptr)
+	{
+		backToMenuText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		backToMenuText->bounds = backToMenuButton->bounds;
+		backToMenuText->SetTextFont(app->fontTTF->defaultFont);
+		backToMenuText->SetString("MENU");
+		backToMenuText->CenterAlign();
+	}
 }
 
 void GameOverScene::Restart()
 {
+	app->tex->UnLoad(background);
 }
 
 void GameOverScene::Update()
 {
+	backToMenuButton->Update(1.0f);
 }
 
 void GameOverScene::Draw()
 {
-}
+	app->render->DrawTexture(background, 0, 0);
 
-void GameOverScene::DrawButtons()
-{
+	backToMenuButton->Draw();
+
+	backToMenuText->Draw();
 }

@@ -10,7 +10,8 @@ StonePuzzle::StonePuzzle(int stoneAmount, SDL_Rect pathx)
 {
 	for (int i = 0; i < stoneAmount; i++)
 	{
-		stone.Add(Stone({ 0, 0, 42, 42 }, nullptr));
+		stone.Add(Stone({ 0, 0, 42, 42 }, "Assets/Textures/Environment/rock.png", "Assets/Textures/Environment/rockunderwater.png"));
+
 	}
 
 	path = pathx;
@@ -22,7 +23,11 @@ StonePuzzle::~StonePuzzle() {}
 
 void StonePuzzle::Restart()
 {
-	for (int i = 0; i < stone.Count(); i++) app->tex->UnLoad(stone[i].texture);
+	for (int i = 0; i < stone.Count(); i++)
+	{
+		app->tex->UnLoad(stone[i].texture);
+		app->tex->UnLoad(stone[i].underTexture);
+	}
 	stone.Clear();
 }
 
@@ -77,7 +82,8 @@ void StonePuzzle::Update()
 
 void StonePuzzle::Draw()
 {
-
+	if (!stoneInWater) for (int i = 0; i < stone.Count(); i++) app->render->DrawTexture(stone[i].texture, stone[i].rect.x, stone[i].rect.y);
+	else for (int i = 0; i < stone.Count(); i++) app->render->DrawTexture(stone[i].underTexture, path.x + 40, path.y + 40);
 }
 
 void StonePuzzle::DebugDraw()
@@ -91,10 +97,11 @@ void StonePuzzle::DebugDraw()
 
 Stone::Stone() {}
 
-Stone::Stone(SDL_Rect rectx, SDL_Texture* texx)
+Stone::Stone(SDL_Rect rectx, const char* path, const char* path1)
 {
 	rect = rectx;
-	texture = texx;
+	texture = app->tex->Load(path);
+	underTexture = app->tex->Load(path1);
 }
 
 Stone::~Stone() {}

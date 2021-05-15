@@ -31,7 +31,7 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 	npcType = xtype;
 	place = xplace;
 	dialog = xdialog;
-	
+
 	switch (xtype)
 	{
 	case(NPCtype::KNIGHT):
@@ -42,6 +42,9 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 		break;
 	case(NPCtype::PRIEST):
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest_spritesheet.png");
+		break;
+	case(NPCtype::SIGN):
+		texture = app->tex->Load("Assets/Textures/Environment/sign.png");
 		break;
 	}
 }
@@ -63,7 +66,11 @@ void NPC::Update(SDL_Rect pCollAmp)
 void NPC::Draw()
 {
 	const SDL_Rect sprite = { 0,0,32,32 };
-	if (npcType != NO_NPC) app->render->DrawTexture(texture, collider.x -10, collider.y, 2.3f, &sprite,false);
+	if (npcType != NO_NPC)
+	{
+		if (npcType != SIGN) app->render->DrawTexture(texture, collider.x - 10, collider.y, 2.3f, &sprite, false);
+		else app->render->DrawTexture(texture, collider.x - 10, collider.y);
+	}
 }
 
 void NPC::Delete()

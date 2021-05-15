@@ -590,7 +590,7 @@ void Combat::EndBattleSolving()
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		enemy->Refill();
-		app->scene->SetScene(MAIN_MENU);
+		app->scene->SetScene(END_SCREEN);
 	}
 	else if (playerSplitWin)
 	{

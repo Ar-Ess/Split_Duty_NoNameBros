@@ -18,6 +18,7 @@
 #include "DialogueManager.h"
 #include "Transition.h"
 #include "Inventory.h"
+#include "GameOverScene.h"
 #include "LevelUp.h"
 #include "OptionsMenu.h"
 #include "Map.h"
@@ -70,6 +71,8 @@ bool Scene::Start()
 	levelUpScene = new LevelUp();
 
 	optionsMenu = new OptionsMenu();
+
+	endScene = new GameOverScene();
 
 	combatScene->debugCombat = false;
 	world->debugCollisions = false;
@@ -156,6 +159,7 @@ bool Scene::Update(float dt)
 	else if (currScene == LEVEL_UP) UpdateLevelUp();
 	else if (currScene == WORLD) UpdateWorld();
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
+	else if (currScene == END_SCREEN) UpdateEndScreen();
 
 	//DEBUGGING SPLINE
 	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
@@ -221,6 +225,10 @@ bool Scene::CleanUp(Scenes nextScene)
 	{
 		levelUpScene->Restart();
 	}
+	else if (currScene == END_SCREEN)
+	{
+		endScene->Restart();
+	}
 
 	return true;
 }
@@ -241,6 +249,7 @@ void Scene::SetScene(Scenes scene)
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
+	else if (scene == END_SCREEN) SetEndScreen();
 }
 
 void Scene::SetScene(Scenes scene, Enemy* enemy)
@@ -257,6 +266,7 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
+	else if (scene == END_SCREEN) SetEndScreen();
 }
 
 void Scene::SetScene(Scenes scene, Places place)
@@ -273,6 +283,7 @@ void Scene::SetScene(Scenes scene, Places place)
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(place);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
+	else if (scene == END_SCREEN) SetEndScreen();
 }
 
 void Scene::SetScene(Scenes scene, unsigned short int exp)
@@ -288,6 +299,7 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 	else if (scene == LEVEL_UP) SetLevelUp(exp);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
+	else if (scene == END_SCREEN) SetEndScreen();
 }
 
 
@@ -377,6 +389,7 @@ void Scene::SetMainMenu()
 
 void Scene::SetOptionsMenu()
 {
+	app->audio->SetMusic(SoundTrack::OPTIONSMENU_TRACK);
 	optionsBackground = app->tex->Load("Assets/Screens/options.png");
 	app->guiManager->buttonSpriteSheet = app->tex->Load("Assets/Textures/UI/options.png");
 	app->guiManager->sliderSpriteSheet = app->tex->Load("Assets/Textures/UI/slider.png");
@@ -384,6 +397,9 @@ void Scene::SetOptionsMenu()
 	SDL_Rect buttonPrefab = { 740,140 -12,60,60 };
 	SDL_Rect textPrefab = { 480,buttonPrefab.y +20 ,130,30 };
 	SDL_Rect sliderPrefab = { 470,150,335,40 };
+
+	SDL_Rect buttonPrefab1 = app->guiManager->buttonPrefab;
+
 	iPoint off = { 0,85 };
 	iPoint sliderOff = { 20,20 };
 
@@ -438,7 +454,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->returnMenuButton == nullptr)
 	{
 		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x -175  ,buttonPrefab.y + off.y*5 -15,buttonPrefab.w,buttonPrefab.h };
+		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x -175  ,buttonPrefab.y + off.y*5 -15,buttonPrefab1.w, buttonPrefab1.h };
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
 		
@@ -732,14 +748,17 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetLevelUp(unsigned short int exp)
 {
+	app->audio->SetMusic(SoundTrack::LEVELUP_TRACK);
 	levelUpScene->Start(exp);
 
-	SDL_Rect buttonPrefab = { 1000,200,52,55 };
+	SDL_Rect buttonPrefab = { 740,140 - 12,60,60 };
+	SDL_Rect buttonPrefab1 = app->guiManager->buttonPrefab;
+	iPoint off = { 0,85 };
 
 	if (levelUpScene->skipButton == nullptr)
 	{
 		levelUpScene->skipButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		levelUpScene->skipButton->bounds = { buttonPrefab.x ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
 		levelUpScene->skipButton->text = "SkipButton";
 		levelUpScene->skipButton->SetObserver(this);
 	}
@@ -846,7 +865,6 @@ void Scene::SetPauseMenu()
 		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 382, buttonPrefab.w, buttonPrefab.h };
 		optionsPauseButton->text = "OptionsPauseButton";
 		optionsPauseButton->SetObserver(this);
-		optionsPauseButton->state = GuiControlState::LOCKED;
 	}
 
 	if (backToMenuButton == nullptr)
@@ -892,6 +910,24 @@ void Scene::SetPauseMenu()
 		backToMenuText->SetString("BACK TO MENU");
 		backToMenuText->CenterAlign();
 	}
+}
+
+void Scene::SetEndScreen()
+{
+	app->audio->SetMusic(SoundTrack::ENDSCENE_TRACK);
+	SDL_Rect buttonPrefab = { 740,140 - 12,60,60 };
+	SDL_Rect buttonPrefab1 = app->guiManager->buttonPrefab;
+	iPoint off = { 0,85 };
+
+	if (endScene->backToMenuButton == nullptr)
+	{
+		endScene->backToMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
+		endScene->backToMenuButton->text = "BackToMenuButton";
+		endScene->backToMenuButton->SetObserver(this);
+	}
+
+	endScene->Start();
 }
 
 void Scene::UpdateLogoScene()
@@ -1034,6 +1070,13 @@ void Scene::UpdatePauseMenu()
 	backToMenuText->Draw();
 }
 
+void Scene::UpdateEndScreen()
+{
+	endScene->Update();
+
+	endScene->Draw();
+}
+
 // GUI CONTROLS
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
@@ -1150,6 +1193,12 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 			SetScene(WORLD, world->place);
+		}
+
+	case END_SCREEN:
+		if (strcmp(control->text.GetString(), "BackToMenuButton") == 0)
+		{
+			SetScene(MAIN_MENU);
 		}
 	}
 

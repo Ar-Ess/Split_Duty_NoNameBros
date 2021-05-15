@@ -12,7 +12,7 @@ class Collision;
 struct Stone
 {
     Stone();
-    Stone(SDL_Rect rectx, SDL_Texture* texx);
+    Stone(SDL_Rect rectx, const char* path, const char* path1);
     ~Stone();
 
     void SetPosition(int x, int y)
@@ -23,6 +23,7 @@ struct Stone
 
     SDL_Rect rect;
     SDL_Texture* texture = nullptr;
+    SDL_Texture* underTexture = nullptr;
 
 };
 

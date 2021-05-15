@@ -18,6 +18,7 @@ class World;
 class Inventory;
 class LevelUp;
 class OptionsMenu;
+class GameOverScene;
 enum Places;
 
 enum Scenes
@@ -29,7 +30,8 @@ enum Scenes
 	COMBAT,
 	LEVEL_UP,
 	WORLD,
-	PAUSE_MENU
+	PAUSE_MENU,
+	END_SCREEN,
 };
 
 enum Environments
@@ -166,6 +168,7 @@ public:
 	World* world = nullptr;
 	LevelUp* levelUpScene = nullptr;
 	OptionsMenu* optionsMenu = nullptr;
+	GameOverScene* endScene = nullptr;
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 	Spline spline;
@@ -193,6 +196,7 @@ private: //Scene Manager
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
 	void SetPauseMenu();
+	void SetEndScreen();
 
 	//Updaters
 	void UpdateLogoScene();
@@ -202,6 +206,7 @@ private: //Scene Manager
 	void UpdateLevelUp();
 	void UpdateWorld();
 	void UpdatePauseMenu();
+	void UpdateEndScreen();
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

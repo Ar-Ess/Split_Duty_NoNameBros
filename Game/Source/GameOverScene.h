@@ -36,17 +36,15 @@ public:
 
     void Draw();
 
-    void DrawButtons();
-
 private:
    
 
 public:
-    GuiButton* respawnButton;
-    GuiButton* backToMenuButton;
+    GuiButton* backToMenuButton = nullptr;
    
-    GuiString* gameOverText;
-    GuiString* defeatedText;
+    GuiString* backToMenuText = nullptr;
+
+    SDL_Texture* background = nullptr;
 
 };
 

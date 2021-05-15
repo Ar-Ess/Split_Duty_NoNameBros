@@ -13,6 +13,8 @@ ButtonPuzzle::ButtonPuzzle(int buttonAmount, int width, int height, SDL_Rect bri
 		button.Add(Button({ 0, 0, width, height }));
 	}
 
+	bridge = app->tex->Load("Assets/Textures/Environment/bridge.png");
+
 	step = 1;
 
 	resultActive = false;
@@ -64,7 +66,12 @@ void ButtonPuzzle::Update()
 
 void ButtonPuzzle::Draw()
 {
-
+	if (resultActive)
+	{
+		app->render->DrawTexture(bridge, bridge1.x, bridge1.y);
+		app->render->DrawTexture(bridge, bridge2.x, bridge2.y);
+		app->render->DrawTexture(bridge, bridge3.x, bridge3.y);
+	}
 }
 
 void ButtonPuzzle::DebugDraw()

@@ -68,6 +68,8 @@ public:
 
     GuiString* upgradeText = nullptr;
 
+    GuiString* expGainedText = nullptr;
+
     GuiString* winText = nullptr;
 
 };
