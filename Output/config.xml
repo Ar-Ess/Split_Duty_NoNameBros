@@ -50,6 +50,8 @@
       <sound>Assets/Audio/Fx/SplitDuty_MantisTurn_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_MantisAttack_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_MantisHurt_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_LeftFlower_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_RightFlower_Fx.wav</sound>
     </fx>
   </audio>
 </config>

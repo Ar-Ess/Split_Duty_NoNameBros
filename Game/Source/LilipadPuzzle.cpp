@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "LilipadPuzzle.h"
+#include "Audio.h"
 
 LilipadPuzzle::LilipadPuzzle() {}
 
@@ -129,10 +130,12 @@ void Lilipad::MoveLeft()
 {
 	rect.x -= rect.w;
 	moves--;
+	app->audio->SetFx(Effect::LEFT_FLOWER_FX);
 }
 
 void Lilipad::MoveRight()
 {
 	rect.x += rect.w;
 	moves++;
+	app->audio->SetFx(Effect::RIGHT_FLOWER_FX);
 }

@@ -258,7 +258,7 @@ void DialogueManager::Draw()
 			itemOption->data->optionText->CenterAlign();
 
 			//draw buttons options
-			itemOption->data->optionButton->Draw(dscale, false);
+			itemOption->data->optionButton->Draw(dscale, false, true);
 			itemOption->data->optionText->Draw();	
 		}
 	}
@@ -275,7 +275,6 @@ void DialogueManager::Input()
 				itemOption->data->optionButton->Update(1.0f);
 		}
 	}
-	//else EndDialogue();
 }
 
 bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)

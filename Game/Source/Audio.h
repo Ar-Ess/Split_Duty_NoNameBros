@@ -50,7 +50,8 @@ enum Effect
 	MANTIS_TURN_FX,
 	MANTIS_ATTACK_FX,
 	MANTIS_HURT_FX,
-
+	LEFT_FLOWER_FX,
+	RIGHT_FLOWER_FX
 };
 
 class AudioManager : public Module

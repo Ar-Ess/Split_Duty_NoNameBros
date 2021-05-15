@@ -1261,7 +1261,7 @@ float Scene::EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat)
 
 float Scene::EaseTitleBetweenPoints(iPoint posA, iPoint posB, bool repeat)
 {
-	float value = easing.backEaseInOut(iterations, posA.x, posB.x - posA.x, totalIterations);
+	float value = easing.backEaseOut(iterations, posA.x, posB.x - posA.x, totalIterations);
 
 	if (iterations < totalIterations) {
 		iterations++;
