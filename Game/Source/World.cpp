@@ -292,7 +292,7 @@ void World::Restart(Scenes scene)
 
 void World::Update()
 {
-	if (!app->dialogueManager->onDialog && !inventoryOpen && !levelUpOpen) WorldMovement();
+	if (!app->dialogueManager->onDialog && !inventoryOpen) WorldMovement();
 
 	WorldChange();
 
@@ -318,16 +318,6 @@ void World::Update()
 		{
 			inventoryOpen = !inventoryOpen;
 			app->guiManager->CenterCursor();
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_L)==KEY_DOWN)
-	{
-		if (!app->dialogueManager->onDialog)
-		{
-			levelUpOpen = !levelUpOpen;
-			app->scene->SetLevelUp(0);
-			if (levelUpOpen) LOG("level up scene");
 		}
 	}
 }
@@ -675,8 +665,8 @@ void World::WorldEnemyChasing()
 void World::EnemyStatsGeneration(Enemy* e, Player* p)
 {
 	int eHealth = p->maxHealth;
-	int eStrength = p->strengthStat;
-	int eDefense = p->defenseStat;
+	int eStrength = p->strengthStat - 5;
+	int eDefense = p->defenseStat - 2;
 	int eVelocity = 10;
 	int eLevel = p->lvl + 1;
 	int eExp = 200;

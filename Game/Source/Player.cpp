@@ -254,7 +254,7 @@ void Player::RestartPlayer()
 
     if (type == EntityType::PLAYER1)
     {
-        SetUp(20, 20, 10, 3, 0, 0, 0, 0, 0);
+        SetUp(20, 20, 6, 3, 0, 0, 0, 1, 0);
         colliderCombat.x = INIT_COMBAT_POSX;
         colliderCombat.y = INIT_COMBAT_POSY;
     }

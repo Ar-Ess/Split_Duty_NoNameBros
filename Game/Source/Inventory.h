@@ -82,7 +82,7 @@ private:
 	GuiString* questText = nullptr;
 
 private:
-    SDL_Texture* interfaceTexture;
+    SDL_Texture* interfaceTexture = nullptr;
 
     //const SDL_Rect healthBarRect = { 0,0,261,422 };
     const SDL_Rect healthBarRect = { 0,720,261,22 };

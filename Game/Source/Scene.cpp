@@ -219,7 +219,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	}
 	else if (currScene == LEVEL_UP)
 	{
-		app->tex->UnLoad(app->scene->levelUpScene->buttonsTexture);
+		levelUpScene->Restart();
 	}
 
 	return true;
@@ -732,61 +732,16 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetLevelUp(unsigned short int exp)
 {
-	app->scene->levelUpScene->buttonsTexture = app->tex->Load("Assets/Textures/UI/upgrade-buttons.png");
+	levelUpScene->Start(exp);
 
 	SDL_Rect buttonPrefab = { 1000,200,52,55 };
-	iPoint off= { 0,61 };
 
-	if (app->scene->levelUpScene->upgradeHealthButton == nullptr)
+	if (levelUpScene->skipButton == nullptr)
 	{
-		app->scene->levelUpScene->upgradeHealthButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeHealthButton->bounds = { buttonPrefab.x ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeHealthButton->text = "+";
-		app->scene->levelUpScene->upgradeHealthButton->SetObserver(this);
-	}
-	if (app->scene->levelUpScene->upgradeAttackButton == nullptr)
-	{
-		app->scene->levelUpScene->upgradeAttackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeAttackButton->bounds = { buttonPrefab.x ,buttonPrefab.y +off.y,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeAttackButton->text = "+";
-		app->scene->levelUpScene->upgradeAttackButton->SetObserver(this);
-	}
-	if (app->scene->levelUpScene->upgradeDefenseButton == nullptr)
-	{
-		app->scene->levelUpScene->upgradeDefenseButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeDefenseButton->bounds = { buttonPrefab.x ,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeDefenseButton->text = "+";
-		app->scene->levelUpScene->upgradeDefenseButton->SetObserver(this);
-	}
-	if (app->scene->levelUpScene->upgradeSpeedButton == nullptr)
-	{
-		app->scene->levelUpScene->upgradeSpeedButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeSpeedButton->bounds = { buttonPrefab.x ,buttonPrefab.y +off.y*3,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeSpeedButton->text = "+";
-		app->scene->levelUpScene->upgradeSpeedButton->SetObserver(this);
-	}
-	if (app->scene->levelUpScene->upgradeLuckButton == nullptr)
-	{
-		app->scene->levelUpScene->upgradeLuckButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeLuckButton->bounds = { buttonPrefab.x ,buttonPrefab.y + off.y*4,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeLuckButton->text = "+";
-		app->scene->levelUpScene->upgradeLuckButton->SetObserver(this);
-	}
-	if (app->scene->levelUpScene->upgradeStabButton == nullptr)
-	{
-		app->scene->levelUpScene->upgradeStabButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		app->scene->levelUpScene->upgradeStabButton->bounds = { buttonPrefab.x ,buttonPrefab.y + off.y*5,buttonPrefab.w,buttonPrefab.h };
-		app->scene->levelUpScene->upgradeStabButton->text = "+";
-		app->scene->levelUpScene->upgradeStabButton->SetObserver(this);
-	}
-
-	if (app->scene->levelUpScene->upgradePointsText == nullptr)
-	{
-		app->scene->levelUpScene->upgradePointsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		app->scene->levelUpScene->upgradePointsText->bounds = { 1000,200,200,30 };
-		app->scene->levelUpScene->upgradePointsText->SetTextFont(app->fontTTF->defaultFont);
-		app->scene->levelUpScene->upgradePointsText->SetString("UPGRADE POINTS: ");
-		
+		levelUpScene->skipButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		levelUpScene->skipButton->bounds = { buttonPrefab.x ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		levelUpScene->skipButton->text = "SkipButton";
+		levelUpScene->skipButton->SetObserver(this);
 	}
 
 	LOG("level up scene buttons init");
@@ -1013,9 +968,9 @@ void Scene::UpdateCombat()
 
 void Scene::UpdateLevelUp()
 {
-	SetScene(WORLD, world->place);
+	levelUpScene->Update();
 
-	app->scene->levelUpScene->Update();
+	levelUpScene->Draw();
 }
 
 void Scene::UpdateWorld()
@@ -1024,13 +979,9 @@ void Scene::UpdateWorld()
 
 	if (world->inventoryOpen) world->inventory->Update();
 
-	if (world->levelUpOpen) levelUpScene->Update();
-
 	world->Draw();
 
 	if (world->inventoryOpen) world->inventory->Draw();
-
-	if (world->levelUpOpen) levelUpScene->Draw();
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
@@ -1055,6 +1006,11 @@ void Scene::UpdateWorld()
 
 		if (player1->godMode) player1->playerSpeed = 14;
 		else player1->playerSpeed = PLAYER_SPEED;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		SetScene(LEVEL_UP, 200);
 	}
 }
 
@@ -1188,6 +1144,13 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			if (player1->health > player1->maxHealth) player1->health = player1->maxHealth;
 		}
 		break;
+
+	case LEVEL_UP:
+		if (strcmp(control->text.GetString(), "SkipButton") == 0)
+		{
+			app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
+			SetScene(WORLD, world->place);
+		}
 	}
 
 	return true;

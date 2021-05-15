@@ -123,8 +123,6 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 		percent = current / max;
 	}
 
-
-
 	if (color.r > 240) //red
 	{
 		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, RED, true, false);

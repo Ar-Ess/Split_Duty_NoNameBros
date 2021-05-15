@@ -32,7 +32,7 @@ public:
 
     LevelUp();
 
-    void Start();
+    void Start(short int exp);
 
     void Restart();
 
@@ -40,40 +40,33 @@ public:
 
     void Draw();
 
-    void SetButtons();
-
     void UpdateButtons();
 
     void SetText();
 
-    void UpdateText();
-
     void DrawText();
 
     void DrawButtons();
+
+    void DrawBar(iPoint pos, int current, int max, SDL_Color color);
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
+    SDL_Texture* barTexture = nullptr;
+
+    const SDL_Rect expBarRect = { 0,742,261,22 };
     
+    short int plusExp = 0;
+    short int actualExp = 0;
+    short int maxExp = 0;
+
+    bool levelUpBool = false;
 
 public:
-    SDL_Texture* buttonsTexture = nullptr;      
 
-    iPoint buttonPos = { 1000,200 };
-    iPoint buttonOff = { 0,30 };
-
-    GuiButton* upgradeHealthButton = nullptr;
-    GuiButton* upgradeDefenseButton = nullptr;
-    GuiButton* upgradeAttackButton = nullptr;
-    GuiButton* upgradeSpeedButton = nullptr;
-    GuiButton* upgradeLuckButton = nullptr;
-    GuiButton* upgradeStabButton = nullptr;
+    GuiButton* skipButton = nullptr;
 
     GuiString* upgradeText = nullptr;
-
-    GuiString* battleOvercomeText = nullptr;
-
-    GuiString* upgradePointsText = nullptr;
 
 };
 

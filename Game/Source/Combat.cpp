@@ -181,7 +181,7 @@ void Combat::Update()
 	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
 	else app->scene->splitButton->state = GuiControlState::LOCKED;
 
-	LOG("P_Str:%d", app->scene->player1->strengthStat);
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) enemy->health -= enemy->health;
 }
 
 void Combat::UpdateButtons()
@@ -585,7 +585,6 @@ void Combat::EndBattleSolving()
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		app->scene->SetScene(LEVEL_UP, experience);
-		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 	else if (playerLose)
 	{
@@ -599,7 +598,6 @@ void Combat::EndBattleSolving()
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		app->scene->SetScene(LEVEL_UP);
-		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	}
 	else if (playerEscaped)
 	{

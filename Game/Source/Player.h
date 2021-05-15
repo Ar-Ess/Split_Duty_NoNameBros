@@ -228,7 +228,7 @@ public:
     int luckStat = 1;
     int stabStat = 1;
     
-    int lvl = 0;
+    int lvl = 1;
     int exp = 0;
 
     int playerSpeed = 8;

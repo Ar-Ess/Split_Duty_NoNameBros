@@ -96,9 +96,6 @@
     <ClCompile Include="Source\Spline.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LevelUp.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\OptionsMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Quests</Filter>
     </ClCompile>
     <ClCompile Include="Source\EasingFunctions.cpp" />
+    <ClCompile Include="Source\LevelUp.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
