@@ -99,7 +99,7 @@ bool Scene::Start()
 	spline.LoadSplines(doc);
 
 	iterations = 0;
-	totalIterations = 226;
+	totalIterations = 200;
 	easingActive = false;
 
 	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 98, i m'entero, no viu un dia més :) <3
@@ -205,6 +205,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	else if (currScene == MAIN_MENU)
 	{
 		app->tex->UnLoad(menu);
+		app->tex->UnLoad(mainLogo);
 	}
 	else if (currScene == OPTIONS_MENU)
 	{
@@ -318,6 +319,8 @@ void Scene::SetMainMenu()
 	app->audio->SetFx(Effect::MAIN_MENU_FX);
 	app->audio->SetMusic(SoundTrack::MAINMENU_TRACK);
 	menu = app->tex->Load("Assets/Screens/tittle_screen.png");
+	mainLogo = app->tex->Load("Assets/Screens/title_logo.png");
+	iterations = 0;
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
@@ -938,10 +941,9 @@ void Scene::UpdateLogoScene()
 {
 	if (timer >= 50)
 	{
-		float logoX = EaseTextureBetweenPoints(iPoint(-1280, 0), iPoint(0, 0));
+		float logoX = EaseLogoBetweenPoints(iPoint(-1280, 0), iPoint(0, 0), false);
 		app->render->DrawTexture(logo, logoX, 0);
 	}
-
 
 	if (timer < 50)
 	{
@@ -971,8 +973,9 @@ void Scene::UpdateLogoScene()
 void Scene::UpdateMainMenu()
 {
 // Other Options
-
+	float logoX = EaseTitleBetweenPoints(iPoint(-1280, 0), iPoint(0, 0), false);
 	app->render->DrawTexture(menu, 0, 0);
+	app->render->DrawTexture(mainLogo, logoX, 0);
 
 	newGameButton->Update(1.0f);
 	continueButton->Update(1.0f);
@@ -1084,20 +1087,6 @@ void Scene::UpdateEndScreen()
 	endScene->Update();
 
 	endScene->Draw();
-}
-
-float Scene::EaseTextureBetweenPoints(iPoint posA, iPoint posB)
-{
-	float value = easing.bounceEaseInOut(iterations, posA.x, posB.x - posA.x, totalIterations);
-
-	if (iterations < totalIterations) {
-		iterations++;
-	}
-	else {
-		iterations = 0;
-		easingActive = false;
-	}
-	return value;
 }
 
 // GUI CONTROLS
@@ -1255,4 +1244,30 @@ void Scene::DebugSteps()
 	app->render->DrawLine(589, 498, 589, 510, {255, 255, 255, 255});
 	app->render->DrawLine(759, 498, 759, 510, {255, 255, 255, 255});
 	app->render->DrawLine(1031, 498, 1031, 510, {255, 0, 0, 255});
+}
+
+float Scene::EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat)
+{
+	float value = easing.elasticEaseOut(iterations, posA.x, posB.x - posA.x, totalIterations);
+
+	if (iterations < totalIterations) {
+		iterations++;
+	}
+	else {
+		if (repeat) iterations = 0;
+	}
+	return value;
+}
+
+float Scene::EaseTitleBetweenPoints(iPoint posA, iPoint posB, bool repeat)
+{
+	float value = easing.backEaseInOut(iterations, posA.x, posB.x - posA.x, totalIterations);
+
+	if (iterations < totalIterations) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+	return value;
 }

@@ -151,6 +151,7 @@ public: //Combat Buttons
 
 private: // Textures
 	SDL_Texture* logo = nullptr;
+	SDL_Texture* mainLogo = nullptr;
 	SDL_Texture* menu = nullptr;
 	SDL_Texture* pause = nullptr;
 public:
@@ -211,8 +212,9 @@ private: //Scene Manager
 	void UpdatePauseMenu();
 	void UpdateEndScreen();
 
-	float EaseTextureBetweenPoints(iPoint posA, iPoint posB);
-	
+	float EaseLogoBetweenPoints(iPoint posA, iPoint posB,bool repeat);
+	float EaseTitleBetweenPoints(iPoint posA, iPoint posB,bool repeat);
+
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation
