@@ -8,7 +8,11 @@ class GatherQuest : public Quest
 {
 public:
 	GatherQuest() {}
+
+	GatherQuest(uint16 id, uint16 reward, uint16 goal, const char* textDescription, const char* textTitle);
 	~GatherQuest() {}
+
+	void QuestLogic();
 
 public:
 	uint16 count;

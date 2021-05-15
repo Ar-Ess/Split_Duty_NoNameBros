@@ -4,9 +4,13 @@
 #include "App.h"
 #include "Module.h"
 #include "Log.h"
-#include "Quest.h"
+#include "KillQuest.h"
+#include "GatherQuest.h"
+#include "FindQuest.h"
 
 #define QUEST_CONFIG_FILENAME		"Quest_Config.xml"
+
+class Quest;
 
 class QuestManager : public Module
 {

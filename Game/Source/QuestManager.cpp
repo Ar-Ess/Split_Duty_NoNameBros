@@ -18,6 +18,7 @@ bool QuestManager::Awake(pugi::xml_node&)
 	//FILL QUEST MAP
 	if (!configQuests.empty())
 	{
+		questList.clear();
 		pugi::xml_node qSetUp = configQuests.child("Quests");
 		CreateQuestMap(qSetUp);
 	}
@@ -30,6 +31,7 @@ bool QuestManager::Awake(pugi::xml_node&)
 
 bool QuestManager::Start()
 {
+	//SET FIRST STORY QUEST TO ACTIVE
 	bool ret = true;
 	return ret;
 }
@@ -83,21 +85,44 @@ void QuestManager::CreateQuestMap(pugi::xml_node& setter)
 		const char* title = qst.attribute("title").as_string();
 		const char* description = qst.child_value();
 
-		Quest* newQuest = new Quest(id, reward, description, title, type);
+		uint16 goal = 0;
+		uint16 enemy = 0;
+		uint16 npc = 0;
 
-		questList[id] = newQuest;
+		Quest* newQuest;
+
+		switch (type)
+		{
+		case KILL:
+			goal = qst.attribute("goal").as_uint();
+			enemy = qst.attribute("enemy").as_uint();
+			newQuest = new KillQuest(id, reward, goal, description, title, EnemyClass(enemy));
+			questList[id] = newQuest;
+			break;
+		case GATHER:
+			goal = qst.attribute("goal").as_uint();
+			newQuest = new GatherQuest(id, reward, goal, description, title);
+			questList[id] = newQuest;
+			break;
+		case FIND:
+			npc = qst.attribute("npcId").as_uint();
+			newQuest = new FindQuest(id, reward, npc, description, title);
+			questList[id] = newQuest;
+			break;
+		}
 	}
-
 }
 
 void QuestManager::ActivateQuest(int id)
 {
 	questList[id]->SetActive();
 	activeQuest[id] = questList[id];
+	questList.erase(id);
 }
 
 void QuestManager::DeactivateQuest(int id)
 {
+	questList[id] = activeQuest[id];
 	questList[id]->SetInactive();
 	activeQuest.erase(id);
 }
@@ -106,7 +131,7 @@ void QuestManager::CompleteQuest(int id)
 {
 	questList[id]->SetCompleted();
 	finishedQuest[id] = questList[id];
-
+	questList.erase(id);
 }
 
 pugi::xml_node QuestManager::LoadQuestConfig(pugi::xml_document& configFile) const

@@ -117,6 +117,16 @@
     <ClCompile Include="Source\Transition.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FindQuest.cpp">
+      <Filter>Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GatherQuest.cpp">
+      <Filter>Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KillQuest.cpp">
+      <Filter>Quests</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EasingFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -289,6 +299,9 @@
       <Filter>Puzzles</Filter>
     </ClInclude>
     <ClInclude Include="Source\Transition.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EasingFunctions.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

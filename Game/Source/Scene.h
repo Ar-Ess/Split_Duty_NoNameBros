@@ -6,6 +6,7 @@
 #include "DynArray.h"
 
 #include "Spline.h"
+#include "EasingFunctions.h"
 
 class GuiButton;
 class GuiString;
