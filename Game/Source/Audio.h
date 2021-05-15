@@ -49,7 +49,8 @@ enum Effect
 	BIRD_TURN_FX,
 	MANTIS_TURN_FX,
 	MANTIS_ATTACK_FX,
-	MANTIS_HURT_FX
+	MANTIS_HURT_FX,
+
 };
 
 class AudioManager : public Module

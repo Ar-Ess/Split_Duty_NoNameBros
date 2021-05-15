@@ -29,7 +29,7 @@ bool GuiSlider::Update(float dt)
         {
             if (state == GuiControlState::NORMAL)
             {
-                //app->audio->PlayFx(Focus Mouse Sound);
+                app->audio->SetFx(Effect::BUTTON_FOCUSSED);
             }
             state = GuiControlState::FOCUSED;
 
@@ -43,7 +43,7 @@ bool GuiSlider::Update(float dt)
             {
                 if (state == GuiControlState::FOCUSED)
                 {
-                    //app->audio->PlayFx(Click Sound);
+                    app->audio->SetFx(Effect::BUTTON_RELEASED);
                 }
                 state = GuiControlState::SELECTED;
 

@@ -26,7 +26,7 @@ bool GuiCheckBox::Update(float dt)
         {
             if (state == GuiControlState::NORMAL)
             {
-                //app->audio->PlayFx(focus mouse sound);
+                app->audio->SetFx(Effect::BUTTON_FOCUSSED);
             }
             state = GuiControlState::FOCUSED;
 
@@ -38,7 +38,7 @@ bool GuiCheckBox::Update(float dt)
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP)
             {
                 checked = !checked;
-                //app->audio->PlayFx( Click sound);
+                app->audio->SetFx(Effect::BUTTON_RELEASED);
                 NotifyObserver();
             }
         }
