@@ -153,9 +153,9 @@ public:
     int lvl;
     int exp;
 
+    EnemyClass enemyClass;
 private:
     DynArray<iPoint>* path;
-    EnemyClass enemyClass;
     MantisBullet bullet[5];
 
 public:

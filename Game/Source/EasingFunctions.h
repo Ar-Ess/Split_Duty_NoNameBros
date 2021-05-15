@@ -6,7 +6,6 @@ public:
 	float t, b, c, d;
 
 public:
-
 	static float linearEaseNull(float t, float b, float c, float d);
 
 	static float quadEaseIn(float t, float b, float c, float d);

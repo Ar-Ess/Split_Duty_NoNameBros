@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?> 
 
-<!-- Settup Dialog for the game -->
 <QuestSettup>
   <Quests>
     <Quest ID="0" reward="10" type="0" goal="10" enemy="2" title="MantisKiller">Kill 10 Mantis</Quest>
     <Quest ID="1" reward="15" type="2" npcId="1" title="Where is Scott?">Find Scott and Talk to him</Quest>
-    <Quest ID="2" reward="5"  type="1" goal="5"  title="PeachPicker">Gather 5 Peaches</Quest>
+    <Quest ID="2" reward="5"  type="1" goal="5"  item="0" title="MeatPicker">Gather 5 small pieces of meat</Quest>
   </Quests>
 </QuestSettup>

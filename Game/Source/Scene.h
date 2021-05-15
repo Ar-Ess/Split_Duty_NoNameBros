@@ -151,6 +151,7 @@ public: //Combat Buttons
 
 private: // Textures
 	SDL_Texture* logo = nullptr;
+	SDL_Texture* mainLogo = nullptr;
 	SDL_Texture* menu = nullptr;
 	SDL_Texture* pause = nullptr;
 public:
@@ -172,6 +173,9 @@ public:
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 	Spline spline;
+	EasingFunctions easing;
+	int iterations, totalIterations;
+	bool easingActive = false;
 
 	bool sp = false;
 
@@ -207,6 +211,10 @@ private: //Scene Manager
 	void UpdateWorld();
 	void UpdatePauseMenu();
 	void UpdateEndScreen();
+
+	float EaseLogoBetweenPoints(iPoint posA, iPoint posB,bool repeat);
+	float EaseTitleBetweenPoints(iPoint posA, iPoint posB,bool repeat);
+
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

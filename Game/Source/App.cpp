@@ -9,6 +9,7 @@
 #include "GuiManager.h"
 #include "FontTTF.h"
 #include "DialogueManager.h"
+#include "QuestManager.h"
 #include "Scene.h"
 #include "Transition.h"
 #include "Player.h"
@@ -37,6 +38,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	dialogueManager = new DialogueManager();
 	transition = new Transition();
+	questManager = new QuestManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -49,6 +51,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fontTTF);
 	AddModule(scene);
 	AddModule(dialogueManager);
+	AddModule(questManager);
 	AddModule(transition);
 
 	// Render last to swap buffer

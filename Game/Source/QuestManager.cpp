@@ -46,6 +46,11 @@ bool QuestManager::Update(float dt)
 			//LOGIC
 			it->second->QuestLogic();
 
+			if (it->second->IsCompleted() == true)
+				CompleteQuest(it->second->id);
+			if (it->second->IsActive() == false)
+				DeactivateQuest(it->second->id);
+				
 			//INPUT
 
 			//DRAW INFO
@@ -88,6 +93,7 @@ void QuestManager::CreateQuestMap(pugi::xml_node& setter)
 		uint16 goal = 0;
 		uint16 enemy = 0;
 		uint16 npc = 0;
+		uint16 item = 0;
 
 		Quest* newQuest;
 
@@ -101,7 +107,8 @@ void QuestManager::CreateQuestMap(pugi::xml_node& setter)
 			break;
 		case GATHER:
 			goal = qst.attribute("goal").as_uint();
-			newQuest = new GatherQuest(id, reward, goal, description, title);
+			item = qst.attribute("item").as_uint();
+			newQuest = new GatherQuest(id, reward, goal, description, title, ItemType(item));
 			questList[id] = newQuest;
 			break;
 		case FIND:
@@ -132,6 +139,35 @@ void QuestManager::CompleteQuest(int id)
 	questList[id]->SetCompleted();
 	finishedQuest[id] = questList[id];
 	questList.erase(id);
+}
+
+void QuestManager::CheckKillQuest(Enemy* e)
+{
+	for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
+	{
+		if (it->second->type == KILL)
+		{
+			
+			if (KillQuest(it->second).eType == e->enemyClass)
+			{
+				it->second->enemyDefeated == true;
+				return;
+			}
+		}
+		else continue;
+	}
+}
+
+void QuestManager::CheckGatherQuest(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
+{
+	for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
+	{
+		if (it->second->type == GATHER)
+		{
+			
+		}
+		else continue;
+	}
 }
 
 pugi::xml_node QuestManager::LoadQuestConfig(pugi::xml_document& configFile) const

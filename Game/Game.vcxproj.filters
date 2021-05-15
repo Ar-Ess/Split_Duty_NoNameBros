@@ -96,6 +96,9 @@
     <ClCompile Include="Source\Spline.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\LevelUp.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\OptionsMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -123,9 +126,8 @@
     <ClCompile Include="Source\KillQuest.cpp">
       <Filter>Quests</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EasingFunctions.cpp" />
-    <ClCompile Include="Source\LevelUp.cpp">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="Source\EasingFunctions.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

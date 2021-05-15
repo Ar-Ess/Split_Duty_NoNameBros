@@ -30,6 +30,7 @@ class FontTTF;
 class Scene;
 class DialogueManager;
 class Transition;
+class QuestManager;
 
 class App
 {
@@ -100,6 +101,7 @@ public:
 	Scene* scene;
 	DialogueManager* dialogueManager;
 	Transition* transition;
+	QuestManager* questManager;
 
 private:
 

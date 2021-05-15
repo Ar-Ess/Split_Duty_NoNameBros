@@ -5,6 +5,7 @@
 #include "SString.h"
 #include "Animation.h"
 #include "Scene.h"
+#include "QuestManager.h"
 
 #include "Collider.h"
 
