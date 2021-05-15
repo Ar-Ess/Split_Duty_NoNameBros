@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Inventory.h"
 #include "Scene.h"
+#include "LevelUp.h"
 #include "GuiButton.h"
 #include "GuiManager.h"
 #include "Audio.h"
@@ -319,6 +320,32 @@ bool GuiButton::Draw(float scale, bool useCamera, bool drawTexture, ButtonType t
                     break;
                 case GuiControlState::PRESSED:
                     app->render->DrawTexture(itemsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &s_pressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    }
+                }
+
+                break;
+            }
+
+            case ButtonType::UPGRADE:
+            {
+                switch (state)
+                {
+
+                case GuiControlState::DISABLED:
+                    app->render->DrawTexture(app->scene->levelUpScene->buttonsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &upgradeNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                    if (state != GuiControlState::DISABLED)
+                    {
+
+                case GuiControlState::NORMAL:
+                    app->render->DrawTexture(app->scene->levelUpScene->buttonsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &upgradeNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::FOCUSED:
+                    app->render->DrawTexture(app->scene->levelUpScene->buttonsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &upgradeNormal, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+                    break;
+                case GuiControlState::PRESSED:
+                    app->render->DrawTexture(app->scene->levelUpScene->buttonsTexture, bounds.x, bounds.y, scale + 0.0f, scale, false, &upgradePressed, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
                     break;
                     }
                 }

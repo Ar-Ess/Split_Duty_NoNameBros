@@ -82,7 +82,9 @@ private:
     const SDL_Rect s_focused = { tile.x * 5,tile.y * 2,tile.x,tile.y };
     const SDL_Rect s_pressed = { tile.x * 3,tile.y * 3,tile.x,tile.y };
 
-
+    //lvl up scene
+    const SDL_Rect upgradeNormal = { 0,0,52,55 };
+    const SDL_Rect upgradePressed = { 52,0,52,55 };
     
 };
 

@@ -35,7 +35,8 @@ void LevelUp::Restart()
 
 void LevelUp::Update()
 {
-	//UpdateButtons();
+	UpdateButtons();
+	UpdateText();
 }
 
 void LevelUp::Draw()
@@ -44,7 +45,7 @@ void LevelUp::Draw()
 
 	DrawButtons();
 
-	//DrawText();
+	DrawText();
 
 	app->guiManager->DrawCursor();
 
@@ -94,10 +95,10 @@ void LevelUp::DrawText()
 
 void LevelUp::DrawButtons()
 {
-	upgradeHealthButton->Draw(1, true, false);
-	upgradeDefenseButton->Draw(1, true, false);
-	upgradeAttackButton->Draw(1, true, false);
-	upgradeSpeedButton->Draw(1, true, false);
-	upgradeLuckButton->Draw(1, true, false);
-	upgradeStabButton->Draw(1, true, false);
+	upgradeHealthButton->Draw(1, true, false,ButtonType::UPGRADE);
+	upgradeDefenseButton->Draw(1, true, false, UPGRADE);
+	upgradeAttackButton->Draw(1, true, false, UPGRADE);
+	upgradeSpeedButton->Draw(1, true, false, UPGRADE);
+	upgradeLuckButton->Draw(1, true, false, UPGRADE);
+	upgradeStabButton->Draw(1, true, false, UPGRADE);
 }

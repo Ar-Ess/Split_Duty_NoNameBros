@@ -326,6 +326,7 @@ void World::Update()
 		if (!app->dialogueManager->onDialog)
 		{
 			levelUpOpen = !levelUpOpen;
+			app->scene->SetLevelUp(0);
 			if (levelUpOpen) LOG("level up scene");
 		}
 	}

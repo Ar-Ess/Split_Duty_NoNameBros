@@ -219,12 +219,23 @@ void Inventory::SetText()
 	{
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		healthText->bounds = { 900, 153, 200, 50 };
-		healthText->SetTextFont(app->fontTTF->inventoryFont);
-		healthText->SetString("XP: 34 / 70", YELLOW);
+		healthText->SetTextFont(app->fontTTF->defaultFont);
 
-		/*char str[12] = {};
-		app->fontTTF->IntToDynamicString(str, app->scene->player1->health, 2);
-		littleBeefText->SetString(str, BROWN);*/
+		/*char hp[5];
+		char mhp[5];
+		char slash[2] = { "/" };
+		char* t = { "HP:" };
+
+		sprintf(hp, "%d", app->scene->player1->health);
+		sprintf(mhp, "%d", app->scene->player1->maxHealth);
+
+		char* str;
+		char* str1;
+		str=strcat(hp, slash);
+		str1 = strcat(str, mhp);
+		str = strcat(t, str1);*/
+
+		healthText->SetString("HP: 34/70",YELLOW);
 	}
 
 	if (expText == nullptr)
@@ -232,6 +243,8 @@ void Inventory::SetText()
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		expText->bounds = { 900, 220, 200, 50 };
 		expText->SetTextFont(app->fontTTF->inventoryFont);
+
+
 		expText->SetString("XP: 34 / 70", YELLOW);
 	}
 

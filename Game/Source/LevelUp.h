@@ -54,8 +54,11 @@ public:
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
+    
 
 public:
+    SDL_Texture* buttonsTexture = nullptr;      
+
     iPoint buttonPos = { 1000,200 };
     iPoint buttonOff = { 0,30 };
 
