@@ -665,7 +665,7 @@ void World::WorldEnemyChasing()
 void World::EnemyStatsGeneration(Enemy* e, Player* p)
 {
 	int eHealth = p->maxHealth;
-	int eStrength = p->strengthStat - 5;
+	int eStrength = p->strengthStat - 2;
 	int eDefense = p->defenseStat - 2;
 	int eVelocity = 10;
 	int eLevel = p->lvl + 1;

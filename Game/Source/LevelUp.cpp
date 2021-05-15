@@ -26,14 +26,14 @@ void LevelUp::Start(short int exp)
 {
 	SetText();
 
-	interfaceTexture = app->tex->Load("Assets/Textures/UI/level-up.png");
+	interfaceTexture = app->tex->Load("Assets/Screens/level_scene.png");
+	barTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
 
 	int lvl = app->scene->player1->lvl;
-	int prevLvl = 0;
-	if (lvl != 0) int prevLvl = lvl - 1;
+	int nextLvl = lvl + 1;
 
 	char str[24] = {};
-	sprintf(str, "Level Up! %d to %d", prevLvl, lvl);
+	sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
 	upgradeText->SetString(str, BROWN);
 
 	levelUpBool = false;
@@ -43,7 +43,7 @@ void LevelUp::Start(short int exp)
 
 	int newExp = actualExp + plusExp; //Sum of the actual experience plus the experience given by the enemy
 
-	maxExp = floor(pow((float)app->scene->player1->lvl, 1.25f));
+	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f));
 	
 	if (newExp > maxExp)
 	{
@@ -59,14 +59,21 @@ void LevelUp::Start(short int exp)
 		levelUpBool = true;
 	}
 
+	Player* p = app->scene->player1;
 	if (levelUpBool)
 	{
 		Player* p = app->scene->player1;
+		int x = p->lvl - 1;
 
-		p->health += ((p->lvl - 1) / 2) + 10
+		p->health = floor((x / 2) + 20);
+		p->strengthStat = floor((x / 3) + 6);
+		p->defenseStat = floor((x / 3) + 3);
 
-		p = nullptr;
 	}
+
+	p->exp = newExp;
+
+	p = nullptr;
 }
 
 void LevelUp::Restart()
@@ -89,7 +96,7 @@ void LevelUp::Draw()
 
 	DrawText();
 
-	DrawBar({600, 400}, app->scene->player1->exp, maxExp, BLUE);
+	DrawBar({500, 400}, app->scene->player1->exp, maxExp, BLUE);
 
 	//app->guiManager->DrawCursor();
 }
@@ -98,11 +105,15 @@ void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 {
 	int size = 261;
 	int thickness = 20;
-	int percent = 1;
+	float percent = 1;
 
-	if (current > 0 && max > 0) percent = current / max;
+	float curr = current;
+	float maxim = max;
 
-	app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);
+	if (current > 0 && max > 0) percent = curr / maxim;
+
+	app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, BLUE, true, false);
+	app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, {143, 143, 255, 255}, true, false);
 	app->render->DrawTexture(barTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 }
@@ -117,22 +128,32 @@ void LevelUp::SetText()
 	if (upgradeText == nullptr)
 	{
 		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		upgradeText->bounds = { 600, 200, 300, 100 };
+		upgradeText->bounds = { 600, 220, 300, 100 };
 		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
 
 		int lvl = app->scene->player1->lvl;
-		int prevLvl = 0;
-		if (lvl != 0) int prevLvl = lvl - 1;
+		int nextLvl = lvl + 1;
 
 		char str[24] = {};
-		sprintf(str, "Level Up! %d to %d", prevLvl, lvl);
-		upgradeText->SetString(str, BROWN);
+		sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
+		upgradeText->SetString(str, WHITE);
+	}
+
+	if (winText == nullptr)
+	{
+		winText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		winText->bounds = { 600, 180, 300, 100 };
+		winText->SetTextFont(app->fontTTF->defaultFont);
+
+		winText->SetString("YOU WON!", WHITE);
 	}
 }
 
 void LevelUp::DrawText()
 {
 	if (levelUpBool) upgradeText->Draw();
+
+	winText->Draw();
 }
 
 void LevelUp::DrawButtons()

@@ -683,7 +683,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->smallMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->smallMeatDescription->bounds = descriptionRect; //NO
-		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->smallMeatDescription->SetString("Small Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 30 percent of the Max Health of the hero");
 	}
 
@@ -691,7 +691,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->largeMeatDescription->bounds = descriptionRect;
-		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nWe are not talking about something easy to eat, this meat has the god's \napprovement. It is needed a high quality cheff to admire the flavour \nof this aliment. Either way, it gives the enough vitamins to fight \nduring 12 nights without falling asleep. \n\n - USE: Heals the 60 percent of the Max Health of the hero");
 	}
 
@@ -699,7 +699,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->featherDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->featherDescription->bounds = descriptionRect;
-		combatScene->featherDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->featherDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->featherDescription->SetString("Slight Feather: \n\nAir is something not visible, but either we can feel it with the wind, which has \nthe power of the destruction of any and enery live structure. \nThis feather is like the air, slight and soft, but has the power to cancel \nthe air friction of every possible wind \n\n - USE: Softens hero's jump and heals a 15 percent of it ");
 	}
 
@@ -707,7 +707,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->mantisRodDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->mantisRodDescription->bounds = descriptionRect;
-		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the infinite damage of a god attack, life itself needed a way to stop them, \nso it created the infinite defense, which was materialized into \nthe arm of a mantis. But, all good things have an end, that's why \nlife made that arm the most fragile one. What a paradox! \n\n - USE: Makes hero invencible to one enemy hit during one turn");
 	}
 
@@ -715,7 +715,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->enemySplitDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->enemySplitDescription->bounds = descriptionRect;
-		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the power was concerned to the hero, it has the power to split enemy aura \nand cage it for its sake. We do not know why the hero has the \nability to do that, but we know those auras can be used in our benefit.\n That's his will, and not anyone else, even hero's one. \n\n - USE: Invoque an aliade enemy that will attack your opponent");
 	}
 
@@ -723,7 +723,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		combatScene->moneyDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->moneyDescription->bounds = descriptionRect;
-		combatScene->moneyDescription->SetTextFont(app->fontTTF->fonts.At(1)->data);
+		combatScene->moneyDescription->SetTextFont(app->fontTTF->defaultFont2);
 		combatScene->moneyDescription->SetString("Coin: \n\nJust a coin \n\n\n\n\n - USE: Use a coin an loose it");
 	}
 

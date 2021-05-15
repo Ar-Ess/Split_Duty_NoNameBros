@@ -68,6 +68,8 @@ public:
 
     GuiString* upgradeText = nullptr;
 
+    GuiString* winText = nullptr;
+
 };
 
 #endif // __LEVELUP_H__
