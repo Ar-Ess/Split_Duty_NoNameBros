@@ -4,7 +4,7 @@
 #include "GuiManager.h"
 #include "Combat.h"
 #include "Player.h"
-
+#include "Audio.h"
 
 DialogueManager::DialogueManager()
 {
@@ -394,5 +394,6 @@ void DialogueManager::SkipDialogue()
 {
 	tempText = currentDialogue->currentNode->text;
 	currentDialogue->currentNode->nodeEnd = true;
-	counter = 0;	
+	counter = 0;
+	app->audio->SetFx(Effect::SKIP_DIALOGUE_FX);
 }

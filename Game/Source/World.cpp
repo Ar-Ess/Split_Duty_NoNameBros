@@ -318,6 +318,7 @@ void World::Update()
 		{
 			inventoryOpen = !inventoryOpen;
 			app->guiManager->CenterCursor();
+			app->audio->SetFx(Effect::INVENTORY_OPEN_FX);
 		}
 	}
 }

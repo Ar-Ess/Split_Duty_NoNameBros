@@ -38,6 +38,7 @@
     <fx>
       <sound>Assets/Audio/Fx/SplitDuty_ButtonFocussed_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_ButtonReleased_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_ButtonSolved_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_LogoScene_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_MainMenuScene_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_PlayerTurn_Fx.wav</sound>
@@ -52,6 +53,13 @@
       <sound>Assets/Audio/Fx/SplitDuty_MantisHurt_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_LeftFlower_Fx.wav</sound>
       <sound>Assets/Audio/Fx/SplitDuty_RightFlower_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_StoneFall_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_StoneTouch_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_SkipDialogue_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_Meh_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_OK_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_NPCTalk_Fx.wav</sound>
+      <sound>Assets/Audio/Fx/SplitDuty_InventaryOpen_Fx.wav</sound>
     </fx>
   </audio>
 </config>

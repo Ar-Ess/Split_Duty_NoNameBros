@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Input.h"
 #include "StonePuzzle.h"
+#include "Audio.h"
 
 StonePuzzle::StonePuzzle() {}
 
@@ -54,6 +55,8 @@ void StonePuzzle::Update()
 					else if (app->scene->world->GetPlayerState() == PlayerState::RIGHT) right = true;
 					else if (app->scene->world->GetPlayerState() == PlayerState::UP) up = true;
 					else if (app->scene->world->GetPlayerState() == PlayerState::DOWN) down = true;
+
+					app->audio->SetFx(Effect::STONE_TOUCH_FX);
 				}
 			}
 			else
@@ -75,6 +78,7 @@ void StonePuzzle::Update()
 			if (collisionUtils.CheckCollision(path, stone[i].rect))
 			{
 				stoneInWater = true;
+				app->audio->SetFx(Effect::STONE_FALL_FX);
 			}
 		}
 	}

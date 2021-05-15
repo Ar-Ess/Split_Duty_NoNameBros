@@ -7,6 +7,7 @@
 #include "DialogueManager.h"
 #include "GuiManager.h"
 #include "World.h"
+#include "Audio.h"
 
 NPC::NPC() : Entity(EntityType::NPC)
 {
@@ -58,6 +59,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 			if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 			{
 				app->dialogueManager->StartDialogue(dialog);
+				app->audio->SetFx(Effect::NPC_TALK_FX);
 			}
 		}
 	}

@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Input.h"
 #include "ButtonsPuzzle.h"
+#include "Audio.h"
 
 ButtonPuzzle::ButtonPuzzle() {}
 
@@ -46,10 +47,12 @@ void ButtonPuzzle::Update()
 					{
 						step++;
 						button[i].active = true;
+						app->audio->SetFx(Effect::OK_FX);
 					}
 					else
 					{
 						//FX of failure
+						app->audio->SetFx(Effect::MEH_FX);
 						ResetButtons();
 					}
 				}
@@ -59,6 +62,7 @@ void ButtonPuzzle::Update()
 		if (step == (button.Count() + 1))
 		{
 			//FX of win
+			app->audio->SetFx(Effect::BUTTON_SOLVED_FX);
 			resultActive = true;
 		}
 	}

@@ -122,6 +122,8 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 
 void AudioManager::SetFx(Effect fx)
 {
+	//int fX = int(fx) + 1;
+	//PlayFx(fX);
 	if (fx == BUTTON_FOCUSSED)
 	{
 		PlayFx(1);
@@ -130,53 +132,93 @@ void AudioManager::SetFx(Effect fx)
 	{
 		PlayFx(2);
 	}
-	else if (fx == LOGO_SCENE_FX)
+	else if (fx == BUTTON_SOLVED_FX)
 	{
-		PlayFx(3);
+		PlayFx(3)
 	}
-	else if (fx == MAIN_MENU_FX)
+	else if (fx == LOGO_SCENE_FX)
 	{
 		PlayFx(4);
 	}
-	else if (fx == PLAYER_TURN_FX)
+	else if (fx == MAIN_MENU_FX)
 	{
 		PlayFx(5);
 	}
-	else if (fx == PLAYER_ATTACK_FX)
+	else if (fx == PLAYER_TURN_FX)
 	{
 		PlayFx(6);
 	}
-	else if (fx == PLAYER_HURT_FX)
+	else if (fx == PLAYER_ATTACK_FX)
 	{
 		PlayFx(7);
 	}
-	else if (fx == WOLF_TURN_FX)
+	else if (fx == PLAYER_HURT_FX)
 	{
 		PlayFx(8);
 	}
-	else if (fx == WOLF_ATTACK_FX)
+	else if (fx == WOLF_TURN_FX)
 	{
 		PlayFx(9);
 	}
-	else if (fx == WOLF_HURT_FX)
+	else if (fx == WOLF_ATTACK_FX)
 	{
 		PlayFx(10);
 	}
-	else if (fx == BIRD_TURN_FX)
+	else if (fx == WOLF_HURT_FX)
 	{
 		PlayFx(11);
 	}
-	else if (fx == MANTIS_TURN_FX)
+	else if (fx == BIRD_TURN_FX)
 	{
 		PlayFx(12);
 	}
-	else if (fx == MANTIS_ATTACK_FX)
+	else if (fx == MANTIS_TURN_FX)
 	{
 		PlayFx(13);
 	}
-	else if (fx == MANTIS_HURT_FX)
+	else if (fx == MANTIS_ATTACK_FX)
 	{
 		PlayFx(14);
+	}
+	else if (fx == MANTIS_HURT_FX)
+	{
+		PlayFx(15);
+	}
+	else if (fx == LEFT_FLOWER_FX)
+	{
+		PlayFx(16);
+	}
+	else if (fx == RIGHT_FLOWER_FX)
+	{
+		PlayFx(17);
+	}
+	else if (fx == STONE_FALL_FX)
+	{
+		PlayFx(18);
+	}
+	else if (fx == STONE_TOUCH_FX)
+	{
+		PlayFx(19);
+	}
+	else if (fx == SKIP_DIALOGUE_FX)
+	{
+		PlayFx(20);
+	}
+	else if (fx == MEH_FX)
+	{
+		PlayFx(21);
+	}
+	else if (fx == OK_FX)
+	{
+		PlayFx(22);
+	}
+	else if (fx == NPC_TALK_FX)
+	{
+		PlayFx(23);
+	}
+	else if (fx == INVENTORY_OPEN_FX)
+	{
+		PlayFx(24);
 	}
 }
 
