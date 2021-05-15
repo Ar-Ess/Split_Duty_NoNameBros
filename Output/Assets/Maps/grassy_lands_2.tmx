@@ -1456,10 +1456,10 @@
    <tile gid="35"/>
    <tile gid="36"/>
    <tile gid="33"/>
-   <tile gid="34"/>
-   <tile gid="35"/>
-   <tile gid="36"/>
-   <tile gid="33"/>
+   <tile gid="653"/>
+   <tile gid="654"/>
+   <tile gid="654"/>
+   <tile gid="656"/>
    <tile gid="34"/>
    <tile gid="35"/>
    <tile gid="36"/>
@@ -1503,8 +1503,8 @@
    <tile gid="2194"/>
    <tile gid="2193"/>
    <tile gid="2194"/>
-   <tile gid="2193"/>
-   <tile gid="2194"/>
+   <tile gid="2593"/>
+   <tile gid="2593"/>
    <tile gid="2193"/>
    <tile gid="2194"/>
    <tile gid="2193"/>
