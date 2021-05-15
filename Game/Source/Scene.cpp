@@ -98,6 +98,10 @@ bool Scene::Start()
 	pugi::xml_document doc;
 	spline.LoadSplines(doc);
 
+	iterations = 0;
+	totalIterations = 226;
+	easingActive = false;
+
 	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 98, i m'entero, no viu un dia més :) <3
 
 	return true;
@@ -932,7 +936,12 @@ void Scene::SetEndScreen()
 
 void Scene::UpdateLogoScene()
 {
-	if (timer >= 50) app->render->DrawTexture(logo, 0, 0);
+	if (timer >= 50)
+	{
+		float logoX = EaseTextureBetweenPoints(iPoint(-1280, 0), iPoint(0, 0));
+		app->render->DrawTexture(logo, logoX, 0);
+	}
+
 
 	if (timer < 50)
 	{
@@ -1075,6 +1084,20 @@ void Scene::UpdateEndScreen()
 	endScene->Update();
 
 	endScene->Draw();
+}
+
+float Scene::EaseTextureBetweenPoints(iPoint posA, iPoint posB)
+{
+	float value = easing.bounceEaseInOut(iterations, posA.x, posB.x - posA.x, totalIterations);
+
+	if (iterations < totalIterations) {
+		iterations++;
+	}
+	else {
+		iterations = 0;
+		easingActive = false;
+	}
+	return value;
 }
 
 // GUI CONTROLS

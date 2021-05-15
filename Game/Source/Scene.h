@@ -172,6 +172,9 @@ public:
 	Environments enviroment;
 	iPoint prevCam = { 0, 0 };
 	Spline spline;
+	EasingFunctions easing;
+	int iterations, totalIterations;
+	bool easingActive = false;
 
 	bool sp = false;
 
@@ -207,6 +210,9 @@ private: //Scene Manager
 	void UpdateWorld();
 	void UpdatePauseMenu();
 	void UpdateEndScreen();
+
+	float EaseTextureBetweenPoints(iPoint posA, iPoint posB);
+	
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

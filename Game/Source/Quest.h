@@ -15,23 +15,16 @@ enum QuestType
 	FIND
 };
 
-//enum SubQuestType
-//{
-//	NO_ACTION = -1,
-//	KILL_ACTION,
-//	COLLECT_ACTION,
-//	FIND_ACTION,
-//};
+enum ItemType;
 
+class QuestManager;
 class Quest
 {
 public: //FUNCTIONS
 
 	Quest() {}
 
-	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false) {}
-
-	//Quest(uint16 id, uint16 reward, const char* textDescription, const char* textTitle, QuestType type);
+	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false), enemyDefeated(false) {}
 
 	virtual ~Quest() {}
 
@@ -42,6 +35,15 @@ public: //FUNCTIONS
 	void DrawPinnedQuest()
 	{
 
+	}
+
+	void TriggerQuest()
+	{
+		if(trigger == false)
+			this->trigger = true;
+
+		this->SetActive();
+		this->SetPinned();
 	}
 
 	//GETTERS
@@ -86,6 +88,7 @@ public: //VARIABLES
 	bool				isActive = false;
 	bool				isCompleted = false;
 	bool				isPinned = false;
+	bool				enemyDefeated = false;
 
 	const char*			textDescription;
 	const char*			textTitle;
@@ -95,32 +98,5 @@ public: //VARIABLES
 
 	QuestType			type;
 };
-	//SubQuest*			currentEvent = nullptr;
-	//
-	//List<SubQuest*>		eventList;
-
-//class SubQuest : public Quest
-//{
-//public: //FUCNTIONS
-//
-//	SubQuest(uint16 id) :
-//				id(id) {}
-//	virtual ~SubQuest() {}
-//
-//private: //FUNCTIONS
-//
-//public: //VARIABLES
-//
-//private: //VARIABLES
-//
-//	uint16				id;
-//	//SubQuestType		type;
-//
-//	const char*			textDescription;
-//
-//	GuiString			description;
-//
-//	SubQuest*			nextEvent = nullptr;
-//};
 #endif // !_QUEST_H_
 

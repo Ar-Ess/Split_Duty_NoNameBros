@@ -162,7 +162,8 @@ void Player::SetTexture(SDL_Texture *tex)
 
 void Player::ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
 {
-    smallMeatCount = xsmallMeat;
+    if (smallMeatCount != xsmallMeat)
+        smallMeatCount = xsmallMeat;
     largeMeatCount = xlargeMeat;
     featherCount = xfeather;
     mantisRodCount = xmantisLeg;

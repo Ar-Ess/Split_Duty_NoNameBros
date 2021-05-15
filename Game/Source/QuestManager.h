@@ -23,17 +23,21 @@ public://FUNCTIONS
 	bool Update(float dt);
 	bool CleanUp();
 
+	void CheckKillQuest(Enemy* e);
+	void CheckGatherQuest(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
+
 private://FUNCTIONS
+
 	void CreateQuestMap(pugi::xml_node& setter);
 
 	void ActivateQuest(int id);
 	void DeactivateQuest(int id);
 	void CompleteQuest(int id);
 
+
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;
 
 public://VARIABLES
-
 private://VARIABLES
 	Quest*						currentQuest = nullptr;
 
