@@ -41,6 +41,7 @@ void LevelUp::Update()
 
 void LevelUp::Draw()
 {
+	LOG("Drawing lvl up scene...");
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 	DrawButtons();
@@ -95,10 +96,14 @@ void LevelUp::DrawText()
 
 void LevelUp::DrawButtons()
 {
-	upgradeHealthButton->Draw(1, true, false,ButtonType::UPGRADE);
-	upgradeDefenseButton->Draw(1, true, false, UPGRADE);
+	LOG("Drawing lvl buttons...");
+
+	upgradeHealthButton->Draw(1, false, false,ButtonType::UPGRADE);
+	upgradeDefenseButton->Draw(1, false, false, UPGRADE);
 	upgradeAttackButton->Draw(1, true, false, UPGRADE);
 	upgradeSpeedButton->Draw(1, true, false, UPGRADE);
 	upgradeLuckButton->Draw(1, true, false, UPGRADE);
 	upgradeStabButton->Draw(1, true, false, UPGRADE);
+
+	
 }

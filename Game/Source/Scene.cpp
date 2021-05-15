@@ -458,7 +458,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->dFullScreenText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		optionsMenu->dFullScreenText->bounds = { textPrefab.x,textPrefab.y+off.y,textPrefab.w,textPrefab.h };
 		optionsMenu->dFullScreenText->SetTextFont(app->fontTTF->defaultFont);
-		optionsMenu->dFullScreenText->SetString("D FULL SCREEN");
+		optionsMenu->dFullScreenText->SetString("DESKTOP FULL SCREEN");
 	}
 
 	if (optionsMenu->vSyncText == nullptr)
@@ -466,7 +466,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->vSyncText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		optionsMenu->vSyncText->bounds = { textPrefab.x,textPrefab.y+off.y*2,textPrefab.w,textPrefab.h };
 		optionsMenu->vSyncText->SetTextFont(app->fontTTF->defaultFont);
-		optionsMenu->vSyncText->SetString("V SYNC");
+		optionsMenu->vSyncText->SetString("V-SYNC");
 	}
 
 	if (optionsMenu->returnText == nullptr)
