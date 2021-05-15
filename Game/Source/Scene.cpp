@@ -171,7 +171,6 @@ bool Scene::Update(float dt)
 		spline.DrawSplineControlPoints(0);
 		spline.HandleInput(0);
 	}
-
 	return true;
 }
 

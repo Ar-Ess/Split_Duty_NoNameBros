@@ -28,9 +28,10 @@ class Quest
 public: //FUNCTIONS
 
 	Quest() {}
-	Quest(uint16 id, uint16 reward, const char* textDescription, const char* textTitle, QuestType type) :
-		id(id), reward(reward), textDescription(textDescription), textTitle(textTitle), type(type), 
-		trigger(false), isActive(false), isCompleted(false), isPinned(false) {}
+
+	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false) {}
+
+	//Quest(uint16 id, uint16 reward, const char* textDescription, const char* textTitle, QuestType type);
 
 	virtual ~Quest() {}
 
@@ -78,8 +79,6 @@ public: //FUNCTIONS
 private: //FUNCTIONS
 
 public: //VARIABLES
-
-private: //VARIABLES
 	uint16				id;
 	uint16				reward;
 
@@ -95,10 +94,10 @@ private: //VARIABLES
 	GuiString			description;
 
 	QuestType			type;
+};
 	//SubQuest*			currentEvent = nullptr;
 	//
 	//List<SubQuest*>		eventList;
-};
 
 //class SubQuest : public Quest
 //{

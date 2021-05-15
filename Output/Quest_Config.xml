@@ -3,17 +3,8 @@
 <!-- Settup Dialog for the game -->
 <QuestSettup>
   <Quests>
-    <Quest ID="0" reward="10" type="0" title="MantisKiller">Kill 10 Mantis
-      <SubQuest type="-1">
-      </SubQuest>
-    </Quest>
-    <Quest ID="1" reward="15" type="2" title="Where is Scott?">Find Scott and Talk to him
-      <SubQuest type="-1">
-      </SubQuest>
-    </Quest>
-    <Quest ID="2" reward="5" type="1" title="PeachPicker">Gather 5 Peaches
-      <SubQuest type="-1">
-      </SubQuest>
-    </Quest>
+    <Quest ID="0" reward="10" type="0" goal="10" enemy="2" title="MantisKiller">Kill 10 Mantis</Quest>
+    <Quest ID="1" reward="15" type="2" npcId="1" title="Where is Scott?">Find Scott and Talk to him</Quest>
+    <Quest ID="2" reward="5"  type="1" goal="5"  title="PeachPicker">Gather 5 Peaches</Quest>
   </Quests>
 </QuestSettup>
