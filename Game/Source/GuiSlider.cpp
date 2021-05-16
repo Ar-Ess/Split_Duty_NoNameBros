@@ -5,6 +5,7 @@
 #include "Audio.h"
 
 #include "Log.h"
+#include "Defs.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
@@ -43,7 +44,7 @@ bool GuiSlider::Update(float dt)
             {
                 if (state == GuiControlState::FOCUSED)
                 {
-                    app->audio->SetFx(Effect::BUTTON_RELEASED);
+                    if (app->GetFrameCount() % 30 == 0 && strcmp(text.GetString(), "FxVolumeSlider") == 0) app->audio->SetFx(Effect::BUTTON_RELEASED);
                 }
                 state = GuiControlState::SELECTED;
 
