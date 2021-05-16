@@ -62,13 +62,19 @@ private:
 
     bool levelUpBool = false;
 
+    int counter = 0;
+
 public:
 
     GuiButton* skipButton = nullptr;
 
+    GuiString* skipText = nullptr;
+
     GuiString* upgradeText = nullptr;
 
     GuiString* expGainedText = nullptr;
+
+    GuiString* expText = nullptr;
 
     GuiString* winText = nullptr;
 

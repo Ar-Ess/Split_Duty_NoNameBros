@@ -42,6 +42,8 @@ void LevelUp::Start(short int exp)
 
 	levelUpBool = false;
 
+	counter = 0;
+
 	plusExp = exp; //Experience given by the enemy
 	actualExp = app->scene->player1->exp; //Actual player experience
 
@@ -88,7 +90,7 @@ void LevelUp::Restart()
 
 void LevelUp::Update()
 {
-	UpdateButtons();
+	if (counter >= app->scene->player1->exp) UpdateButtons();
 }
 
 void LevelUp::Draw()
@@ -96,11 +98,13 @@ void LevelUp::Draw()
 	LOG("Drawing lvl up scene...");
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	DrawButtons();
+	if (counter >= app->scene->player1->exp) DrawButtons();
 
-	DrawText();
+    DrawText();
 
-	DrawBar({530, 400}, app->scene->player1->exp, maxExp, BLUE);
+	if (counter < app->scene->player1->exp) counter ++;
+
+	DrawBar({530, 400}, counter, maxExp, BLUE);
 
 	//app->guiManager->DrawCursor();
 }
@@ -116,8 +120,8 @@ void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 
 	if (current > 0 && max > 0) percent = curr / maxim;
 
-	app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, BLUE, true, false);
-	app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, {143, 143, 255, 255}, true, false);
+	app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, { 143, 143, 255, 255 }, true, false);
+	app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, {0, 40, 200, 255}, true, false);
 	app->render->DrawTexture(barTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
 }
@@ -155,12 +159,29 @@ void LevelUp::SetText()
 	if (expGainedText == nullptr)
 	{
 		expGainedText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		expGainedText->bounds = { 600, 220, 300, 100 };
+		expGainedText->bounds = { 550, 220, 300, 100 };
 		expGainedText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[24] = {};
 		sprintf(str, "Gained %d exp", 0);
 		expGainedText->SetString(str, WHITE);
+	}
+
+	if (expText == nullptr)
+	{
+		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		expText->bounds = { 500, 400, 300, 100 };
+		expText->SetTextFont(app->fontTTF->inventoryFont);
+		expText->SetString("EXP: ");
+	}
+
+	if (skipText == nullptr)
+	{
+		skipText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		skipText->bounds = { 580, 580, 161, 62 };
+		skipText->SetTextFont(app->fontTTF->inventoryFont);
+		skipText->SetString("RETURN ");
+		skipText->CenterAlign();
 	}
 }
 
@@ -169,6 +190,10 @@ void LevelUp::DrawText()
 	if (levelUpBool) upgradeText->Draw();
 
 	winText->Draw();
+	
+	expGainedText->Draw();
+
+	if (counter >= app->scene->player1->exp) skipText->Draw();
 }
 
 void LevelUp::DrawButtons()
