@@ -55,12 +55,65 @@ void Inventory::Start()
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
-	//texts
+	//TEXT
 	SetText();
 
 	char str[5] = {};
 	sprintf(str, "%d", app->scene->player1->lvl);
 	lvlText->SetString(str, YELLOW);
+
+	//STATS TEXT
+	sprintf(str, "%d", app->scene->player1->healthStat);
+	healthStatText->SetString(str, BROWN);
+
+	sprintf(str, "%d", app->scene->player1->strengthStat);
+	strenghtStatText->SetString(str, BROWN);
+
+	sprintf(str, "%d", app->scene->player1->defenseStat);
+	defenseStatText->SetString(str, BROWN);
+
+	sprintf(str, "%d", app->scene->player1->velocityStat);
+	velocityStatText->SetString(str, BROWN);
+
+	sprintf(str, "%d", app->scene->player1->stabStat);
+	healthStatText->SetString(str, BROWN);
+
+	sprintf(str, "%d", app->scene->player1->luckStat);
+	luckStatText->SetString(str, BROWN);
+
+	//HEALTH 
+	char hp[5];
+	char mhp[5];
+	char slash[2] = { "/" };
+	char t[4] = { "HP:" };
+
+	sprintf(hp, "%d", app->scene->player1->health);
+	sprintf(mhp, "%d", app->scene->player1->maxHealth);
+
+	char* str_ = {};
+	char* str1 = {};
+	str_ = strcat(hp, slash);
+	str1 = strcat(str_, mhp);
+	str_ = strcat(t, str1);
+
+	healthText->SetString(str_, YELLOW);
+
+	//XP
+	char xp[5];
+	char mxp[5];
+	char tx[4]= { "HP:" };
+	char slashx[2] = { "/" };
+	int maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f));
+
+	sprintf(xp, "%d", app->scene->player1->exp);
+	sprintf(mxp, "%d", maxExp);
+
+	str_ = strcat(xp, slashx);
+	str1 = strcat(str, mxp);
+	str_ = strcat(tx, str1);
+
+	expText->SetString(str_, YELLOW);
+		
 }
 
 void Inventory::Restart()
@@ -216,29 +269,44 @@ void Inventory::SetText()
 		healthText->bounds = { healthBarPos.x, healthBarPos.y+33, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->defaultFont);
 
-		/*char hp[5];
+		char hp[5];
 		char mhp[5];
 		char slash[2] = { "/" };
-		char* t = { "HP:" };
+		char t[4] = { "HP:" };
 
 		sprintf(hp, "%d", app->scene->player1->health);
 		sprintf(mhp, "%d", app->scene->player1->maxHealth);
 
-		char* str;
-		char* str1;
+		char* str = {};
+		char* str1 = {};
 		str=strcat(hp, slash);
 		str1 = strcat(str, mhp);
-		str = strcat(t, str1);*/
+		str = strcat(t, str1);
 
-		healthText->SetString("HP: 34/70",YELLOW);
+		healthText->SetString(str,YELLOW);
 	}
 
 	if (expText == nullptr)
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		expText->bounds = { expBarPos.x, expBarPos.y+33, 200, 50 };
-		expText->SetTextFont(app->fontTTF->inventoryFont);
-		expText->SetString("XP: 34 / 70", YELLOW);
+		expText->SetTextFont(app->fontTTF->defaultFont);
+
+		char xp[5];
+		char mxp[5];
+		char slash[2] = { "/" };
+		char t[4] = { "HP:" };
+
+		sprintf(xp, "%d", app->scene->player1->health);
+		sprintf(mxp, "%d", app->scene->player1->maxHealth);
+
+		char* str = {};
+		char* str1 = {};
+		str = strcat(xp, slash);
+		str1 = strcat(str, mxp);
+		str = strcat(t, str1);
+
+		expText->SetString(str, YELLOW);
 	}
 
 	//ITEMS
@@ -382,6 +450,7 @@ void Inventory::SetText()
 
 void Inventory::UpdateText()
 {
+	//ITEMS
 	char str[5] = {};
 	sprintf(str, "%d", app->scene->player1->smallMeatCount);
 	littleBeefText->SetString(str, BROWN);
@@ -405,6 +474,8 @@ void Inventory::UpdateText()
 	char str5[5] = {};
 	sprintf(str5, "%d", app->scene->player1->splitedEnemyCount);
 	splitText->SetString(str5, BROWN);
+
+	//STAT
 
 }
 
