@@ -607,6 +607,7 @@ void Combat::EndBattleSolving()
 		enemy->Refill();
 		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
+		app->scene->world->AlignCameraPosition();
 	}
 }
 

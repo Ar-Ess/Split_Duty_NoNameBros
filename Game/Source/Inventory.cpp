@@ -94,7 +94,7 @@ void Inventory::Start()
 
 	//XP
 	char xpText[20] = {};
-	int maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
+	maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
 
 	sprintf(xpText, "%d / %d", app->scene->player1->exp, maxExp);
 	expText->SetString(xpText, YELLOW);
@@ -126,7 +126,7 @@ void Inventory::Draw()
 	DrawFace();
 
 	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
-	DrawBar(expBarPos, app->scene->player1->exp, app->scene->player1->exp, BLUE);
+	DrawBar(expBarPos, app->scene->player1->exp, maxExp, BLUE);
 
 	//DrawStats();
 
@@ -147,24 +147,26 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 {
 	int size = 261;
 	int thickness = 20;
-	int percent = 1;
+	float percent = 1;
 
-	if (current > 0 && max > 0)
-	{
-		percent = current / max;
-	}
+	float curr = current;
+	float maxim = max;
+
+	if (current > 0 && max > 0) percent = curr / maxim;
 
 	if (color.r > 240) //red
 	{
-		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, RED, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, { 200, 40, 0, 255 }, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, { 255, 143, 143, 255 }, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &healthBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 	}
-	else //blue
+	else
 	{
-		app->render->DrawRectangle({ pos.x,pos.y,size * percent,thickness }, BLUE, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,size,thickness }, { 143, 143, 255, 255 }, true, false);
+		app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, { 0, 40, 200, 255 }, true, false);
 		app->render->DrawTexture(interfaceTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
 	}
+
 }
 
 void Inventory::UpdateButtons()

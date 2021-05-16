@@ -95,6 +95,7 @@ private:
 
 	int counter = 0;
 	int seconds = 0;
+    int maxExp = 0;
 
 private:
     SDL_Texture* itemsTexture;

@@ -1016,17 +1016,10 @@ void Scene::UpdateWorld()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
-		if (!world->inventoryOpen)
+		if (!world->inventoryOpen && !app->dialogueManager->onDialog)
 		{
-			if (!app->dialogueManager->onDialog)
-			{
-				prevCam = { app->render->camera.x, app->render->camera.y };
-				SetScene(PAUSE_MENU);
-			}
-		}
-		else
-		{
-			world->inventoryOpen = false;
+			prevCam = { app->render->camera.x, app->render->camera.y };
+			SetScene(PAUSE_MENU);
 		}
 	}
 
