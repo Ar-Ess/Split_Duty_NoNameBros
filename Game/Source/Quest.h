@@ -4,6 +4,8 @@
 #include "Defs.h"
 #include "List.h"
 #include "GuiString.h"
+#include "Scene.h"
+#include "Player.h"
 
 enum QuestType
 {
