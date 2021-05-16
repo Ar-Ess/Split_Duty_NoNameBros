@@ -31,6 +31,7 @@ class Scene;
 class DialogueManager;
 class Transition;
 class QuestManager;
+class AssetsManager;
 
 class App
 {
@@ -102,6 +103,7 @@ public:
 	DialogueManager* dialogueManager;
 	Transition* transition;
 	QuestManager* questManager;
+	AssetsManager* assetsManager;
 
 private:
 

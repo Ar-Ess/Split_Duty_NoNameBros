@@ -9,6 +9,7 @@
 #include "GuiManager.h"
 #include "FontTTF.h"
 #include "DialogueManager.h"
+#include "AssetsManager.h"
 #include "QuestManager.h"
 #include "Scene.h"
 #include "Transition.h"
@@ -29,6 +30,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	win = new Window();
 	input = new Input();
+	assetsManager = new AssetsManager();
 	render = new Render();
 	tex = new Textures();
 	audio = new AudioManager();
@@ -44,6 +46,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Reverse order of CleanUp
 	AddModule(win);
 	AddModule(input);
+	AddModule(assetsManager);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(entityManager);
