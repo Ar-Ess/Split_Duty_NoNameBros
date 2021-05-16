@@ -333,6 +333,16 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 				currentDialogue->currentNode = itemOption->data->nextNode;
 				return ret;
 			}
+			else if (itemOption->data->returnCode == 6)
+			{
+				app->questManager->ActivateQuest(currentDialogue->dialogueID);
+				EndDialogue();
+			}
+			else if (itemOption->data->returnCode == 7)
+			{
+				app->questManager->CheckFindQuest(currentDialogue->dialogueID);
+				EndDialogue();
+			}
 		}
 	}
 	return ret;

@@ -2,7 +2,7 @@
 #define __GATHERQUEST_H__
 
 #include "Quest.h"
-#include "Player.h"
+//#include "Player.h"
 
 class GatherQuest : public Quest
 {
@@ -19,6 +19,5 @@ public:
 	uint16 goal;
 
 	ItemType iType;
-	Player* items;
 };
 #endif //!__GATHERQUEST_H__

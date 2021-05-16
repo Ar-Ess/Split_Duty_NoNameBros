@@ -16,28 +16,19 @@ GatherQuest::GatherQuest(uint16 id, uint16 reward, uint16 goal, const char* text
 
 void GatherQuest::QuestLogic()
 {
-	switch (iType)
+	if (this->itemPicked)
 	{
-	case LITTLE_BEEF_I:
-		items->smallMeatCount;
-		break;
-	case BIF_BEEF_I:
-		items->largeMeatCount;
-		break;
-	case FEATHER_I:
-		items->featherCount;
-		break;
-	case MANTIS_I:
-		items->mantisRodCount;
-		break;
-	case COINS_I:
-		items->moneyCount;
-		break;
-	case SPLIT_I:
-		items->splitedEnemyCount;
-		break;
-	default:
-		break;
+		this->count += this->itemAmount;
+		this->itemPicked = false;
+		this->itemAmount = NULL;
+	}
+	if (this->count == this->goal)
+	{
+		this->SetCompleted();
+	}
+	if (this->IsCompleted())
+	{
+		short int exp = this->reward;
 	}
 }
 	

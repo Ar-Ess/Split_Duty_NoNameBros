@@ -4,6 +4,7 @@
 #include "App.h"
 #include "Module.h"
 #include "Log.h"
+#include "GuiManager.h"
 #include "KillQuest.h"
 #include "GatherQuest.h"
 #include "FindQuest.h"
@@ -27,22 +28,25 @@ public://FUNCTIONS
 	bool CleanUp();
 
 	void CheckKillQuest(Enemy* e);
-	void CheckGatherQuest(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
-
-private://FUNCTIONS
-
-	void CreateQuestMap(pugi::xml_node& setter);
+	void CheckGatherQuest(ItemType type, int amount);
+	void CheckFindQuest(int npcID);
 
 	void ActivateQuest(int id);
 	void DeactivateQuest(int id);
 	void CompleteQuest(int id);
 
+private://FUNCTIONS
 
+	void CreateQuestMap(pugi::xml_node& setter);
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;
 
 public://VARIABLES
 private://VARIABLES
 	Quest*						currentQuest = nullptr;
+	int							endline = 0;
+	int							offset = 15;
+
+	SDL_Color           black = { 0  , 0  , 0  , 255 };
 
 	std::map<int, Quest*>		questList;
 	std::map<int, Quest*>		activeQuest;

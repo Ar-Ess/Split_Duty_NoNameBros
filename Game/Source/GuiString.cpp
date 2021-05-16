@@ -27,10 +27,10 @@ void GuiString::Draw()
 	app->render->DrawTexture(textTexture, bounds.x - app->render->camera.x, bounds.y - app->render->camera.y);
 }
 
-void GuiString::SetString(const char* newText,SDL_Color color)
+void GuiString::SetString(const char* newText,SDL_Color color, int endline)
 {
 	text = SString(newText);
-	textTexture = app->fontTTF->Print(text.GetString(), color, textFont, textTexture, app->dialogueManager->endLine);
+	textTexture = app->fontTTF->Print(newText, color, textFont, textTexture, endline);
 }
 
 void GuiString::SetTextFont(_TTF_Font* textFont)

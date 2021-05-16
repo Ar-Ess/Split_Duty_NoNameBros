@@ -4,17 +4,22 @@ QuestManager::QuestManager()
 {
 	name.Create("questmanager");
 	currentQuest = nullptr;
+	endline = 200;
 }
 
 bool QuestManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
+	return ret;
+}
 
+bool QuestManager::Start()
+{
+	bool ret = true;
 	pugi::xml_document qConfigFile;
 	pugi::xml_node configQuests;
 
 	configQuests = LoadQuestConfig(qConfigFile);
-
 	//FILL QUEST MAP
 	if (!configQuests.empty())
 	{
@@ -25,14 +30,6 @@ bool QuestManager::Awake(pugi::xml_node&)
 
 	activeQuest.clear();
 	finishedQuest.clear();
-
-	return ret;
-}
-
-bool QuestManager::Start()
-{
-	//SET FIRST STORY QUEST TO ACTIVE
-	bool ret = true;
 	return ret;
 }
 
@@ -41,7 +38,7 @@ bool QuestManager::Update(float dt)
 	bool ret = true;
 	if (!activeQuest.empty())
 	{
-		for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
+ 		for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
 		{
 			//LOGIC
 			it->second->QuestLogic();
@@ -50,12 +47,10 @@ bool QuestManager::Update(float dt)
 				CompleteQuest(it->second->id);
 			if (it->second->IsActive() == false)
 				DeactivateQuest(it->second->id);
-				
-			//INPUT
-
+			
 			//DRAW INFO
 			if(it->second->IsPinned())
-				it->second->DrawPinnedQuest();
+ 				it->second->DrawPinnedQuest();
 		}
 	}
 	return ret;
@@ -95,36 +90,104 @@ void QuestManager::CreateQuestMap(pugi::xml_node& setter)
 		uint16 npc = 0;
 		uint16 item = 0;
 
-		Quest* newQuest;
+		KillQuest* newKillQuest = nullptr;
+		GatherQuest* newGathQuest = nullptr;
+		FindQuest* newFindQuest = nullptr;
 
 		switch (type)
 		{
 		case KILL:
 			goal = qst.attribute("goal").as_uint();
 			enemy = qst.attribute("enemy").as_uint();
-			newQuest = new KillQuest(id, reward, goal, description, title, EnemyClass(enemy));
-			questList[id] = newQuest;
+			newKillQuest = new KillQuest(id, reward, goal, description, title, EnemyClass(enemy));
+			questList[id] = newKillQuest;
 			break;
 		case GATHER:
 			goal = qst.attribute("goal").as_uint();
 			item = qst.attribute("item").as_uint();
-			newQuest = new GatherQuest(id, reward, goal, description, title, ItemType(item));
-			questList[id] = newQuest;
+			newGathQuest = new GatherQuest(id, reward, goal, description, title, ItemType(item));
+			questList[id] = newGathQuest;
 			break;
 		case FIND:
 			npc = qst.attribute("npcId").as_uint();
-			newQuest = new FindQuest(id, reward, npc, description, title);
-			questList[id] = newQuest;
+			newFindQuest = new FindQuest(id, reward, npc, description, title);
+			questList[id] = newFindQuest;
 			break;
 		}
+
+		questList[id]->title = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		questList[id]->title->SetString(title, black, endline);
+		questList[id]->title->SetTextFont(app->fontTTF->defaultFont2);
+		app->fontTTF->CalcSize(questList[id]->textTitle, questList[id]->title->bounds.w, questList[id]->title->bounds.h, app->fontTTF->defaultFont);
+
+		if (questList[id]->title->bounds.w >= endline)
+		{
+			int lineScale = static_cast<int>(ceil(questList[id]->title->bounds.w / endline));
+			questList[id]->title->bounds.h *= lineScale;
+		}
+		else
+		{
+			questList[id]->title->bounds.h -= (offset + 5);
+		}
+		questList[id]->title->bounds.w = endline;
+
+		questList[id]->description = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		questList[id]->description->SetString(description, black, endline);
+		questList[id]->description->SetTextFont(app->fontTTF->defaultFont2);
+		app->fontTTF->CalcSize(questList[id]->textDescription, questList[id]->description->bounds.w, questList[id]->description->bounds.h, app->fontTTF->defaultFont);
+
+		if (questList[id]->description->bounds.w >= endline)
+		{
+			int lineScale = static_cast<int>(ceil(questList[id]->description->bounds.w / endline));
+			questList[id]->description->bounds.h *= lineScale;
+		}
+		else
+		{
+			questList[id]->description->bounds.h -= (offset + 5);
+		}
+		questList[id]->description->bounds.w = endline;
 	}
 }
 
 void QuestManager::ActivateQuest(int id)
 {
-	questList[id]->SetActive();
+ 	questList[id]->SetActive();
 	activeQuest[id] = questList[id];
 	questList.erase(id);
+	activeQuest[id]->SetPinned();
+
+	/*activeQuest[id]->title = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+	activeQuest[id]->title->SetString(activeQuest[id]->textTitle, black, endline);
+	activeQuest[id]->title->SetTextFont(app->fontTTF->defaultFont2);
+	app->fontTTF->CalcSize(activeQuest[id]->textTitle, activeQuest[id]->title->bounds.w, activeQuest[id]->title->bounds.h, app->fontTTF->defaultFont);
+
+	if (activeQuest[id]->title->bounds.w >= endline)
+	{
+		int lineScale = static_cast<int>(ceil(activeQuest[id]->title->bounds.w / endline));
+		activeQuest[id]->title->bounds.h *= lineScale;
+	}
+	else
+	{
+		activeQuest[id]->title->bounds.h -= (offset + 5);
+	}
+	activeQuest[id]->title->bounds.w = endline;
+
+	activeQuest[id]->description = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+	activeQuest[id]->description->SetString(activeQuest[id]->textDescription, black, endline);
+	activeQuest[id]->description->SetTextFont(app->fontTTF->defaultFont2);
+	app->fontTTF->CalcSize(activeQuest[id]->textDescription, activeQuest[id]->description->bounds.w, activeQuest[id]->description->bounds.h, app->fontTTF->defaultFont);
+
+	if (activeQuest[id]->description->bounds.w >= endline)
+	{
+		int lineScale = static_cast<int>(ceil(activeQuest[id]->description->bounds.w / endline));
+		activeQuest[id]->description->bounds.h *= lineScale;
+	}
+	else
+	{
+		activeQuest[id]->description->bounds.h -= (offset + 5);
+	}
+	activeQuest[id]->description->bounds.w = endline;*/
+
 }
 
 void QuestManager::DeactivateQuest(int id)
@@ -136,9 +199,8 @@ void QuestManager::DeactivateQuest(int id)
 
 void QuestManager::CompleteQuest(int id)
 {
-	questList[id]->SetCompleted();
-	finishedQuest[id] = questList[id];
-	questList.erase(id);
+	finishedQuest[id] = activeQuest[id];
+	activeQuest.erase(id);
 }
 
 void QuestManager::CheckKillQuest(Enemy* e)
@@ -146,9 +208,8 @@ void QuestManager::CheckKillQuest(Enemy* e)
 	for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
 	{
 		if (it->second->type == KILL)
-		{
-			
-			if (KillQuest(it->second).eType == e->enemyClass)
+		{			
+			if (static_cast<KillQuest*>(it->second)->eType == e->enemyClass)
 			{
 				it->second->enemyDefeated == true;
 				return;
@@ -158,15 +219,32 @@ void QuestManager::CheckKillQuest(Enemy* e)
 	}
 }
 
-void QuestManager::CheckGatherQuest(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney)
+void QuestManager::CheckGatherQuest(ItemType type, int amount)
 {
 	for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
 	{
 		if (it->second->type == GATHER)
 		{
-			
+			if (static_cast<GatherQuest*>(it->second)->iType == type)
+			{
+				it->second->itemPicked = true;
+				it->second->itemAmount = amount;
+				return;
+			}
+			else continue;
+		}		
+	}
+}
+
+void QuestManager::CheckFindQuest(int npcID)
+{
+	for (std::map<int, Quest*>::iterator it = activeQuest.begin(); it != activeQuest.end(); ++it)
+	{
+		if (it->second->type == FIND)
+		{
+			if (static_cast<FindQuest*>(it->second)->npcID == npcID)
+				it->second->npcFound = true;
 		}
-		else continue;
 	}
 }
 

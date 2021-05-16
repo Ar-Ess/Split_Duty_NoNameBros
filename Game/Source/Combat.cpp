@@ -580,8 +580,8 @@ void Combat::EndBattleSolving()
 	if (playerWin)
 	{
 		app->questManager->CheckKillQuest(enemy);
+
 		ItemDrop(enemy->enemyClass);
-		app->questManager->CheckGatherQuest(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 		short int experience = enemy->exp;
 		short int id = app->entityManager->enemies.Find(enemy);

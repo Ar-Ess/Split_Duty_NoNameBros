@@ -1,10 +1,7 @@
 #include "Player.h"
-#include "App.h"
 
 #include "Scene.h"
 #include "Combat.h"
-
-#include "Log.h"
 
 Player::Player() : Entity(EntityType::PLAYER1)
 {

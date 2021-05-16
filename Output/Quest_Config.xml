@@ -2,8 +2,8 @@
 
 <QuestSettup>
   <Quests>
-    <Quest ID="0" reward="10" type="0" goal="10" enemy="2" title="MantisKiller">Kill 10 Mantis</Quest>
-    <Quest ID="1" reward="15" type="2" npcId="1" title="Where is Scott?">Find Scott and Talk to him</Quest>
-    <Quest ID="2" reward="5"  type="1" goal="5"  item="0" title="MeatPicker">Gather 5 small pieces of meat</Quest>
+    <Quest ID="4" reward="10" type="0" goal="10" enemy="2" title="MantisKiller">Kill 10 Mantis</Quest>
+    <Quest ID="2" reward="15" type="2" npcId="3" title="Where is the elder?">Find the elder and talk to him</Quest>
+    <Quest ID="1" reward="5"  type="1" goal="5"  item="0" title="MeatPicker">Gather 5 small pieces of meat</Quest>
   </Quests>
 </QuestSettup>

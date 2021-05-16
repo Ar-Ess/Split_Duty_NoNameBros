@@ -1,6 +1,9 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
+#include "App.h"
+#include "QuestManager.h"
+
 #include "Entity.h"
 #include "Animation.h"
 
@@ -94,7 +97,9 @@ public:
             split += amount;
             break;
         }
+        app->questManager->CheckGatherQuest(type, amount);
     }
+
 
     void UseItem(ItemType type)
     {
@@ -187,7 +192,6 @@ public:
     {
         return colliderWorld.h;
     }
-
 public:
     PlayerInventory* playerInventory;
 public:

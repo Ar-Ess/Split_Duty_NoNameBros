@@ -5,8 +5,6 @@
 #include "List.h"
 #include "GuiString.h"
 
-//class SubQuest;
-
 enum QuestType
 {
 	NO_TYPE = -1,
@@ -14,17 +12,23 @@ enum QuestType
 	GATHER,
 	FIND
 };
-
+//SDL_Color           black = { 0  , 0  , 0  , 255 };
+//int							endline = 0;
 enum ItemType;
 
 class QuestManager;
+
+class FindQuest;
+class KillQuest;
+class GatherQuest;
+
 class Quest
 {
 public: //FUNCTIONS
 
 	Quest() {}
 
-	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false), enemyDefeated(false) {}
+	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false), enemyDefeated(false), itemPicked(false), itemAmount(0), npcFound(false) {}
 
 	virtual ~Quest() {}
 
@@ -34,16 +38,13 @@ public: //FUNCTIONS
 
 	void DrawPinnedQuest()
 	{
+		this->title->bounds.x = 25;
+		this->title->bounds.y = 50;
+		this->title->Draw();
 
-	}
-
-	void TriggerQuest()
-	{
-		if(trigger == false)
-			this->trigger = true;
-
-		this->SetActive();
-		this->SetPinned();
+		this->description->bounds.x = 25;
+		this->description->bounds.y = this->title->bounds.y + this->title->bounds.h + 50;
+		this->description->Draw();
 	}
 
 	//GETTERS
@@ -88,15 +89,19 @@ public: //VARIABLES
 	bool				isActive = false;
 	bool				isCompleted = false;
 	bool				isPinned = false;
-	bool				enemyDefeated = false;
 
 	const char*			textDescription;
 	const char*			textTitle;
 
-	GuiString			title;
-	GuiString			description;
+	GuiString*			title;
+	GuiString*			description;
 
 	QuestType			type;
+
+	bool				enemyDefeated = false;
+	bool				itemPicked = false;
+	bool				npcFound = false;
+	int					itemAmount = 0;
 };
 #endif // !_QUEST_H_
 

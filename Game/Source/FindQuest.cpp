@@ -12,4 +12,13 @@ FindQuest::FindQuest(uint16 id, uint16 reward, uint16 npcID, const char* textDes
 
 void FindQuest::QuestLogic()
 {
+	if (this->npcFound)
+	{
+		SetCompleted();
+	}
+	if (this->IsCompleted())
+	{
+		short int exp = this->reward;
+	}
+
 }
