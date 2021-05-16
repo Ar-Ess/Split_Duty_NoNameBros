@@ -779,26 +779,10 @@ void Scene::SetWorld(Places place)
 	world->inventory->Start();
 
 	//inventory buttons
-	SDL_Rect buttonPrefab = { 255,606,60,60 };
-	if (world->inventory->quitQuestButton == nullptr)
-	{
-		world->inventory->quitQuestButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->quitQuestButton->bounds = buttonPrefab;
-		world->inventory->quitQuestButton->text = "Quit quest";
-		world->inventory->quitQuestButton->SetObserver(this);
-	}
-
-	buttonPrefab = { 614, 36, 49, 54 };
-	if (world->inventory->exitInventoryButton == nullptr)
-	{
-		world->inventory->exitInventoryButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->exitInventoryButton->bounds = buttonPrefab;
-		world->inventory->exitInventoryButton->text = "Exit inventory";
-		world->inventory->exitInventoryButton->SetObserver(this);
-	}
+	
 
 	//
-	buttonPrefab = { 100,150,134,88 };
+	const SDL_Rect buttonPrefab = { 100,150,134,88 };
 	iPoint off = { 188,133 };
 	if (world->inventory->littlebeefButton == nullptr)
 	{

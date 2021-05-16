@@ -246,12 +246,12 @@ void Player::RestartPlayer()
     app->scene->player1->colliderWorld = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
     app->scene->player1->collisionRect = { INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 
-    smallMeatCount = 1;
-    largeMeatCount = 1;
-    featherCount = 1;
-    mantisRodCount = 1;
-    splitedEnemyCount = 1;
-    moneyCount = 1;
+    smallMeatCount = 0;
+    largeMeatCount = 0;
+    featherCount = 0;
+    mantisRodCount = 0;
+    splitedEnemyCount = 0;
+    moneyCount = 0;
 
     if (type == EntityType::PLAYER1)
     {

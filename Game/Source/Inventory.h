@@ -78,8 +78,7 @@ private:
 
 	GuiString* upgradeText = nullptr;
 
-private:
-	GuiString* questText = nullptr;
+
 
 private:
     SDL_Texture* interfaceTexture = nullptr;
@@ -113,7 +112,7 @@ private:
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};
-	iPoint numberItemPos = {172,200 };
+	iPoint numberItemPos = {185-16,208-11 };
 	iPoint numberItemOff = { 190,132 };
 
     SDL_Texture* statsTexture = nullptr;
@@ -132,13 +131,10 @@ private:
     GuiString* velocityStatText = nullptr;
     GuiString* luckStatText = nullptr;
     GuiString* stabStatText = nullptr;
-    iPoint statsPos = { 1175,257 };
+    iPoint statsPos = { 1162,253 };
     iPoint statsOff = { 0,68 };
 
 public:
-    GuiButton* quitQuestButton = nullptr;
-
-    GuiButton* exitInventoryButton = nullptr;
 
     //items
     GuiButton* bigBeefButton = nullptr;

@@ -57,6 +57,10 @@ void Inventory::Start()
 
 	//texts
 	SetText();
+
+	char str[5] = {};
+	sprintf(str, "%d", app->scene->player1->lvl);
+	lvlText->SetString(str, YELLOW);
 }
 
 void Inventory::Restart()
@@ -76,9 +80,7 @@ void Inventory::Update()
 
 	UpdateButtons();
 
-	quitQuestButton->Update(1.0f);
-
-	exitInventoryButton->Update(1.0f);
+	
 }
 
 void Inventory::Draw()
@@ -154,9 +156,7 @@ void Inventory::UpdateButtons()
 
 void Inventory::DrawButtons()
 {
-	quitQuestButton->Draw(1, true, true, ButtonType::QUEST);
-
-	exitInventoryButton->Draw(1, true, true, ButtonType::INVENTORY);
+	
 
 	littlebeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
 	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
@@ -201,15 +201,19 @@ void Inventory::SetText()
 	if (lvlText == nullptr)
 	{
 		lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		lvlText->bounds = { 541, 43, 200, 50 };
+		lvlText->bounds = { 1000, 200, 200, 50 };
 		lvlText->SetTextFont(app->fontTTF->inventoryFont);
-		lvlText->SetString("Current level ", YELLOW);
+		
+
+		char str[5] = {};
+		sprintf(str, "%d", app->scene->player1->lvl);
+		lvlText->SetString(str, YELLOW);
 	}
 
 	if (healthText == nullptr)
 	{
 		healthText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		healthText->bounds = { 900, 153, 200, 50 };
+		healthText->bounds = { healthBarPos.x, healthBarPos.y+33, 200, 50 };
 		healthText->SetTextFont(app->fontTTF->defaultFont);
 
 		/*char hp[5];
@@ -232,152 +236,148 @@ void Inventory::SetText()
 	if (expText == nullptr)
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		expText->bounds = { 900, 220, 200, 50 };
+		expText->bounds = { expBarPos.x, expBarPos.y+33, 200, 50 };
 		expText->SetTextFont(app->fontTTF->inventoryFont);
-
-
 		expText->SetString("XP: 34 / 70", YELLOW);
-	}
-
-	if (upgradeText == nullptr)
-	{
-		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		upgradeText->bounds = { 900,100, 100, 100 };
-		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
-		upgradeText->SetString("14");
 	}
 
 	//ITEMS
 	if (littleBeefText == nullptr)
 	{
 		littleBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 100, 100 };
+		littleBeefText->bounds = { numberItemPos.x, numberItemPos.y, 50, 50 };
 		littleBeefText->SetTextFont(app->fontTTF->inventoryFont);
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->smallMeatCount);
 		littleBeefText->SetString(str, BROWN);
+		littleBeefText->CenterAlign();
 	}
 	if (bigBeefText == nullptr)
 	{
 		bigBeefText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 100, 100 };
+		bigBeefText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y, 50,50 };
 		bigBeefText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->largeMeatCount);
 		bigBeefText->SetString(str, BROWN);
+		bigBeefText->CenterAlign();
 	}
 	if (featherText == nullptr)
 	{
 		featherText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 100, 100 };
+		featherText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y, 50,50 };
 		featherText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->featherCount);
 		featherText->SetString(str, BROWN);
+		featherText->CenterAlign();
 	}
 	if (mantisText == nullptr)
 	{
 		mantisText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 100, 100 };
+		mantisText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y, 50,50 };
 		mantisText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->mantisRodCount);
 		mantisText->SetString(str, BROWN);
+		mantisText->CenterAlign();
 	}
 	if (coinText == nullptr)
 	{
 		coinText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
+		coinText->bounds = { numberItemPos.x, numberItemPos.y + numberItemOff.y * 2, 50,50 };
 		coinText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->moneyCount);
 		coinText->SetString(str, BROWN);
+		coinText->CenterAlign();
 	}
 	if (splitText == nullptr)
 	{
 		splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 100, 100 };
+		splitText->bounds = { numberItemPos.x + numberItemOff.x, numberItemPos.y + numberItemOff.y * 2, 50,50 };
 		splitText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->splitedEnemyCount);
 		splitText->SetString(str, BROWN);
+		splitText->CenterAlign();
 	}
 
 	//Stats
 	if (healthStatText == nullptr)
 	{
 		healthStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		healthStatText->bounds = { statsPos.x,statsPos.y,100,100 };
+		healthStatText->bounds = { statsPos.x,statsPos.y,50,50 };
 		healthStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->healthStat);
-		healthStatText->SetString("12", BROWN);
+		healthStatText->SetString(str, BROWN);
+		healthStatText->CenterAlign();
 	}
 	if (strenghtStatText == nullptr)
 	{
 		strenghtStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		strenghtStatText->bounds = { statsPos.x,statsPos.y + statsOff.y,100,100 };
+		strenghtStatText->bounds = { statsPos.x,statsPos.y + statsOff.y,50,50 };
 		strenghtStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->strengthStat);
 		strenghtStatText->SetString(str, BROWN);
+		strenghtStatText->CenterAlign();
 	}
 	if (defenseStatText == nullptr)
 	{
 		defenseStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 2,100,100 };
+		defenseStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 2,50,50 };
 		defenseStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->defenseStat);
 		defenseStatText->SetString(str, BROWN);
+		defenseStatText->CenterAlign();
 	}
 	if (velocityStatText == nullptr)
 	{
 		velocityStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		velocityStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 3,100,100 };
+		velocityStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 3,50,50 };
 		velocityStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->velocityStat);
 		velocityStatText->SetString(str, BROWN);
+		velocityStatText->CenterAlign();
 	}
 	if (luckStatText == nullptr)
 	{
 		luckStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		luckStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 4,100,100 };
+		luckStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 4,50,50 };
 		luckStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->luckStat);
 		luckStatText->SetString(str, BROWN);
+		luckStatText->CenterAlign();
 	}
 	if (stabStatText == nullptr)
 	{
 		stabStatText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,100,100 };
+		stabStatText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
 		stabStatText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[5] = {};
 		sprintf(str, "%d", app->scene->player1->stabStat);
 		stabStatText->SetString(str, BROWN);
+		stabStatText->CenterAlign();
 	}
 
 	//quest
-	if (questText == nullptr)
-	{
-		questText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		questText->bounds = { 60,600, 100, 100 };
-		questText->SetTextFont(app->fontTTF->defaultFont);
-		questText->SetString("Dale ostias a un lobo");
-	}
+	
 }
 
 void Inventory::UpdateText()
@@ -410,10 +410,10 @@ void Inventory::UpdateText()
 
 void Inventory::DrawText()
 {
-	lvlText->Draw();
+	
 	healthText->Draw();
 	expText->Draw();
-	upgradeText->Draw();
+	lvlText->Draw();
 
 	littleBeefText->Draw();
 	bigBeefText->Draw();
@@ -429,5 +429,5 @@ void Inventory::DrawText()
 	stabStatText->Draw();
 	luckStatText->Draw();
 
-	questText->Draw();
+	
 }
