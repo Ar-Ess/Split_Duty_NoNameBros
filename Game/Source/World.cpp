@@ -14,6 +14,7 @@
 #include "LilipadPuzzle.h"
 #include "StonePuzzle.h"
 #include "ButtonsPuzzle.h"
+#include "Inventory.h"
 
 #include "Log.h"
 #include <time.h>
@@ -317,7 +318,8 @@ void World::Update()
 		if (!app->dialogueManager->onDialog)
 		{
 			inventoryOpen = !inventoryOpen;
-			app->guiManager->CenterCursor();
+			if (inventoryOpen) inventory->Start();
+			else inventory->Restart();
 			app->audio->SetFx(Effect::INVENTORY_OPEN_FX);
 		}
 	}

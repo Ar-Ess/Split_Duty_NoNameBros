@@ -776,7 +776,6 @@ void Scene::SetLevelUp(unsigned short int exp)
 void Scene::SetWorld(Places place)
 {
 	world->Start(place);
-	world->inventory->Start();
 
 	//inventory buttons
 	

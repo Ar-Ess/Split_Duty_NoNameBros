@@ -75,7 +75,7 @@ void LevelUp::Start(short int exp)
 		Player* p = app->scene->player1;
 		int x = p->lvl - 1;
 
-		p->health = floor((x / 2) + 20);
+		p->maxHealth = floor((x / 2) + 20);
 		p->strengthStat = floor((x / 3) + 6);
 		p->defenseStat = floor((x / 3) + 3);
 
