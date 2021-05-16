@@ -264,9 +264,6 @@
     <ClInclude Include="Source\QuestManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Quest.h">
-      <Filter>Quests</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Inventory.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -305,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="Source\EasingFunctions.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Quest.h">
+      <Filter>Quests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

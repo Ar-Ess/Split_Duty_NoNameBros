@@ -97,7 +97,6 @@ public:
             split += amount;
             break;
         }
-        app->questManager->CheckGatherQuest(type, amount);
     }
 
 

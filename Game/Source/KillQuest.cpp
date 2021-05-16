@@ -1,4 +1,5 @@
 #include "KillQuest.h"
+#include "Player.h"
 
 KillQuest::KillQuest(uint16 id, uint16 reward, uint16 goal, const char* textDescription, const char* textTitle, EnemyClass eType) : Quest(QuestType::KILL)
 {

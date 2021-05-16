@@ -1,4 +1,5 @@
 #include "FindQuest.h"
+#include "Player.h"
 
 FindQuest::FindQuest(uint16 id, uint16 reward, uint16 npcID, const char* textDescription, const char* textTitle) : Quest(QuestType::FIND)
 {

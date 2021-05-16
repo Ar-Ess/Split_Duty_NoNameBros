@@ -1,11 +1,12 @@
-#ifndef _QUEST_H_
-#define _QUEST_H_
+#ifndef _QUEST_H__
+#define _QUEST_H__
 
 #include "Defs.h"
 #include "List.h"
 #include "GuiString.h"
 #include "Scene.h"
-#include "Player.h"
+
+class QuestManager;
 
 enum QuestType
 {
@@ -14,15 +15,6 @@ enum QuestType
 	GATHER,
 	FIND
 };
-//SDL_Color           black = { 0  , 0  , 0  , 255 };
-//int							endline = 0;
-enum ItemType;
-
-class QuestManager;
-
-class FindQuest;
-class KillQuest;
-class GatherQuest;
 
 class Quest
 {
@@ -40,6 +32,7 @@ public: //FUNCTIONS
 
 	void DrawPinnedQuest()
 	{
+
 		this->title->bounds.x = 25;
 		this->title->bounds.y = 50;
 		this->title->Draw();
@@ -65,7 +58,7 @@ public: //FUNCTIONS
 
 	//SETTERS
 	void SetActive()
-	{	
+	{
 		this->isActive = true;
 	}
 	void SetInactive()
@@ -92,11 +85,11 @@ public: //VARIABLES
 	bool				isCompleted = false;
 	bool				isPinned = false;
 
-	const char*			textDescription;
-	const char*			textTitle;
+	const char* textDescription;
+	const char* textTitle;
 
-	GuiString*			title;
-	GuiString*			description;
+	GuiString* title;
+	GuiString* description;
 
 	QuestType			type;
 
@@ -104,6 +97,8 @@ public: //VARIABLES
 	bool				itemPicked = false;
 	bool				npcFound = false;
 	int					itemAmount = 0;
+
+	SDL_Texture* texture = nullptr;
+	
 };
 #endif // !_QUEST_H_
-

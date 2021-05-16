@@ -1,4 +1,5 @@
 #include "GatherQuest.h"
+#include "Player.h"
 
 GatherQuest::GatherQuest(uint16 id, uint16 reward, uint16 goal, const char* textDescription, const char* textTitle, ItemType iType) :
 	Quest(QuestType::GATHER)

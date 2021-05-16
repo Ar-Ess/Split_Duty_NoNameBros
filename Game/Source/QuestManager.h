@@ -1,5 +1,5 @@
-#ifndef __QUESTMANAGER_H__
-#define __QUESTMANAGER_H__
+#ifndef __QUESTMANAGER_H_
+#define __QUESTMANAGER_H_
 
 #include "App.h"
 #include "Module.h"
@@ -12,15 +12,13 @@
 #define QUEST_CONFIG_FILENAME		"Quest_Config.xml"
 
 class Quest;
+enum ItemType;
 
 class QuestManager : public Module
 {
 public://FUNCTIONS
 	QuestManager();
-	virtual ~QuestManager() 
-	{
-
-	};
+	virtual ~QuestManager() {};
 
 	bool Awake(pugi::xml_node&);
 	bool Start();

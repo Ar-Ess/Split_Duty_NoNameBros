@@ -2,7 +2,8 @@
 #define __GATHERQUEST_H__
 
 #include "Quest.h"
-//#include "Player.h"
+
+enum ItemType;
 
 class GatherQuest : public Quest
 {
