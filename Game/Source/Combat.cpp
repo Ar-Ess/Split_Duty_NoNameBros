@@ -489,12 +489,12 @@ void Combat::DrawPopUps()
 		app->render->DrawTexture(combatInventory, 0, -20, 1, false);
 
 		// DRAW BUTTONS
-		smallMeatButton->Draw(1, true, false);
-		largeMeatButton->Draw(1, true, false);
-		featherButton->Draw(1, true, false);
-		mantisButton->Draw(1, true, false);
-		enemySplitButton->Draw(1, true, false);
-		moneyButton->Draw(1, true, false);
+		smallMeatButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
+		largeMeatButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
+		featherButton->Draw(1, true, true, ButtonType::FEATHER_B);
+		mantisButton->Draw(1, true, true, ButtonType::MANTIS_B);
+		enemySplitButton->Draw(1, true, true, ButtonType::SPLIT_B);
+		moneyButton->Draw(1, true, true, ButtonType::COIN_B);
 
 		//DRAW TEXT
 		if (smallMeatButton->state == GuiControlState::FOCUSED || smallMeatButton->state == GuiControlState::PRESSED) smallMeatDescription->Draw();

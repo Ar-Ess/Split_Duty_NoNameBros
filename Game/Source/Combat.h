@@ -335,7 +335,6 @@ private:
     SDL_Texture* mossyLandsBackground = nullptr;
 
     SDL_Texture* combatInventory = nullptr;
-
 };
 
 #endif // __COMBAT_H__

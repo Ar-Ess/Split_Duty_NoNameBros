@@ -723,7 +723,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->featherDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->featherDescription->bounds = descriptionRect;
 		combatScene->featherDescription->SetTextFont(app->fontTTF->defaultFont2);
-		combatScene->featherDescription->SetString("Slight Feather: \n\nAir is something not visible, but either we can feel it with the wind, which has \nthe power of the destruction of any and enery live structure. \nThis feather is like the air, slight and soft, but has the power to cancel \nthe air friction of every possible wind \n\n - USE: Softens hero's jump and heals a 15 percent of it ");
+		combatScene->featherDescription->SetString("Slight Feather: \n\nAir is something not visible, but either we can feel it with the wind,\nwhich has the power of the destruction of any and enery live structure. \nThis feather is like the air, slight and soft, but has the power to \ncancel the air friction of every possible wind \n\n - USE: Softens hero's jump and heals a 15 percent of it ");
 	}
 
 	if (combatScene->mantisRodDescription == nullptr)
@@ -731,7 +731,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->mantisRodDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->mantisRodDescription->bounds = descriptionRect;
 		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->defaultFont2);
-		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the infinite damage of a god attack, life itself needed a way to stop them, \nso it created the infinite defense, which was materialized into \nthe arm of a mantis. But, all good things have an end, that's why \nlife made that arm the most fragile one. What a paradox! \n\n - USE: Makes hero invencible to one enemy hit during one turn");
+		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the infinite damage of a god attack, life itself needed a way to \nstop them, so it created the infinite defense, which was materialized \ninto the arm of a mantis. But, all good things have an end, that's why \nlife made that arm the most fragile one. What a paradox! \n\n - USE: Makes hero invencible to one enemy hit during one turn");
 	}
 
 	if (combatScene->enemySplitDescription == nullptr)
@@ -739,7 +739,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->enemySplitDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		combatScene->enemySplitDescription->bounds = descriptionRect;
 		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->defaultFont2);
-		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the power was concerned to the hero, it has the power to split enemy aura \nand cage it for its sake. We do not know why the hero has the \nability to do that, but we know those auras can be used in our benefit.\n That's his will, and not anyone else, even hero's one. \n\n - USE: Invoque an aliade enemy that will attack your opponent");
+		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the power was concerned to the hero, it has the power to split enemy \naura and cage it for its sake. We do not know why the hero has the \nability to do that, but we know those auras can be used in our benefit.\n That's his will, and not anyone else, even hero's one. \n\n - USE: Invoque an aliade enemy that will attack your opponent");
 	}
 
 	if (combatScene->moneyDescription == nullptr)
@@ -765,7 +765,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 	if (levelUpScene->skipButton == nullptr)
 	{
 		levelUpScene->skipButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
+		levelUpScene->skipButton->bounds = { 580, 580, 161, 62};
 		levelUpScene->skipButton->text = "SkipButton";
 		levelUpScene->skipButton->SetObserver(this);
 	}

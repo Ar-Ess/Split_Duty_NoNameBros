@@ -596,17 +596,18 @@ void World::WorldEnemySpawn()
 	{
 		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
 		{
-			if (app->entityManager->enemies.Count() < 3)
+			int random = rand() % 5;
+			if (random < 3)
 			{
 				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
 				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
 			}
-			else if (app->entityManager->enemies.Count() == 3)
+			else if (random == 3)
 			{
 				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
 				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
 			}
-			else if (app->entityManager->enemies.Count() == 4)
+			else if (random == 4)
 			{
 				app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
 				EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
@@ -1117,7 +1118,7 @@ void World::LoadNPCs(Places placex)
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SIGN, placex, 5);
+		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
 	}
 }
 
