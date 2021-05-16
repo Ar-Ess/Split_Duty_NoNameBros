@@ -13,6 +13,7 @@
 
 class Quest;
 enum ItemType;
+class Scene;
 
 class QuestManager : public Module
 {
@@ -34,6 +35,7 @@ public://FUNCTIONS
 	void CompleteQuest(int id);
 
 private://FUNCTIONS
+	friend class Scene;
 
 	void CreateQuestMap(pugi::xml_node& setter);
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;
@@ -49,5 +51,7 @@ private://VARIABLES
 	std::map<int, Quest*>		questList;
 	std::map<int, Quest*>		activeQuest;
 	std::map<int, Quest*>		finishedQuest;
+
+	SDL_Texture* questTexture = nullptr;
 };
 #endif // __QUESTMANAGER_H__

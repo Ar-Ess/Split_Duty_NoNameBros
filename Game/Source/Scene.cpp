@@ -1158,6 +1158,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			app->entityManager->enemies.Clear();
 			SetScene(MAIN_MENU);
 			app->audio->TransitionVolumeMusic();
+			app->questManager->DeactivateQuest(app->questManager->activeQuest.begin()->second->id);
 		}
 		break;
 
