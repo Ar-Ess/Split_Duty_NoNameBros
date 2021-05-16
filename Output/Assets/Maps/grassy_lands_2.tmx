@@ -15,7 +15,6 @@
  <tileset firstgid="2124" name="water_tileset" tilewidth="16" tileheight="16" tilecount="768" columns="32">
   <image source="water_tileset.png" width="512" height="384"/>
  </tileset>
- <tileset firstgid="2892" source="sign_tileset.tsx"/>
  <layer id="1" name="ground" width="46" height="54">
   <properties>
    <property name="y" type="int" value="0"/>
@@ -10663,9 +10662,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2892"/>
-   <tile gid="2893"/>
-   <tile gid="2894"/>
+   <tile gid="1283"/>
+   <tile gid="1284"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10709,10 +10707,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2895"/>
-   <tile gid="2896"/>
-   <tile gid="2897"/>
    <tile/>
+   <tile gid="1315"/>
+   <tile gid="1316"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10755,11 +10752,10 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2898"/>
-   <tile gid="2899"/>
-   <tile gid="2900"/>
    <tile/>
    <tile/>
+   <tile gid="1347"/>
+   <tile gid="1348"/>
    <tile/>
    <tile/>
    <tile/>
@@ -10803,6 +10799,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile gid="1379"/>
+   <tile gid="1380"/>
    <tile/>
    <tile/>
    <tile/>
