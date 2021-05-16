@@ -15,7 +15,7 @@ public:
 	void QuestLogic();
 
 public:
-	uint16 npcID;
-	NPC* npcCopy;
+	uint16 npcID = {};
+	NPC* npcCopy = nullptr;
 };
 #endif //!__FINDQUEST_H__

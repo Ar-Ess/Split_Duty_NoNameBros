@@ -5,6 +5,8 @@
 #include "World.h"
 #include "Collider.h"
 #include "LilipadPuzzle.h"
+#include "StonePuzzle.h"
+#include "ButtonsPuzzle.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -218,7 +220,7 @@ void Map::Draw()
 
 	UpdateLayers();
 
-	if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE)
+	if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE || app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
 	{
 		// L06: DONE 4: Make sure we draw all the layers and not just the first one
 		for (int i = 0; i < data.orgLayers.Count(); i++)
@@ -234,6 +236,13 @@ void Map::Draw()
 				{
 					if (!playerDraw)
 					{
+						if (app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
+						{
+							w->lilipadPuzzle1->Draw();
+							w->stonePuzzle1->Draw();
+							w->buttonPuzzle1->Draw();
+						}
+
 						w->DrawNPC();
 						w->DrawEnemy();
 						w->DrawPlayer();
@@ -276,7 +285,7 @@ void Map::DrawLayer(int num)
 			{
 				//CANVIAR
 				int tileId = 0;
-				if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE) tileId = data.orgLayers[num]->Get(x, y);
+				if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE || app->scene->world->GetPlace() == Places::GRASSY_LAND_2) tileId = data.orgLayers[num]->Get(x, y);
 				else
 				{
 					tileId = data.layers[num]->Get(x, y);

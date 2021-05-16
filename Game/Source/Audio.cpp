@@ -134,7 +134,7 @@ void AudioManager::SetFx(Effect fx)
 	}
 	else if (fx == BUTTON_SOLVED_FX)
 	{
-		PlayFx(3)
+		PlayFx(3);
 	}
 	else if (fx == LOGO_SCENE_FX)
 	{

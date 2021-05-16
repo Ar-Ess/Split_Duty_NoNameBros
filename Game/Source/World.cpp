@@ -342,14 +342,8 @@ void World::Draw()
 	{
 		DrawCollisions();
 	}
-	if (place != MAIN_VILLAGE)
+	if (place != MAIN_VILLAGE && place != GRASSY_LAND_2)
 	{
-		if (place == GRASSY_LAND_2)
-		{
-			lilipadPuzzle1->Draw();
-			stonePuzzle1->Draw();
-			buttonPuzzle1->Draw();
-		}
 		DrawNPC();
 		DrawEnemy();
 		DrawPlayer();
