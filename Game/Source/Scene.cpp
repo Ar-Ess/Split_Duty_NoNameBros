@@ -1203,8 +1203,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case LEVEL_UP:
 		if (strcmp(control->text.GetString(), "SkipButton") == 0)
 		{
-			app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
+			world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 			SetScene(WORLD, world->place);
+			world->AlignCameraPosition();
 		}
 
 	case END_SCREEN:

@@ -79,13 +79,6 @@ void Inventory::Update()
 	quitQuestButton->Update(1.0f);
 
 	exitInventoryButton->Update(1.0f);
-
-	bigBeefButton->UpdateOnClick(1.0f);
-	littlebeefButton->UpdateOnClick(1.0f);
-	featherButton->UpdateOnClick(1.0f);
-	mantisButton->UpdateOnClick(1.0f);
-	coinButton->UpdateOnClick(1.0f);
-	splitButton->UpdateOnClick(1.0f);
 }
 
 void Inventory::Draw()

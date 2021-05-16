@@ -70,7 +70,7 @@ public:
 
     GuiString* skipText = nullptr;
 
-    GuiString* upgradeText = nullptr;
+    GuiString* levelUpText = nullptr;
 
     GuiString* expGainedText = nullptr;
 

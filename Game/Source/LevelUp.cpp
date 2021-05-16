@@ -34,7 +34,7 @@ void LevelUp::Start(short int exp)
 
 	char str[24] = {};
 	sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
-	upgradeText->SetString(str, BROWN);
+	levelUpText->SetString(str, WHITE);
 
 	char str1[24] = {};
 	sprintf(str1, "Gained %d exp", exp);
@@ -42,10 +42,12 @@ void LevelUp::Start(short int exp)
 
 	levelUpBool = false;
 
-	counter = 0;
+	//------------------------------------------
 
 	plusExp = exp; //Experience given by the enemy
 	actualExp = app->scene->player1->exp; //Actual player experience
+
+	counter = actualExp;
 
 	int newExp = actualExp + plusExp; //Sum of the actual experience plus the experience given by the enemy
 
@@ -57,12 +59,14 @@ void LevelUp::Start(short int exp)
 		int diffExp = newExp - maxExp;
 		newExp = diffExp;
 		levelUpBool = true;
+		counter = 0;
 	}
 	else if (newExp == maxExp)
 	{
 		app->scene->player1->lvl++;
 		newExp = 0;
 		levelUpBool = true;
+		counter = 0;
 	}
 
 	Player* p = app->scene->player1;
@@ -102,7 +106,7 @@ void LevelUp::Draw()
 
     DrawText();
 
-	if (counter < app->scene->player1->exp) counter ++;
+	if (counter < app->scene->player1->exp) counter += 3;
 
 	DrawBar({530, 400}, counter, maxExp, BLUE);
 
@@ -133,18 +137,18 @@ void LevelUp::UpdateButtons()
 
 void LevelUp::SetText()
 {
-	if (upgradeText == nullptr)
+	if (levelUpText == nullptr)
 	{
-		upgradeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		upgradeText->bounds = { 600, 220, 300, 100 };
-		upgradeText->SetTextFont(app->fontTTF->inventoryFont);
+		levelUpText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		levelUpText->bounds = { 570, 180, 300, 100 };
+		levelUpText->SetTextFont(app->fontTTF->defaultFont);
 
 		int lvl = app->scene->player1->lvl;
 		int nextLvl = lvl + 1;
 
 		char str[24] = {};
 		sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
-		upgradeText->SetString(str, WHITE);
+		levelUpText->SetString(str, WHITE);
 	}
 
 	if (winText == nullptr)
@@ -171,7 +175,7 @@ void LevelUp::SetText()
 	{
 		expText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		expText->bounds = { 500, 400, 300, 100 };
-		expText->SetTextFont(app->fontTTF->inventoryFont);
+		expText->SetTextFont(app->fontTTF->defaultFont);
 		expText->SetString("EXP: ");
 	}
 
@@ -187,9 +191,9 @@ void LevelUp::SetText()
 
 void LevelUp::DrawText()
 {
-	if (levelUpBool) upgradeText->Draw();
+	if (levelUpBool) levelUpText->Draw();
 
-	winText->Draw();
+	if (!levelUpBool) winText->Draw();
 	
 	expGainedText->Draw();
 
