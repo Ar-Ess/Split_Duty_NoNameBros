@@ -1632,10 +1632,16 @@ void Combat::ItemDrop(EnemyClass enemy)
 	{
 		if (random < 9)
 		{
-			if (luckArray[a]) smallMeat += 2;
+			int randMeat = rand() % 10;
+			if (luckArray[a])
+			{
+				smallMeat += 1;
+				largeMeat += 1;
+			}
 			else if (!luckArray[a])
 			{
-				smallMeat++;
+				if (randMeat < 7) smallMeat++;
+				else largeMeat++;
 				app->questManager->CheckGatherQuest(ItemType::LITTLE_BEEF_I, 1);
 			}
 

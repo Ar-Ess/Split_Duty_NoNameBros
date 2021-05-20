@@ -29,13 +29,6 @@ void LevelUp::Start(short int exp)
 	interfaceTexture = app->tex->Load("Assets/Screens/level_scene.png");
 	barTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
 
-	int lvl = app->scene->player1->lvl;
-	int nextLvl = lvl + 1;
-
-	char str[24] = {};
-	sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
-	levelUpText->SetString(str, WHITE);
-
 	char str1[24] = {};
 	sprintf(str1, "Gained %d exp", exp);
 	expGainedText->SetString(str1, WHITE);
@@ -43,47 +36,57 @@ void LevelUp::Start(short int exp)
 	levelUpBool = false;
 
 	//------------------------------------------
-
-	plusExp = exp; //Experience given by the enemy
-	actualExp = app->scene->player1->exp; //Actual player experience
-
-	counter = actualExp;
-
-	int newExp = actualExp + plusExp; //Sum of the actual experience plus the experience given by the enemy
-
-	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f));
-	
-	if (newExp > maxExp)
-	{
-		app->scene->player1->lvl++;
-		int diffExp = newExp - maxExp;
-		newExp = diffExp;
-		levelUpBool = true;
-		counter = 0;
-	}
-	else if (newExp == maxExp)
-	{
-		app->scene->player1->lvl++;
-		newExp = 0;
-		levelUpBool = true;
-		counter = 0;
-	}
-
 	Player* p = app->scene->player1;
+
+	actualExp = p->exp; //Actual player experience
+	counter = actualExp; // Counter for exp animation
+	actualLevel = p->lvl;
+	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)); //Max EXP for actual lvl
+
+	int newExp = actualExp + exp; //Sum of the actual experience plus the experience given by the enemy
+	
+	while (newExp > maxExp)
+	{
+		if (newExp > maxExp)
+		{
+			p->lvl++;
+			int diffExp = newExp - maxExp;
+			newExp = diffExp;
+			levelUpBool = true;
+			counter = 0;
+		}
+		else if (newExp == maxExp)
+		{
+			p->lvl++;
+			newExp = 0;
+			levelUpBool = true;
+			counter = 0;
+		}
+
+		maxExp = floor(1000 * pow((float)p->lvl, 1.25f)); //Max EXP for actual lvl
+	}
+
 	if (levelUpBool)
 	{
-		Player* p = app->scene->player1;
 		int x = p->lvl;
 
 		p->maxHealth = floor((x / 2) + 20);
 		p->strengthStat = floor((x / 3) + 6);
 		p->defenseStat = floor((x / 3) + 3);
-
+		if (p->luckStat != 0) p->luckStat = floor((x / 5) + 1);
+		if (p->stabStat != 0) p->stabStat = floor((x / 4) + 1);
+		if (p->velocityStat != 0) p->velocityStat = floor((x / 3) + 5);
 	}
 
+	nextLevel = p->lvl;
 	p->exp = newExp;
 
 	p = nullptr;
+
+	//TEXTS
+	char str[24] = {};
+	sprintf(str, "Level Up! %d to %d", actualLevel, nextLevel);
+	levelUpText->SetString(str, WHITE);
 }
 
 void LevelUp::Restart()
@@ -106,7 +109,7 @@ void LevelUp::Draw()
 
     DrawText();
 
-	if (counter < app->scene->player1->exp) counter += 3;
+	if (counter < app->scene->player1->exp) counter += 5;
 
 	DrawBar({530, 400}, counter, maxExp, BLUE);
 

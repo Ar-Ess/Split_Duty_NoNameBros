@@ -59,6 +59,8 @@ private:
     short int plusExp = 0;
     short int actualExp = 0;
     short int maxExp = 0;
+	short int actualLevel = 0;
+	short int nextLevel = 0;
 
     bool levelUpBool = false;
 
