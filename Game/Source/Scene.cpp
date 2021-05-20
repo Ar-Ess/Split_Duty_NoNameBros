@@ -23,6 +23,7 @@
 #include "OptionsMenu.h"
 #include "Map.h"
 #include "Pathfinding.h"
+#include "Boss.h"
 
 #include "GuiManager.h"
 #include "GuiString.h"
@@ -250,7 +251,7 @@ void Scene::SetScene(Scenes scene)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == OPTIONS_MENU) SetOptionsMenu();
-	else if (scene == COMBAT) SetCombat(nullptr);
+	else if (scene == COMBAT) SetCombat((Enemy*)nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -274,6 +275,23 @@ void Scene::SetScene(Scenes scene, Enemy* enemy)
 	else if (scene == END_SCREEN) SetEndScreen();
 }
 
+void Scene::SetScene(Scenes scene, Boss* boss)
+{
+	CleanUp(scene);
+
+	prevScene = currScene;
+	currScene = scene;
+
+	if (scene == LOGO_SCENE) SetLogoScene();
+	else if (scene == MAIN_MENU) SetMainMenu();
+	else if (scene == OPTIONS_MENU) SetOptionsMenu();
+	else if (scene == COMBAT) SetCombat(boss);
+	else if (scene == LEVEL_UP) SetLevelUp(0);
+	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
+	else if (scene == PAUSE_MENU) SetPauseMenu();
+	else if (scene == END_SCREEN) SetEndScreen();
+}
+
 void Scene::SetScene(Scenes scene, Places place)
 {
 	CleanUp(scene);
@@ -284,7 +302,7 @@ void Scene::SetScene(Scenes scene, Places place)
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
 	else if (scene == OPTIONS_MENU) SetOptionsMenu();
-	else if (scene == COMBAT) SetCombat(nullptr);
+	else if (scene == COMBAT) SetCombat((Enemy*)nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(0);
 	else if (scene == WORLD) SetWorld(place);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -300,7 +318,7 @@ void Scene::SetScene(Scenes scene, unsigned short int exp)
 
 	if (scene == LOGO_SCENE) SetLogoScene();
 	else if (scene == MAIN_MENU) SetMainMenu();
-	else if (scene == COMBAT) SetCombat(nullptr);
+	else if (scene == COMBAT) SetCombat((Enemy*)nullptr);
 	else if (scene == LEVEL_UP) SetLevelUp(exp);
 	else if (scene == WORLD) SetWorld(Places::NO_PLACE);
 	else if (scene == PAUSE_MENU) SetPauseMenu();
@@ -534,6 +552,253 @@ void Scene::SetCombat(Enemy* enemySet)
 	{
 		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
 		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding)* 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		moveButton->text = "MoveButton";
+		moveButton->SetObserver(this);
+	}
+
+	if (itemButton == nullptr)
+	{
+		itemButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		itemButton->text = "ItemButton";
+		itemButton->SetObserver(this);
+	}
+
+	if (escapeButton == nullptr)
+	{
+		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		escapeButton->text = "EscapeButton";
+		escapeButton->SetObserver(this);
+	}
+
+	if (splitButton == nullptr)
+	{
+		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		splitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		splitButton->text = "SplitButton";
+		splitButton->SetObserver(this);
+	}
+
+	if (secondAttackButton == nullptr)
+	{
+		secondAttackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		secondAttackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		secondAttackButton->text = "SecondAttackButton";
+		secondAttackButton->SetObserver(this);
+	}
+
+	if (protectButton == nullptr)
+	{
+		protectButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		protectButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		protectButton->text = "ProtectButton";
+		protectButton->SetObserver(this);
+	}
+
+	if (buffButton == nullptr)
+	{
+		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		buffButton->text = "BuffButton";
+		buffButton->SetObserver(this);
+	}
+
+	// INVENTORY BUTTONS
+	if (combatScene->smallMeatButton == nullptr)
+	{
+		combatScene->smallMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->smallMeatButton->bounds = { 303, 220, 108, 108 };
+		combatScene->smallMeatButton->text = "SmallMeatButton";
+		combatScene->smallMeatButton->SetObserver(this);
+	}
+
+	if (combatScene->largeMeatButton == nullptr)
+	{
+		combatScene->largeMeatButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->largeMeatButton->bounds = { 303 + (113 * 1), 220, 108, 108 };
+		combatScene->largeMeatButton->text = "LargeMeatButton";
+		combatScene->largeMeatButton->SetObserver(this);
+	}
+
+	if (combatScene->featherButton == nullptr)
+	{
+		combatScene->featherButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->featherButton->bounds = { 303 + (113 * 2), 220, 108, 108 };
+		combatScene->featherButton->text = "FeatherButton";
+		combatScene->featherButton->SetObserver(this);
+	}
+
+	if (combatScene->mantisButton == nullptr)
+	{
+		combatScene->mantisButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->mantisButton->bounds = { 303 + (113 * 3), 220, 108, 108 };
+		combatScene->mantisButton->text = "MantisButton";
+		combatScene->mantisButton->SetObserver(this);
+	}
+
+	if (combatScene->enemySplitButton == nullptr)
+	{
+		combatScene->enemySplitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->enemySplitButton->bounds = { 303 + (113 * 4), 220, 108, 108 };
+		combatScene->enemySplitButton->text = "EnemySplitButton";
+		combatScene->enemySplitButton->SetObserver(this);
+	}
+
+	if (combatScene->moneyButton == nullptr)
+	{
+		combatScene->moneyButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		combatScene->moneyButton->bounds = { 303 + (113 * 5), 220, 108, 108 };
+		combatScene->moneyButton->text = "MoneyButton";
+		combatScene->moneyButton->SetObserver(this);
+	}
+
+	// TEXTS
+
+	if (combatScene->attackText == nullptr)
+	{
+		combatScene->attackText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->attackText->bounds = attackButton->bounds;
+		combatScene->attackText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->attackText->SetString("ATTACK");
+		combatScene->attackText->CenterAlign();
+	}
+
+	if (combatScene->moveText == nullptr)
+	{
+		combatScene->moveText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->moveText->bounds = { moveButton->bounds };
+		combatScene->moveText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->moveText->SetString("MOVE");
+		combatScene->moveText->CenterAlign();
+	}
+
+	if (combatScene->itemsText == nullptr)
+	{
+		combatScene->itemsText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->itemsText->bounds = { itemButton->bounds };
+		combatScene->itemsText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->itemsText->SetString("ITEMS");
+		combatScene->itemsText->CenterAlign();
+	}
+
+	if (combatScene->escapeText == nullptr)
+	{
+		combatScene->escapeText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->escapeText->bounds = { escapeButton->bounds };
+		combatScene->escapeText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->escapeText->SetString("ESCAPE");
+		combatScene->escapeText->CenterAlign();
+	}
+
+	if (combatScene->splitText == nullptr)
+	{
+		combatScene->splitText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->splitText->bounds = { splitButton->bounds };
+		combatScene->splitText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->splitText->SetString("SPLIT");
+		combatScene->splitText->CenterAlign();
+	}
+
+	if (combatScene->protectText == nullptr)
+	{
+		combatScene->protectText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->protectText->bounds = { protectButton->bounds };
+		combatScene->protectText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->protectText->SetString("PROTECT");
+		combatScene->protectText->CenterAlign();
+	}
+
+	if (combatScene->buffText == nullptr)
+	{
+		combatScene->buffText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->buffText->bounds = { buffButton->bounds };
+		combatScene->buffText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->buffText->SetString("BUFFS");
+		combatScene->buffText->CenterAlign();
+	}
+
+	SDL_Rect descriptionRect = { 315, 356, 663, 156 };
+
+	if (combatScene->smallMeatDescription == nullptr)
+	{
+		combatScene->smallMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->smallMeatDescription->bounds = descriptionRect; //NO
+		combatScene->smallMeatDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->smallMeatDescription->SetString("Small Wolf Meat: \n\nFrom the oldest to the youngest, since the start of the times, wolf meat \nhas been the most wanted of all times. One out of one barwo/men \nrecomend this type of meat. It seems that was given to those warriors \nwho came intact from a raid, as a present for their majestry \n\n - USE: Heals the 30 percent of the Max Health of the hero");
+	}
+
+	if (combatScene->largeMeatDescription == nullptr)
+	{
+		combatScene->largeMeatDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->largeMeatDescription->bounds = descriptionRect;
+		combatScene->largeMeatDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->largeMeatDescription->SetString("Large Wolf Meat: \n\nWe are not talking about something easy to eat, this meat has the god's \napprovement. It is needed a high quality cheff to admire the flavour \nof this aliment. Either way, it gives the enough vitamins to fight \nduring 12 nights without falling asleep. \n\n - USE: Heals the 60 percent of the Max Health of the hero");
+	}
+
+	if (combatScene->featherDescription == nullptr)
+	{
+		combatScene->featherDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->featherDescription->bounds = descriptionRect;
+		combatScene->featherDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->featherDescription->SetString("Slight Feather: \n\nAir is something not visible, but either we can feel it with the wind,\nwhich has the power of the destruction of any and enery live structure. \nThis feather is like the air, slight and soft, but has the power to \ncancel the air friction of every possible wind \n\n - USE: Softens hero's jump and heals a 15 percent of it ");
+	}
+
+	if (combatScene->mantisRodDescription == nullptr)
+	{
+		combatScene->mantisRodDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->mantisRodDescription->bounds = descriptionRect;
+		combatScene->mantisRodDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->mantisRodDescription->SetString("Mantis Rod: \n\nFrom the infinite damage of a god attack, life itself needed a way to \nstop them, so it created the infinite defense, which was materialized \ninto the arm of a mantis. But, all good things have an end, that's why \nlife made that arm the most fragile one. What a paradox! \n\n - USE: Makes hero invencible to one enemy hit during one turn");
+	}
+
+	if (combatScene->enemySplitDescription == nullptr)
+	{
+		combatScene->enemySplitDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->enemySplitDescription->bounds = descriptionRect;
+		combatScene->enemySplitDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->enemySplitDescription->SetString("Splited Enemy: \n\nFrom the power was concerned to the hero, it has the power to split enemy \naura and cage it for its sake. We do not know why the hero has the \nability to do that, but we know those auras can be used in our benefit.\n That's his will, and not anyone else, even hero's one. \n\n - USE: Invoque an aliade enemy that will attack your opponent");
+	}
+
+	if (combatScene->moneyDescription == nullptr)
+	{
+		combatScene->moneyDescription = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->moneyDescription->bounds = descriptionRect;
+		combatScene->moneyDescription->SetTextFont(app->fontTTF->defaultFont2);
+		combatScene->moneyDescription->SetString("Coin: \n\nJust a coin \n\n\n\n\n - USE: Use a coin an loose it");
+	}
+
+	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
+}
+
+void Scene::SetCombat(Boss* bossSet)
+{
+	if (combatScene->turnText == nullptr)
+	{
+		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->turnText->bounds = { 541, 43, 200, 50 };
+		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
+	}
+
+	SDL_ShowCursor(0);
+
+	combatScene->boss = bossSet;
+	combatScene->Start();
+
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
+	if (attackButton == nullptr)
+	{
+		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		attackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		attackButton->text = "AttackButton";
+		attackButton->SetObserver(this);
+	}
+
+	if (moveButton == nullptr)
+	{
+		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
 	}
@@ -1014,6 +1279,8 @@ void Scene::UpdateWorld()
 
 	if (world->inventoryOpen) world->inventory->Draw();
 
+	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
 		if (!world->inventoryOpen && !app->dialogueManager->onDialog)
@@ -1030,11 +1297,6 @@ void Scene::UpdateWorld()
 
 		if (player1->godMode) player1->playerSpeed = 14;
 		else player1->playerSpeed = PLAYER_SPEED;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		SetScene(LEVEL_UP, 200);
 	}
 }
 

@@ -6,6 +6,7 @@
 
 #include "List.h"
 enum EnemyClass;
+enum BossClass;
 
 class EntityManager : public Module
 {
@@ -25,6 +26,8 @@ public:
 
 	Entity* CreateEntity(EntityType type,EnemyClass enemy);
 
+	Entity* CreateEntity(EntityType type, BossClass boss);
+
 	void DestroyEntity(Entity* entity);
 
 	void AddEntity(Entity* entity);
@@ -34,6 +37,7 @@ public:
 public:
 
 	List<Enemy*> enemies;
+	List<Boss*> bosses;
 	List<NPC*> NPCs;
 
 	float accumulatedTime = 0.0f;

@@ -11,6 +11,7 @@
 
 #include "Combat.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "Player.h"
 #include "Collider.h"
 #include "Player.h"
@@ -29,36 +30,27 @@ Combat::Combat()
 void Combat::Start()
 {
 	Player* p = app->scene->player1;
+
+	if (enemy != nullptr) enemyBattle = true;
+	else if (boss != nullptr) bossBattle = true;
+
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
 	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/Second_Player/second_player.png");
 	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
 	combatInventory = app->tex->Load("Assets/Screens/combat_inventory.png");
 
-	switch (enemy->enemyClass)
-	{
-	case(EnemyClass::SMALL_WOLF):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
-		break;
-	case(EnemyClass::BIRD):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
-		break;
-	case(EnemyClass::MANTIS):
-		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
-	}
+	if (enemyBattle) EnemyStart();
+	else if (bossBattle) BossStart();
 
 	//Idle Animation Set
 	currentPlayerAnim = &p->cIdleAnim;
-	currentEnemyAnim = &enemy->idleAnim;
 
 	//Item Inventory amount
 	ItemSetup(p->smallMeatCount, p->largeMeatCount, p->featherCount, p->mantisRodCount, p->splitedEnemyCount, p->moneyCount);
 
 	//Bool preparation for combat
 	BoolStart();
-
-	//Firts turn decision
-	FirstTurnLogic();
 
 	//LuckArray fill
 	int pLuck = p->luckStat;
@@ -76,10 +68,56 @@ void Combat::Start()
 	p = nullptr;
 }
 
+void Combat::EnemyStart()
+{
+	switch (enemy->enemyClass)
+	{
+	case(EnemyClass::SMALL_WOLF):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
+		break;
+	case(EnemyClass::BIRD):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		break;
+	case(EnemyClass::MANTIS):
+		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+	}
+
+	//Firts turn decision
+	FirstTurnLogic();
+
+	currentEnemyAnim = &enemy->idleAnim;
+}
+
+void Combat::BossStart()
+{
+	combatState = BOSS_TURN;
+
+	switch (boss->bossClass)
+	{
+	case(BossClass::BOSS_TUTORIAL):
+		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
+		break;
+	case(BossClass::BOSS_I):
+		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		break;
+	case(BossClass::BOSS_II):
+		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		break;
+	case(BossClass::BOSS_III):
+		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		break;
+	}
+
+	currentBossAnim = &boss->idleAnim;
+}
+
 void Combat::Restart()
 {
 	combatState = NULL_STATE;
 	enemy = nullptr;
+	boss = nullptr;
+	enemyBattle = false;
+	bossBattle = false;
 
 	SDL_ShowCursor(1);
 
@@ -89,6 +127,7 @@ void Combat::Restart()
 	app->tex->UnLoad(character1Spritesheet);
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
+	app->tex->UnLoad(bossSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 	app->tex->UnLoad(combatInventory);
 
@@ -152,7 +191,7 @@ void Combat::BoolStart()
 
 void Combat::FirstTurnLogic()
 {
-	if (app->scene->player1->velocityStat <= enemy->velocity)
+	if (app->scene->player1->velocityStat < enemy->velocity)
 	{
 		combatState = ENEMY_TURN;
 		turnText->SetString("ENEMY TURN");
@@ -174,14 +213,23 @@ void Combat::Update()
 	UpdatePopUps();
 
 	currentPlayerAnim->Update(1.0f);
-	currentEnemyAnim->Update(1.0f);
+	if (enemyBattle) currentEnemyAnim->Update(1.0f);
+	else if (bossBattle) currentBossAnim->Update(1.0f);
 
 	CombatLogic();
 
-	if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
-	else app->scene->splitButton->state = GuiControlState::LOCKED;
+	if (enemyBattle)
+	{
+		if (steps == 3 && enemy->health <= floor(20 * enemy->maxHealth / 100)) app->scene->splitButton->state == GuiControlState::NORMAL;
+		else app->scene->splitButton->state = GuiControlState::LOCKED;
+	}
+	else if (bossBattle) app->scene->splitButton->state = GuiControlState::LOCKED;
 
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) enemy->health -= enemy->health;
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+	{
+		if (enemyBattle) enemy->health -= enemy->health;
+		else if (bossBattle) boss->health -= boss->health;
+	}
 }
 
 void Combat::UpdateButtons()
@@ -267,6 +315,39 @@ void Combat::CombatLogic()
 						if (enemy->mantisTimeAttack2 == 242) playerResponseAble = false;
 					}
 				}
+			}
+		}
+	}
+	else if (combatState == BOSS_TURN)
+	{
+		if (bossTimeWait < 60)
+		{
+			bossTimeWait++; // Make enemy wait so it does not atack directly
+			if (bossTimeWait == 59)
+			{
+				BossAttackProbability();
+				currentBossAnim = &boss->moveAnim;
+
+				//app->audio->SetFx(Effect::BOSS_ATTACK_FX);
+			}
+		}
+		else
+		{
+			BossAttack(boss->bossClass);
+
+			PlayerResponse();
+
+			//PLAYER RESPONSE FALSE LOGIC TODO
+			switch (boss->bossClass)
+			{
+			case BossClass::BOSS_TUTORIAL:
+				break;
+			case BossClass::BOSS_I:
+				break;
+			case BossClass::BOSS_II:
+				break;
+			case BossClass::BOSS_III:
+				break;
 			}
 		}
 	}
@@ -387,9 +468,16 @@ void Combat::Draw()
 
 	if (secondPlayer) DrawSecondPlayer();
 
-	DrawEnemy();
-
-	app->guiManager->DrawCombatInterface(enemy);
+	if (enemyBattle)
+	{
+		DrawEnemy();
+		app->guiManager->DrawCombatInterface(enemy);
+	}
+	else if (bossBattle)
+	{
+		DrawBoss();
+		app->guiManager->DrawCombatInterface(boss);
+	}
 
 	DrawButtons();
 
@@ -461,6 +549,10 @@ void Combat::DrawEnemy()
 		else if (enemy->enemyClass == EnemyClass::SMALL_WOLF)
 			app->render->DrawTexture(enemySpritesheet, enemy->colliderCombat.x - 10, enemy->colliderCombat.y - 20, 2, &currentEnemyAnim->GetCurrentFrame(), false);
 	}
+}
+
+void Combat::DrawBoss()
+{
 }
 
 void Combat::DrawBakcground()
@@ -581,33 +673,49 @@ void Combat::EndBattleSolving()
 	{
 		app->questManager->CheckKillQuest(enemy);
 
-		ItemDrop(enemy->enemyClass);
+		if (enemyBattle) ItemDrop(enemy->enemyClass);
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-		short int experience = enemy->exp;
+
+		short int experience = 0;
+		if (enemyBattle) experience = enemy->exp;
+		else if (bossBattle) experience = boss->exp;
+
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+
+		//TODO DELETE BOSS
+
 		app->scene->SetScene(LEVEL_UP, experience);
 	}
 	else if (playerLose)
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-		enemy->Refill();
+		if (enemyBattle) enemy->Refill();
+		else if (bossBattle) boss->Refill();
 		app->scene->SetScene(END_SCREEN);
 	}
 	else if (playerSplitWin)
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
+
 		short int id = app->entityManager->enemies.Find(enemy);
 		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+
+		//TODO DELETE BOSS
+
 		app->scene->SetScene(LEVEL_UP);
 	}
 	else if (playerEscaped)
 	{
-		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-		enemy->Refill();
-		app->scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
-		app->scene->SetScene(WORLD, app->scene->world->GetPlace());
-		app->scene->world->AlignCameraPosition();
+		Scene* s = app->scene;
+		s->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
+
+		if (enemyBattle) enemy->Refill();
+		else if (bossBattle) boss->Refill();
+
+		s->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
+		s->SetScene(WORLD, app->scene->world->GetPlace());
+		s->world->AlignCameraPosition();
 	}
 }
 
@@ -918,6 +1026,21 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	}
 }
 
+void Combat::BossAttack(BossClass boss)
+{
+	switch (boss)
+	{
+	case(BossClass::BOSS_TUTORIAL):
+		break;
+	case(BossClass::BOSS_I):
+		break;
+	case(BossClass::BOSS_II):
+		break;
+	case(BossClass::BOSS_III):
+		break;
+	}
+}
+
 void Combat::AfterEnemyAttack()
 {
 	if (app->scene->player1->health > 0)
@@ -965,7 +1088,11 @@ void Combat::PlayerAttack()
 
 		if (enemy->health > 0)
 		{
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
 		else if (enemy->health <= 0)
@@ -1005,7 +1132,8 @@ void Combat::SecondPlayerAttack()
 
 		if (enemy->health > 0)
 		{
-			EnemyTurn();
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
 		}
 		else if (enemy->health <= 0)
 		{
@@ -1029,7 +1157,11 @@ void Combat::PlayerMove()
 		steps++;
 		LOG("Player moved to position : %d", steps);
 
-		if (!secondPlayer) EnemyTurn();
+		if (!secondPlayer)
+		{
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
+		}
 		else if (secondPlayer) SecondPlayerTurn();
 	}
 }
@@ -1102,7 +1234,8 @@ void Combat::SecondPlayerProtect()
 		secondPlayerTimeProtection = 0;
 		secondPlayerProtect = false;
 		secondPlayerProtection = true;
-		EnemyTurn();
+		if (enemyBattle) EnemyTurn();
+		else if (bossBattle) BossTurn();
 	}
 }
 
@@ -1155,7 +1288,8 @@ void Combat::SecondPlayerBuff()
 			buffGenerationTime = 0;
 			secondPlayerBuff = false;
 			buffChoice = true;
-			EnemyTurn();
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
 		}
 	}
 }
@@ -1177,7 +1311,11 @@ void Combat::ItemUsage()
 
 			app->scene->player1->health += HealPlayer(1);
 
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
@@ -1196,7 +1334,11 @@ void Combat::ItemUsage()
 
 			app->scene->player1->health += HealPlayer(2);
 
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
@@ -1216,7 +1358,15 @@ void Combat::ItemUsage()
 			wearFeather = true;
 			app->scene->player1->health += HealPlayer(3);
 
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle)
+				{
+					if (enemyBattle) EnemyTurn();
+					else if (bossBattle) BossTurn();
+				}
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
@@ -1235,7 +1385,11 @@ void Combat::ItemUsage()
 
 			wearMantisLeg = true;
 
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
 	}
@@ -1256,7 +1410,11 @@ void Combat::ItemUsage()
 
 			if (enemy->health > 0)
 			{
-				if (!secondPlayer) EnemyTurn();
+				if (!secondPlayer)
+				{
+					if (enemyBattle) EnemyTurn();
+					else if (bossBattle) BossTurn();
+				}
 				else if (secondPlayer) SecondPlayerTurn();
 			}
 			else if (enemy->health <= 0)
@@ -1282,7 +1440,15 @@ void Combat::ItemUsage()
 
 			if (enemy->health > 0)
 			{
-				if (!secondPlayer) EnemyTurn();
+				if (!secondPlayer)
+				{
+					if (enemyBattle)
+					{
+						if (enemyBattle) EnemyTurn();
+						else if (bossBattle) BossTurn();
+					}
+					else if (bossBattle) BossTurn();
+				}
 				else if (secondPlayer) SecondPlayerTurn();
 			}
 			else if (enemy->health <= 0)
@@ -1317,7 +1483,11 @@ void Combat::PlayerSplit()
 				{
 					PlayerPosReset();
 
-					if (!secondPlayer) EnemyTurn();
+					if (!secondPlayer)
+					{
+						if (enemyBattle) EnemyTurn();
+						else if (bossBattle) BossTurn();
+					}
 					else if (secondPlayer) SecondPlayerTurn();
 
 					return;
@@ -1344,7 +1514,11 @@ void Combat::PlayerSplit()
 		{
 			PlayerPosReset();
 
-			if (!secondPlayer) EnemyTurn();
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
 			else if (secondPlayer) SecondPlayerTurn();
 
 			return;
@@ -1486,6 +1660,25 @@ void Combat::EnemyAttackProbability()
 	}
 }
 
+void Combat::BossAttackProbability()
+{
+	switch (boss->bossClass)
+	{
+	case BossClass::BOSS_TUTORIAL:
+		boss->attack = 1;
+		break;
+	case BossClass::BOSS_I:
+		boss->attack = 1;
+		break;
+	case BossClass::BOSS_II:
+		boss->attack = 1;
+		break;
+	case BossClass::BOSS_III:
+		boss->attack = 1;
+		break;
+	}
+}
+
 void Combat::PlayerMoneyLose()
 {
 	int lostMoney = ceil(app->scene->player1->lvl / 10);
@@ -1506,7 +1699,8 @@ void Combat::EscapeProbability(short int probabilityRange)
 		{
 			playerAttack = false;
 
-			EnemyTurn();
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
 		}
 	}
 	else if (probabilityRange >= -3 && probabilityRange <= 3)
@@ -1518,7 +1712,8 @@ void Combat::EscapeProbability(short int probabilityRange)
 		{
 			playerAttack = false;
 
-			EnemyTurn();
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
 		}
 	}
 	else if (probabilityRange >= 4 && probabilityRange <= 7)
@@ -1530,14 +1725,16 @@ void Combat::EscapeProbability(short int probabilityRange)
 		{
 			playerAttack = false;
 
-			EnemyTurn();
+			if (enemyBattle) EnemyTurn();
+			else if (bossBattle) BossTurn();
 		}
 	}
 	else if (probabilityRange >= 8)
 	{
 		playerAttack = false;
 
-		EnemyTurn();
+		if (enemyBattle) EnemyTurn();
+		else if (bossBattle) BossTurn();
 	}
 }
 
@@ -1769,6 +1966,32 @@ void Combat::EnemyTurn()
 	case(EnemyClass::BIRD): app->audio->SetFx(Effect::BIRD_TURN_FX); break;
 	case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_TURN_FX); break;
 	}
+}
+
+void Combat::BossTurn()
+{
+	LOG("BOSS TURN");
+	LOG("Boss Health: %d", boss->health);
+
+	combatState = BOSS_TURN;
+
+	currentPlayerAnim = &app->scene->player1->cIdleAnim;
+	currentPlayerAnim->Reset();
+
+	playerResponseAble = true;
+	playerChoice = true;
+	secondPlayerChoice = true;
+
+	if (secondPlayer) secondPlayerChoice = true;
+
+	if (steps == 3) app->scene->moveButton->state = GuiControlState::LOCKED;
+	else app->scene->moveButton->state = GuiControlState::NORMAL;
+
+	app->scene->escapeButton->state = GuiControlState::NORMAL;
+
+	turnText->SetString("BOSS TURN");
+
+	//app->audio->SetFx(Effect::BOSS_TURN_FX);
 }
 
 void Combat::PlayerTurn()

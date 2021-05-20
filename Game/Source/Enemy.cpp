@@ -87,11 +87,6 @@ Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
 
         break;
     }
-    
-    
-
-  
-    
 }
 
 Enemy::~Enemy()

@@ -32,6 +32,7 @@ enum CombatState
 {
     NULL_STATE = -1,
     ENEMY_TURN,
+	BOSS_TURN,
     PLAYER_TURN,
     SECOND_PLAYER_TURN,
     WIN,
@@ -47,6 +48,10 @@ public:
     Combat();
 
     void Start();
+
+	void EnemyStart();
+
+	void BossStart();
 
     void Restart();
 
@@ -67,6 +72,8 @@ public:
     void DrawSecondPlayer();
 
     void DrawEnemy();
+
+	void DrawBoss();
 
     void DrawBakcground();
 
@@ -95,6 +102,8 @@ public:
     int BulletDamageLogic();
 
     void EnemyAttack(EnemyClass enemy);
+
+	void BossAttack(BossClass boss);
 
     void AfterEnemyAttack();
 
@@ -126,6 +135,8 @@ public:
 
     void EnemyAttackProbability();
 
+	void BossAttackProbability();
+
     void PlayerMoneyLose();
 
     void EscapeProbability(short int probabilityRange);
@@ -145,6 +156,8 @@ public:
 private: //STATE CHANGING FUNCTIONS
 
     void EnemyTurn();
+
+	void BossTurn();
 
     void PlayerTurn();
 
@@ -169,6 +182,7 @@ public: //Getters
 
 public:
     short int enemyTimeWait = 0;
+	short int bossTimeWait = 0;
     short int playerTimeAttack = 0;
     short int secondPlayerTimeAttack = 0;
     short int playerTimeMove = 0;
@@ -241,6 +255,10 @@ public:
     bool playerLose = false;
     bool playerSplitWin = false;
 
+// BATTLE TYPE
+	bool enemyBattle = false;
+	bool bossBattle = false;
+
 public:
     short int smallMeat = 0;
     short int largeMeat = 0;
@@ -259,6 +277,7 @@ private:
     Animation* currentPlayerAnim = nullptr;
     Animation* currentSecondPlayerAnim = nullptr;
     Animation* currentEnemyAnim = nullptr;
+	Animation* currentBossAnim = nullptr;
 
     bool CompareFrames(SDL_Rect a, SDL_Rect b)
     {
@@ -275,6 +294,8 @@ public:
     Collision collisionUtils;
 
     Enemy* enemy = nullptr;
+
+	Boss* boss = nullptr;
 
     CombatState combatState = NULL_STATE;
     
@@ -328,7 +349,8 @@ private:
     SDL_Texture* character1Spritesheet = nullptr;
     SDL_Texture* character2Spritesheet = nullptr;
  
-    SDL_Texture* enemySpritesheet = nullptr;    
+    SDL_Texture* enemySpritesheet = nullptr;
+	SDL_Texture* bossSpritesheet = nullptr;
 
     SDL_Texture* grassyLandsBackground = nullptr;
     SDL_Texture* autummFallsBackground = nullptr;

@@ -4,6 +4,7 @@
 #include "GuiManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Boss.h"
 #include "Combat.h"
 
 #include "Log.h"
@@ -169,8 +170,6 @@ void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 		LOG("god mode life bar");
 		app->render->DrawRectangle(maxLifeBar, BLUE);
 		//BlinkLifeBar(maxLife, BLUE, CYAN);
-
-		
 	}
 }
 
@@ -214,7 +213,22 @@ void GuiManager::DrawCombatInterface(Enemy* enemy)
 
 	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
 
-	app->guiManager->DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1080, 30);
+	DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1080, 30);
+}
+
+void GuiManager::DrawCombatInterface(Boss* boss)
+{
+	const SDL_Rect guiRect = { 0,0,1280,720 };
+	app->render->DrawTexture(GuiTexture, 0, 0, &guiRect);
+
+	//const SDL_Rect faceRect = { 0,0,70,69 };
+	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
+
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
+
+	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
+
+	DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
 }
 
 bool GuiManager::CleanUp()

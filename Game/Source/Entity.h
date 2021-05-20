@@ -10,6 +10,7 @@ enum class EntityType
     PLAYER1,
     PLAYER2,
     ENEMY,
+	BOSS,
     ITEM,
     MAP,
     NPC,

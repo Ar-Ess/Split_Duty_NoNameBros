@@ -130,6 +130,9 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Source\AssetsManager.cpp" />
+    <ClCompile Include="Source\Boss.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -308,6 +311,9 @@
       <Filter>Quests</Filter>
     </ClInclude>
     <ClInclude Include="Source\AssetsManager.h" />
+    <ClInclude Include="Source\Boss.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

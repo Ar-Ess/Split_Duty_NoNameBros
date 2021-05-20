@@ -12,6 +12,7 @@ class GuiButton;
 class GuiString;
 struct SDL_Texture;
 class Enemy;
+class Boss;
 class Player;
 class Combat;
 class World;
@@ -189,6 +190,7 @@ private: //Scene Manager
 
 	void SetScene(Scenes scene);
 	void SetScene(Scenes scene, Enemy* enemy);
+	void SetScene(Scenes scene, Boss* boss);
 	void SetScene(Scenes scene, Places place);
 	void SetScene(Scenes scene, unsigned short int exp);
 
@@ -197,6 +199,7 @@ private: //Scene Manager
 	void SetMainMenu();
 	void SetOptionsMenu();
 	void SetCombat(Enemy* enemy);
+	void SetCombat(Boss* boss);
 	void SetLevelUp(unsigned short int experience);
 	void SetWorld(Places place);
 	void SetPauseMenu();
