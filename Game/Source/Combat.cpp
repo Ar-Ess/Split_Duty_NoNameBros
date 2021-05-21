@@ -354,7 +354,11 @@ void Combat::CombatLogic()
 	else if (combatState == PLAYER_TURN)
 	{
 		//DEBUG MODE
-		if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) enemy->health -= enemy->health;
+		if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		{
+			if (enemyBattle) enemy->health -= enemy->health;
+			if (bossBattle) boss->health -= boss->health;
+		}
 
 		if (!secondPlayerProtection)
 		{
@@ -424,7 +428,7 @@ void Combat::CombatLogic()
 	else if (combatState == WIN)
 	{
 		playerWin = true;
-		enemy->active = false;
+		//enemy->active = false;
 	}
 	else if (combatState == LOSE)
 	{
@@ -437,7 +441,7 @@ void Combat::CombatLogic()
 	else if (combatState == SPLIT)
 	{
 		playerSplitWin = true;
-		enemy->active = false;
+		//enemy->active = false;
 	}
 	else if (combatState == ESCAPE)
 	{
@@ -449,7 +453,8 @@ void Combat::CombatLogic()
 		}
 		else
 		{
-			enemy->health = enemy->maxHealth;
+			if (enemyBattle) enemy->health = enemy->maxHealth;
+			else if (bossBattle) boss->health = boss->maxHealth;
 			playerTimeEscape = 0;
 			playerEscaped = true;
 		}
@@ -522,10 +527,13 @@ void Combat::DrawPlayer()
 void Combat::DebugDraw()
 {
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
-	app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+
+	if (enemyBattle) app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+	else if (bossBattle) app->render->DrawRectangle(boss->colliderCombat, { 255, 0, 0 , 150 });
+
 	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
 	//BULLETS
-	if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+	if (enemyBattle) if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
 }
 
 void Combat::DrawSecondPlayer()
@@ -553,6 +561,7 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
+
 }
 
 void Combat::DrawBakcground()
@@ -671,17 +680,19 @@ void Combat::EndBattleSolving()
 {
 	if (playerWin)
 	{
-		app->questManager->CheckKillQuest(enemy);
+		if (enemyBattle) app->questManager->CheckKillQuest(enemy);
 
 		if (enemyBattle) ItemDrop(enemy->enemyClass);
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 
 		short int experience = 0;
-		if (enemyBattle) experience = enemy->exp;
+		if (enemyBattle)
+		{
+			experience = enemy->exp;
+			short int id = app->entityManager->enemies.Find(enemy);
+			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+		}
 		else if (bossBattle) experience = boss->exp;
-
-		short int id = app->entityManager->enemies.Find(enemy);
-		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 
 		//TODO DELETE BOSS
 
@@ -690,16 +701,21 @@ void Combat::EndBattleSolving()
 	else if (playerLose)
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
+
 		if (enemyBattle) enemy->Refill();
 		else if (bossBattle) boss->Refill();
+
 		app->scene->SetScene(END_SCREEN);
 	}
 	else if (playerSplitWin)
 	{
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 
-		short int id = app->entityManager->enemies.Find(enemy);
-		app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+		if (enemyBattle)
+		{
+			short int id = app->entityManager->enemies.Find(enemy);
+			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
+		}
 
 		//TODO DELETE BOSS
 
@@ -751,8 +767,12 @@ void Combat::PlayerChoiceLogic()
 	else if (app->scene->escapePressed)
 	{
 		playerChoice = false;
-		short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
-		EscapeProbability(probabilityRange);
+		if (enemyBattle)
+		{
+			short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
+			EscapeProbability(probabilityRange);
+		}
+		else if (bossBattle) EscapeProbability(-8);
 		return;
 	}
 	else if (app->scene->splitPressed)
@@ -789,7 +809,12 @@ void Combat::SecondPlayerChoiceLogic()
 int Combat::PlayerDamageLogic()
 {
 	int damage = 0;
-	int pDamage = app->scene->player1->strengthStat - enemy->defense;
+	int enemyDefense = 0;
+
+	if (enemyBattle) enemyDefense = enemy->defense;
+	else if (bossBattle) enemyDefense = boss->defense;
+
+	int pDamage = app->scene->player1->strengthStat - enemyDefense;
 	int pLuck = app->scene->player1->luckStat;
 
 	if (steps == 0) damage += floor(15 * pDamage / 100);
@@ -809,7 +834,7 @@ int Combat::PlayerDamageLogic()
 	{
 		if (pLuck > 25) pLuck = 25;
 		int a = rand() % 100;
-		if (luckArray[a]) return damage + floor(20 * (pDamage - enemy->defense) / 100);
+		if (luckArray[a]) return damage + floor(20 * (pDamage - enemyDefense) / 100);
 		else if (!luckArray[a]) return damage;
 	}
 
@@ -818,7 +843,11 @@ int Combat::PlayerDamageLogic()
 
 int Combat::SecondPlayerDamageLogic()
 {
-	int damage = app->scene->player2->strengthStat - enemy->defense;
+	int enemyDefense = 0;
+	if (enemyBattle) enemyDefense = enemy->defense;
+	else if (bossBattle) enemyDefense = boss->defense;
+
+	int damage = app->scene->player2->strengthStat - enemyDefense;
 
 	int variation = rand() % 3;
 	bool negative = (bool)(rand() % 2);
@@ -834,7 +863,12 @@ int Combat::SecondPlayerDamageLogic()
 int Combat::EnemyDamageLogic()
 {
 	int damage = 0;
-	damage += enemy->strength - app->scene->player1->defenseStat;
+	int enemyStrength = 0;
+
+	if (enemyBattle) enemyStrength = enemy->strength;
+	else if (bossBattle) enemyStrength = boss->strength;
+
+	damage += enemyStrength - app->scene->player1->defenseStat;
 
 	if (damage < 1) damage = 1;
 
@@ -844,9 +878,15 @@ int Combat::EnemyDamageLogic()
 int Combat::BulletDamageLogic()
 {
 	int damage = 0;
-	damage += enemy->strength - app->scene->player1->defenseStat;
+	int enemyStrength = 0;
+
+	if (enemyBattle) enemyStrength = enemy->strength;
+	else if (bossBattle) enemyStrength = boss->strength;
+
+	damage += enemyStrength - app->scene->player1->defenseStat;
 
 	if (damage != 0) damage = ceil(damage / 5);
+
 	if (damage < 1) damage = 1;
 
 	return damage;
@@ -872,8 +912,6 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				playerHitAble = true;
 
 				AfterEnemyAttack();
-
-
 			}
 		}
 		else if (enemy->attack == 2)
@@ -1039,6 +1077,8 @@ void Combat::BossAttack(BossClass boss)
 	case(BossClass::BOSS_III):
 		break;
 	}
+
+	AfterBossAttack();
 }
 
 void Combat::AfterEnemyAttack()
@@ -1058,9 +1098,25 @@ void Combat::AfterEnemyAttack()
 	}
 }
 
+void Combat::AfterBossAttack()
+{
+	if (app->scene->player1->health > 0)
+	{
+		PlayerTurn();
+	}
+	else if (app->scene->player1->health <= 0)
+	{
+		PlayerDie();
+	}
+}
+
 void Combat::PlayerAttack()
 {
-	//app->scene->player1->cPos0AttackAnim.Reset();
+	int enemyHealth = 0;
+
+	if (enemyBattle) enemyHealth = enemy->health;
+	else if (bossBattle) enemyHealth = boss->health;
+
 	currentPlayerAnim = &app->scene->player1->cAttackAnim;
 
 	if (playerTimeAttack < 35)
@@ -1069,15 +1125,27 @@ void Combat::PlayerAttack()
 	}
 	else
 	{
-		switch (enemy->enemyClass)
+		if (enemyBattle)
 		{
-		case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_HURT_FX); break;
-		case(EnemyClass::BIRD): /*app->audio->SetFx(Effect::BIRD_HURT_FX);*/ break;
-		case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_HURT_FX); break;
+			switch (enemy->enemyClass)
+			{
+			case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_HURT_FX); break;
+			case(EnemyClass::BIRD): /*app->audio->SetFx(Effect::BIRD_HURT_FX);*/ break;
+			case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_HURT_FX); break;
+			}
+
+			enemy->health -= PlayerDamageLogic();
+			LOG("Enemy Hit, EH: %d", enemy->health);
+		}
+		else if (bossBattle)
+		{
+			//app->audio->SetFx(Effect::BOSS_HURT_FX);
+
+			boss->health -= PlayerDamageLogic();
+			LOG("Enemy Hit, EH: %d", boss->health);
 		}
 
-		enemy->health -= PlayerDamageLogic();
-		LOG("Enemy Hit, EH: %d", enemy->health);
+		
 
 		playerTimeAttack = 0;
 		playerAttack = false;
@@ -1086,7 +1154,7 @@ void Combat::PlayerAttack()
 
 		PlayerPosReset();
 
-		if (enemy->health > 0)
+		if (enemyHealth > 0)
 		{
 			if (!secondPlayer)
 			{
@@ -1095,7 +1163,7 @@ void Combat::PlayerAttack()
 			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
-		else if (enemy->health <= 0)
+		else if (enemyHealth <= 0)
 		{
 			PlayerWin();
 		}
@@ -1104,38 +1172,52 @@ void Combat::PlayerAttack()
 
 void Combat::SecondPlayerAttack()
 {
+	int enemyHealth = 0;
+
+	if (enemyBattle) enemyHealth = enemy->health;
+	else if (bossBattle) enemyHealth = boss->health;
+
 	if (secondPlayerTimeAttack < 215)
 	{
 		secondPlayerTimeAttack++;
-		
-		if (enemy->enemyClass == SMALL_WOLF)
-		{
-			app->scene->player2->colliderCombat.x += 6;
-		}
-		else if (enemy->enemyClass == BIRD) app->scene->player2->colliderCombat.x += 6;
-		else if (enemy->enemyClass == MANTIS)
-		{
-			app->scene->player2->colliderCombat.x += 6;
-		}
+
+		app->scene->player2->colliderCombat.x += 6;
 
 		if (app->scene->player2->colliderCombat.x > 1280) app->scene->player2->colliderCombat.x = 0;
 	}
 	else
 	{
-		enemy->health -= SecondPlayerDamageLogic();
-		LOG("Enemy Hit, EH: %d", enemy->health);
+		if (enemyBattle)
+		{
+			switch (enemy->enemyClass)
+			{
+			case(EnemyClass::SMALL_WOLF): app->audio->SetFx(Effect::WOLF_HURT_FX); break;
+			case(EnemyClass::BIRD): /*app->audio->SetFx(Effect::BIRD_HURT_FX);*/ break;
+			case(EnemyClass::MANTIS): app->audio->SetFx(Effect::MANTIS_HURT_FX); break;
+			}
+
+			enemy->health -= SecondPlayerDamageLogic();
+			LOG("Enemy Hit, EH: %d", enemy->health);
+		}
+		else if (bossBattle)
+		{
+			//app->audio->SetFx(Effect::BOSS_HURT_FX);
+
+			boss->health -= SecondPlayerDamageLogic();
+			LOG("Enemy Hit, EH: %d", boss->health);
+		}
 
 		secondPlayerTimeAttack = 0;
 		secondPlayerAttack = false;
 
 		SecondPlayerPosReset();
 
-		if (enemy->health > 0)
+		if (enemyHealth > 0)
 		{
 			if (enemyBattle) EnemyTurn();
 			else if (bossBattle) BossTurn();
 		}
-		else if (enemy->health <= 0)
+		else if (enemyHealth <= 0)
 		{
 			PlayerWin(); 
 		}
@@ -1360,11 +1442,7 @@ void Combat::ItemUsage()
 
 			if (!secondPlayer)
 			{
-				if (enemyBattle)
-				{
-					if (enemyBattle) EnemyTurn();
-					else if (bossBattle) BossTurn();
-				}
+				if (enemyBattle) EnemyTurn();
 				else if (bossBattle) BossTurn();
 			}
 			else if (secondPlayer) SecondPlayerTurn();
@@ -1395,6 +1473,11 @@ void Combat::ItemUsage()
 	}
 	else if (enemyThrow)
 	{
+		int enemyHealth = 0;
+
+		if (enemyBattle) enemyHealth = enemy->health;
+		else if (bossBattle) enemyHealth = boss->health;
+
 		if (playerTimeEnemyThrow < 120)
 		{
 			playerTimeEnemyThrow++;
@@ -1406,9 +1489,10 @@ void Combat::ItemUsage()
 			itemChoice = true;
 			enemyThrow = false;
 
-			enemy->health -= EnemyItemDamage();
+			if (enemyBattle) enemy->health -= EnemyItemDamage();
+			else if (bossBattle) boss->health -= EnemyItemDamage();
 
-			if (enemy->health > 0)
+			if (enemyHealth > 0)
 			{
 				if (!secondPlayer)
 				{
@@ -1417,7 +1501,7 @@ void Combat::ItemUsage()
 				}
 				else if (secondPlayer) SecondPlayerTurn();
 			}
-			else if (enemy->health <= 0)
+			else if (enemyHealth <= 0)
 			{
 				PlayerWin();
 			}
@@ -1425,6 +1509,11 @@ void Combat::ItemUsage()
 	}
 	else if (moneyThrow)
 	{
+		int enemyHealth = 0;
+
+		if (enemyBattle) enemyHealth = enemy->health;
+		else if (bossBattle) enemyHealth = boss->health;
+
 		if (playerTimeMoneyThrow < 120)
 		{
 			playerTimeMoneyThrow++;
@@ -1436,22 +1525,19 @@ void Combat::ItemUsage()
 			itemChoice = true;
 			moneyThrow = false;
 
-			enemy->health -= 1;
+			if (enemyBattle) enemy->health -= 1;
+			else if (bossBattle) boss->health -= 1;
 
-			if (enemy->health > 0)
+			if (enemyHealth > 0)
 			{
 				if (!secondPlayer)
 				{
-					if (enemyBattle)
-					{
-						if (enemyBattle) EnemyTurn();
-						else if (bossBattle) BossTurn();
-					}
+					if (enemyBattle) EnemyTurn();
 					else if (bossBattle) BossTurn();
 				}
 				else if (secondPlayer) SecondPlayerTurn();
 			}
-			else if (enemy->health <= 0)
+			else if (enemyHealth <= 0)
 			{
 				PlayerWin();
 			}
@@ -1494,7 +1580,8 @@ void Combat::PlayerSplit()
 				}
 				else if (random >= 2)
 				{
-					app->scene->player1->health -= enemy->health;
+					if (enemyBattle) app->scene->player1->health -= enemy->health;
+					else if (bossBattle) app->scene->player1->health -= boss->health;
 
 					if (app->scene->player1->health <= 0)
 					{
@@ -1525,7 +1612,8 @@ void Combat::PlayerSplit()
 		}
 		else if (random >= 3)
 		{
-			app->scene->player1->health -= enemy->health;
+			if (enemyBattle) app->scene->player1->health -= enemy->health;
+			else if (bossBattle) app->scene->player1->health -= boss->health;
 
 			if (app->scene->player1->health <= 0)
 			{
@@ -1565,7 +1653,13 @@ int Combat::HealPlayer(int typeOfHeal)
 int Combat::EnemyItemDamage()
 {
 	int itemDamage = 25;
-	int damage = itemDamage + floor(app->scene->player1->strengthStat / 5) - enemy->defense;
+
+	int enemyDefense = 0;
+
+	if (enemyBattle) enemyDefense = enemy->defense;
+	else if (bossBattle) enemyDefense = boss->defense;
+
+	int damage = itemDamage + floor(app->scene->player1->strengthStat / 5) - enemyDefense;
 
 	int damagePlus = rand() % 5;
 	int negOrPos = rand() % 2;
@@ -1740,7 +1834,11 @@ void Combat::EscapeProbability(short int probabilityRange)
 
 void Combat::PlayerHitLogic()
 {
-	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, enemy->colliderCombat))
+	SDL_Rect colliderCombat = {};
+	if (enemyBattle) colliderCombat = enemy->colliderCombat; 
+	else if (bossBattle) colliderCombat = boss->colliderCombat;
+
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, colliderCombat))
 	{
 		if (app->scene->player1->godMode) LOG("Player is inmune");
 		else

@@ -107,6 +107,8 @@ public:
 
     void AfterEnemyAttack();
 
+	void AfterBossAttack();
+
     void PlayerAttack();
 
     void SecondPlayerAttack();
