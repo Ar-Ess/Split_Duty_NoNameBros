@@ -91,6 +91,8 @@ SDL_Texture* const Textures::Load(const char* path)
 
 	SDL_RWclose(rW);
 
+	a.Clear();
+
 	return texture;
 }
 

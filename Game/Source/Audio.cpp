@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Audio.h"
+#include "AssetsManager.h"
 //#include "Textures.h"
 
 #include "Defs.h"
@@ -347,7 +348,12 @@ bool AudioManager::PlayMusic(const char* path, float fadeTime)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	SString a(path);
+
+	a.Cut(0, 6);
+
+	SDL_RWops* rW = app->assetsManager->LoadAsset(a.GetString());
+	music = Mix_LoadMUS_RW(rW, 0);
 
 	if(music == NULL)
 	{
@@ -374,6 +380,8 @@ bool AudioManager::PlayMusic(const char* path, float fadeTime)
 		}
 	}
 
+	a.Clear();
+
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -392,12 +400,17 @@ void AudioManager::LoadAllFx(pugi::xml_node& fx_node)
 
 unsigned int AudioManager::LoadFx(const char* path)
 {
+	SString a(path);
+
+	a.Cut(0, 6);
+
 	unsigned int ret = 0;
 
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	SDL_RWops* rW = app->assetsManager->LoadAsset(a.GetString());
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(rW, 0);
 
 	if(chunk == NULL)
 	{
@@ -408,6 +421,8 @@ unsigned int AudioManager::LoadFx(const char* path)
 		fx.Add(chunk);
 		ret = fx.Count();
 	}
+
+	a.Clear();
 
 	return ret;
 }
