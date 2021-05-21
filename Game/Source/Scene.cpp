@@ -95,6 +95,7 @@ bool Scene::Start()
 	{
 		activeContinue = false;
 	}
+
 	////DEBUGGING SPLINE////
 	pugi::xml_document doc;
 	spline.LoadSplines(doc);
@@ -1043,9 +1044,6 @@ void Scene::SetWorld(Places place)
 	world->Start(place);
 
 	//inventory buttons
-	
-
-	//
 	const SDL_Rect buttonPrefab = { 100,150,134,88 };
 	iPoint off = { 188,133 };
 	if (world->inventory->littlebeefButton == nullptr)
