@@ -1,4 +1,5 @@
 #include "App.h"
+#include "AssetsManager.h"
 #include "Render.h"
 #include "Textures.h"
 
@@ -59,8 +60,24 @@ bool Textures::CleanUp()
 
 SDL_Texture* const Textures::Load(const char* path)
 {
+	SString a(path);
+
+	a.Cut(0, 6);
+
 	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path);
+	/*SDL_Surface* surface = IMG_Load(path);
+	if (surface == NULL)
+	{
+		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+	}
+	else
+	{
+		texture = LoadSurface(surface);
+		SDL_FreeSurface(surface);
+	}*/
+
+	SDL_RWops* rW = app->assetsManager->LoadAsset(a.GetString());
+	SDL_Surface* surface = IMG_Load_RW(rW, 0);
 
 	if (surface == NULL)
 	{
@@ -71,6 +88,8 @@ SDL_Texture* const Textures::Load(const char* path)
 		texture = LoadSurface(surface);
 		SDL_FreeSurface(surface);
 	}
+
+	SDL_RWclose(rW);
 
 	return texture;
 }

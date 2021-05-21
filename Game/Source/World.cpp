@@ -174,6 +174,8 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
 
+		app->scene->saveGameButton->state = GuiControlState::LOCKED;
+
 		if (lilipadPuzzle1 == nullptr)
 		{
 			lilipadPuzzle1 = new LilipadPuzzle(2, {840 + 14, 1092 + 14, 28, 28}, {980 + 14, 1092 + 14, 28, 28});
@@ -242,6 +244,8 @@ void World::Restart(Scenes scene)
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+
+	if (app->scene->saveGameButton != nullptr) app->scene->saveGameButton->state = GuiControlState::LOCKED;
 
 	if (wolfSpritesheet != nullptr) app->tex->UnLoad(wolfSpritesheet);
 	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
