@@ -18,6 +18,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 
 GuiButton::~GuiButton()
 {
+	observer = nullptr;
+	app->tex->UnLoad(texture);
     text.Clear();
     text.~SString();
 }
@@ -43,7 +45,7 @@ bool GuiButton::Update(float dt)
                     app->audio->SetFx(Effect::BUTTON_FOCUSSED);
                 }
                 state = GuiControlState::FOCUSED;
-                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT || ( app->input->GetControl(A) == KeyState::KEY_REPEAT && app->input->gamePad !=nullptr))
+                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
                 {
                     state = GuiControlState::PRESSED;
                 }
@@ -54,6 +56,24 @@ bool GuiButton::Update(float dt)
                     NotifyObserver();
                 }
             }
+			else if (app->input->GetPadEnabled() && buttonFocus)
+			{
+				if (state == GuiControlState::NORMAL)
+				{
+					app->audio->SetFx(Effect::BUTTON_FOCUSSED);
+				}
+				state = GuiControlState::FOCUSED;
+				if ((app->input->GetControl(A) == KeyState::KEY_REPEAT))
+				{
+					state = GuiControlState::PRESSED;
+				}
+
+				if (app->input->GetControl(A) == KeyState::KEY_UP)
+				{
+					app->audio->SetFx(Effect::BUTTON_RELEASED);
+					NotifyObserver();
+				}
+			}
             else state = GuiControlState::NORMAL;
         } 
     }

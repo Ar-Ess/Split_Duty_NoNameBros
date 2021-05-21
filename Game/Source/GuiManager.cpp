@@ -21,7 +21,10 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 
 	switch (type)
 	{
-	case GuiControlType::BUTTON: control = new GuiButton(NULL, { 0, 0, 0, 0 }, "0"); break;
+	case GuiControlType::BUTTON: 
+		control = new GuiButton(buttonId, { 0, 0, 0, 0 }, "0"); 
+		buttonId++;
+		break;
 	case GuiControlType::CHECKBOX: control = new GuiCheckBox(NULL, { 0, 0, 0, 0 }, "0"); break;
 	case GuiControlType::SLIDER: control = new GuiSlider(NULL, { 0, 0, 0, 0 }, "0"); break;
 	case GuiControlType::TEXT: control = new GuiString(); break;
@@ -37,8 +40,8 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 
 void GuiManager::DestroyGuiControl(GuiControl* entity)
 {
-	delete entity;
-	entity = nullptr;
+	int id = controls.Find(entity);
+	controls.Del(controls.At(id));
 }
 
 GuiManager::GuiManager()

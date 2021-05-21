@@ -95,6 +95,8 @@ public:
 	int margin = 108;
 	int padding = 26;
 
+	int buttonId = 0;
+
 private:
 	int secondsCounter;
 	int frameCounter;

@@ -20,6 +20,7 @@
 
 class Enemy;
 enum EnemyClass;
+enum BossClass;
 class Player;
 class Scene;
 class Collision;

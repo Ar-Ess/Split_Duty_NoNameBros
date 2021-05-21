@@ -2,6 +2,7 @@
 #define __ENTITY_H__
 
 class Enemy;
+class Boss;
 class Item;
 class NPC;
 

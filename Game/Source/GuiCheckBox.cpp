@@ -2,6 +2,7 @@
 #include "GuiCheckBox.h"
 #include "GuiManager.h"
 #include "Audio.h"
+#include "Textures.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
@@ -11,7 +12,10 @@ GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiCont
 
 GuiCheckBox::~GuiCheckBox()
 {
+	observer = nullptr;
+	text.Clear();
     delete &text;
+	//text.~SString();
 }
 
 bool GuiCheckBox::Update(float dt)

@@ -9,10 +9,10 @@
 
 #include "SDL/include/SDL.h"
 
-#define BOSS_C_X 1004
-#define BOSS_C_Y 413
-#define BOSS_C_W 56
-#define BOSS_C_H 75
+#define BOSS_C_X 1000
+#define BOSS_C_Y 400
+#define BOSS_C_W 65
+#define BOSS_C_H 88
 
 struct SDL_Rect;
 struct Animation;
