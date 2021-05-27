@@ -31,7 +31,15 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 	default: break;
 	}
 
-	if (control != nullptr) controls.Add(control);
+	if (control != nullptr)
+	{
+		controls.Add(control);
+		switch (type)
+		{
+		case GuiControlType::BUTTON: buttons.Add(control); break;
+		default: break;
+		}
+	}
 
 	
 
@@ -108,6 +116,9 @@ bool GuiManager::Update(float dt)
 		accumulatedTime = 0.0f;
 		doLogic = false;
 	}
+
+	Scene* s = app->scene;
+	if (s->GetCurrScene() != Scenes::LOGO_SCENE && s->GetCurrScene() != Scenes::WORLD) SelectButtonsLogic();
 
 	return true;
 }
@@ -232,6 +243,71 @@ void GuiManager::DrawCombatInterface(Boss* boss)
 	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
 
 	DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
+}
+
+void GuiManager::DisableAllButtons()
+{
+	for (int i = 0; i < buttons.Count(); i++) buttons[i]->active = false;
+}
+
+void GuiManager::SelectButtonsLogic()
+{
+	bool anythingSelected = true;
+	if (idSelection <= -1)
+	{
+		idSelection = -1;
+		anythingSelected = false;
+	}
+	else if (idSelection > buttons.Count())
+	{
+		idSelection = -1;
+		anythingSelected = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		GuiButton* b1 = nullptr;
+		if (anythingSelected)
+		{
+			b1 = (GuiButton*)buttons[idSelection];
+			if (b1->buttonFocus) b1->buttonFocus = false;
+		}
+
+		idSelection++;
+		if (buttons.At(idSelection) == nullptr)
+		{
+			idSelection = 0;
+		}
+
+		for (int i = 0; i < buttons.Count(); i++)
+		{
+			if (!buttons[idSelection]->active || buttons[idSelection]->state == GuiControlState::LOCKED)
+			{
+				idSelection++;
+				if (idSelection > buttons.Count())
+				{
+					idSelection = 0;
+					i = 0;
+				}
+			}
+			else
+			{
+				GuiButton* b = (GuiButton*)buttons[idSelection];
+				b->buttonFocus = true;
+				b = nullptr;
+				return;
+			}
+		}
+
+		b1 = nullptr;
+		return;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		if (idSelection > -1) idSelection--;
+		return;
+	}
 }
 
 bool GuiManager::CleanUp()

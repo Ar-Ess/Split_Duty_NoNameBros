@@ -51,12 +51,17 @@ public:
 	void DrawCombatInterface(Enemy* enemy);
 
 	void DrawCombatInterface(Boss* boss);
+
+	void DisableAllButtons();
+
+	void SelectButtonsLogic();
 	
 	
 
 public:
 
 	List<GuiControl*> controls;
+	List<GuiControl*> buttons;
 	bool debugGui = false;
 
 public: //Textures
@@ -100,6 +105,7 @@ public:
 private:
 	int secondsCounter;
 	int frameCounter;
+	int idSelection = -1;
 };
 
 #endif // __GUIMANAGER_H__

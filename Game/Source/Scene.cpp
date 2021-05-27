@@ -237,6 +237,8 @@ bool Scene::CleanUp(Scenes nextScene)
 		endScene->Restart();
 	}
 
+	app->guiManager->DisableAllButtons();
+
 	return true;
 }
 
@@ -349,6 +351,7 @@ void Scene::SetMainMenu()
 		newGameButton->bounds = { 640 - buttonPrefab.w / 2 , 350,buttonPrefab.w,buttonPrefab.h };
 		newGameButton->text = "NewGameButton";
 		newGameButton->SetObserver(this);
+		newGameButton->active = true;
 	}
 
 	if (continueButton == nullptr)
@@ -358,6 +361,7 @@ void Scene::SetMainMenu()
 		continueButton->text = "ContinueButton";
 		continueButton->SetObserver(this);
 		if (!activeContinue) continueButton->state = GuiControlState::LOCKED;
+		continueButton->active = true;
 	}
 
 	if (optionsButton == nullptr)
@@ -366,6 +370,7 @@ void Scene::SetMainMenu()
 		optionsButton->bounds = { 640 - buttonPrefab.w / 2 , 510, buttonPrefab.w, buttonPrefab.h };
 		optionsButton->text = "OptionsButton";
 		optionsButton->SetObserver(this);
+		optionsButton->active = true;
 	}
 
 	if (exitButton == nullptr)
@@ -374,6 +379,7 @@ void Scene::SetMainMenu()
 		exitButton->bounds = { 640 - buttonPrefab.w / 2 , 590, buttonPrefab.w,buttonPrefab.h };
 		exitButton->text = "ExitButton";
 		exitButton->SetObserver(this);
+		exitButton->active = true;
 	}
 
 	if (newGameText == nullptr)
@@ -435,6 +441,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->dFullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h};
 		optionsMenu->dFullScreenCheckBox->text = "DesktopFullScreenCheckBox";
 		optionsMenu->dFullScreenCheckBox->SetObserver(this);
+		optionsMenu->dFullScreenCheckBox->active = true;
 	}
 
 	if (optionsMenu->fullScreenCheckBox == nullptr)
@@ -443,6 +450,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->fullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y+off.y,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->fullScreenCheckBox->text = "FullScreenCheckBox";
 		optionsMenu->fullScreenCheckBox->SetObserver(this);
+		optionsMenu->fullScreenCheckBox->active = true;
 	}
 
 	if (optionsMenu->vSyncCheckBox == nullptr)
@@ -451,6 +459,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->vSyncCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->vSyncCheckBox->text = "VSyncCheckBox";
 		optionsMenu->vSyncCheckBox->SetObserver(this);
+		optionsMenu->vSyncCheckBox->active = true;
 	}
 
 	if (optionsMenu->fxVolumeSlider == nullptr)
@@ -463,6 +472,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->fxVolumeSlider->SetMinValue(0);
 		optionsMenu->fxVolumeSlider->SetValue(90);
 		optionsMenu->fxVolumeSlider->SetObserver(this);
+		optionsMenu->fxVolumeSlider->active = true;
 	}
 
 	if (optionsMenu->musicVolumeSlider == nullptr)
@@ -475,6 +485,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->musicVolumeSlider->SetMinValue(0);
 		optionsMenu->musicVolumeSlider->SetValue(90);
 		optionsMenu->musicVolumeSlider->SetObserver(this);
+		optionsMenu->musicVolumeSlider->active = true;
 	}
 
 	if (optionsMenu->returnMenuButton == nullptr)
@@ -483,7 +494,7 @@ void Scene::SetOptionsMenu()
 		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x -175  ,buttonPrefab.y + off.y*5 -15,buttonPrefab1.w, buttonPrefab1.h };
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
-		
+		optionsMenu->returnMenuButton->active = true;
 	}
 
 	if (optionsMenu->fullScreenText == nullptr)
@@ -547,6 +558,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		attackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		attackButton->text = "AttackButton";
 		attackButton->SetObserver(this);
+		attackButton->active = true;
 	}
 
 	if (moveButton == nullptr)
@@ -555,6 +567,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding)* 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
+		moveButton->active = true;
 	}
 
 	if (itemButton == nullptr)
@@ -563,6 +576,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
+		itemButton->active = true;
 	}
 
 	if (escapeButton == nullptr)
@@ -571,6 +585,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		escapeButton->text = "EscapeButton";
 		escapeButton->SetObserver(this);
+		escapeButton->active = true;
 	}
 
 	if (splitButton == nullptr)
@@ -579,6 +594,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		splitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
+		splitButton->active = true;
 	}
 
 	if (secondAttackButton == nullptr)
@@ -587,6 +603,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		secondAttackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		secondAttackButton->text = "SecondAttackButton";
 		secondAttackButton->SetObserver(this);
+		secondAttackButton->active = true;
 	}
 
 	if (protectButton == nullptr)
@@ -595,6 +612,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		protectButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		protectButton->text = "ProtectButton";
 		protectButton->SetObserver(this);
+		protectButton->active = true;
 	}
 
 	if (buffButton == nullptr)
@@ -603,6 +621,7 @@ void Scene::SetCombat(Enemy* enemySet)
 		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
+		buffButton->active = true;
 	}
 
 	// INVENTORY BUTTONS
@@ -794,6 +813,7 @@ void Scene::SetCombat(Boss* bossSet)
 		attackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		attackButton->text = "AttackButton";
 		attackButton->SetObserver(this);
+		attackButton->active = true;
 	}
 
 	if (moveButton == nullptr)
@@ -802,6 +822,7 @@ void Scene::SetCombat(Boss* bossSet)
 		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
+		moveButton->active = true;
 	}
 
 	if (itemButton == nullptr)
@@ -810,6 +831,7 @@ void Scene::SetCombat(Boss* bossSet)
 		itemButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		itemButton->text = "ItemButton";
 		itemButton->SetObserver(this);
+		itemButton->active = true;
 	}
 
 	if (escapeButton == nullptr)
@@ -818,6 +840,7 @@ void Scene::SetCombat(Boss* bossSet)
 		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		escapeButton->text = "EscapeButton";
 		escapeButton->SetObserver(this);
+		escapeButton->active = true;
 	}
 
 	if (splitButton == nullptr)
@@ -826,6 +849,7 @@ void Scene::SetCombat(Boss* bossSet)
 		splitButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 4),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		splitButton->text = "SplitButton";
 		splitButton->SetObserver(this);
+		splitButton->active = true;
 	}
 
 	if (secondAttackButton == nullptr)
@@ -834,6 +858,7 @@ void Scene::SetCombat(Boss* bossSet)
 		secondAttackButton->bounds = { app->guiManager->margin ,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		secondAttackButton->text = "SecondAttackButton";
 		secondAttackButton->SetObserver(this);
+		secondAttackButton->active = true;
 	}
 
 	if (protectButton == nullptr)
@@ -842,6 +867,7 @@ void Scene::SetCombat(Boss* bossSet)
 		protectButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		protectButton->text = "ProtectButton";
 		protectButton->SetObserver(this);
+		protectButton->active = true;
 	}
 
 	if (buffButton == nullptr)
@@ -850,6 +876,7 @@ void Scene::SetCombat(Boss* bossSet)
 		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		buffButton->text = "BuffButton";
 		buffButton->SetObserver(this);
+		buffButton->active = true;
 	}
 
 	// INVENTORY BUTTONS
@@ -1034,6 +1061,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 		levelUpScene->skipButton->bounds = { 580, 580, 161, 62};
 		levelUpScene->skipButton->text = "SkipButton";
 		levelUpScene->skipButton->SetObserver(this);
+		levelUpScene->skipButton->active = true;
 	}
 
 	LOG("level up scene buttons init");
@@ -1046,6 +1074,7 @@ void Scene::SetWorld(Places place)
 	//inventory buttons
 	const SDL_Rect buttonPrefab = { 100,150,134,88 };
 	iPoint off = { 188,133 };
+
 	if (world->inventory->littlebeefButton == nullptr)
 	{
 		world->inventory->littlebeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
@@ -1102,6 +1131,7 @@ void Scene::SetPauseMenu()
 		backToGameButton->bounds = { 640 - buttonPrefab.w / 2 , 200,buttonPrefab.w,buttonPrefab.h };
 		backToGameButton->text = "BackToGameButton";
 		backToGameButton->SetObserver(this);
+		backToGameButton->active = true;
 	}
 
 	if (saveGameButton == nullptr)
@@ -1110,6 +1140,7 @@ void Scene::SetPauseMenu()
 		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 295,buttonPrefab.w,buttonPrefab.h };
 		saveGameButton->text = "SaveGameButton";
 		saveGameButton->SetObserver(this);
+		saveGameButton->active = true;
 	}
 
 	if (optionsPauseButton == nullptr)
@@ -1118,6 +1149,7 @@ void Scene::SetPauseMenu()
 		optionsPauseButton->bounds = { 640 - buttonPrefab.w / 2 , 382, buttonPrefab.w, buttonPrefab.h };
 		optionsPauseButton->text = "OptionsPauseButton";
 		optionsPauseButton->SetObserver(this);
+		optionsPauseButton->active = true;
 	}
 
 	if (backToMenuButton == nullptr)
@@ -1126,6 +1158,7 @@ void Scene::SetPauseMenu()
 		backToMenuButton->bounds = { 640 - buttonPrefab.w / 2 , 482, buttonPrefab.w,buttonPrefab.h };
 		backToMenuButton->text = "BackToMenuButton";
 		backToMenuButton->SetObserver(this);
+		backToMenuButton->active = true;
 	}
 
 	if (backToGameText == nullptr)
@@ -1178,6 +1211,7 @@ void Scene::SetEndScreen()
 		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
 		endScene->backToMenuButton->text = "BackToMenuButton";
 		endScene->backToMenuButton->SetObserver(this);
+		endScene->backToMenuButton->active = true;
 	}
 
 	endScene->Start();

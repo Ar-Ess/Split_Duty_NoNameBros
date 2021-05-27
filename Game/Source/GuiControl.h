@@ -83,7 +83,7 @@ public:
     //Font font;              // Text font
 
     Module* observer;        // Observer module (it should probably be an array/list)
-    
+	bool active = false;
 };
 
 #endif // __GUICONTROL_H__
