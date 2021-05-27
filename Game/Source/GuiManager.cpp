@@ -9,6 +9,8 @@
 #include "OptionsMenu.h"
 #include "LevelUp.h"
 #include "GameOverScene.h"
+#include "World.h"
+#include "Inventory.h"
 
 #include "Log.h"
 
@@ -121,7 +123,7 @@ bool GuiManager::Update(float dt)
 	}
 
 	Scene* s = app->scene;
-	if (s->GetCurrScene() != Scenes::LOGO_SCENE && s->GetCurrScene() != Scenes::WORLD) SelectButtonsLogic();
+	if (s->GetCurrScene() != Scenes::LOGO_SCENE) SelectButtonsLogic();
 
 	return true;
 }
@@ -295,6 +297,14 @@ void GuiManager::DisableAllButtons()
 		s->protectButton->buttonFocus = false;
 		s->buffButton->buttonFocus = false;
 		break;
+
+	case WORLD:
+		s->world->inventory->littleBeefButton->buttonFocus = false;
+		s->world->inventory->bigBeefButton->buttonFocus = false;
+		s->world->inventory->featherButton->buttonFocus = false;
+		s->world->inventory->mantisButton->buttonFocus = false;
+		s->world->inventory->coinButton->buttonFocus = false;
+		s->world->inventory->splitButton->buttonFocus = false;
 	}
 
 	s = nullptr;
@@ -364,6 +374,18 @@ void GuiManager::SelectButtonsLogic()
 			else if (idSelection == 1) s->protectButton->buttonFocus = true;
 			else if (idSelection == 2) s->buffButton->buttonFocus = true;
 			else if (idSelection == 3) idSelection = -1;
+		}
+
+	case WORLD:
+		if (s->world->inventoryOpen)
+		{
+			if (idSelection == 0) s->world->inventory->littleBeefButton->buttonFocus = true;
+			else if (idSelection == 1)s->world->inventory->bigBeefButton->buttonFocus = true;
+			else if (idSelection == 2)s->world->inventory->featherButton->buttonFocus = true;
+			else if (idSelection == 3)s->world->inventory->mantisButton->buttonFocus = true;
+			else if (idSelection == 4)s->world->inventory->coinButton->buttonFocus = true;
+			else if (idSelection == 5)s->world->inventory->splitButton->buttonFocus = true;
+			else if (idSelection == 6) idSelection = -1;
 		}
 	}
 	s = nullptr;

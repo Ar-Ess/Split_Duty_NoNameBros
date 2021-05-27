@@ -139,7 +139,7 @@ public:
 
     //items
     GuiButton* bigBeefButton = nullptr;
-    GuiButton* littlebeefButton = nullptr;
+    GuiButton* littleBeefButton = nullptr;
     GuiButton* featherButton = nullptr;
     GuiButton* mantisButton = nullptr;
     GuiButton* coinButton = nullptr;

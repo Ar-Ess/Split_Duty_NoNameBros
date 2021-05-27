@@ -35,7 +35,7 @@ void Inventory::Start()
 	playerExp = app->scene->player1->exp;
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
-	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
+	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face_animations.png");
 	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
 
 	idleFaceAnim.PushBack({ 0, 0, 70, 68 });
@@ -171,32 +171,35 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 
 void Inventory::UpdateButtons()
 {
-	littlebeefButton->Update(1.0f);
+	littleBeefButton->Update(1.0f);
 	bigBeefButton->Update(1.0f);
 	featherButton->Update(1.0f);
 	mantisButton->Update(1.0f);
 	coinButton->Update(1.0f);
 	splitButton->Update(1.0f);
 
-	if (app->scene->player1->smallMeatCount == 0) littlebeefButton->state = GuiControlState::DISABLED;
-	else littlebeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->largeMeatCount == 0) bigBeefButton->state = GuiControlState::DISABLED;
-	else bigBeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->featherCount == 0) featherButton->state = GuiControlState::DISABLED;
-	else featherButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->mantisRodCount == 0) mantisButton->state = GuiControlState::DISABLED;
-	else mantisButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->moneyCount == 0) coinButton->state = GuiControlState::DISABLED;
-	else coinButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->splitedEnemyCount == 0) splitButton->state = GuiControlState::DISABLED;
-	else splitButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->smallMeatCount == 0 && littleBeefButton->state != GuiControlState::DISABLED) littleBeefButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->smallMeatCount > 0 && littleBeefButton->state == GuiControlState::DISABLED) littleBeefButton->state = GuiControlState::NORMAL;
+
+	if (app->scene->player1->largeMeatCount == 0 && bigBeefButton->state != GuiControlState::DISABLED) bigBeefButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->largeMeatCount > 0 && bigBeefButton->state == GuiControlState::DISABLED) bigBeefButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->featherCount == 0 && featherButton->state != GuiControlState::DISABLED) featherButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->featherCount > 0 && featherButton->state == GuiControlState::DISABLED) featherButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->mantisRodCount == 0 && mantisButton->state != GuiControlState::DISABLED) mantisButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->mantisRodCount > 0 && mantisButton->state == GuiControlState::DISABLED) mantisButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->moneyCount == 0 && coinButton->state != GuiControlState::DISABLED) coinButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->moneyCount > 0 && coinButton->state == GuiControlState::DISABLED) coinButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->splitedEnemyCount == 0 && splitButton->state != GuiControlState::DISABLED) splitButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->splitedEnemyCount > 0 && splitButton->state == GuiControlState::DISABLED) splitButton->state = GuiControlState::NORMAL;
 }
 
 void Inventory::DrawButtons()
 {
-	
-
-	littlebeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
+	littleBeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
 	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
 	featherButton->Draw(1, true, true, ButtonType::FEATHER_B);
 	mantisButton->Draw(1, true, true, ButtonType::MANTIS_B);
@@ -229,7 +232,6 @@ void Inventory::DrawFace()
 	currPlayerFaceAnim->Update(1.0f);
 
 	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
 
 }
 

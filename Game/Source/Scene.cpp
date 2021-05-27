@@ -1073,12 +1073,12 @@ void Scene::SetWorld(Places place)
 	const SDL_Rect buttonPrefab = { 100,150,134,88 };
 	iPoint off = { 188,133 };
 
-	if (world->inventory->littlebeefButton == nullptr)
+	if (world->inventory->littleBeefButton == nullptr)
 	{
-		world->inventory->littlebeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->littlebeefButton->bounds = buttonPrefab;
-		world->inventory->littlebeefButton->text = "EatSmallMeat";
-		world->inventory->littlebeefButton->SetObserver(this);
+		world->inventory->littleBeefButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		world->inventory->littleBeefButton->bounds = buttonPrefab;
+		world->inventory->littleBeefButton->text = "EatSmallMeat";
+		world->inventory->littleBeefButton->SetObserver(this);
 	}
 	if (world->inventory->bigBeefButton == nullptr)
 	{

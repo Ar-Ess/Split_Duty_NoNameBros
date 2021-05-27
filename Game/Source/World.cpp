@@ -662,7 +662,7 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p)
 	int eDefense = p->defenseStat - 2;
 	int eVelocity = 10;
 	int eLevel = p->lvl + 1;
-	int eExp = 2100 + (rand() % 200);
+	int eExp = 100 + (rand() % 200);
 
 	SDL_Rect combatCollider = { NULL };
 	SDL_Rect worldCollider = { NULL };
