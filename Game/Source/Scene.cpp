@@ -543,6 +543,15 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
+	if (combatScene->enemyLvlText == nullptr)
+	{
+		combatScene->enemyLvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->enemyLvlText->bounds = { 1000, 20, 100, 40 };
+		combatScene->enemyLvlText->SetTextFont(app->fontTTF->defaultFont);
+		combatScene->enemyLvlText->SetString("LVL");
+		combatScene->enemyLvlText->CenterAlign();
+	}
+
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;

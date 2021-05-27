@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "App.h"
 
 #include "Scene.h"
@@ -81,6 +83,10 @@ void Combat::EnemyStart()
 	case(EnemyClass::MANTIS):
 		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
+
+	char str[12] = {};
+	sprintf(str, "Level: %d", enemy->lvl);
+	enemyLvlText->SetString(str, WHITE);
 
 	//Firts turn decision
 	FirstTurnLogic();
@@ -659,6 +665,7 @@ void Combat::DrawButtons()
 void Combat::DrawText()
 {
 	turnText->Draw();
+	enemyLvlText->Draw();
 
 	if (!secondPlayer)
 	{

@@ -351,6 +351,8 @@ public: // BUTTONS & TEXT
 
     GuiString* moneyDescription = nullptr;
 
+    GuiString* enemyLvlText = nullptr;
+
 private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };
 

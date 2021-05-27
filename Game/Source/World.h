@@ -144,7 +144,7 @@ private:
 
     void WorldEnemyChasing();
 
-    void EnemyStatsGeneration(Enemy* enemy, Player* player);
+    void EnemyStatsGeneration(Enemy* enemy, Player* player, int lvl);
 
     void EnemyRunChasing(Enemy* e, Player* p);
 

@@ -392,6 +392,8 @@ void World::DrawEnemy()
 				{
 					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
 				}
+
+
 			}
 			enemy = nullptr;
 		}
@@ -602,10 +604,24 @@ void World::WorldEnemySpawn()
 	{
 		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
 		{
+			int lvl = (rand() % 10) + 1;
 			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
 		}
 	}
+
+	//ENEMY LEVELING SYSTEM
+	//ENEMY FIELD -> 1 to 10
+	//GRASSY LANDS 1 -> 11 to 20
+	//GRASSY LANDS 2 -> PUZZLE
+	//GRASSY LANDS 3 -> 21 to 30
+	//BOSS 2 -> 35
+	//AUTUM FALL 1 -> 36 to 45
+	//AUTUM FALL 2 -> 46 to 55
+	//BOSS 3 -> 60
+	//MOSSY ROCKS 1 -> 61 to 70
+	//MOSSY ROCKS 2 -> 71 to 80
+	//FINAL BOSS -> 90
 }
 
 void World::WorldEnemyDetection()
@@ -655,14 +671,17 @@ void World::WorldEnemyChasing()
 	p = nullptr;
 }
 
-void World::EnemyStatsGeneration(Enemy* e, Player* p)
+void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 {
-	int eHealth = p->maxHealth;
-	int eStrength = p->strengthStat;
-	int eDefense = p->defenseStat - 2;
-	int eVelocity = 10;
-	int eLevel = p->lvl + 1;
-	int eExp = 100 + (rand() % 200);
+	float x = lvl;
+
+	int eHealth = 0;
+	int eStrength = 0;
+	int eDefense = 0;
+	int eVelocity = 0;
+
+	int variation = (200 * (x / 2));
+	int eExp = (x * 150) + (rand() % variation);
 
 	SDL_Rect combatCollider = { NULL };
 	SDL_Rect worldCollider = { NULL };
@@ -670,16 +689,28 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p)
 	switch(e->GetClass())
 	{
 	case EnemyClass::SMALL_WOLF:
+		eHealth = floor((x / 2.0f) + 18);
+		eStrength = floor((x / 3.0f) + 5);
+		eDefense = floor((x / 5.0f) + 1);
+		eVelocity = floor((x / 3.0f) + 5);
 		combatCollider = { SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H };
 		worldCollider = {0, 0, SMALLWOLF_W_W, SMALLWOLF_W_H};
 		break;
 
 	case EnemyClass::BIRD:
+		eHealth = floor((x / 4.0f) + 17);
+		eStrength = floor((x / 2.0f) + 5);
+		eDefense = floor((x / 3.0f) + 2);
+		eVelocity = floor((x / 3.0f) + 5);
 		combatCollider = { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H };
 		worldCollider = { 0, 0, BIRD_W_W, BIRD_W_H };
 		break;
 
 	case EnemyClass::MANTIS:
+		eHealth = floor((x / 3.0f) + 19);
+		eStrength = floor((x / 3.5f) + 5);
+		eDefense = floor((x / 2.5f) + 2);
+		eVelocity = floor((x / 3.0f) + 5);
 		combatCollider = { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H };
 		worldCollider = { 0, 0, MANTIS_W_W , MANTIS_W_H };
 		break;
@@ -688,7 +719,7 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p)
 	worldCollider.x = 196 + (rand() % 1121);
 	worldCollider.y = 168 + (rand() % 1513);
 
-	e->SetUp(combatCollider, worldCollider, eLevel, eExp, eHealth, eStrength, eDefense, eVelocity);
+	e->SetUp(combatCollider, worldCollider, lvl, eExp, eHealth, eStrength, eDefense, eVelocity);
 }
 
 void World::EnemyRunChasing(Enemy* e, Player* p)
