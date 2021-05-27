@@ -284,6 +284,17 @@ void GuiManager::DisableAllButtons()
 	case END_SCREEN:
 		s->endScene->backToMenuButton->buttonFocus = false;
 		break;
+
+	case COMBAT:
+		s->attackButton->buttonFocus = false;
+		s->moveButton->buttonFocus = false;
+		s->itemButton->buttonFocus = false;
+		s->splitButton->buttonFocus = false;
+		s->escapeButton->buttonFocus = false;
+		s->secondAttackButton->buttonFocus = false;
+		s->protectButton->buttonFocus = false;
+		s->buffButton->buttonFocus = false;
+		break;
 	}
 
 	s = nullptr;
@@ -336,6 +347,24 @@ void GuiManager::SelectButtonsLogic()
 		if (idSelection == 0) s->endScene->backToMenuButton->buttonFocus = true;
 		else if (idSelection == 1) idSelection = -1;
 		break;
+
+	case COMBAT:
+		if (s->combatScene->GetTurn() == CombatState::PLAYER_TURN)
+		{
+			if (idSelection == 0) s->attackButton->buttonFocus = true;
+			else if (idSelection == 1) s->moveButton->buttonFocus = true;
+			else if (idSelection == 2) s->itemButton->buttonFocus = true;
+			else if (idSelection == 3) s->escapeButton->buttonFocus = true;
+			else if (idSelection == 4) s->splitButton->buttonFocus = true;
+			else if (idSelection == 5) idSelection = -1;
+		}
+		else if (s->combatScene->GetTurn() == CombatState::SECOND_PLAYER_TURN)
+		{
+			if (idSelection == 0) s->secondAttackButton->buttonFocus = true;
+			else if (idSelection == 1) s->protectButton->buttonFocus = true;
+			else if (idSelection == 2) s->buffButton->buttonFocus = true;
+			else if (idSelection == 3) idSelection = -1;
+		}
 	}
 	s = nullptr;
 }

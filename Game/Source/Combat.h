@@ -183,6 +183,11 @@ public: //Getters
         return secondPlayer;
     }
 
+    CombatState GetTurn() const
+    {
+        return combatState;
+    }
+
 public:
     short int enemyTimeWait = 0;
 	short int bossTimeWait = 0;
