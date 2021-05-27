@@ -304,7 +304,7 @@ void GuiManager::SelectButtonsLogic()
 {
 	Scene* s = app->scene;
 
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || app->input->GetControl(L3) == KEY_DOWN)
 	{
 		idSelection++;
 		DisableAllButtons();
