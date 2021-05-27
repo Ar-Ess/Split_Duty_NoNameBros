@@ -237,8 +237,6 @@ bool Scene::CleanUp(Scenes nextScene)
 		endScene->Restart();
 	}
 
-	app->guiManager->DisableAllButtons();
-
 	return true;
 }
 
@@ -500,7 +498,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fullScreenText == nullptr)
 	{
 		optionsMenu->fullScreenText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		optionsMenu->fullScreenText->bounds = { textPrefab.x,textPrefab.y,textPrefab.w,textPrefab.h };
+		optionsMenu->fullScreenText->bounds = { textPrefab.x,textPrefab.y + off.y,textPrefab.w,textPrefab.h };
 		optionsMenu->fullScreenText->SetTextFont(app->fontTTF->defaultFont);
 		optionsMenu->fullScreenText->SetString("FULL SCREEN");
 	}
@@ -508,7 +506,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->dFullScreenText == nullptr)
 	{
 		optionsMenu->dFullScreenText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		optionsMenu->dFullScreenText->bounds = { textPrefab.x,textPrefab.y+off.y,textPrefab.w,textPrefab.h };
+		optionsMenu->dFullScreenText->bounds = { textPrefab.x,textPrefab.y,textPrefab.w,textPrefab.h };
 		optionsMenu->dFullScreenText->SetTextFont(app->fontTTF->defaultFont);
 		optionsMenu->dFullScreenText->SetString("DESKTOP FULL SCREEN");
 	}
@@ -1452,7 +1450,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			app->entityManager->enemies.Clear();
 			SetScene(MAIN_MENU);
 			app->audio->TransitionVolumeMusic();
-			app->questManager->DeactivateQuest(app->questManager->activeQuest.begin()->second->id);
+			if (app->questManager->currentQuest != nullptr) app->questManager->DeactivateQuest(app->questManager->activeQuest.begin()->second->id);
 		}
 		break;
 

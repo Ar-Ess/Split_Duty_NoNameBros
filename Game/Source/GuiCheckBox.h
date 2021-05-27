@@ -21,6 +21,8 @@ public:
         return checked;
     }
 
+    bool checkBoxFocus = false;
+
 private:
 
     bool checked;

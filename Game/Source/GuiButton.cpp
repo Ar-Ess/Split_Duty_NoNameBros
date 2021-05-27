@@ -56,7 +56,7 @@ bool GuiButton::Update(float dt)
                     NotifyObserver();
                 }
             }
-			else if (!app->input->GetPadEnabled() && buttonFocus)
+			else if (/*app->input->GetPadEnabled() &&*/ buttonFocus)
 			{
 				if (state == GuiControlState::NORMAL)
 				{
@@ -71,8 +71,8 @@ bool GuiButton::Update(float dt)
 				if ((app->input->GetControl(A) == KeyState::KEY_UP) || (app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_UP))
 				{
 					app->audio->SetFx(Effect::BUTTON_RELEASED);
-					app->guiManager->buttonId = -1;
 					NotifyObserver();
+                    app->guiManager->idSelection = -1;
 				}
 			}
             else state = GuiControlState::NORMAL;

@@ -6,6 +6,7 @@
 enum SliderType;
 
 class Scene;
+class GuiManager;
 struct SDL_Texture;
 class GuiString;
 class GuiCheckBox;
@@ -32,6 +33,7 @@ public:
 
 private:
     friend class Scene;
+    friend class GuiManager;
   
     GuiCheckBox* dFullScreenCheckBox = nullptr;
     GuiCheckBox* fullScreenCheckBox = nullptr;

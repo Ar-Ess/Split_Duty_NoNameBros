@@ -6,6 +6,9 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "Combat.h"
+#include "OptionsMenu.h"
+#include "LevelUp.h"
+#include "GameOverScene.h"
 
 #include "Log.h"
 
@@ -247,67 +250,94 @@ void GuiManager::DrawCombatInterface(Boss* boss)
 
 void GuiManager::DisableAllButtons()
 {
-	for (int i = 0; i < buttons.Count(); i++) buttons[i]->active = false;
+	Scene* s = app->scene;
+
+	switch (s->GetCurrScene())
+	{
+	case MAIN_MENU:
+		s->newGameButton->buttonFocus = false;
+		s->continueButton->buttonFocus = false;
+		s->optionsButton->buttonFocus = false;
+		s->exitButton->buttonFocus = false;
+		break;
+
+	case PAUSE_MENU:
+		s->backToGameButton->buttonFocus = false;
+		s->saveGameButton->buttonFocus = false;
+		s->optionsPauseButton->buttonFocus = false;
+		s->backToMenuButton->buttonFocus = false;
+		break;
+
+	case OPTIONS_MENU:
+		s->optionsMenu->fullScreenCheckBox->checkBoxFocus = false;
+		s->optionsMenu->dFullScreenCheckBox->checkBoxFocus = false;
+		s->optionsMenu->vSyncCheckBox->checkBoxFocus = false;
+		s->optionsMenu->musicVolumeSlider->sliderFocus = false;
+		s->optionsMenu->fxVolumeSlider->sliderFocus = false;
+		s->optionsMenu->returnMenuButton->buttonFocus = false;
+		break;
+
+	case LEVEL_UP:
+		s->levelUpScene->skipButton->buttonFocus = false;
+		break;
+
+	case END_SCREEN:
+		s->endScene->backToMenuButton->buttonFocus = false;
+		break;
+	}
+
+	s = nullptr;
 }
 
 void GuiManager::SelectButtonsLogic()
 {
-	bool anythingSelected = true;
-	if (idSelection <= -1)
-	{
-		idSelection = -1;
-		anythingSelected = false;
-	}
-	else if (idSelection > buttons.Count())
-	{
-		idSelection = -1;
-		anythingSelected = false;
-	}
+	Scene* s = app->scene;
 
 	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 	{
-		GuiButton* b1 = nullptr;
-		if (anythingSelected)
-		{
-			b1 = (GuiButton*)buttons[idSelection];
-			if (b1->buttonFocus) b1->buttonFocus = false;
-		}
-
 		idSelection++;
-		if (buttons.At(idSelection) == nullptr)
-		{
-			idSelection = 0;
-		}
-
-		for (int i = 0; i < buttons.Count(); i++)
-		{
-			if (!buttons[idSelection]->active || buttons[idSelection]->state == GuiControlState::LOCKED)
-			{
-				idSelection++;
-				if (idSelection > buttons.Count())
-				{
-					idSelection = 0;
-					i = 0;
-				}
-			}
-			else
-			{
-				GuiButton* b = (GuiButton*)buttons[idSelection];
-				b->buttonFocus = true;
-				b = nullptr;
-				return;
-			}
-		}
-
-		b1 = nullptr;
-		return;
+		DisableAllButtons();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	switch (s->GetCurrScene())
 	{
-		if (idSelection > -1) idSelection--;
-		return;
+	case MAIN_MENU:
+		if (idSelection == 0) s->newGameButton->buttonFocus = true;
+		else if (idSelection == 1) s->continueButton->buttonFocus = true;
+		else if (idSelection == 2) s->optionsButton->buttonFocus = true;
+		else if (idSelection == 3) s->exitButton->buttonFocus = true;
+		else if (idSelection == 4) idSelection = -1;
+		break;
+
+	case PAUSE_MENU:
+		if (idSelection == 0) s->backToGameButton->buttonFocus = true;
+		else if (idSelection == 1) s->saveGameButton->buttonFocus = true;
+		else if (idSelection == 2) s->optionsPauseButton->buttonFocus = true;
+		else if (idSelection == 3) s->backToMenuButton->buttonFocus = true;
+		else if (idSelection == 4) idSelection = -1;
+		break;
+
+	case OPTIONS_MENU:
+		if (idSelection == 0) s->optionsMenu->dFullScreenCheckBox->checkBoxFocus = true;
+		else if (idSelection == 1) s->optionsMenu->fullScreenCheckBox->checkBoxFocus = true;
+		else if (idSelection == 2) s->optionsMenu->vSyncCheckBox->checkBoxFocus = true;
+		else if (idSelection == 3) s->optionsMenu->musicVolumeSlider->sliderFocus = true;
+		else if (idSelection == 4) s->optionsMenu->fxVolumeSlider->sliderFocus = true;
+		else if (idSelection == 5) s->optionsMenu->returnMenuButton->buttonFocus = true;
+		else if (idSelection == 6) idSelection = -1;
+		break;
+
+	case LEVEL_UP:
+		if (idSelection == 0) s->levelUpScene->skipButton->buttonFocus = true;
+		else if (idSelection == 1) idSelection = -1;
+		break;
+
+	case END_SCREEN:
+		if (idSelection == 0) s->endScene->backToMenuButton->buttonFocus = true;
+		else if (idSelection == 1) idSelection = -1;
+		break;
 	}
+	s = nullptr;
 }
 
 bool GuiManager::CleanUp()

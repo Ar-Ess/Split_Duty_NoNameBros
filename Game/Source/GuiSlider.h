@@ -33,6 +33,8 @@ public:
     float GetPercentValue() const;
     void SetSlider(SDL_Rect bounds);
 
+    bool sliderFocus = false;
+
 private:
 
     SDL_Rect slider;

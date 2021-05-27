@@ -55,8 +55,6 @@ public:
 	void DisableAllButtons();
 
 	void SelectButtonsLogic();
-	
-	
 
 public:
 
@@ -105,6 +103,8 @@ public:
 private:
 	int secondsCounter;
 	int frameCounter;
+
+public:
 	int idSelection = -1;
 };
 
