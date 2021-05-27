@@ -264,6 +264,19 @@ void Combat::UpdatePopUps()
 		mantisButton->Update(1.0f);
 		enemySplitButton->Update(1.0f);
 		moneyButton->Update(1.0f);
+
+		if (app->scene->player1->smallMeatCount == 0 && smallMeatButton->state != GuiControlState::DISABLED) smallMeatButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->smallMeatCount > 0 && smallMeatButton->state == GuiControlState::DISABLED) smallMeatButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->largeMeatCount == 0 && largeMeatButton->state != GuiControlState::DISABLED) largeMeatButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->largeMeatCount > 0 && largeMeatButton->state == GuiControlState::DISABLED) largeMeatButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->featherCount == 0 && featherButton->state != GuiControlState::DISABLED) featherButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->featherCount > 0 && featherButton->state == GuiControlState::DISABLED) featherButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->mantisRodCount == 0 && mantisButton->state != GuiControlState::DISABLED) mantisButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->mantisRodCount > 0 && mantisButton->state == GuiControlState::DISABLED) mantisButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->moneyCount == 0 && moneyButton->state != GuiControlState::DISABLED) moneyButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->moneyCount > 0 && moneyButton->state == GuiControlState::DISABLED) moneyButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->splitedEnemyCount == 0 && enemySplitButton->state != GuiControlState::DISABLED) enemySplitButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->splitedEnemyCount > 0 && enemySplitButton->state == GuiControlState::DISABLED) enemySplitButton->state = GuiControlState::NORMAL;
 	}
 }
 

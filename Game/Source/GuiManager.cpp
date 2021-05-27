@@ -296,6 +296,12 @@ void GuiManager::DisableAllButtons()
 		s->secondAttackButton->buttonFocus = false;
 		s->protectButton->buttonFocus = false;
 		s->buffButton->buttonFocus = false;
+		s->combatScene->smallMeatButton->buttonFocus = false;
+		s->combatScene->largeMeatButton->buttonFocus = false;
+		s->combatScene->featherButton->buttonFocus = false;
+		s->combatScene->mantisButton->buttonFocus = false;
+		s->combatScene->enemySplitButton->buttonFocus = false;
+		s->combatScene->moneyButton->buttonFocus = false;
 		break;
 
 	case WORLD:
@@ -305,6 +311,7 @@ void GuiManager::DisableAllButtons()
 		s->world->inventory->mantisButton->buttonFocus = false;
 		s->world->inventory->coinButton->buttonFocus = false;
 		s->world->inventory->splitButton->buttonFocus = false;
+		break;
 	}
 
 	s = nullptr;
@@ -359,22 +366,36 @@ void GuiManager::SelectButtonsLogic()
 		break;
 
 	case COMBAT:
-		if (s->combatScene->GetTurn() == CombatState::PLAYER_TURN)
+		if (!s->combatScene->drawInventory)
 		{
-			if (idSelection == 0) s->attackButton->buttonFocus = true;
-			else if (idSelection == 1) s->moveButton->buttonFocus = true;
-			else if (idSelection == 2) s->itemButton->buttonFocus = true;
-			else if (idSelection == 3) s->escapeButton->buttonFocus = true;
-			else if (idSelection == 4) s->splitButton->buttonFocus = true;
-			else if (idSelection == 5) idSelection = -1;
+			if (s->combatScene->GetTurn() == CombatState::PLAYER_TURN)
+			{
+				if (idSelection == 0) s->attackButton->buttonFocus = true;
+				else if (idSelection == 1) s->moveButton->buttonFocus = true;
+				else if (idSelection == 2) s->itemButton->buttonFocus = true;
+				else if (idSelection == 3) s->escapeButton->buttonFocus = true;
+				else if (idSelection == 4) s->splitButton->buttonFocus = true;
+				else if (idSelection == 5) idSelection = -1;
+			}
+			else if (s->combatScene->GetTurn() == CombatState::SECOND_PLAYER_TURN)
+			{
+				if (idSelection == 0) s->secondAttackButton->buttonFocus = true;
+				else if (idSelection == 1) s->protectButton->buttonFocus = true;
+				else if (idSelection == 2) s->buffButton->buttonFocus = true;
+				else if (idSelection == 3) idSelection = -1;
+			}
 		}
-		else if (s->combatScene->GetTurn() == CombatState::SECOND_PLAYER_TURN)
+		else
 		{
-			if (idSelection == 0) s->secondAttackButton->buttonFocus = true;
-			else if (idSelection == 1) s->protectButton->buttonFocus = true;
-			else if (idSelection == 2) s->buffButton->buttonFocus = true;
-			else if (idSelection == 3) idSelection = -1;
+			if (idSelection == 0) s->combatScene->smallMeatButton->buttonFocus = true;
+			else if (idSelection == 1) s->combatScene->largeMeatButton->buttonFocus = true;
+			else if (idSelection == 2) s->combatScene->featherButton->buttonFocus = true;
+			else if (idSelection == 3) s->combatScene->mantisButton->buttonFocus = true;
+			else if (idSelection == 4) s->combatScene->enemySplitButton->buttonFocus = true;
+			else if (idSelection == 5) s->combatScene->moneyButton->buttonFocus = true;     
+			else if (idSelection == 6) idSelection = -1;
 		}
+		break;
 
 	case WORLD:
 		if (s->world->inventoryOpen)
@@ -387,6 +408,7 @@ void GuiManager::SelectButtonsLogic()
 			else if (idSelection == 5)s->world->inventory->splitButton->buttonFocus = true;
 			else if (idSelection == 6) idSelection = -1;
 		}
+		break;
 	}
 	s = nullptr;
 }
