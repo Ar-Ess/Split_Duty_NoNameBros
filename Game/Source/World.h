@@ -19,6 +19,10 @@
 
 #define PLAYER_INMUNITY_TIME 100
 
+#define STAB_TIME 40
+#define STAB_W 20
+#define STAB_H 40
+
 class Enemy;
 enum EnemyClass;
 class Player;
@@ -144,6 +148,8 @@ private:
 
     void WorldEnemyChasing();
 
+	void WorldStabLogic();
+
     void EnemyStatsGeneration(Enemy* enemy, Player* player, int lvl);
 
     void EnemyRunChasing(Enemy* e, Player* p);
@@ -168,6 +174,16 @@ private:
 
 public:
     bool inventoryOpen = false;
+
+public:
+	bool stabActive = false;
+	int stabTime = 0;
+	bool stabLeft = false;
+	bool stabRight = false;
+	bool stabUp = false;
+	bool stabDown = false; 
+	SDL_Rect stabRect = {};
+
 private:
 
     friend class Map;

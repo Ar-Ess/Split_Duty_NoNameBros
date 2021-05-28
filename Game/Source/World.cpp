@@ -327,6 +327,8 @@ void World::Update()
 			app->audio->SetFx(Effect::INVENTORY_OPEN_FX);
 		}
 	}
+
+	if (app->scene->player1->stabStat > -1) WorldStabLogic();
 }
 
 void World::EnemyLogic()
@@ -359,14 +361,23 @@ void World::Draw()
 
 void World::DrawPlayer()
 {
+	Player* p = app->scene->player1;
 	currentPlayerAnimation->Update(1.0f);
-	if (!playerInmunity) app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
+	if (!playerInmunity) app->render->DrawTexture(walkingSpritesheet, p->collisionRect.x, p->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
 	else
 	{
 		if (app->GetFrameCount() % 2 == 0)
 		{
-			app->render->DrawTexture(walkingSpritesheet, app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
+			app->render->DrawTexture(walkingSpritesheet, p->collisionRect.x, p->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
 		}
+	}
+
+	if (stabActive)
+	{
+		if (stabLeft) app->render->DrawRectangle({ p->colliderWorld.x - STAB_H, p->colliderWorld.y, STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y, STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y, STAB_W, STAB_H }, { 200, 0, 50, 150 });
+		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y - STAB_H, STAB_W, STAB_H }, { 200, 0, 50, 150 });
 	}
 }
 
@@ -669,6 +680,52 @@ void World::WorldEnemyChasing()
 		}
 	}
 	p = nullptr;
+}
+
+void World::WorldStabLogic()
+{
+	Player* p = app->scene->player1;
+
+	if (app->input->GetControl(X) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		stabActive = true;
+
+		if (currentPlayerAnimation == &p->walkDownAnim)
+		{
+			stabDown = true;
+			stabRect = { p->colliderWorld.x, p->colliderWorld.y, STAB_W, STAB_H };
+		}
+		else if (currentPlayerAnimation == &p->walkUpAnim)
+		{
+			stabUp = true;
+			stabRect = { p->colliderWorld.x, p->colliderWorld.y - STAB_H, STAB_W, STAB_H };
+		}
+		else if (currentPlayerAnimation == &p->walkLeftAnim)
+		{
+			stabLeft = true;
+			stabRect = { p->colliderWorld.x - STAB_H, p->colliderWorld.y, STAB_H, STAB_W };
+		}
+		else if (currentPlayerAnimation == &p->walkRightAnim)
+		{
+			stabRight = true;
+			stabRect = { p->colliderWorld.x, p->colliderWorld.y, STAB_H, STAB_W };
+		}
+	}
+
+	if (stabActive)
+	{
+		if (stabTime < STAB_TIME) stabTime++;
+		else
+		{
+			stabTime = 0;
+			stabActive = false;
+
+			stabLeft = false;
+			stabRight = false;
+			stabUp = false;
+			stabDown = false;
+		}
+	}
 }
 
 void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
