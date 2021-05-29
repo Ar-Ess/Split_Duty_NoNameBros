@@ -1689,6 +1689,15 @@ int Combat::EnemyItemDamage()
 	return damage + damagePlus;
 }
 
+int Combat::EnemyStabDamage()
+{
+	Player* p = app->scene->player1;
+
+	int proportionalStab = ceil((float(p->stabStat) * 20.0f) / 25.0f); // (Stab * MaxConvStab) / MaxRealStab
+
+	return floor((enemy->health * proportionalStab) / 100);
+}
+
 void Combat::PlayerResponse()
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_DOWN)

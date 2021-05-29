@@ -186,7 +186,7 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -555,6 +555,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
+	if (world->stabActive) combatScene->enemy->health -= combatScene->EnemyStabDamage();
 	combatScene->Start();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;

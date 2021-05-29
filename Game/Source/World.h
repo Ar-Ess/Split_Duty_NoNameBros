@@ -19,9 +19,9 @@
 
 #define PLAYER_INMUNITY_TIME 100
 
-#define STAB_TIME 40
-#define STAB_W 20
-#define STAB_H 40
+#define STAB_TIME 10
+#define STAB_W 22
+#define STAB_H 50
 
 class Enemy;
 enum EnemyClass;

@@ -328,7 +328,9 @@ void World::Update()
 		}
 	}
 
-	if (app->scene->player1->stabStat > -1) WorldStabLogic();
+	if (app->scene->player1->stabStat > 0) WorldStabLogic();
+
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->scene->player1->stabStat = 25;
 }
 
 void World::EnemyLogic()
@@ -374,10 +376,12 @@ void World::DrawPlayer()
 
 	if (stabActive)
 	{
-		if (stabLeft) app->render->DrawRectangle({ p->colliderWorld.x - STAB_H, p->colliderWorld.y, STAB_H, STAB_W }, { 200, 0, 50, 150 });
-		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y, STAB_H, STAB_W }, { 200, 0, 50, 150 });
-		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y, STAB_W, STAB_H }, { 200, 0, 50, 150 });
-		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x, p->colliderWorld.y - STAB_H, STAB_W, STAB_H }, { 200, 0, 50, 150 });
+		int off[4] = {22, 36, 12, 56};
+
+		if (stabLeft) app->render->DrawRectangle({ p->colliderWorld.x - STAB_H + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
+		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
 	}
 }
 
@@ -637,9 +641,11 @@ void World::WorldEnemySpawn()
 
 void World::WorldEnemyDetection()
 {
+	Player* p = app->scene->player1;
+
 	for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 	{
-		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(app->scene->player1->collisionRect, app->entityManager->enemies[i]->colliderRect))
+		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(p->collisionRect, app->entityManager->enemies[i]->colliderRect))
 		{
 			AsignPrevPosition();
 			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
@@ -650,7 +656,40 @@ void World::WorldEnemyDetection()
 			}
 			return;
 		}
+
+		if (stabActive)
+		{
+			int off[4] = { 22, 36, 12, 56 };
+
+			if (stabLeft) stabRect = { p->colliderWorld.x - STAB_H + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W };
+			else if (stabRight) stabRect = { p->colliderWorld.x + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W };
+			else if (stabDown) stabRect = { p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H };
+			else if (stabUp) stabRect = { p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H };
+		}
+
+		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(stabRect, app->entityManager->enemies[i]->colliderRect))
+		{
+			AsignPrevPosition();
+			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
+
+			stabActive = false;
+			stabTime = 0;
+
+			stabLeft = false;
+			stabRight = false;
+			stabDown = false;
+			stabUp = false;
+
+			if (inventoryOpen)
+			{
+				inventoryOpen = false;
+				inventory->Restart();
+			}
+			return;
+		}
 	}
+
+	p = nullptr;
 }
 
 void World::WorldEnemyChasing()
