@@ -64,6 +64,8 @@ public:
 
     void CombatLogic();
 
+    void TutorialLogic();
+
     void Draw();
 
     void DrawPlayer();
@@ -134,8 +136,6 @@ public:
 
     int EnemyItemDamage();
 
-    int EnemyStabDamage();
-
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
 
     void EnemyAttackProbability();
@@ -189,6 +189,13 @@ public: //Getters
     {
         return combatState;
     }
+
+public: //TUTORIAL THINGS
+    bool tutorialActive = false;
+    bool attackTested = false;
+    bool moveTested = false;
+    bool itemTested = false;
+    bool splitTested = false;
 
 public:
     short int enemyTimeWait = 0;
@@ -352,8 +359,6 @@ public: // BUTTONS & TEXT
     GuiString* enemySplitDescription = nullptr;
 
     GuiString* moneyDescription = nullptr;
-
-    GuiString* enemyLvlText = nullptr;
 
 private:
     const SDL_Rect backgroundRect = { 0,0,1280,720 };

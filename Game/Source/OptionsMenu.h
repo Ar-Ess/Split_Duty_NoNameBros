@@ -25,11 +25,11 @@ public:
 
     void Update();
 
-    void Draw();
+    void Draw(float y);
 
-    void DrawGui();
+    void DrawGui(float y);
 
-    void DrawText();
+    void DrawText(float y);
 
 private:
     friend class Scene;
@@ -50,6 +50,10 @@ public:
     GuiString* vSyncText = nullptr;
 
     GuiString* returnText = nullptr;
+
+public:
+    SDL_Texture* optionsBackground = nullptr;
+    SDL_Texture* optionsGui = nullptr;
 };
 
 #endif // __OPTIONS_MENU_H__

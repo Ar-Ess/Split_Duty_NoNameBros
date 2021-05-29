@@ -186,7 +186,7 @@ bool Scene::Update(float dt)
 
 bool Scene::PostUpdate()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -543,19 +543,9 @@ void Scene::SetCombat(Enemy* enemySet)
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
-	if (combatScene->enemyLvlText == nullptr)
-	{
-		combatScene->enemyLvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		combatScene->enemyLvlText->bounds = { 1000, 20, 100, 40 };
-		combatScene->enemyLvlText->SetTextFont(app->fontTTF->defaultFont);
-		combatScene->enemyLvlText->SetString("LVL");
-		combatScene->enemyLvlText->CenterAlign();
-	}
-
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
-	if (world->stabActive) combatScene->enemy->health -= combatScene->EnemyStabDamage();
 	combatScene->Start();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
@@ -1376,6 +1366,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case MAIN_MENU:
 		if (strcmp(control->text.GetString(), "NewGameButton") == 0)
 		{
+			combatScene->tutorialActive = true;
 			remove("save_game.xml");
 			SetScene(WORLD, Places::MAIN_VILLAGE);
 			player1->RestartPlayer();

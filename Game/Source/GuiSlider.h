@@ -5,6 +5,8 @@
 
 #include "Point.h"
 
+class OptionsMenu;
+
 enum SliderType {
     MUSIC,
     FX,
@@ -36,6 +38,7 @@ public:
     bool sliderFocus = false;
 
 private:
+    friend class OptionsMenu;
 
     SDL_Rect slider;
     int value;

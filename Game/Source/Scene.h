@@ -155,8 +155,7 @@ private: // Textures
 	SDL_Texture* mainLogo = nullptr;
 	SDL_Texture* menu = nullptr;
 	SDL_Texture* pause = nullptr;
-public:
-	SDL_Texture* optionsBackground = nullptr;
+
 public:
 	friend class Combat;
 	friend class Enemy;
@@ -216,8 +215,8 @@ private: //Scene Manager
 	void UpdateEndScreen();
 
 	float EaseLogoBetweenPoints(iPoint posA, iPoint posB,bool repeat);
-	float EaseTitleBetweenPoints(iPoint posA, iPoint posB,bool repeat);
-
+	float EaseQuadX(iPoint posA, iPoint posB,bool repeat);
+	float EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter);
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

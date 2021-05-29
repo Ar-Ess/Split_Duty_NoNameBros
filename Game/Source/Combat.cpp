@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "App.h"
 
 #include "Scene.h"
@@ -84,10 +82,6 @@ void Combat::EnemyStart()
 		enemySpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 
-	char str[12] = {};
-	sprintf(str, "Level: %d", enemy->lvl);
-	enemyLvlText->SetString(str, WHITE);
-
 	//Firts turn decision
 	FirstTurnLogic();
 
@@ -102,6 +96,7 @@ void Combat::BossStart()
 	{
 	case(BossClass::BOSS_TUTORIAL):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
+		combatState = PLAYER_TURN;
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
@@ -222,7 +217,9 @@ void Combat::Update()
 	if (enemyBattle) currentEnemyAnim->Update(1.0f);
 	else if (bossBattle) currentBossAnim->Update(1.0f);
 
-	CombatLogic();
+
+	if (!tutorialActive) CombatLogic();
+	else TutorialLogic();
 
 	if (enemyBattle)
 	{
@@ -480,6 +477,42 @@ void Combat::CombatLogic()
 	}
 }
 
+void Combat::TutorialLogic()
+{
+	Scene* s = app->scene;
+	switch (combatState)
+	{
+	case PLAYER_TURN:
+
+		if (playerChoice)
+		{
+			PlayerChoiceLogic();
+		}
+
+		if (playerAttack)
+		{
+			playerChoice = false;
+			app->audio->SetFx(Effect::PLAYER_ATTACK_FX);
+			PlayerAttack();
+		}
+
+		if (!attackTested)
+		{
+			s->moveButton->state = GuiControlState::LOCKED;
+			s->itemButton->state = GuiControlState::LOCKED;
+			s->escapeButton->state = GuiControlState::LOCKED;
+		}
+		else
+		{
+
+		}
+
+		break;
+	case BOSS_TURN:
+		break;
+	}
+}
+
 // DRAW
 
 void Combat::Draw()
@@ -665,7 +698,6 @@ void Combat::DrawButtons()
 void Combat::DrawText()
 {
 	turnText->Draw();
-	enemyLvlText->Draw();
 
 	if (!secondPlayer)
 	{
@@ -793,6 +825,7 @@ void Combat::PlayerChoiceLogic()
 			EscapeProbability(probabilityRange);
 		}
 		else if (bossBattle) EscapeProbability(-8);
+
 		return;
 	}
 	else if (app->scene->splitPressed)
@@ -1179,7 +1212,15 @@ void Combat::PlayerAttack()
 			if (!secondPlayer)
 			{
 				if (enemyBattle) EnemyTurn();
-				else if (bossBattle) BossTurn();
+				else if (bossBattle)
+				{
+					if (!tutorialActive) BossTurn();
+					else
+					{
+						PlayerTurn();
+						playerChoice = true;
+					}
+				}
 			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
@@ -1689,15 +1730,6 @@ int Combat::EnemyItemDamage()
 	return damage + damagePlus;
 }
 
-int Combat::EnemyStabDamage()
-{
-	Player* p = app->scene->player1;
-
-	int proportionalStab = ceil((float(p->stabStat) * 20.0f) / 25.0f); // (Stab * MaxConvStab) / MaxRealStab
-
-	return floor((enemy->health * proportionalStab) / 100);
-}
-
 void Combat::PlayerResponse()
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_DOWN)
@@ -2134,7 +2166,8 @@ void Combat::PlayerTurn()
 
 	if (steps < 3 && !playerStepDenied) app->scene->moveButton->state = GuiControlState::NORMAL;
 
-	currentEnemyAnim = &enemy->idleAnim;
+	if (enemyBattle) currentEnemyAnim = &enemy->idleAnim;
+	else if (bossBattle) currentBossAnim = &boss->idleAnim;
 
 	turnText->SetString("PLAYER TURN");
 
