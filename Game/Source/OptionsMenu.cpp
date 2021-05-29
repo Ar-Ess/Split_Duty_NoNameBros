@@ -47,28 +47,19 @@ void OptionsMenu::Update()
 	a = nullptr;
 }
 
-void OptionsMenu::Draw(float y)
+void OptionsMenu::Draw(int y)
 {
 	app->render->DrawTexture(optionsBackground, 0, 0);
 	app->render->DrawTexture(optionsGui, 0, y);
-
-	y += 25;
 
 	DrawGui(y);
 	DrawText(y);
 }
 
-void OptionsMenu::DrawGui(float y)
+void OptionsMenu::DrawGui(int y)
 {
 
-	dFullScreenCheckBox->bounds.y += y;
-	fullScreenCheckBox->bounds.y += y;
-	vSyncCheckBox->bounds.y += y;
-	fxVolumeSlider->bounds.y += y;
-	fxVolumeSlider->slider.y += y;
-	musicVolumeSlider->bounds.y += y;
-	musicVolumeSlider->slider.y += y;
-	returnMenuButton->bounds.y += y;
+	EasingsOptionsResolve(y, true);
 
 	dFullScreenCheckBox->Draw();
 	fullScreenCheckBox->Draw();
@@ -77,17 +68,10 @@ void OptionsMenu::DrawGui(float y)
 	musicVolumeSlider->Draw(SliderType::MUSIC);
 	returnMenuButton->Draw();
 
-	dFullScreenCheckBox->bounds.y -= y;
-	fullScreenCheckBox->bounds.y -= y;
-	vSyncCheckBox->bounds.y -= y;
-	fxVolumeSlider->bounds.y -= y;
-	fxVolumeSlider->slider.y -= y;
-	musicVolumeSlider->bounds.y -= y;
-	musicVolumeSlider->slider.y -= y;
-	returnMenuButton->bounds.y -= y;
+	EasingsOptionsResolve(y, false);
 }
 
-void OptionsMenu::DrawText(float y)
+void OptionsMenu::DrawText(int y)
 {
 
 	vSyncText->bounds.y += y;
@@ -105,3 +89,31 @@ void OptionsMenu::DrawText(float y)
 	dFullScreenText->bounds.y -= y;
 	returnText->bounds.y -= y;
 }
+
+void OptionsMenu::EasingsOptionsResolve(int y, bool way)
+{
+	if (way)
+	{
+		dFullScreenCheckBox->bounds.y += y;
+		fullScreenCheckBox->bounds.y += y;
+		vSyncCheckBox->bounds.y += y;
+		fxVolumeSlider->bounds.y += y;
+		fxVolumeSlider->slider.y += y;
+		musicVolumeSlider->bounds.y += y;
+		musicVolumeSlider->slider.y += y;
+		returnMenuButton->bounds.y += y;
+	}
+	else
+	{
+		dFullScreenCheckBox->bounds.y -= y;
+		fullScreenCheckBox->bounds.y -= y;
+		vSyncCheckBox->bounds.y -= y;
+		fxVolumeSlider->bounds.y -= y;
+		fxVolumeSlider->slider.y -= y;
+		musicVolumeSlider->bounds.y -= y;
+		musicVolumeSlider->slider.y -= y;
+		returnMenuButton->bounds.y -= y;
+	}
+}
+
+

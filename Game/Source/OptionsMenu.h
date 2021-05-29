@@ -25,11 +25,13 @@ public:
 
     void Update();
 
-    void Draw(float y);
+    void Draw(int y);
 
-    void DrawGui(float y);
+    void DrawGui(int y);
 
-    void DrawText(float y);
+    void DrawText(int y);
+
+    void EasingsOptionsResolve(int value, bool way);
 
 private:
     friend class Scene;

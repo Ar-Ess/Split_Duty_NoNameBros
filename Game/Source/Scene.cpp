@@ -114,12 +114,10 @@ bool Scene::PreUpdate()
 	// L12b: Debug pathfing
 	/*static iPoint origin;
 	static bool originSelected = false;
-
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
 	p = world->map->WorldToMap(p.x, p.y);
-
 	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN)
 	{
 		if(originSelected == true)
@@ -145,18 +143,16 @@ bool Scene::Update(float dt)
 	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
 	p = world->map->WorldToMap(p.x, p.y);
 	p = world->map->MapToWorld(p.x, p.y);
-
 	const DynArray<iPoint>* path = debugPathList;
-
 	const SDL_Rect debugPathRect = {0, 0, 16, 16};
 	for(uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = world->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		app->render->DrawTexture(debugPath, pos.x, pos.y, 1, &debugPathRect);
 	}*/
-	
+
 	//LOG("X:%d Y:%d", player1->colliderWorld.x, player1->colliderWorld.y);
-	
+
 
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
@@ -211,9 +207,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	}
 	else if (currScene == OPTIONS_MENU)
 	{
-		app->tex->UnLoad(app->guiManager->buttonSpriteSheet);
-		app->tex->UnLoad(app->guiManager->sliderSpriteSheet);
-		app->tex->UnLoad(optionsBackground);
+		optionsMenu->Restart();
 	}
 	else if (currScene == COMBAT)
 	{
@@ -420,12 +414,12 @@ void Scene::SetMainMenu()
 void Scene::SetOptionsMenu()
 {
 	app->audio->SetMusic(SoundTrack::OPTIONSMENU_TRACK);
-	optionsBackground = app->tex->Load("Assets/Screens/options.png");
-	app->guiManager->buttonSpriteSheet = app->tex->Load("Assets/Textures/UI/options.png");
-	app->guiManager->sliderSpriteSheet = app->tex->Load("Assets/Textures/UI/slider.png");
+	iterations = 0;
 
-	SDL_Rect buttonPrefab = { 740,140 -12,60,60 };
-	SDL_Rect textPrefab = { 480,buttonPrefab.y +20 ,130,30 };
+	optionsMenu->Start();
+
+	SDL_Rect buttonPrefab = { 740,140 - 12,60,60 };
+	SDL_Rect textPrefab = { 480,buttonPrefab.y + 20 ,130,30 };
 	SDL_Rect sliderPrefab = { 470,150,335,40 };
 
 	SDL_Rect buttonPrefab1 = app->guiManager->buttonPrefab;
@@ -436,7 +430,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->dFullScreenCheckBox == nullptr)
 	{
 		optionsMenu->dFullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->dFullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h};
+		optionsMenu->dFullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->dFullScreenCheckBox->text = "DesktopFullScreenCheckBox";
 		optionsMenu->dFullScreenCheckBox->SetObserver(this);
 		optionsMenu->dFullScreenCheckBox->active = true;
@@ -445,7 +439,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fullScreenCheckBox == nullptr)
 	{
 		optionsMenu->fullScreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->fullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y+off.y,buttonPrefab.w,buttonPrefab.h };
+		optionsMenu->fullScreenCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y + off.y,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->fullScreenCheckBox->text = "FullScreenCheckBox";
 		optionsMenu->fullScreenCheckBox->SetObserver(this);
 		optionsMenu->fullScreenCheckBox->active = true;
@@ -454,7 +448,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->vSyncCheckBox == nullptr)
 	{
 		optionsMenu->vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX);
-		optionsMenu->vSyncCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.h };
+		optionsMenu->vSyncCheckBox->bounds = { buttonPrefab.x,buttonPrefab.y + off.y * 2,buttonPrefab.w,buttonPrefab.h };
 		optionsMenu->vSyncCheckBox->text = "VSyncCheckBox";
 		optionsMenu->vSyncCheckBox->SetObserver(this);
 		optionsMenu->vSyncCheckBox->active = true;
@@ -463,8 +457,8 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->fxVolumeSlider == nullptr)
 	{
 		optionsMenu->fxVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->fxVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*4,sliderPrefab.w,sliderPrefab.h };
-		optionsMenu->fxVolumeSlider->SetSlider({optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w -sliderOff.x, optionsMenu->fxVolumeSlider->bounds.y-sliderOff.y, buttonPrefab.w, buttonPrefab.h});
+		optionsMenu->fxVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y * 4,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->fxVolumeSlider->SetSlider({ optionsMenu->fxVolumeSlider->bounds.x + optionsMenu->fxVolumeSlider->bounds.w - sliderOff.x, optionsMenu->fxVolumeSlider->bounds.y - sliderOff.y, buttonPrefab.w, buttonPrefab.h });
 		optionsMenu->fxVolumeSlider->text = "FxVolumeSlider";
 		optionsMenu->fxVolumeSlider->SetMaxValue(100);
 		optionsMenu->fxVolumeSlider->SetMinValue(0);
@@ -476,8 +470,8 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->musicVolumeSlider == nullptr)
 	{
 		optionsMenu->musicVolumeSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER);
-		optionsMenu->musicVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y*3,sliderPrefab.w,sliderPrefab.h };
-		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w -sliderOff.x, optionsMenu->musicVolumeSlider->bounds.y-sliderOff.y,  buttonPrefab.w, buttonPrefab.h });
+		optionsMenu->musicVolumeSlider->bounds = { sliderPrefab.x,sliderPrefab.y + off.y * 3,sliderPrefab.w,sliderPrefab.h };
+		optionsMenu->musicVolumeSlider->SetSlider({ optionsMenu->musicVolumeSlider->bounds.x + optionsMenu->musicVolumeSlider->bounds.w - sliderOff.x, optionsMenu->musicVolumeSlider->bounds.y - sliderOff.y,  buttonPrefab.w, buttonPrefab.h });
 		optionsMenu->musicVolumeSlider->text = "MusicVolumeSlider";
 		optionsMenu->musicVolumeSlider->SetMaxValue(100);
 		optionsMenu->musicVolumeSlider->SetMinValue(0);
@@ -489,7 +483,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->returnMenuButton == nullptr)
 	{
 		optionsMenu->returnMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x -175  ,buttonPrefab.y + off.y*5 -15,buttonPrefab1.w, buttonPrefab1.h };
+		optionsMenu->returnMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w, buttonPrefab1.h };
 		optionsMenu->returnMenuButton->text = "ReturnMenuButton";
 		optionsMenu->returnMenuButton->SetObserver(this);
 		optionsMenu->returnMenuButton->active = true;
@@ -514,7 +508,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->vSyncText == nullptr)
 	{
 		optionsMenu->vSyncText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		optionsMenu->vSyncText->bounds = { textPrefab.x,textPrefab.y+off.y*2,textPrefab.w,textPrefab.h };
+		optionsMenu->vSyncText->bounds = { textPrefab.x,textPrefab.y + off.y * 2,textPrefab.w,textPrefab.h };
 		optionsMenu->vSyncText->SetTextFont(app->fontTTF->defaultFont);
 		optionsMenu->vSyncText->SetString("V-SYNC");
 	}
@@ -522,7 +516,7 @@ void Scene::SetOptionsMenu()
 	if (optionsMenu->returnText == nullptr)
 	{
 		optionsMenu->returnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-		optionsMenu->returnText->bounds = { textPrefab.x,textPrefab.y + off.y * 5 -25,325,textPrefab.h };
+		optionsMenu->returnText->bounds = { textPrefab.x,textPrefab.y + off.y * 5 - 25,325,textPrefab.h };
 		optionsMenu->returnText->SetTextFont(app->fontTTF->defaultFont);
 		optionsMenu->returnText->SetString("RETURN");
 		optionsMenu->returnText->CenterAlign();
@@ -536,6 +530,8 @@ void Scene::SetOptionsMenu()
 
 void Scene::SetCombat(Enemy* enemySet)
 {
+	iterations = 0;
+
 	if (combatScene->turnText == nullptr)
 	{
 		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
@@ -549,7 +545,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	combatScene->Start();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
-	
+
 	if (attackButton == nullptr)
 	{
 		attackButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
@@ -562,7 +558,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	if (moveButton == nullptr)
 	{
 		moveButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding)* 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		moveButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 1),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
 		moveButton->text = "MoveButton";
 		moveButton->SetObserver(this);
 		moveButton->active = true;
@@ -791,6 +787,8 @@ void Scene::SetCombat(Enemy* enemySet)
 
 void Scene::SetCombat(Boss* bossSet)
 {
+	iterations = 0;
+
 	if (combatScene->turnText == nullptr)
 	{
 		combatScene->turnText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
@@ -1046,6 +1044,8 @@ void Scene::SetCombat(Boss* bossSet)
 
 void Scene::SetLevelUp(unsigned short int exp)
 {
+	iterations = 0;
+
 	app->audio->SetMusic(SoundTrack::LEVELUP_TRACK);
 	levelUpScene->Start(exp);
 
@@ -1056,7 +1056,7 @@ void Scene::SetLevelUp(unsigned short int exp)
 	if (levelUpScene->skipButton == nullptr)
 	{
 		levelUpScene->skipButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		levelUpScene->skipButton->bounds = { 580, 580, 161, 62};
+		levelUpScene->skipButton->bounds = { 580, 580, 161, 62 };
 		levelUpScene->skipButton->text = "SkipButton";
 		levelUpScene->skipButton->SetObserver(this);
 		levelUpScene->skipButton->active = true;
@@ -1067,6 +1067,8 @@ void Scene::SetLevelUp(unsigned short int exp)
 
 void Scene::SetWorld(Places place)
 {
+	iterations = 0;
+
 	world->Start(place);
 
 	//inventory buttons
@@ -1104,7 +1106,7 @@ void Scene::SetWorld(Places place)
 	if (world->inventory->coinButton == nullptr)
 	{
 		world->inventory->coinButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		world->inventory->coinButton->bounds = { buttonPrefab.x,buttonPrefab.y + off.y*2,buttonPrefab.w,buttonPrefab.y };
+		world->inventory->coinButton->bounds = { buttonPrefab.x,buttonPrefab.y + off.y * 2,buttonPrefab.w,buttonPrefab.y };
 		//world->inventory->exitInventoryButton->text = "Exit inventory";
 		world->inventory->coinButton->SetObserver(this);
 	}
@@ -1119,6 +1121,8 @@ void Scene::SetWorld(Places place)
 
 void Scene::SetPauseMenu()
 {
+	iterations = 0;
+
 	app->audio->TransitionVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 	pause = app->tex->Load("Assets/Screens/pause_menu_screen.png");
@@ -1198,6 +1202,8 @@ void Scene::SetPauseMenu()
 
 void Scene::SetEndScreen()
 {
+	iterations = 0;
+
 	app->audio->SetMusic(SoundTrack::ENDSCENE_TRACK);
 	SDL_Rect buttonPrefab = { 740,140 - 12,60,60 };
 	SDL_Rect buttonPrefab1 = app->guiManager->buttonPrefab;
@@ -1250,8 +1256,8 @@ void Scene::UpdateLogoScene()
 
 void Scene::UpdateMainMenu()
 {
-// Other Options
-	float logoX = EaseTitleBetweenPoints(iPoint(-1280, 0), iPoint(0, 0), false);
+	// Other Options
+	float logoX = EaseQuadX(iPoint(-1280, 0), iPoint(0, 0), false);
 	app->render->DrawTexture(menu, 0, 0);
 	app->render->DrawTexture(mainLogo, logoX, 0);
 
@@ -1273,8 +1279,10 @@ void Scene::UpdateMainMenu()
 
 void Scene::UpdateOptionsMenu()
 {
+	float y = EaseQuadY(iPoint(0, -720), iPoint(0, 0), false, 40);
+
 	optionsMenu->Update();
-	optionsMenu->Draw();
+	optionsMenu->Draw((int)y);
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN) SetScene(MAIN_MENU);
 }
@@ -1510,11 +1518,11 @@ void Scene::RestartPressState()
 
 void Scene::DebugSteps()
 {
-	app->render->DrawLine(249, 498, 249, 510, {255, 255, 255, 255});
-	app->render->DrawLine(419, 498, 419, 510, {255, 255, 255, 255});
-	app->render->DrawLine(589, 498, 589, 510, {255, 255, 255, 255});
-	app->render->DrawLine(759, 498, 759, 510, {255, 255, 255, 255});
-	app->render->DrawLine(1031, 498, 1031, 510, {255, 0, 0, 255});
+	app->render->DrawLine(249, 498, 249, 510, { 255, 255, 255, 255 });
+	app->render->DrawLine(419, 498, 419, 510, { 255, 255, 255, 255 });
+	app->render->DrawLine(589, 498, 589, 510, { 255, 255, 255, 255 });
+	app->render->DrawLine(759, 498, 759, 510, { 255, 255, 255, 255 });
+	app->render->DrawLine(1031, 498, 1031, 510, { 255, 0, 0, 255 });
 }
 
 float Scene::EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat)
@@ -1530,11 +1538,24 @@ float Scene::EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat)
 	return value;
 }
 
-float Scene::EaseTitleBetweenPoints(iPoint posA, iPoint posB, bool repeat)
+float Scene::EaseQuadX(iPoint posA, iPoint posB, bool repeat)
 {
 	float value = easing.backEaseOut(iterations, posA.x, posB.x - posA.x, totalIterations);
 
 	if (iterations < totalIterations) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+	return value;
+}
+
+float Scene::EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter)
+{
+	float value = easing.backEaseOut(iterations, posA.y, posB.y - posA.y, totalIter);
+
+	if (iterations < totalIter) {
 		iterations++;
 	}
 	else {

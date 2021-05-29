@@ -63,9 +63,6 @@
     <ClCompile Include="Source\GuiSlider.cpp">
       <Filter>GuiControls</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GuiString.cpp">
       <Filter>GuiControls</Filter>
     </ClCompile>
@@ -133,6 +130,9 @@
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="Source\AssetsManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,9 +231,6 @@
     <ClInclude Include="Source\GuiSlider.h">
       <Filter>GuiControls</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GuiString.h">
       <Filter>GuiControls</Filter>
     </ClInclude>
@@ -316,6 +313,9 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Source\AssetsManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

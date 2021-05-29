@@ -214,8 +214,8 @@ private: //Scene Manager
 	void UpdatePauseMenu();
 	void UpdateEndScreen();
 
-	float EaseLogoBetweenPoints(iPoint posA, iPoint posB,bool repeat);
-	float EaseQuadX(iPoint posA, iPoint posB,bool repeat);
+	float EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat);
+	float EaseQuadX(iPoint posA, iPoint posB, bool repeat);
 	float EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter);
 
 private: //debug
