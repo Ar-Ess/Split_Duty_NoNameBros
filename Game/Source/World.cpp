@@ -373,16 +373,6 @@ void World::DrawPlayer()
 			app->render->DrawTexture(walkingSpritesheet, p->collisionRect.x, p->collisionRect.y - 56, &currentPlayerAnimation->GetCurrentFrame());
 		}
 	}
-
-	if (stabActive)
-	{
-		int off[4] = {22, 36, 12, 56};
-
-		if (stabLeft) app->render->DrawRectangle({ p->colliderWorld.x - STAB_H + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
-		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
-		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
-		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
-	}
 }
 
 void World::DrawEnemy()
@@ -472,6 +462,16 @@ void World::DrawCollisions()
 	if (lilipadPuzzle1 != nullptr) lilipadPuzzle1->DebugDraw();
 	if (stonePuzzle1 != nullptr) stonePuzzle1->DebugDraw();
 	if (buttonPuzzle1 != nullptr) buttonPuzzle1->DebugDraw();
+
+	if (stabActive)
+	{
+		int off[4] = { 22, 36, 12, 56 };
+
+		if (stabLeft) app->render->DrawRectangle({ p->colliderWorld.x - STAB_H + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
+		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
+		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
+	}
 }
 
 //-------------------------------------------------------------------

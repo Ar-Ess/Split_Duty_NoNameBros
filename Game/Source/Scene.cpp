@@ -221,6 +221,7 @@ bool Scene::CleanUp(Scenes nextScene)
 	else if (currScene == PAUSE_MENU)
 	{
 		app->tex->UnLoad(pause);
+		app->tex->UnLoad(pauseBackground);
 	}
 	else if (currScene == LEVEL_UP)
 	{
@@ -1125,7 +1126,8 @@ void Scene::SetPauseMenu()
 
 	app->audio->TransitionVolumeMusic();
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
-	pause = app->tex->Load("Assets/Screens/pause_menu_screen.png");
+	pauseBackground = app->tex->Load("Assets/Screens/bg_mm.png");
+	pause = app->tex->Load("Assets/Screens/pause_menu_gui.png");
 
 	if (backToGameButton == nullptr)
 	{
@@ -1340,12 +1342,27 @@ void Scene::UpdateWorld()
 
 void Scene::UpdatePauseMenu()
 {
+	float y = EaseQuadY(iPoint(0, -720), iPoint(0, 0), false, 40);
+
 	backToGameButton->Update(1.0f);
 	saveGameButton->Update(1.0f);
 	optionsPauseButton->Update(1.0f);
 	backToMenuButton->Update(1.0f);
 
-	app->render->DrawTexture(pause, 0, 0);
+	app->render->DrawTexture(pauseBackground, 0, 0);
+	app->render->DrawTexture(pause, 0, y);
+
+	int yi = (int)y;
+
+	backToGameButton->bounds.y += yi;
+	saveGameButton->bounds.y += yi;
+	optionsPauseButton->bounds.y += yi;
+	backToMenuButton->bounds.y += yi;
+
+	backToGameText->bounds.y += yi;
+	saveGameText->bounds.y += yi;
+	optionsPauseText->bounds.y += yi;
+	backToMenuText->bounds.y += yi;
 
 	backToGameButton->Draw();
 	saveGameButton->Draw();
@@ -1356,6 +1373,16 @@ void Scene::UpdatePauseMenu()
 	saveGameText->Draw();
 	optionsPauseText->Draw();
 	backToMenuText->Draw();
+
+	backToGameButton->bounds.y -= yi;
+	saveGameButton->bounds.y -= yi;
+	optionsPauseButton->bounds.y -= yi;
+	backToMenuButton->bounds.y -= yi;
+
+	backToGameText->bounds.y -= yi;
+	saveGameText->bounds.y -= yi;
+	optionsPauseText->bounds.y -= yi;
+	backToMenuText->bounds.y -= yi;
 }
 
 void Scene::UpdateEndScreen()
