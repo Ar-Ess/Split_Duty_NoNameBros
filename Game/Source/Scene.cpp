@@ -543,6 +543,8 @@ void Scene::SetCombat(Enemy* enemySet)
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
+	combatScene->enemy->health -= combatScene->EnemyStabDamage();
+
 	combatScene->Start();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
@@ -1144,7 +1146,8 @@ void Scene::SetPauseMenu()
 		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 295,buttonPrefab.w,buttonPrefab.h };
 		saveGameButton->text = "SaveGameButton";
 		saveGameButton->SetObserver(this);
-		saveGameButton->active = true;
+		if (world->GetPlace() == Places::GRASSY_LAND_2) saveGameButton->state = GuiControlState::LOCKED;
+		else saveGameButton->state = GuiControlState::NORMAL;
 	}
 
 	if (optionsPauseButton == nullptr)
@@ -1304,9 +1307,11 @@ void Scene::UpdateCombat()
 
 void Scene::UpdateLevelUp()
 {
+	float x = EaseQuadX(iPoint(-1280, 0), iPoint(0, 0), false, 40);
+
 	levelUpScene->Update();
 
-	levelUpScene->Draw();
+	levelUpScene->Draw((int)x);
 }
 
 void Scene::UpdateWorld()
@@ -1401,7 +1406,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case MAIN_MENU:
 		if (strcmp(control->text.GetString(), "NewGameButton") == 0)
 		{
-			combatScene->tutorialActive = true;
+			//combatScene->tutorialActive = true;
 			remove("save_game.xml");
 			SetScene(WORLD, Places::MAIN_VILLAGE);
 			player1->RestartPlayer();
@@ -1511,12 +1516,14 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 			SetScene(WORLD, world->place);
 			world->AlignCameraPosition();
+			iterations = 0;
 		}
 
 	case END_SCREEN:
 		if (strcmp(control->text.GetString(), "BackToMenuButton") == 0)
 		{
 			SetScene(MAIN_MENU);
+			iterations = 0;
 		}
 	}
 
@@ -1570,6 +1577,19 @@ float Scene::EaseQuadX(iPoint posA, iPoint posB, bool repeat)
 	float value = easing.backEaseOut(iterations, posA.x, posB.x - posA.x, totalIterations);
 
 	if (iterations < totalIterations) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+	return value;
+}
+
+float Scene::EaseQuadX(iPoint posA, iPoint posB, bool repeat, int totalIter)
+{
+	float value = easing.backEaseOut(iterations, posA.x, posB.x - posA.x, totalIter);
+
+	if (iterations < totalIter) {
 		iterations++;
 	}
 	else {

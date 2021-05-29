@@ -136,6 +136,8 @@ public:
 
     int EnemyItemDamage();
 
+    int EnemyStabDamage();
+
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
 
     void EnemyAttackProbability();

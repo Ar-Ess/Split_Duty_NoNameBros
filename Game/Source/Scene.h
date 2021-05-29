@@ -217,6 +217,7 @@ private: //Scene Manager
 
 	float EaseLogoBetweenPoints(iPoint posA, iPoint posB, bool repeat);
 	float EaseQuadX(iPoint posA, iPoint posB, bool repeat);
+	float EaseQuadX(iPoint posA, iPoint posB, bool repeat, int totalIter);
 	float EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter);
 
 private: //debug

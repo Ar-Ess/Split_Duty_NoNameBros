@@ -28,6 +28,7 @@ void LevelUp::Start(short int exp)
 
 	interfaceTexture = app->tex->Load("Assets/Screens/level_scene.png");
 	barTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
+	interfaceGui = app->tex->Load("Assets/Screens/level_scene_gui.png");
 
 	char str1[24] = {};
 	sprintf(str1, "Gained %d exp", exp);
@@ -92,6 +93,7 @@ void LevelUp::Start(short int exp)
 void LevelUp::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
+	app->tex->UnLoad(interfaceGui);
 	app->tex->UnLoad(barTexture);
 }
 
@@ -100,18 +102,20 @@ void LevelUp::Update()
 	if (counter >= app->scene->player1->exp) UpdateButtons();
 }
 
-void LevelUp::Draw()
+void LevelUp::Draw(int x)
 {
 	LOG("Drawing lvl up scene...");
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(interfaceGui, x, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	if (counter >= app->scene->player1->exp) DrawButtons();
+	if (counter >= app->scene->player1->exp) DrawButtons(x);
 
-    DrawText();
+    DrawText(x);
 
 	if (counter < app->scene->player1->exp) counter += 5;
 
-	DrawBar({530, 400}, counter, maxExp, BLUE);
+
+	DrawBar({530 + x, 400}, counter, maxExp, BLUE);
 
 	//app->guiManager->DrawCursor();
 }
@@ -192,18 +196,39 @@ void LevelUp::SetText()
 	}
 }
 
-void LevelUp::DrawText()
+void LevelUp::DrawText(int x)
 {
-	if (levelUpBool) levelUpText->Draw();
+	if (levelUpBool)
+	{
+		levelUpText->bounds.x += x;
+		levelUpText->Draw();
+		levelUpText->bounds.x -= x;
+	}
 
-	if (!levelUpBool) winText->Draw();
+	if (!levelUpBool)
+	{
+		winText->bounds.x += x;
+		winText->Draw();
+		winText->bounds.x -= x;
+	}
 	
+	expGainedText->bounds.x += x;
 	expGainedText->Draw();
+	expGainedText->bounds.x -= x;
 
-	if (counter >= app->scene->player1->exp) skipText->Draw();
+	if (counter >= app->scene->player1->exp)
+	{
+		skipText->bounds.x += x;
+		skipText->Draw();
+		skipText->bounds.x -= x;
+	}
 }
 
-void LevelUp::DrawButtons()
+void LevelUp::DrawButtons(int x)
 {
+	skipButton->bounds.x += x;
+
 	skipButton->Draw();
+
+	skipButton->bounds.x -= x;
 }

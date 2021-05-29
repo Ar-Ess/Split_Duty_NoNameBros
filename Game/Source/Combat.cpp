@@ -1730,6 +1730,13 @@ int Combat::EnemyItemDamage()
 	return damage + damagePlus;
 }
 
+int Combat::EnemyStabDamage()
+{
+	int realStab = (app->scene->player1->stabStat * 20) / 25;
+
+	return ceil((enemy->health * realStab) / 100);
+}
+
 void Combat::PlayerResponse()
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_DOWN)

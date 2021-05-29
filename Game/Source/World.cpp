@@ -174,8 +174,6 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
 
-		app->scene->saveGameButton->state = GuiControlState::LOCKED;
-
 		if (lilipadPuzzle1 == nullptr)
 		{
 			lilipadPuzzle1 = new LilipadPuzzle(2, {840 + 14, 1092 + 14, 28, 28}, {980 + 14, 1092 + 14, 28, 28});
@@ -420,6 +418,8 @@ void World::DrawNPC()
 
 void World::DrawCollisions()
 {
+	Player* p = app->scene->player1;
+
 	if (houses.Count() > 0) for (int i = 0; i < houses.Count(); i++) app->render->DrawRectangle(houses[i], { 255, 0, 255, 100 });
 	for (int i = 0; i < collisions.Count(); i++) app->render->DrawRectangle(collisions[i], { 255, 0, 0, 100 });
 	if (location1.Count() > 0) for (int i = 0; i < location1.Count(); i++) app->render->DrawRectangle(location1[i], { 255, 255, 0, 100 });
@@ -472,6 +472,8 @@ void World::DrawCollisions()
 		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
 		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
 	}
+
+	p = nullptr;
 }
 
 //-------------------------------------------------------------------

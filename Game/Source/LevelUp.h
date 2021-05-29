@@ -24,8 +24,6 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-
-
 class LevelUp
 {
 public:
@@ -38,20 +36,21 @@ public:
 
     void Update();
 
-    void Draw();
+    void Draw(int x);
 
     void UpdateButtons();
 
     void SetText();
 
-    void DrawText();
+    void DrawText(int x);
 
-    void DrawButtons();
+    void DrawButtons(int x);
 
     void DrawBar(iPoint pos, int current, int max, SDL_Color color);
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
+    SDL_Texture* interfaceGui = nullptr;
     SDL_Texture* barTexture = nullptr;
 
     const SDL_Rect expBarRect = { 0,742,261,22 };
