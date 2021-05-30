@@ -219,6 +219,7 @@ private: //Scene Manager
 	float EaseQuadX(iPoint posA, iPoint posB, bool repeat);
 	float EaseQuadX(iPoint posA, iPoint posB, bool repeat, int totalIter);
 	float EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter);
+	float EaseBossJumpUp(iPoint posA, iPoint posB, bool repeat, int totalIter);
 
 private: //debug
 	void DebugSteps(); // Future Debug Module implementation

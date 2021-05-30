@@ -1320,6 +1320,8 @@ void Scene::UpdateCombat()
 	RestartPressState();
 
 	DebugSteps();
+
+	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) player1->strengthStat = 39;
 }
 
 void Scene::UpdateLevelUp()
@@ -1345,7 +1347,10 @@ void Scene::UpdateWorld()
 		world->inventory->Draw((int)y);
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+	// DEBUG
+	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+
+	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
@@ -1630,6 +1635,19 @@ float Scene::EaseQuadX(iPoint posA, iPoint posB, bool repeat, int totalIter)
 float Scene::EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter)
 {
 	float value = easing.backEaseOut(iterations, posA.y, posB.y - posA.y, totalIter);
+
+	if (iterations < totalIter) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+	return value;
+}
+
+float Scene::EaseBossJumpUp(iPoint posA, iPoint posB, bool repeat, int totalIter)
+{
+	float value = easing.backEaseIn(iterations, posA.y, posB.y - posA.y, totalIter);
 
 	if (iterations < totalIter) {
 		iterations++;

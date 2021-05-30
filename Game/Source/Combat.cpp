@@ -97,9 +97,12 @@ void Combat::BossStart()
 	case(BossClass::BOSS_TUTORIAL):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
 		combatState = PLAYER_TURN;
+		tutorialActive = true;
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		shieldStep = 0;
+		shield.x = shieldPos[shieldStep];
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -352,11 +355,11 @@ void Combat::CombatLogic()
 		}
 		else
 		{
-			BossAttack(boss->bossClass);
+			BossAttack();
 
-			PlayerResponse();
+			if (boss->attack != 1) PlayerResponse();
 
-			//PLAYER RESPONSE FALSE LOGIC TODO
+			//PLAYER RESPONSE GOING FALSE LOGIC TODO
 			switch (boss->bossClass)
 			{
 			case BossClass::BOSS_TUTORIAL:
@@ -581,14 +584,40 @@ void Combat::DrawPlayer()
 
 void Combat::DebugDraw()
 {
+	// PLAYER
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
 
-	if (enemyBattle) app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
-	else if (bossBattle) app->render->DrawRectangle(boss->colliderCombat, { 255, 0, 0 , 150 });
-
+	// SECOND PLAYER
 	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
-	//BULLETS
-	if (enemyBattle) if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+
+	//ENEMY
+	if (enemyBattle)
+	{
+		app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+		//BULLETS
+		if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+	}
+	
+	//BOSS
+	if (bossBattle)
+	{
+		app->render->DrawRectangle(boss->colliderCombat, { 255, 0, 0 , 150 });
+
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_TUTORIAL):
+			break;
+		case(BossClass::BOSS_I):
+			app->render->DrawRectangle(shield, {20, 30, 230, 100});
+			break;
+		case(BossClass::BOSS_II):
+			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+			break;
+		case(BossClass::BOSS_III):
+			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+			break;
+		}
+	}
 }
 
 void Combat::DrawSecondPlayer()
@@ -616,7 +645,7 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
-
+	app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x, boss->colliderCombat.y, 1, 1, false, &currentBossAnim->GetCurrentFrame());
 }
 
 void Combat::DrawBakcground()
@@ -692,7 +721,7 @@ void Combat::DrawPopUps()
 		enemySplitDescription->bounds.x -= x;
 		moneyDescription->bounds.x -= x;
 	}
-	else app->scene->iterations = 0;
+	else if (combatState == PLAYER_TURN) app->scene->iterations = 0;
 
 	//BUFFS MENU
 	if (drawBuffMenu)
@@ -910,6 +939,20 @@ int Combat::PlayerDamageLogic()
 	else if (steps == 1) damage += floor(35 * pDamage / 100);
 	else if (steps == 2) damage += floor(65 * pDamage / 100);
 	else if (steps == 3) damage += pDamage;
+
+	if (bossBattle)
+	{
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_I):
+			if (steps < shieldStep) return 0;
+			break;
+		case(BossClass::BOSS_II):
+			break;
+		case(BossClass::BOSS_III):
+			break;
+		}
+	}
 
 	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
 	{
@@ -1153,21 +1196,71 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	}
 }
 
-void Combat::BossAttack(BossClass boss)
+void Combat::BossAttack()
 {
-	switch (boss)
+	switch (boss->bossClass)
 	{
 	case(BossClass::BOSS_TUTORIAL):
 		break;
 	case(BossClass::BOSS_I):
+		if (boss->attack == 1)
+		{
+			if (shield.x < shieldPos[1]) shield.x += 4;
+			else
+			{
+				shieldStep = 1;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (shield.x < shieldPos[2]) shield.x += 4;
+			else
+			{
+				shieldStep = 2;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 3)
+		{
+			if (shield.x < shieldPos[3]) shield.x += 4;
+			else
+			{
+				shieldStep = 3;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 4)
+		{
+			if (bossAttack4Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack4Time++;
+			}
+			else if (bossAttack4Time == 40)
+			{
+				app->scene->iterations = 0;
+				bossAttack4Time++;
+			}
+			else if (bossAttack4Time < 81)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseQuadY({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack4Time++;
+			}
+		}
 		break;
 	case(BossClass::BOSS_II):
 		break;
 	case(BossClass::BOSS_III):
 		break;
 	}
-
-	AfterBossAttack();
 }
 
 void Combat::AfterEnemyAttack()
@@ -1197,14 +1290,13 @@ void Combat::AfterBossAttack()
 	{
 		PlayerDie();
 	}
+
+	bossTimeWait = 0;
 }
 
 void Combat::PlayerAttack()
 {
 	int enemyHealth = 0;
-
-	if (enemyBattle) enemyHealth = enemy->health;
-	else if (bossBattle) enemyHealth = boss->health;
 
 	currentPlayerAnim = &app->scene->player1->cAttackAnim;
 
@@ -1224,6 +1316,8 @@ void Combat::PlayerAttack()
 			}
 
 			enemy->health -= PlayerDamageLogic();
+			enemyHealth = enemy->health;
+
 			LOG("Enemy Hit, EH: %d", enemy->health);
 		}
 		else if (bossBattle)
@@ -1231,10 +1325,10 @@ void Combat::PlayerAttack()
 			//app->audio->SetFx(Effect::BOSS_HURT_FX);
 
 			boss->health -= PlayerDamageLogic();
-			LOG("Enemy Hit, EH: %d", boss->health);
-		}
+			enemyHealth = boss->health;
 
-		
+			LOG("Boss Hit, EH: %d", boss->health);
+		}
 
 		playerTimeAttack = 0;
 		playerAttack = false;
@@ -1248,15 +1342,7 @@ void Combat::PlayerAttack()
 			if (!secondPlayer)
 			{
 				if (enemyBattle) EnemyTurn();
-				else if (bossBattle)
-				{
-					if (!tutorialActive) BossTurn();
-					else
-					{
-						PlayerTurn();
-						playerChoice = true;
-					}
-				}
+				else if (bossBattle) BossTurn();
 			}
 			else if (secondPlayer) SecondPlayerTurn();
 		}
@@ -1866,7 +1952,13 @@ void Combat::BossAttackProbability()
 		boss->attack = 1;
 		break;
 	case BossClass::BOSS_I:
-		boss->attack = 1;
+		if (shieldStep == 0) boss->attack = 1;
+		else if (boss->health <= 30 && boss->health >= 15 && shieldStep < 2) boss->attack = 2;
+		else if (boss->health < 15 && shieldStep < 3) boss->attack = 3;
+		else
+		{
+			if (shieldStep == 1) boss->attack = 4;
+		}
 		break;
 	case BossClass::BOSS_II:
 		boss->attack = 1;

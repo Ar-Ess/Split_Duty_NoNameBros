@@ -71,11 +71,11 @@ void LevelUp::Start(short int exp)
 	{
 		int x = p->lvl;
 
-		p->maxHealth = floor((x / 2) + 20);
-		p->strengthStat = floor((x / 3) + 6);
-		p->defenseStat = floor((x / 3) + 3);
+		p->maxHealth = ceil((x / 2) + 20);
+		p->strengthStat = ceil((x / 2.8) + 6);
+		p->defenseStat = ceil((x / 3) + 3);
 		if (p->luckStat != 0) p->luckStat = floor((x / 5) + 1);
-		if (p->stabStat != 0) p->stabStat = floor((x / 4));
+		if (p->stabStat != 0) p->stabStat = floor(x / 4);
 		if (p->velocityStat != 0) p->velocityStat = floor((x / 3) + 5);
 	}
 

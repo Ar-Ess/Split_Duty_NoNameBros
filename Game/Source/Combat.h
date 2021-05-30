@@ -106,7 +106,7 @@ public:
 
     void EnemyAttack(EnemyClass enemy);
 
-	void BossAttack(BossClass boss);
+	void BossAttack();
 
     void AfterEnemyAttack();
 
@@ -191,6 +191,12 @@ public: //Getters
     {
         return combatState;
     }
+
+public: //BOSS I info
+    int shieldStep = 0;
+    SDL_Rect shield = { 0, 285, 40, 215 };
+    const int shieldPos[4] = { 145, 315, 485, 655 };
+    short int bossAttack4Time = 0;
 
 public: //TUTORIAL THINGS
     bool tutorialActive = false;
