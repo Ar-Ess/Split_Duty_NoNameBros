@@ -642,7 +642,25 @@ void Combat::DrawPopUps()
 	//INVENTORY
 	if (drawInventory)
 	{
-		app->render->DrawTexture(combatInventory, 0, -20, 1, false);
+		int x = int(app->scene->EaseQuadX(iPoint(-1280, 0), iPoint(0, 0), false, 45));
+		Uint8 o = Uint8(app->scene->EaseQuadX(iPoint(0, 0), iPoint(150, 0), false, 45));
+
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, {0, 0, 0, o});
+		app->render->DrawTexture(combatInventory, x, -20, 1, false);
+
+		smallMeatButton->bounds.x += x;
+		largeMeatButton->bounds.x += x;
+		featherButton->bounds.x += x;
+		mantisButton->bounds.x += x;
+		enemySplitButton->bounds.x += x;
+		moneyButton->bounds.x += x;
+
+		smallMeatDescription->bounds.x += x;
+		largeMeatDescription->bounds.x += x;
+		featherDescription->bounds.x += x;
+		mantisRodDescription->bounds.x += x;
+		enemySplitDescription->bounds.x += x;
+		moneyDescription->bounds.x += x;
 
 		// DRAW BUTTONS
 		smallMeatButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
@@ -659,7 +677,22 @@ void Combat::DrawPopUps()
 		if (mantisButton->state == GuiControlState::FOCUSED || mantisButton->state == GuiControlState::PRESSED) mantisRodDescription->Draw();
 		if (enemySplitButton->state == GuiControlState::FOCUSED || enemySplitButton->state == GuiControlState::PRESSED) enemySplitDescription->Draw();
 		if (moneyButton->state == GuiControlState::FOCUSED || moneyButton->state == GuiControlState::PRESSED) moneyDescription->Draw();
+
+		smallMeatButton->bounds.x -= x;
+		largeMeatButton->bounds.x -= x;
+		featherButton->bounds.x -= x;
+		mantisButton->bounds.x -= x;
+		enemySplitButton->bounds.x -= x;
+		moneyButton->bounds.x -= x;
+
+		smallMeatDescription->bounds.x -= x;
+		largeMeatDescription->bounds.x -= x;
+		featherDescription->bounds.x -= x;
+		mantisRodDescription->bounds.x -= x;
+		enemySplitDescription->bounds.x -= x;
+		moneyDescription->bounds.x -= x;
 	}
+	else app->scene->iterations = 0;
 
 	//BUFFS MENU
 	if (drawBuffMenu)
