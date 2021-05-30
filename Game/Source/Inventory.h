@@ -38,25 +38,27 @@ public:
 
     void Update();
 
-    void Draw();
+    void Draw(int y);
 
-    void DrawInterface();
+    void DrawInterface(int y);
 
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
 
     void UpdateButtons();
 
-    void DrawButtons();
+    void DrawButtons(int y);
 
 	void UpdateFace();
 
-    void DrawFace();
+    void DrawFace(int y);
 
 	void SetText();
 
     void UpdateText();
 
-    void DrawText();
+    void DrawText(int y);
+
+    void UpdateHealthText();
 
 private:
     int playerExp;
@@ -77,8 +79,6 @@ private:
     GuiString* lvlText = nullptr;
 
 	GuiString* upgradeText = nullptr;
-
-
 
 private:
     SDL_Texture* interfaceTexture = nullptr;

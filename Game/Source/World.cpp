@@ -243,8 +243,6 @@ void World::Restart(Scenes scene)
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
-	if (app->scene->saveGameButton != nullptr) app->scene->saveGameButton->state = GuiControlState::LOCKED;
-
 	if (wolfSpritesheet != nullptr) app->tex->UnLoad(wolfSpritesheet);
 	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
 	if (mantisSpritesheet != nullptr)app->tex->UnLoad(mantisSpritesheet);

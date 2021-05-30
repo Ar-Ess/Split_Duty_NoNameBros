@@ -1217,10 +1217,27 @@ void Scene::SetEndScreen()
 	if (endScene->backToMenuButton == nullptr)
 	{
 		endScene->backToMenuButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
+		endScene->backToMenuButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 6 - 15,buttonPrefab1.w,buttonPrefab1.h };
 		endScene->backToMenuButton->text = "BackToMenuButton";
 		endScene->backToMenuButton->SetObserver(this);
 		endScene->backToMenuButton->active = true;
+	}
+
+	if (endScene->continueButton == nullptr)
+	{
+		endScene->continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		endScene->continueButton->bounds = { buttonPrefab.x - 175  ,buttonPrefab.y + off.y * 5 - 15,buttonPrefab1.w,buttonPrefab1.h };
+		endScene->continueButton->text = "ContinueButton";
+		endScene->continueButton->SetObserver(this);
+		if (FILE* file = fopen("save_game.xml", "r"))
+		{
+			fclose(file);
+			endScene->continueButton->state = GuiControlState::NORMAL;
+		}
+		else
+		{
+			endScene->continueButton->state = GuiControlState::LOCKED;
+		}
 	}
 
 	endScene->Start();
@@ -1322,7 +1339,11 @@ void Scene::UpdateWorld()
 
 	world->Draw();
 
-	if (world->inventoryOpen) world->inventory->Draw();
+	if (world->inventoryOpen)
+	{
+		float y = EaseQuadY(iPoint(0, -720), iPoint(0, 0), false, 35);
+		world->inventory->Draw((int)y);
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
 
@@ -1392,9 +1413,11 @@ void Scene::UpdatePauseMenu()
 
 void Scene::UpdateEndScreen()
 {
+	float y = EaseQuadY(iPoint(0, 720), iPoint(0, 0), false, 40);
+
 	endScene->Update();
 
-	endScene->Draw();
+	endScene->Draw((int)y);
 }
 
 // GUI CONTROLS
@@ -1501,6 +1524,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			player1->smallMeatCount--;
 			player1->health += floor((30 * player1->maxHealth) / 100);
 			if (player1->health > player1->maxHealth) player1->health = player1->maxHealth;
+			world->inventory->UpdateHealthText();
 		}
 		else if (strcmp(control->text.GetString(), "EatLargeMeat") == 0)
 		{
@@ -1523,6 +1547,11 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		if (strcmp(control->text.GetString(), "BackToMenuButton") == 0)
 		{
 			SetScene(MAIN_MENU);
+			iterations = 0;
+		}
+		if (strcmp(control->text.GetString(), "ContinueButton") == 0)
+		{
+			app->LoadGameRequest();
 			iterations = 0;
 		}
 	}

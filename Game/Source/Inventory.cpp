@@ -43,14 +43,14 @@ void Inventory::Start()
 	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
 	blinkFaceAnim.PushBack({ 70, 0, 70, 68 });
 	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
-	blinkFaceAnim.speed = 0.1f;
+	blinkFaceAnim.speed = 0.05f;
 	blinkFaceAnim.loop = false;
 
 	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
 	angryFaceAnim.PushBack({ 0, 70, 70, 68 });
 	angryFaceAnim.PushBack({ 70, 70, 70, 68 });
 	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
-	angryFaceAnim.speed = 0.1f;
+	angryFaceAnim.speed = 0.05f;
 	angryFaceAnim.loop = false;
 
 	currPlayerFaceAnim = &idleFaceAnim;
@@ -103,6 +103,8 @@ void Inventory::Start()
 
 void Inventory::Restart()
 {
+	app->scene->iterations = 0;
+
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(faceAnimationTexture);
 	app->tex->UnLoad(statsTexture);
@@ -116,31 +118,33 @@ void Inventory::Update()
 {
 	UpdateText();
 
+	UpdateFace();
+
 	UpdateButtons();
 }
 
-void Inventory::Draw()
+void Inventory::Draw(int y)
 {
-	DrawInterface();
+	DrawInterface(y);
 
-	DrawFace();
+	DrawFace(y);
 
-	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
-	DrawBar(expBarPos, app->scene->player1->exp, maxExp, BLUE);
+	DrawBar({ healthBarPos.x, healthBarPos.y + y }, app->scene->player1->health, app->scene->player1->maxHealth, RED);
+	DrawBar({ expBarPos.x, expBarPos.y + y }, app->scene->player1->exp, maxExp, BLUE);
 
 	//DrawStats();
 
-	DrawButtons();
+	DrawButtons(y);
 
-	DrawText();
+	DrawText(y);
 
 	//app->guiManager->DrawCursor();
 
 }
 
-void Inventory::DrawInterface()
+void Inventory::DrawInterface(int y)
 {
-	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(interfaceTexture, 0, y, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
@@ -197,14 +201,28 @@ void Inventory::UpdateButtons()
 	else if (app->scene->player1->splitedEnemyCount > 0 && splitButton->state == GuiControlState::DISABLED) splitButton->state = GuiControlState::NORMAL;
 }
 
-void Inventory::DrawButtons()
+void Inventory::DrawButtons(int y)
 {
+	littleBeefButton->bounds.y += y;
+	bigBeefButton->bounds.y += y;
+	featherButton->bounds.y += y;
+	mantisButton->bounds.y += y;
+	coinButton->bounds.y += y;
+	splitButton->bounds.y += y;
+
 	littleBeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
 	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
 	featherButton->Draw(1, true, true, ButtonType::FEATHER_B);
 	mantisButton->Draw(1, true, true, ButtonType::MANTIS_B);
 	coinButton->Draw(1, true, true, ButtonType::COIN_B);
 	splitButton->Draw(1, true, true, ButtonType::SPLIT_B);
+
+	littleBeefButton->bounds.y -= y;
+	bigBeefButton->bounds.y -= y;
+	featherButton->bounds.y -= y;
+	mantisButton->bounds.y -= y;
+	coinButton->bounds.y -= y;
+	splitButton->bounds.y -= y;
 }
 
 void Inventory::UpdateFace()
@@ -225,14 +243,11 @@ void Inventory::UpdateFace()
 	}
 }
 
-void Inventory::DrawFace()
+void Inventory::DrawFace(int y)
 {
-	UpdateFace();
-
 	currPlayerFaceAnim->Update(1.0f);
 
-	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
+	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y + y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::SetText()
@@ -436,9 +451,26 @@ void Inventory::UpdateText()
 
 }
 
-void Inventory::DrawText()
+void Inventory::DrawText(int y)
 {
-	
+	healthText->bounds.y += y;
+	expText->bounds.y += y;
+	lvlText->bounds.y += y;
+
+	littleBeefText->bounds.y += y;
+	bigBeefText->bounds.y += y;
+	featherText->bounds.y += y;
+	mantisText->bounds.y += y;
+	coinText->bounds.y += y;
+	splitText->bounds.y += y;
+
+	healthStatText->bounds.y += y;
+	strenghtStatText->bounds.y += y;
+	defenseStatText->bounds.y += y;
+	velocityStatText->bounds.y += y;
+	stabStatText->bounds.y += y;
+	luckStatText->bounds.y += y;
+
 	healthText->Draw();
 	expText->Draw();
 	lvlText->Draw();
@@ -457,5 +489,28 @@ void Inventory::DrawText()
 	stabStatText->Draw();
 	luckStatText->Draw();
 
-	
+	healthText->bounds.y -= y;
+	expText->bounds.y -= y;
+	lvlText->bounds.y -= y;
+
+	littleBeefText->bounds.y -= y;
+	bigBeefText->bounds.y -= y;
+	featherText->bounds.y -= y;
+	mantisText->bounds.y -= y;
+	coinText->bounds.y -= y;
+	splitText->bounds.y -= y;
+
+	healthStatText->bounds.y -= y;
+	strenghtStatText->bounds.y -= y;
+	defenseStatText->bounds.y -= y;
+	velocityStatText->bounds.y -= y;
+	stabStatText->bounds.y -= y;
+	luckStatText->bounds.y -= y;
+}
+
+void Inventory::UpdateHealthText()
+{
+	char hpText[20] = {};
+	sprintf(hpText, "%d / %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	healthText->SetString(hpText, YELLOW);
 }

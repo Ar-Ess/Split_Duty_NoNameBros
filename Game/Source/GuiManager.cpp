@@ -284,6 +284,7 @@ void GuiManager::DisableAllButtons()
 		break;
 
 	case END_SCREEN:
+		s->endScene->continueButton->buttonFocus = false;
 		s->endScene->backToMenuButton->buttonFocus = false;
 		break;
 
@@ -361,8 +362,9 @@ void GuiManager::SelectButtonsLogic()
 		break;
 
 	case END_SCREEN:
-		if (idSelection == 0) s->endScene->backToMenuButton->buttonFocus = true;
-		else if (idSelection == 1) idSelection = -1;
+		if (idSelection == 0) s->endScene->continueButton->buttonFocus = true;
+		if (idSelection == 1) s->endScene->backToMenuButton->buttonFocus = true;
+		else if (idSelection == 2) idSelection = -1;
 		break;
 
 	case COMBAT:

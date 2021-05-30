@@ -34,15 +34,19 @@ public:
 
     void Update();
 
-    void Draw();
+    void Draw(int y);
 
 private:
    
 
 public:
     GuiButton* backToMenuButton = nullptr;
+
+    GuiButton* continueButton = nullptr;
    
     GuiString* backToMenuText = nullptr;
+
+    GuiString* continueText = nullptr;
 
     SDL_Texture* background = nullptr;
 

@@ -228,11 +228,14 @@ void Combat::Update()
 	}
 	else if (bossBattle) app->scene->splitButton->state = GuiControlState::LOCKED;
 
+	//DEBUG
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		if (enemyBattle) enemy->health -= enemy->health;
 		else if (bossBattle) boss->health -= boss->health;
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) app->scene->player1->health = 1;
 }
 
 void Combat::UpdateButtons()
