@@ -365,6 +365,7 @@ void Combat::CombatLogic()
 			case BossClass::BOSS_TUTORIAL:
 				break;
 			case BossClass::BOSS_I:
+				if (wave.x + wave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
 				break;
 			case BossClass::BOSS_II:
 				break;
@@ -608,7 +609,8 @@ void Combat::DebugDraw()
 		case(BossClass::BOSS_TUTORIAL):
 			break;
 		case(BossClass::BOSS_I):
-			app->render->DrawRectangle(shield, {20, 30, 230, 100});
+			app->render->DrawRectangle(shield, { 20, 30, 230, 100 });
+			app->render->DrawRectangle(wave, { 230, 30, 20, 100 });
 			break;
 		case(BossClass::BOSS_II):
 			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -1242,19 +1244,31 @@ void Combat::BossAttack()
 				boss->colliderCombat.y += (y - BOSS_C_Y);
 				bossAttack4Time++;
 			}
-			else if (bossAttack4Time == 40)
+			else if (bossAttack4Time < 52)
 			{
-				app->scene->iterations = 0;
-				bossAttack4Time++;
-			}
-			else if (bossAttack4Time < 81)
-			{
+				if (bossAttack4Time == 40) app->scene->iterations = 0;
+
 				boss->colliderCombat.y = BOSS_C_Y;
-				int y = (int)app->scene->EaseQuadY({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 40);
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
 				bossAttack4Time++;
 			}
+			else if (bossAttack4Time < 200)
+			{
+				PlayerWaveHitLogic();
+				if (bossAttack4Time == 52) wave = {950, 438, 95, 50};
+				wave.x -= 12;
+				bossAttack4Time++;
+			}
+			else
+			{
+				wave = { 1400, 0, 95, 50 };
+				bossAttack4Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
 		}
+
 		break;
 	case(BossClass::BOSS_II):
 		break;
@@ -2054,6 +2068,34 @@ void Combat::PlayerHitLogic()
 
 				app->audio->SetFx(Effect::PLAYER_HURT_FX);
 				
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
+		}
+	}
+}
+
+void Combat::PlayerWaveHitLogic()
+{
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, wave))
+	{
+		if (app->scene->player1->godMode) LOG("Player is inmune");
+		else
+		{
+			playerHitAble = false;
+			if (!wearMantisLeg)
+			{
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+				else if (secondPlayerProtection)
+				{
+					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
+					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+				}
+
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+
+				app->audio->SetFx(Effect::PLAYER_HURT_FX);
+
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
 		}

@@ -1657,3 +1657,16 @@ float Scene::EaseBossJumpUp(iPoint posA, iPoint posB, bool repeat, int totalIter
 	}
 	return value;
 }
+
+float Scene::EaseBossFallDown(iPoint posA, iPoint posB, bool repeat, int totalIter)
+{
+	float value = easing.cubicEaseIn(iterations, posA.y, posB.y - posA.y, totalIter);
+
+	if (iterations < totalIter) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+	return value;
+}

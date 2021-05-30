@@ -150,6 +150,8 @@ public:
 
     void PlayerHitLogic();
 
+    void PlayerWaveHitLogic();
+
     void PlayerBulletHitLogic();
 
     void PlayerPosReset();
@@ -197,6 +199,7 @@ public: //BOSS I info
     SDL_Rect shield = { 0, 285, 40, 215 };
     const int shieldPos[4] = { 145, 315, 485, 655 };
     short int bossAttack4Time = 0;
+    SDL_Rect wave = {1400, 0, 95, 50};
 
 public: //TUTORIAL THINGS
     bool tutorialActive = false;
