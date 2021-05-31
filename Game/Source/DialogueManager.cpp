@@ -311,8 +311,8 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 2)
 			{
-				app->scene->combatScene->secondPlayer = true;
-				currentDialogue->currentNode = itemOption->data->nextNode;
+				app->scene->combatScene->tutorialStep = 1;
+				EndDialogue();
 				return ret;
 			}
 			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 3)

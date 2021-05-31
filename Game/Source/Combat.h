@@ -196,6 +196,10 @@ public: //Getters
         return combatState;
     }
 
+public: //TUTORIAL BOSS INFO
+    bool tutorialActive = false;
+    int tutorialStep = 0;
+
 public: //BOSS I info
     int shieldStep = 0;
     SDL_Rect shield = { 0, 285, 40, 215 };
@@ -206,13 +210,6 @@ public: //BOSS I info
     short int bossAttack7Time = 0;
     SDL_Rect wave[2] = {1400, 0, 105, 60};
     SDL_Rect bigWave = {1400, 0, 120, 90};
-
-public: //TUTORIAL THINGS
-    bool tutorialActive = false;
-    bool attackTested = false;
-    bool moveTested = false;
-    bool itemTested = false;
-    bool splitTested = false;
 
 public:
     short int enemyTimeWait = 0;

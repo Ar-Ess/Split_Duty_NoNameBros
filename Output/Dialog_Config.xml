@@ -82,88 +82,6 @@
         <Option NextNode="-1" ReturnCode="7">Bye!</Option>
       </Node>
     </Dialog>
-<!--  <Dialog ID="4">                                                                                                                                                     
-        <Node ID="0">
-          <NPCTalk>WANT TO KNOW THE BATTLE MECHANIC?</NPCTalk>
-          <Option NextNode="1" ReturnCode="1">Yes</Option>
-          <Option NextNode="18" ReturnCode="1">No, I'm okey!</Option>
-        </Node>
-        <Node ID="1">
-          <NPCTalk>BEFORE STARTING, NOTE THAT BY MAKING CONTACT WITH THOSE ENEMIES YOU WILL START THE BATTLE</NPCTalk>
-          <Option NextNode="2" ReturnCode="1">OKEY</Option>
-        </Node>
-        <Node ID="2">
-          <NPCTalk>THE BATTLE IS BASED IN TURNS. WHICH TURN YOU WANT ME TO EXPLAIN?</NPCTalk>
-          <Option NextNode="3" ReturnCode="1">My turn!</Option>
-          <Option NextNode="12" ReturnCode="1">2nd Player's turn</Option>
-          <Option NextNode="15" ReturnCode="1">Enemy's turn</Option>
-          <Option NextNode="18" ReturnCode="1">Nothing more!</Option>
-        </Node>
-        <Node ID="3">
-          <NPCTalk>LISTEN UP. TO KILL THE ENEMY YOU NEED TO ATTACK IT BY PRESSING THE BUTTON "ATTACK", WHICH MAKES YOU END YOUR TURN</NPCTalk>
-          <Option NextNode="4" ReturnCode="1">Okey</Option>
-        </Node>
-        <Node ID="4">
-          <NPCTalk>ONCE YOU ARE IN THE BATTLE, YOU'LL SEE 4 MARKS IN THE GROUND. YOU WILL BE PLACED IN THE FIRST ONE</NPCTalk>
-          <Option NextNode="5" ReturnCode="1">Perfect!</Option>
-        </Node>
-        <Node ID="5">
-          <NPCTalk>THOSE MARKS SYMBOLIZES THE PLACES YOU CAN GO. AS CLOSER AS YOU GO TO THE ENEMY, THE MORE DAMAGE YOU WILL CAUSE THEM</NPCTalk>
-          <Option NextNode="6" ReturnCode="1">How to be close?</Option>
-        </Node>
-        <Node ID="6">
-          <NPCTalk>YOU CAN CLICK THE MOVE BUTTON, WHICH WILL MAKE YOU MOVE ONE STEP AND THEN, YOUR TURN WILL FINISH</NPCTalk>
-          <Option NextNode="7" ReturnCode="1">I understand!</Option>
-        </Node>
-        <Node ID="7">
-          <NPCTalk>THEN WE HAVE THE ITEMS, BUT THEY ARE NOT ACCESSIBLE, WAIT UNTIL A FUTURE VERSION</NPCTalk>
-          <Option NextNode="8" ReturnCode="1">Okey</Option>
-        </Node>
-        <Node ID="8">
-          <NPCTalk>NEXT, THE ESCAPE BUTTON. IT ALLOWS YOU TO RUN OUT THE COMBAT DEPENDING ON THE DIFFERENCE OF LEVEL BETWEEN YOU AND THE ENEMY</NPCTalk>
-          <Option NextNode="9" ReturnCode="1">Nice!</Option>
-        </Node>
-        <Node ID="9">
-          <NPCTalk>AND FINALLY, THE SPLIT BUTTON. IN CASE THE ENEMY HAS LESS THAN 20 PERCENT OF LIFE AND YOU ARE IN THE 4RTH PLACE, YOU CAN SPLIT THE ENEMY</NPCTalk>
-          <Option NextNode="10" ReturnCode="1">What's that?</Option>
-        </Node>
-        <Node ID="10">
-          <NPCTalk>THERE'S A SMALL CHANCE TO GET THE SOUL OF THE ENEMY TO USE IT IN ANOTHER COMBAT AS AN ITEM. BUT IN CASE OF SPLIT SUCCESS, THERE ARE CONSEQUENCES!</NPCTalk>
-          <Option NextNode="11" ReturnCode="1">Which ones?</Option>
-        </Node>
-        <Node ID="11">
-          <NPCTalk>YOU'LL GET HURT WITH THE REMAINING ENEMY HEALTH, YOU CAN DIE!</NPCTalk>
-          <Option NextNode="2" ReturnCode="1">Noted!</Option>
-        </Node>
-        <Node ID="12">
-          <NPCTalk>SECOND PLAYER CAN ATTACK BY CLICKING THE ATTACK BUTTON, BUT IT DOES NOT VARY DEPENDING THE CLOSURE WITH THE ENEMY</NPCTalk>
-          <Option NextNode="13" ReturnCode="1">I see...</Option>
-        </Node>
-        <Node ID="13">
-          <NPCTalk>IMPORTANT. SECOND PLAYER CAN NOT BE HURTED BY THE ENEMY NORMALLY, EXCEO FOR ONE THING</NPCTalk>
-          <Option NextNode="14" ReturnCode="1">Which one?</Option>
-        </Node>
-        <Node ID="14">
-          <NPCTalk>IF THE SECOND PLAYER CHOOSES PROTECTING YOU, IT WILL BE HURTED WITH THE 50 PERCENT OF THE DAMAGE, AS WELL AS YOU. BE CAREFUL!</NPCTalk>
-          <Option NextNode="2" ReturnCode="1">Interesting!</Option>
-        </Node>
-        <Node ID="15">
-          <NPCTalk>THE ENEMY ALWAYS STARTS ATTACKING. EACH ENEMY HAS A DIFFERENT ATTACK, BUT THERE IS A CHANGE IN USUALITY!</NPCTalk>
-          <Option NextNode="16" ReturnCode="1">Which change?</Option>
-        </Node>
-        <Node ID="16">
-          <NPCTalk>YOU HAVE TO DODGE THE ATTACK PRESSING SPACE TO JUMP OR EITHER SHIFT TO CROACH! YOU'S BETTER LEARN THEIR PATTERNS!</NPCTalk>
-          <Option NextNode="17" ReturnCode="1">What?</Option>
-        </Node>
-        <Node ID="17">
-          <NPCTalk>YES, THIS RPG HAS A LIVE DODGE COMBAT SYSTEM IMPLEMENTED. HAVE FUN!</NPCTalk>
-          <Option NextNode="2" ReturnCode="1">I'll try...</Option>
-        </Node>
-        <Node ID="18">
-          <NPCTalk>SEE Y0U SOON!</NPCTalk>
-          <Option NextNode="0" ReturnCode="-1">Bye!</Option>
-        </Node>
-      </Dialog> -->
     <Dialog ID="4">
       <Node ID="0">
         <NPCTalk>Good afternoon! I need your help...</NPCTalk>
@@ -208,6 +126,12 @@
       <Node ID="4">
         <NPCTalk>REMINDS ME TO THE "RGB" PALETTE WITH "PURPLE" AT THE END</NPCTalk>
         <Option NextNode="5" ReturnCode="-1">End</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="6">
+      <Node ID="0">
+        <NPCTalk>THIS IS THE MAIN COMBAT SCENE, WHERE YOU WILL DEFEAT YOUR OPONENTS. I'LL EXPLAIN YOU HOW IT WORKS</NPCTalk>
+        <Option NextNode="-1" ReturnCode="2">Okey!</Option>
       </Node>
     </Dialog>
   </Dialogs>

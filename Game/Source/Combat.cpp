@@ -8,6 +8,7 @@
 #include "World.h"
 #include "Audio.h"
 #include "EntityManager.h"
+#include "DialogueManager.h"
 
 #include "Combat.h"
 #include "Enemy.h"
@@ -100,15 +101,20 @@ void Combat::BossStart()
 	{
 	case(BossClass::BOSS_TUTORIAL):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
-		combatState = PLAYER_TURN;
 		tutorialActive = true;
+		tutorialStep = 0;
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		shieldStep = 0;
 		shield.x = shieldPos[shieldStep];
+		shield = { 0, 285, 40, 215 };
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
+		bossAttack4Time = 0;
+		bossAttack5Time = 0;
+		bossAttack6Time = 0;
+		bossAttack7Time = 0;
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -501,36 +507,17 @@ void Combat::CombatLogic()
 void Combat::TutorialLogic()
 {
 	Scene* s = app->scene;
-	switch (combatState)
+
+	if (tutorialStep == 0)
 	{
-	case PLAYER_TURN:
-
-		if (playerChoice)
+		app->dialogueManager->StartDialogue(6);
+	}
+	else if (tutorialStep == 1)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		{
-			PlayerChoiceLogic();
+			tutorialStep = 2;
 		}
-
-		if (playerAttack)
-		{
-			playerChoice = false;
-			app->audio->SetFx(Effect::PLAYER_ATTACK_FX);
-			PlayerAttack();
-		}
-
-		if (!attackTested)
-		{
-			s->moveButton->state = GuiControlState::LOCKED;
-			s->itemButton->state = GuiControlState::LOCKED;
-			s->escapeButton->state = GuiControlState::LOCKED;
-		}
-		else
-		{
-
-		}
-
-		break;
-	case BOSS_TURN:
-		break;
 	}
 }
 
@@ -2477,7 +2464,7 @@ void Combat::UpdateBuffs()
 	}
 	else
 	{
-		app->scene->buffButton->state = GuiControlState::NORMAL;
+		//app->scene->buffButton->state = GuiControlState::NORMAL;
 
 		if (attackBuff)
 		{

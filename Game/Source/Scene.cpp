@@ -545,9 +545,27 @@ void Scene::SetCombat(Enemy* enemySet)
 	combatScene->enemy = enemySet;
 	combatScene->enemy->health -= combatScene->EnemyStabDamage();
 
-	combatScene->Start();
-
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
+	if (escapeButton == nullptr)
+	{
+		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		escapeButton->text = "EscapeButton";
+		escapeButton->SetObserver(this);
+		escapeButton->active = true;
+	}
+
+	if (buffButton == nullptr)
+	{
+		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		buffButton->text = "BuffButton";
+		buffButton->SetObserver(this);
+		buffButton->state = GuiControlState::LOCKED;
+	}
+
+	combatScene->Start();
 
 	if (attackButton == nullptr)
 	{
@@ -576,15 +594,6 @@ void Scene::SetCombat(Enemy* enemySet)
 		itemButton->active = true;
 	}
 
-	if (escapeButton == nullptr)
-	{
-		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		escapeButton->text = "EscapeButton";
-		escapeButton->SetObserver(this);
-		escapeButton->active = true;
-	}
-
 	if (splitButton == nullptr)
 	{
 		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
@@ -610,15 +619,6 @@ void Scene::SetCombat(Enemy* enemySet)
 		protectButton->text = "ProtectButton";
 		protectButton->SetObserver(this);
 		protectButton->active = true;
-	}
-
-	if (buffButton == nullptr)
-	{
-		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		buffButton->text = "BuffButton";
-		buffButton->SetObserver(this);
-		buffButton->state = GuiControlState::LOCKED;
 	}
 
 	// INVENTORY BUTTONS
@@ -799,12 +799,30 @@ void Scene::SetCombat(Boss* bossSet)
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
+	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
+
 	SDL_ShowCursor(0);
+
+	if (escapeButton == nullptr)
+	{
+		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		escapeButton->text = "EscapeButton";
+		escapeButton->SetObserver(this);
+		escapeButton->active = true;
+	}
+
+	if (buffButton == nullptr)
+	{
+		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
+		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
+		buffButton->text = "BuffButton";
+		buffButton->SetObserver(this);
+		buffButton->state = GuiControlState::LOCKED;
+	}
 
 	combatScene->boss = bossSet;
 	combatScene->Start();
-
-	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	if (attackButton == nullptr)
 	{
@@ -833,15 +851,6 @@ void Scene::SetCombat(Boss* bossSet)
 		itemButton->active = true;
 	}
 
-	if (escapeButton == nullptr)
-	{
-		escapeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		escapeButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 3),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		escapeButton->text = "EscapeButton";
-		escapeButton->SetObserver(this);
-		escapeButton->active = true;
-	}
-
 	if (splitButton == nullptr)
 	{
 		splitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
@@ -867,15 +876,6 @@ void Scene::SetCombat(Boss* bossSet)
 		protectButton->text = "ProtectButton";
 		protectButton->SetObserver(this);
 		protectButton->active = true;
-	}
-
-	if (buffButton == nullptr)
-	{
-		buffButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON);
-		buffButton->bounds = { app->guiManager->margin + ((buttonPrefab.x + app->guiManager->padding) * 2),buttonPrefab.y,buttonPrefab.w,buttonPrefab.h };
-		buffButton->text = "BuffButton";
-		buffButton->SetObserver(this);
-		buffButton->active = true;
 	}
 
 	// INVENTORY BUTTONS
