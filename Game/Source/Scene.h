@@ -192,7 +192,7 @@ private: //Scene Manager
 	void SetScene(Scenes scene, Enemy* enemy);
 	void SetScene(Scenes scene, Boss* boss);
 	void SetScene(Scenes scene, Places place);
-	void SetScene(Scenes scene, unsigned short int exp);
+	void SetScene(Scenes scene, unsigned int exp);
 
 	//Setters
 	void SetLogoScene();
@@ -200,7 +200,7 @@ private: //Scene Manager
 	void SetOptionsMenu();
 	void SetCombat(Enemy* enemy);
 	void SetCombat(Boss* boss);
-	void SetLevelUp(unsigned short int experience);
+	void SetLevelUp(unsigned int experience);
 	void SetWorld(Places place);
 	void SetPauseMenu();
 	void SetEndScreen();
@@ -230,6 +230,12 @@ private: //debug
 
 private:
 	bool OnGuiMouseClickEvent(GuiControl* control);
+
+public: // PROGRESSION
+	bool bossTBeat = false;
+	bool boss1Beat = false;
+	bool boss2Beat = false;
+	bool boss3Beat = false;
 };
 
 #endif // __SCENE_H__

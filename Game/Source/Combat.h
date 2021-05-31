@@ -150,7 +150,9 @@ public:
 
     void PlayerHitLogic();
 
-    void PlayerWaveHitLogic();
+    void PlayerWaveHitLogic(int i);
+
+    void PlayerBigWaveHitLogic();
 
     void PlayerBulletHitLogic();
 
@@ -197,9 +199,13 @@ public: //Getters
 public: //BOSS I info
     int shieldStep = 0;
     SDL_Rect shield = { 0, 285, 40, 215 };
-    const int shieldPos[4] = { 145, 315, 485, 655 };
+    const int shieldPos[4] = { 155, 325, 495, 665 };
     short int bossAttack4Time = 0;
-    SDL_Rect wave = {1400, 0, 95, 50};
+    short int bossAttack5Time = 0;
+    short int bossAttack6Time = 0;
+    short int bossAttack7Time = 0;
+    SDL_Rect wave[2] = {1400, 0, 105, 60};
+    SDL_Rect bigWave = {1400, 0, 120, 90};
 
 public: //TUTORIAL THINGS
     bool tutorialActive = false;

@@ -22,7 +22,7 @@ LevelUp::LevelUp()
 {	
 }
 
-void LevelUp::Start(short int exp)
+void LevelUp::Start(int exp)
 {
 	SetText();
 
@@ -43,6 +43,8 @@ void LevelUp::Start(short int exp)
 	counter = actualExp; // Counter for exp animation
 	actualLevel = p->lvl;
 	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)); //Max EXP for actual lvl
+
+	sumUp = exp / 475;
 
 	int newExp = actualExp + exp; //Sum of the actual experience plus the experience given by the enemy
 	
@@ -69,14 +71,14 @@ void LevelUp::Start(short int exp)
 
 	if (levelUpBool)
 	{
-		int x = p->lvl;
+		float x = (float)p->lvl;
 
-		p->maxHealth = ceil((x / 2) + 20);
-		p->strengthStat = ceil((x / 2.8) + 6);
-		p->defenseStat = ceil((x / 3) + 3);
-		if (p->luckStat != 0) p->luckStat = floor((x / 5) + 1);
-		if (p->stabStat != 0) p->stabStat = floor(x / 4);
-		if (p->velocityStat != 0) p->velocityStat = floor((x / 3) + 5);
+		p->maxHealth = ceil((x / 2.0f) + 20.0f);
+		p->strengthStat = ceil((x / 2.8f) + 6.0f);
+		p->defenseStat = ceil((x / 3.5f) + 3.0f);
+		if (p->luckStat != 0) p->luckStat = floor((x / 5.0f) + 1.0f);
+		if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+		if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
 	}
 
 	nextLevel = p->lvl;
@@ -112,7 +114,7 @@ void LevelUp::Draw(int x)
 
     DrawText(x);
 
-	if (counter < app->scene->player1->exp) counter += 5;
+	if (counter < app->scene->player1->exp) counter += sumUp;
 
 
 	DrawBar({530 + x, 400}, counter, maxExp, BLUE);

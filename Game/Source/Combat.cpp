@@ -103,6 +103,8 @@ void Combat::BossStart()
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		shieldStep = 0;
 		shield.x = shieldPos[shieldStep];
+		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
+		bigWave = { 1400, 0, 120, 90 };
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -357,7 +359,7 @@ void Combat::CombatLogic()
 		{
 			BossAttack();
 
-			if (boss->attack != 1) PlayerResponse();
+			if (boss->attack > 3) PlayerResponse();
 
 			//PLAYER RESPONSE GOING FALSE LOGIC TODO
 			switch (boss->bossClass)
@@ -365,7 +367,13 @@ void Combat::CombatLogic()
 			case BossClass::BOSS_TUTORIAL:
 				break;
 			case BossClass::BOSS_I:
-				if (wave.x + wave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 4) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 5) if (bigWave.x + bigWave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 6)
+				{
+					if (wave[1].x + wave[1].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+					if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x - 48) playerHitAble = true;
+				}
 				break;
 			case BossClass::BOSS_II:
 				break;
@@ -610,7 +618,9 @@ void Combat::DebugDraw()
 			break;
 		case(BossClass::BOSS_I):
 			app->render->DrawRectangle(shield, { 20, 30, 230, 100 });
-			app->render->DrawRectangle(wave, { 230, 30, 20, 100 });
+			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
+			app->render->DrawRectangle(wave[1], { 230, 30, 20, 100 });
+			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
 			break;
 		case(BossClass::BOSS_II):
 			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -804,17 +814,24 @@ void Combat::EndBattleSolving()
 		if (enemyBattle) ItemDrop(enemy->enemyClass);
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 
-		short int experience = 0;
+		int experience = 0;
 		if (enemyBattle)
 		{
 			experience = enemy->exp;
 			short int id = app->entityManager->enemies.Find(enemy);
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
-		else if (bossBattle) experience = boss->exp;
+		
+		if (bossBattle)
+		{
+			experience = boss->exp;
+			if (boss->bossClass == BOSS_TUTORIAL) app->scene->bossTBeat = true;
+			else if (boss->bossClass == BOSS_I) app->scene->boss1Beat = true;
+			else if (boss->bossClass == BOSS_II) app->scene->boss2Beat = true;
+			else if (boss->bossClass == BOSS_III) app->scene->boss3Beat = true;
+		}
 
 		//TODO DELETE BOSS
-
 		app->scene->SetScene(LEVEL_UP, experience);
 	}
 	else if (playerLose)
@@ -1227,7 +1244,11 @@ void Combat::BossAttack()
 		}
 		else if (boss->attack == 3)
 		{
-			if (shield.x < shieldPos[3]) shield.x += 4;
+			if (shield.x < shieldPos[3])
+			{
+				shield.x += 4;
+				if (shield.x > shieldPos[3] - 40) boss->health++;
+			}
 			else
 			{
 				shieldStep = 3;
@@ -1255,20 +1276,161 @@ void Combat::BossAttack()
 			}
 			else if (bossAttack4Time < 200)
 			{
-				PlayerWaveHitLogic();
-				if (bossAttack4Time == 52) wave = {950, 438, 95, 50};
-				wave.x -= 12;
+				PlayerWaveHitLogic(0);
+				if (bossAttack4Time == 52) wave[0] = {950, 428, 105, 60};
+				wave[0].x -= 12;
 				bossAttack4Time++;
 			}
 			else
 			{
-				wave = { 1400, 0, 95, 50 };
+				wave[0] = { 1400, 0, 105, 60 };
 				bossAttack4Time = 0;
 				AfterBossAttack();
 				playerHitAble = true;
 			}
 		}
+		else if (boss->attack == 5)
+		{
+			if (bossAttack5Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 0 }, false, 50);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack5Time++;
+			}
+			else if (bossAttack5Time < 62)
+			{
+				if (bossAttack5Time == 50) app->scene->iterations = 0;
 
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack5Time++;
+			}
+			else if (bossAttack5Time < 210)
+			{
+				PlayerBigWaveHitLogic();
+				if (bossAttack5Time == 62) bigWave = { 950, 403, 120, 85};
+				bigWave.x -= 14;
+				bossAttack5Time++;
+			}
+			else
+			{
+				bigWave = { 1400, 0, 120, 90 };
+				bossAttack5Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 6)
+		{
+			if (bossAttack6Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack6Time++;
+			}
+			else if (bossAttack6Time < 52)
+			{
+				if (bossAttack6Time == 40) app->scene->iterations = 0;
+				
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack6Time++;
+			}
+			else if (bossAttack6Time < 240)
+			{
+				if (bossAttack6Time < 92)
+				{
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else if (bossAttack6Time < 104)
+				{
+					if (bossAttack6Time == 92) app->scene->iterations = 0;
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else
+				{
+					PlayerWaveHitLogic(1);
+					if (bossAttack6Time == 104) wave[1] = { 950, 428, 105, 60 };
+					wave[1].x -= 12;
+				}
+
+				PlayerWaveHitLogic(0);
+				if (bossAttack6Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 14;
+				bossAttack6Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				wave[1] = { 1400, 0, 105, 60 };
+				bossAttack6Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 7)
+		{
+			if (bossAttack7Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossAttack7Time++;
+			}
+			else if (bossAttack7Time < 100)
+			{
+				if (bossAttack7Time == 50)
+				{
+					app->scene->iterations = 0;
+					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
+					else if (steps == 1) boss->colliderCombat.x = 419 - (BOSS_C_W / 2);
+					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
+					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
+				}
+				bossAttack7Time++;
+			}
+			else if (bossAttack7Time < 190)
+			{
+				boss->colliderCombat.y += 3;
+				bossAttack7Time++;
+			}
+			else if (bossAttack7Time < 230)
+			{
+				bossAttack7Time++;
+			}
+			else if (bossAttack7Time < 240)
+			{
+				boss->colliderCombat.y += 17;
+				PlayerHitLogic();
+				bossAttack7Time++;
+			}
+			else if (bossAttack7Time < 285)
+			{
+				boss->colliderCombat.y -= 15;
+				PlayerHitLogic();
+				bossAttack7Time++;
+				if (bossAttack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
+			}
+			else
+			{
+				if (boss->colliderCombat.y < BOSS_C_Y) boss->colliderCombat.y += 7;
+				else
+				{
+					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					bossAttack7Time = 0;
+					AfterBossAttack();
+					playerHitAble = true;
+				}
+			}
+		}
 		break;
 	case(BossClass::BOSS_II):
 		break;
@@ -1972,6 +2134,19 @@ void Combat::BossAttackProbability()
 		else
 		{
 			if (shieldStep == 1) boss->attack = 4;
+			else if (shieldStep == 2)
+			{
+				int randm = rand() % 2;
+				if (randm == 0) boss->attack = 5;
+				else boss->attack = 6;
+			}
+			else if (shieldStep == 3)
+			{
+				int randm = rand() % 6;
+				if (randm < 1) boss->attack = 6;
+				else if (randm < 3) boss->attack = 5;
+				else boss->attack = 7;
+			}
 		}
 		break;
 	case BossClass::BOSS_II:
@@ -2074,9 +2249,9 @@ void Combat::PlayerHitLogic()
 	}
 }
 
-void Combat::PlayerWaveHitLogic()
+void Combat::PlayerWaveHitLogic(int i)
 {
-	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, wave))
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, wave[i]))
 	{
 		if (app->scene->player1->godMode) LOG("Player is inmune");
 		else
@@ -2084,11 +2259,41 @@ void Combat::PlayerWaveHitLogic()
 			playerHitAble = false;
 			if (!wearMantisLeg)
 			{
-				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
+				int waveReduction = 0;
+				if (boss->attack == 6) waveReduction = 2;
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() - waveReduction;
 				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
-					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
+					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+				}
+
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+
+				app->audio->SetFx(Effect::PLAYER_HURT_FX);
+
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
+		}
+	}
+}
+
+void Combat::PlayerBigWaveHitLogic()
+{
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, bigWave))
+	{
+		if (app->scene->player1->godMode) LOG("Player is inmune");
+		else
+		{
+			playerHitAble = false;
+			if (!wearMantisLeg)
+			{
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() + 4;
+				else if (secondPlayerProtection)
+				{
+					app->scene->player1->health -= floor((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
+					app->scene->player2->health -= ceil((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
 					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
 
@@ -2117,8 +2322,8 @@ void Combat::PlayerBulletHitLogic()
 					if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
 					else if (secondPlayerProtection)
 					{
-						app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
-						app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+						app->scene->player1->health -= floor((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
+						app->scene->player2->health -= ceil((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
 						LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 					}
 

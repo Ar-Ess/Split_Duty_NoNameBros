@@ -30,7 +30,7 @@ public:
 
     LevelUp();
 
-    void Start(short int exp);
+    void Start(int exp);
 
     void Restart();
 
@@ -64,6 +64,7 @@ private:
     bool levelUpBool = false;
 
     int counter = 0;
+    int sumUp = 0;
 
 public:
 

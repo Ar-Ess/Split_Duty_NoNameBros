@@ -305,7 +305,7 @@ void Scene::SetScene(Scenes scene, Places place)
 	else if (scene == END_SCREEN) SetEndScreen();
 }
 
-void Scene::SetScene(Scenes scene, unsigned short int exp)
+void Scene::SetScene(Scenes scene, unsigned int exp)
 {
 	CleanUp(scene);
 
@@ -1045,7 +1045,7 @@ void Scene::SetCombat(Boss* bossSet)
 	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
 }
 
-void Scene::SetLevelUp(unsigned short int exp)
+void Scene::SetLevelUp(unsigned int exp)
 {
 	iterations = 0;
 
@@ -1321,7 +1321,13 @@ void Scene::UpdateCombat()
 
 	DebugSteps();
 
-	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) player1->strengthStat = 39;
+	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		player1->strengthStat = 39; //19
+		player1->defenseStat = 13;
+		player1->health = (38 * player1->health) / player1->maxHealth;
+		player1->maxHealth = 38;
+	}
 }
 
 void Scene::UpdateLevelUp()
@@ -1348,9 +1354,9 @@ void Scene::UpdateWorld()
 	}
 
 	// DEBUG
-	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !bossTBeat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
 
-	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
+	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{

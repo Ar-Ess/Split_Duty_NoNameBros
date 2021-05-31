@@ -337,6 +337,7 @@ bool App::LoadGame()
 	pugi::xml_parse_result doc = data.load_file("save_game.xml");
 	pugi::xml_node playerInfo;
 	pugi::xml_node worldInfo;
+	pugi::xml_node gameProgress;
 	Player* p1 = app->scene->player1;
 	Player* p2 = app->scene->player2;
 	World* w = app->scene->world;
@@ -381,12 +382,12 @@ bool App::LoadGame()
 		p2->exp = stats.attribute("experience").as_int();
 
 		pugi::xml_node items = playerInfo.child("Items");
-		p1->smallMeatCount = stats.attribute("small_meat").as_int();
-		p1->largeMeatCount = stats.attribute("large_meat").as_int();
-		p1->featherCount = stats.attribute("feather").as_int();
-		p1->mantisRodCount = stats.attribute("mantis_rod").as_int();
-		p1->splitedEnemyCount = stats.attribute("splited_enemy").as_int();
-		p1->moneyCount = stats.attribute("money").as_int();
+		p1->smallMeatCount = items.attribute("small_meat").as_int();
+		p1->largeMeatCount = items.attribute("large_meat").as_int();
+		p1->featherCount = items.attribute("feather").as_int();
+		p1->mantisRodCount = items.attribute("mantis_rod").as_int();
+		p1->splitedEnemyCount = items.attribute("splited_enemy").as_int();
+		p1->moneyCount = items.attribute("money").as_int();
 
 		worldInfo = data.child("saveState").child("World_Information");
 		pugi::xml_node world = worldInfo.child("Position");
@@ -396,6 +397,13 @@ bool App::LoadGame()
 
 		world = worldInfo.child("Place");
 		w->SetPlace(world.attribute("place").as_int());
+
+		gameProgress = data.child("saveState").child("Game_Progression");
+		pugi::xml_node boss = gameProgress.child("Boss");
+		scene->bossTBeat = boss.attribute("Boss_T").as_bool();
+		scene->boss1Beat = boss.attribute("Boss_I").as_bool();
+		scene->boss2Beat = boss.attribute("Boss_II").as_bool();
+		scene->boss3Beat = boss.attribute("Boss_III").as_bool();
 
 		LOG("Loading finished...");
 	}
@@ -422,6 +430,7 @@ bool App::SaveGame() const
 	pugi::xml_node saveNode;
 	pugi::xml_node playerInfo;
 	pugi::xml_node worldInfo;
+	pugi::xml_node gameProgress;
 
 	if (root != NULL)
 	{
@@ -473,6 +482,14 @@ bool App::SaveGame() const
 		worldInfo.append_attribute("world_speed").set_value(scene->world->GetWorldSpeed());
 		worldInfo = saveNode.append_child("Place");
 		worldInfo.append_attribute("place").set_value(scene->world->GetPlace());
+
+		//GAME PROGRESSION
+		saveNode = root.append_child("Game_Progression");
+		gameProgress = saveNode.append_child("Boss");
+		gameProgress.append_attribute("Boss_T").set_value(scene->bossTBeat);
+		gameProgress.append_attribute("Boss_I").set_value(scene->boss1Beat);
+		gameProgress.append_attribute("Boss_II").set_value(scene->boss2Beat);
+		gameProgress.append_attribute("Boss_III").set_value(scene->boss3Beat);
 
 		saveDoc.save_file("save_game.xml");
 		LOG("Game saved correctly");
