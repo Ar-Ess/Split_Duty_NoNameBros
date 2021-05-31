@@ -52,6 +52,8 @@ void Combat::Start()
 	//Bool preparation for combat
 	BoolStart();
 
+	app->scene->buffButton->state = GuiControlState::LOCKED;
+
 	//LuckArray fill
 	int pLuck = p->luckStat;
 	if (pLuck > 0)
@@ -86,6 +88,8 @@ void Combat::EnemyStart()
 	FirstTurnLogic();
 
 	currentEnemyAnim = &enemy->idleAnim;
+
+	app->scene->escapeButton->state = GuiControlState::NORMAL;
 }
 
 void Combat::BossStart()
@@ -115,6 +119,8 @@ void Combat::BossStart()
 	}
 
 	currentBossAnim = &boss->idleAnim;
+
+	app->scene->escapeButton->state = GuiControlState::LOCKED;
 }
 
 void Combat::Restart()
@@ -821,6 +827,12 @@ void Combat::EndBattleSolving()
 			short int id = app->entityManager->enemies.Find(enemy);
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
+
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
 		
 		if (bossBattle)
 		{
@@ -853,6 +865,12 @@ void Combat::EndBattleSolving()
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
 
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
+
 		//TODO DELETE BOSS
 
 		app->scene->SetScene(LEVEL_UP);
@@ -864,6 +882,12 @@ void Combat::EndBattleSolving()
 
 		if (enemyBattle) enemy->Refill();
 		else if (bossBattle) boss->Refill();
+
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
 
 		s->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 		s->SetScene(WORLD, app->scene->world->GetPlace());
@@ -1007,6 +1031,20 @@ int Combat::SecondPlayerDamageLogic()
 	else if (negative) damage -= variation;
 
 	if (damage <= 0) damage = 1;
+
+	if (bossBattle)
+	{
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_I):
+			if (steps < shieldStep) return 0;
+			break;
+		case(BossClass::BOSS_II):
+			break;
+		case(BossClass::BOSS_III):
+			break;
+		}
+	}
 
 	return damage;
 }

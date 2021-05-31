@@ -1358,6 +1358,12 @@ void Scene::UpdateWorld()
 
 	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
 
+	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+
+	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+
+	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) combatScene->secondPlayer = !combatScene->secondPlayer;
+
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
 		if (!world->inventoryOpen && !app->dialogueManager->onDialog)
