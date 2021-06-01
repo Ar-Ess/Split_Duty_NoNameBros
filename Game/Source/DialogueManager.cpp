@@ -309,7 +309,7 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 				EndDialogue();
 				return ret;
 			}
-			else if (itemOption->data->nextNode != nullptr && itemOption->data->returnCode == 2)
+			else if (itemOption->data->returnCode == 2)
 			{
 				app->scene->combatScene->tutorialStep = 1;
 				EndDialogue();

@@ -102,7 +102,14 @@ void Combat::BossStart()
 	case(BossClass::BOSS_TUTORIAL):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
 		tutorialActive = true;
+		jumpInstruction = false;
 		tutorialStep = 0;
+		wave[0] = { 1400, 0, 105, 60 };
+		app->dialogueManager->StartDialogue(6);
+		bossTAttack1Time = 0;
+		jumpInstructionStep = 0;
+		endOfTutorial = false;
+		bossTAttack2Time = 0;
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
@@ -111,10 +118,10 @@ void Combat::BossStart()
 		shield = { 0, 285, 40, 215 };
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
-		bossAttack4Time = 0;
-		bossAttack5Time = 0;
-		bossAttack6Time = 0;
-		bossAttack7Time = 0;
+		boss1Attack4Time = 0;
+		boss1Attack5Time = 0;
+		boss1Attack6Time = 0;
+		boss1Attack7Time = 0;
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -237,6 +244,8 @@ void Combat::Update()
 
 	if (!tutorialActive) CombatLogic();
 	else TutorialLogic();
+
+	if (jumpInstruction) JumpInstructionLogic();
 
 	if (enemyBattle)
 	{
@@ -371,12 +380,34 @@ void Combat::CombatLogic()
 		{
 			BossAttack();
 
-			if (boss->attack > 3) PlayerResponse();
+			if (boss->bossClass == BOSS_I)
+			{
+				if (boss->attack > 3) PlayerResponse();
+			}
+			else if (boss->bossClass == BOSS_TUTORIAL)
+			{
+				if (jumpInstructionStep == 0)
+				{
+					if (jumpInstruction) PlayerResponse();
+				}
+				else
+				{
+					PlayerResponse();
+				}
+			}
+			else
+			{
+				PlayerResponse();
+			}
 
 			//PLAYER RESPONSE GOING FALSE LOGIC TODO
 			switch (boss->bossClass)
 			{
 			case BossClass::BOSS_TUTORIAL:
+				if (boss->attack == 1) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x)
+				{
+					playerResponseAble = false;
+				}
 				break;
 			case BossClass::BOSS_I:
 				if (boss->attack == 4) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
@@ -508,15 +539,28 @@ void Combat::TutorialLogic()
 {
 	Scene* s = app->scene;
 
-	if (tutorialStep == 0)
+	if (tutorialStep != 0) if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) tutorialStep++;
+}
+
+void Combat::JumpInstructionLogic()
+{
+	if (jumpInstructionStep == 0)
 	{
-		app->dialogueManager->StartDialogue(6);
-	}
-	else if (tutorialStep == 1)
-	{
-		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) || app->input->GetControl(UP_PAD) == KEY_DOWN)
 		{
-			tutorialStep = 2;
+			jumpInstructionStep = 1;
+			bossTAttack1Time++;
+		}
+	}
+
+	if (jumpInstructionStep == 2)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) || app->input->GetControl(A) == KEY_DOWN)
+		{
+			jumpInstructionStep = 3;
+			jumpInstruction = false;
+			endOfTutorial = true;
+			bossTAttack1Time++;
 		}
 	}
 }
@@ -551,6 +595,10 @@ void Combat::Draw()
 	DrawPopUps();
 
 	app->guiManager->DrawCursor();
+
+	if (tutorialActive) DrawTutorial();
+
+	if (jumpInstruction) DrawJumpInstructions();
 }
 
 void Combat::DrawPlayer()
@@ -608,6 +656,7 @@ void Combat::DebugDraw()
 		switch (boss->bossClass)
 		{
 		case(BossClass::BOSS_TUTORIAL):
+			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
 			break;
 		case(BossClass::BOSS_I):
 			app->render->DrawRectangle(shield, { 20, 30, 230, 100 });
@@ -793,6 +842,159 @@ void Combat::DrawText()
 		}
 		escapeText->Draw();
 		splitText->Draw();
+	}
+}
+
+void Combat::DrawTutorial()
+{
+	switch (tutorialStep)
+	{
+	case 0:
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 1: // You are this guy here, and right in front of you, there is your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 290 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 498, 1280, 222 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 275, 290, 705, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1100, 290, 180, 208 }, { 0, 0, 0, 150 });
+		break;
+
+	case 2: // In the top part, you can see your life bar, as well as the life bar of your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 20 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 60, 1280, 660 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 20, 176, 40 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 276, 20, 748, 40 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1084, 20, 196, 40 }, { 0, 0, 0, 150 });
+		break;
+
+	case 3: // Now, let`s go to the combat itsef. This is a turn based combat. When your turn arrives, you have to choose an option and create a great strategy to win this battle.
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 4: // You have 5 options to choose, ATTACK, MOVE, ITEM, ESCAPE, SPLIT. Each one of this options consumes a turn, which means, after you select it, will be your opponent's turn.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 5: // The first option is ATTACK. When you choose it, you will cause damage to your opponent. Depending on your strength and their defense, you'll deal more or less damage.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 279, 570, 1001, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 6: // But wait! Do you see these white marks on the ground? This is not good, the farther away you are from the opponent, the fewer damage you'll cause to it. 
+		app->render->DrawRectangle({ 0, 0, 1280, 488 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
+		break;
+
+	case 7: // The first position inflicts a 15% of your total power, the second one inflicts a 30%, the third one a 60 %, and the last one the 100 % .But how do we get closer to the enemy ?
+		app->render->DrawRectangle({ 0, 0, 1280, 488 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
+		break;
+
+	case 8: // That's the function of the following option, MOVE. When choosing it, you'll move one step further. Be careful because the closer you are, dodging attacks will be more difficult.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 324, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 505, 570, 775, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 9: // Note that when you ATTACK, your position will reset the the first one.
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 10: // Then we have the ITEM option. When you select it, a menu will open up. There you can choose the items you want to use, it also have a explanatory description for each one!
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 550, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 731, 570, 549, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 11: // Next, we have the ESCAPE option. Since you are in a Boss Fight, you can not select it, but I'll tell you its use either way.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 12: // The ESCAPE function is used to escape a combat. Depending on your level and your oponent's one, will be easier or harder to escape.Note that escape makes you loose some coins...
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 13: // Finally, we have the SPLIT option. This is a secret power I am giving to you... Unfortunedly, I don't have enough power to split those golems, but I can with regular enemies.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 14: // This power will allow you to "split" the soul of your opponents and use it to deal damage in another combat. There's some conditions to be fulfilled before being able to use it.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 15: // First of all, your opponents life must be at the 20% or lower. Then, you must be in the last position. And third, you must have more health than your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 16: // This power is too big even for me, so in case you succesfully split your opponent (cause sometimes can fail), its life will be substracted from yours!
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		break;
+
+	case 17: // Be careful! You can die if you have less life than your opponent!
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 18: // Being said that, let's allow your opponent to attack first! I will show you how to dodge it perfectly, so you can win without getting hurt!
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 19:
+		tutorialActive = false;
+		break;
+	}
+}
+
+void Combat::DrawJumpInstructions()
+{
+	switch (jumpInstructionStep)
+	{
+	case 0:
+		app->render->DrawRectangle({ 0, 0, 1280, 290 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 498, 1280, 222 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 275, 290, 1005, 208 }, { 0, 0, 0, 150 });
+		break;
+
+	case 1:
+		break;
+
+	case 2:
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 3:
+		break;
 	}
 }
 
@@ -1245,6 +1447,84 @@ void Combat::BossAttack()
 	switch (boss->bossClass)
 	{
 	case(BossClass::BOSS_TUTORIAL):
+		if (boss->attack == 1)
+		{
+			if (bossTAttack1Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack1Time++;
+			}
+			else if (bossTAttack1Time < 52)
+			{
+				if (bossTAttack1Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack1Time++;
+			}
+			else if (bossTAttack1Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (bossTAttack1Time == 52) wave[0] = { 950, 428, 105, 60 };
+
+				if (bossTAttack1Time == 102)
+				{
+					jumpInstruction = true;
+				}
+				else if (bossTAttack1Time == 130)
+				{
+					jumpInstructionStep = 2;
+				}
+				else
+				{
+					bossTAttack1Time++;
+					wave[0].x -= 12;
+				}
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				bossTAttack1Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (bossTAttack2Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack2Time++;
+			}
+			else if (bossTAttack2Time < 52)
+			{
+				if (bossTAttack2Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack2Time++;
+			}
+			else if (bossTAttack2Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (bossTAttack2Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 12;
+				bossTAttack2Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				bossTAttack2Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
 		break;
 	case(BossClass::BOSS_I):
 		if (boss->attack == 1)
@@ -1283,99 +1563,99 @@ void Combat::BossAttack()
 		}
 		else if (boss->attack == 4)
 		{
-			if (bossAttack4Time < 40)
+			if (boss1Attack4Time < 40)
 			{
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack4Time++;
+				boss1Attack4Time++;
 			}
-			else if (bossAttack4Time < 52)
+			else if (boss1Attack4Time < 52)
 			{
-				if (bossAttack4Time == 40) app->scene->iterations = 0;
+				if (boss1Attack4Time == 40) app->scene->iterations = 0;
 
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack4Time++;
+				boss1Attack4Time++;
 			}
-			else if (bossAttack4Time < 200)
+			else if (boss1Attack4Time < 200)
 			{
 				PlayerWaveHitLogic(0);
-				if (bossAttack4Time == 52) wave[0] = {950, 428, 105, 60};
+				if (boss1Attack4Time == 52) wave[0] = {950, 428, 105, 60};
 				wave[0].x -= 12;
-				bossAttack4Time++;
+				boss1Attack4Time++;
 			}
 			else
 			{
 				wave[0] = { 1400, 0, 105, 60 };
-				bossAttack4Time = 0;
+				boss1Attack4Time = 0;
 				AfterBossAttack();
 				playerHitAble = true;
 			}
 		}
 		else if (boss->attack == 5)
 		{
-			if (bossAttack5Time < 50)
+			if (boss1Attack5Time < 50)
 			{
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 0 }, false, 50);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack5Time++;
+				boss1Attack5Time++;
 			}
-			else if (bossAttack5Time < 62)
+			else if (boss1Attack5Time < 62)
 			{
-				if (bossAttack5Time == 50) app->scene->iterations = 0;
+				if (boss1Attack5Time == 50) app->scene->iterations = 0;
 
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack5Time++;
+				boss1Attack5Time++;
 			}
-			else if (bossAttack5Time < 210)
+			else if (boss1Attack5Time < 210)
 			{
 				PlayerBigWaveHitLogic();
-				if (bossAttack5Time == 62) bigWave = { 950, 403, 120, 85};
+				if (boss1Attack5Time == 62) bigWave = { 950, 403, 120, 85};
 				bigWave.x -= 14;
-				bossAttack5Time++;
+				boss1Attack5Time++;
 			}
 			else
 			{
 				bigWave = { 1400, 0, 120, 90 };
-				bossAttack5Time = 0;
+				boss1Attack5Time = 0;
 				AfterBossAttack();
 				playerHitAble = true;
 			}
 		}
 		else if (boss->attack == 6)
 		{
-			if (bossAttack6Time < 40)
+			if (boss1Attack6Time < 40)
 			{
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack6Time++;
+				boss1Attack6Time++;
 			}
-			else if (bossAttack6Time < 52)
+			else if (boss1Attack6Time < 52)
 			{
-				if (bossAttack6Time == 40) app->scene->iterations = 0;
+				if (boss1Attack6Time == 40) app->scene->iterations = 0;
 				
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack6Time++;
+				boss1Attack6Time++;
 			}
-			else if (bossAttack6Time < 240)
+			else if (boss1Attack6Time < 240)
 			{
-				if (bossAttack6Time < 92)
+				if (boss1Attack6Time < 92)
 				{
 					boss->colliderCombat.y = BOSS_C_Y;
 					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
 					boss->colliderCombat.y += (y - BOSS_C_Y);
 				}
-				else if (bossAttack6Time < 104)
+				else if (boss1Attack6Time < 104)
 				{
-					if (bossAttack6Time == 92) app->scene->iterations = 0;
+					if (boss1Attack6Time == 92) app->scene->iterations = 0;
 					boss->colliderCombat.y = BOSS_C_Y;
 					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
 					boss->colliderCombat.y += (y - BOSS_C_Y);
@@ -1383,36 +1663,36 @@ void Combat::BossAttack()
 				else
 				{
 					PlayerWaveHitLogic(1);
-					if (bossAttack6Time == 104) wave[1] = { 950, 428, 105, 60 };
+					if (boss1Attack6Time == 104) wave[1] = { 950, 428, 105, 60 };
 					wave[1].x -= 12;
 				}
 
 				PlayerWaveHitLogic(0);
-				if (bossAttack6Time == 52) wave[0] = { 950, 428, 105, 60 };
+				if (boss1Attack6Time == 52) wave[0] = { 950, 428, 105, 60 };
 				wave[0].x -= 14;
-				bossAttack6Time++;
+				boss1Attack6Time++;
 			}
 			else
 			{
 				wave[0] = { 1400, 0, 105, 60 };
 				wave[1] = { 1400, 0, 105, 60 };
-				bossAttack6Time = 0;
+				boss1Attack6Time = 0;
 				AfterBossAttack();
 				playerHitAble = true;
 			}
 		}
 		else if (boss->attack == 7)
 		{
-			if (bossAttack7Time < 50)
+			if (boss1Attack7Time < 50)
 			{
 				boss->colliderCombat.y = BOSS_C_Y;
 				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
 				boss->colliderCombat.y += (y - BOSS_C_Y);
-				bossAttack7Time++;
+				boss1Attack7Time++;
 			}
-			else if (bossAttack7Time < 100)
+			else if (boss1Attack7Time < 100)
 			{
-				if (bossAttack7Time == 50)
+				if (boss1Attack7Time == 50)
 				{
 					app->scene->iterations = 0;
 					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
@@ -1420,29 +1700,29 @@ void Combat::BossAttack()
 					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
 					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
 				}
-				bossAttack7Time++;
+				boss1Attack7Time++;
 			}
-			else if (bossAttack7Time < 190)
+			else if (boss1Attack7Time < 190)
 			{
 				boss->colliderCombat.y += 3;
-				bossAttack7Time++;
+				boss1Attack7Time++;
 			}
-			else if (bossAttack7Time < 230)
+			else if (boss1Attack7Time < 230)
 			{
-				bossAttack7Time++;
+				boss1Attack7Time++;
 			}
-			else if (bossAttack7Time < 240)
+			else if (boss1Attack7Time < 240)
 			{
 				boss->colliderCombat.y += 17;
 				PlayerHitLogic();
-				bossAttack7Time++;
+				boss1Attack7Time++;
 			}
-			else if (bossAttack7Time < 285)
+			else if (boss1Attack7Time < 285)
 			{
 				boss->colliderCombat.y -= 15;
 				PlayerHitLogic();
-				bossAttack7Time++;
-				if (bossAttack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
+				boss1Attack7Time++;
+				if (boss1Attack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
 			}
 			else
 			{
@@ -1450,7 +1730,7 @@ void Combat::BossAttack()
 				else
 				{
 					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
-					bossAttack7Time = 0;
+					boss1Attack7Time = 0;
 					AfterBossAttack();
 					playerHitAble = true;
 				}
@@ -2073,7 +2353,7 @@ void Combat::PlayerResponse()
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetControl(DOWN_PAD) == KEY_DOWN)
 	{
-		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
+		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump && !jumpInstruction)
 		{
 			app->scene->player1->crouch = true;
 			currentPlayerAnim = &app->scene->player1->cCrouchAnim;
@@ -2150,7 +2430,8 @@ void Combat::BossAttackProbability()
 	switch (boss->bossClass)
 	{
 	case BossClass::BOSS_TUTORIAL:
-		boss->attack = 1;
+		if (!endOfTutorial) boss->attack = 1;
+		else boss->attack = 2;
 		break;
 	case BossClass::BOSS_I:
 		if (shieldStep == 0) boss->attack = 1;

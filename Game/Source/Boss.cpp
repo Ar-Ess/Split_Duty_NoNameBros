@@ -14,7 +14,7 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 	switch (bossClass)
 	{
 	case BOSS_TUTORIAL: 
-		SetUp({BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H}, 100, 10, 3, 2);
+		SetUp({BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H}, 100, 6, 3, 0);
 		break;
 	case BOSS_I:
 		SetUp({ BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H }, 129500, 44, 26, 11); // LVL 35

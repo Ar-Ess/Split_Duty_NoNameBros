@@ -228,11 +228,11 @@ void GuiManager::DrawCombatInterface(Enemy* enemy)
 	//const SDL_Rect faceRect = { 0,0,70,69 };
 	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 
-	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 186, 30);
 
-	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
+	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 186, 80);
 
-	DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1080, 30);
+	DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1074, 30);
 }
 
 void GuiManager::DrawCombatInterface(Boss* boss)

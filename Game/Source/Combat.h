@@ -66,6 +66,8 @@ public:
 
     void TutorialLogic();
 
+    void JumpInstructionLogic();
+
     void Draw();
 
     void DrawPlayer();
@@ -85,6 +87,10 @@ public:
     void DrawButtons();
 
     void DrawText();
+
+    void DrawTutorial();
+
+    void DrawJumpInstructions();
 
     void FirstTurnLogic();
 
@@ -199,15 +205,21 @@ public: //Getters
 public: //TUTORIAL BOSS INFO
     bool tutorialActive = false;
     int tutorialStep = 0;
+    short int bossTAttack1Time = 0;
+    short int bossTAttack2Time = 0;
+    bool jumpInstruction = false;
+    int jumpInstructionStep = 0;
+    bool endOfTutorial = false;
+    SDL_Texture* tutorialBox = nullptr;
 
 public: //BOSS I info
     int shieldStep = 0;
     SDL_Rect shield = { 0, 285, 40, 215 };
     const int shieldPos[4] = { 155, 325, 495, 665 };
-    short int bossAttack4Time = 0;
-    short int bossAttack5Time = 0;
-    short int bossAttack6Time = 0;
-    short int bossAttack7Time = 0;
+    short int boss1Attack4Time = 0;
+    short int boss1Attack5Time = 0;
+    short int boss1Attack6Time = 0;
+    short int boss1Attack7Time = 0;
     SDL_Rect wave[2] = {1400, 0, 105, 60};
     SDL_Rect bigWave = {1400, 0, 120, 90};
 
