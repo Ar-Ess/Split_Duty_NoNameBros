@@ -45,6 +45,7 @@ void LevelUp::Start(int exp)
 	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)); //Max EXP for actual lvl
 
 	sumUp = ceil(exp / 475);
+	if (sumUp <= 0) sumUp = 1;
 
 	int newExp = actualExp + exp; //Sum of the actual experience plus the experience given by the enemy
 	
