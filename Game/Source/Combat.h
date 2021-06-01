@@ -18,6 +18,9 @@
 #define DEFENSE_BUFF 25.0f
 #define THIRD_BUFF 25.0f
 
+#define TUTORIAL_TEXT_MARGIN_X 20
+#define TUTORIAL_TEXT_MARGIN_Y 30
+
 class Enemy;
 enum EnemyClass;
 enum BossClass;
@@ -212,6 +215,7 @@ public: //TUTORIAL BOSS INFO
     bool endOfTutorial = false;
     SDL_Texture* tutorialBox = nullptr;
     iPoint textBoxPos = {0, 0};
+    GuiString* tutorialText;
 
 public: //BOSS I info
     int shieldStep = 0;

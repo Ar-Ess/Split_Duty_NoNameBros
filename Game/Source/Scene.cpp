@@ -799,6 +799,13 @@ void Scene::SetCombat(Boss* bossSet)
 		combatScene->turnText->SetTextFont(app->fontTTF->defaultFont);
 	}
 
+	if (combatScene->tutorialText == nullptr)
+	{
+		combatScene->tutorialText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		combatScene->tutorialText->bounds = { 0, 0, 100, 100 };
+		combatScene->tutorialText->SetTextFont(app->fontTTF->defaultFont3);
+	}
+
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
 	SDL_ShowCursor(0);

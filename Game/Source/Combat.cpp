@@ -111,6 +111,8 @@ void Combat::BossStart()
 		jumpInstructionStep = 0;
 		endOfTutorial = false;
 		bossTAttack2Time = 0;
+		tutorialText->bounds = {0, 0, 322, 241};
+		tutorialText->SetString("You are this guy here,\nand right in front of you,\nthere is your opponent.");
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
@@ -547,92 +549,155 @@ void Combat::TutorialLogic()
 	{
 	case 0: // Dialog 6
 		textBoxPos = { 1290,0 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
 		break;
 
 	case 1: // You are this guy here, and right in front of you, there is your opponent.
 		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
 		break;
 
 	case 2: // In the top part, you can see your life bar, as well as the life bar of your opponent.
 		textBoxPos = { 470,60 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("In the top part, you can\nsee your life bar, as well\nas the life bar of\nyour opponent.");
 		break;
 
 	case 3: // Now, let`s go to the combat itsef. This is a turn based combat. When your turn arrives, you have to choose an option and create a great strategy to win this battle.
 		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Now, let`s go to the combat\nitsef. This is a turn based\ncombat. When your turn\narrives, you have to choose\nan option and create a\ngreat strategy to win\nthis battle.");
 		break;
 
 	case 4: // You have 5 options to choose, ATTACK, MOVE, ITEM, ESCAPE, SPLIT. Each one of this options consumes a turn, which means, after you select it, will be your opponent's turn.
 		textBoxPos = { 470,290 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("You have 5 options to\nchoose, ATTACK, MOVE, ITEM,\nESCAPE, SPLIT.\nEach one of this options\nconsumes a turn, which\nmeans, after you select it,\nwill be your \nopponent's turn.");
 		break;
 
 	case 5: // The first option is ATTACK. When you choose it, you will cause damage to your opponent. Depending on your strength and their defense, you'll deal more or less damage.
 		textBoxPos = { 130,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The first option is ATTACK.\nWhen you choose it, you\nwill cause damage to your\nopponent. Depending on your\nstrength and their defense,\nyou'll deal more\nor less damage.");
 		break;
 
 	case 6: // But wait! Do you see these white marks on the ground? This is not good, the farther away you are from the opponent, the fewer damage you'll cause to it. 
 		textBoxPos = { 340,210 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("But wait!\nDo you see these white\nmarks on the ground?\nThis is not good, the\nfarther away you are from\nthe opponent, the fewer\ndamage you'll cause to it.");
 		break;
 
 	case 7: // The first position inflicts a 15% of your total power, the second one inflicts a 30%, the third one a 60 %, and the last one the 100 % .But how do we get closer to the enemy ?
 		textBoxPos = { 340,210 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The first position inflicts\na 15 prcnt of your total\npower, the second one\ninflicts a 30 prcnt,\nthe third one a 60 prcnt,\nthe last one the 100 prcnt.\nBut how do we get closer\nto the enemy ?");
 		break;
 
 	case 8: // That's the function of the following option, MOVE. When choosing it, you'll move one step further. Be careful because the closer you are, dodging attacks will be more difficult.
 		textBoxPos = { 310,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("That's the function of the\nfollowing option, MOVE.\nWhen choosing it, you'll\nmove one step further.\nBe careful because the\ncloser you are, dodging\nattacks will be\nmore difficult.");
 		break;
 
 	case 9: // Note that when you ATTACK, your position will reset the the first one.
 		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Note that when you ATTACK,\nyour position will reset\nthe the first one.");
 		break;
 
 	case 10: // Then we have the ITEM option. When you select it, a menu will open up. There you can choose the items you want to use, it also have a explanatory description for each one!
 		textBoxPos = { 470,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Then we have an ITEM option\nWhen you select it, a menu\nwill open up. There you can\nchoose the items you want\nto use, it also have a\nexplanatory description\nfor each one!");
 		break;
 
 	case 11: // Next, we have the ESCAPE option. Since you are in a Boss Fight, you can not select it, but I'll tell you its use either way.
 		textBoxPos = { 650,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Next, the ESCAPE option.\nSince you are in a\nBoss Fight, you can not\nselect it, but I'll tell\nyou its use either way.");
 		break;
 
 	case 12: // The ESCAPE function is used to escape a combat. Depending on your level and your oponent's one, will be easier or harder to escape.Note that escape makes you loose some coins...
 		textBoxPos = { 650,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The ESCAPE function is used\nto escape a combat.\nDepending on your level and\nyour oponent's one, will be\neasier or harder to escape.\nNote that escape makes you\nloose some coins...");
 		break;
 
 	case 13: // Finally, we have the SPLIT option. This is a secret power I am giving to you... Unfortunedly, I don't have enough power to split those golems, but I can with regular enemies.
 		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Finally, the SPLIT option.\nThis is a secret power I am\ngiving to you...\nUnfortunedly, I don't have\nenough power to split those\ngolems, but I can with\nregular enemies.");
 		break;
 
 	case 14: // This power will allow you to "split" the soul of your opponents and use it to deal damage in another combat. There's some conditions to be fulfilled before being able to use it.
 		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("This power will allow you\nto 'split' the soul of your\nopponents and use it to\ndeal damage in another\ncombat. There's some\nconditions to be fulfilled\nbefore being able\nto use it.");
 		break;
 
 	case 15: // First of all, your opponents life must be at the 20% or lower. Then, you must be in the last position. And third, you must have more health than your opponent.
 		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("First of all, the opponents\nlife must be at 20 prcnt\nor lower.\nThen, you must be in the\nlast position. And third,\nyou must have more health\nthan your opponent.");
 		break;
 
 	case 16: // This power is too big even for me, so in case you succesfully split your opponent (cause sometimes can fail), its life will be substracted from yours!
 		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("This power is too big even\nfor me, so in the case you\nsuccesfully split your\nopponent\n(cause sometimes can fail)\nits life will be\nsubstracted from yours!");
 		break;
 
 	case 17: // Be careful! You can die if you have less life than your opponent!
 		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Be careful! You can die if\nyou have less life than\nyour opponent!");
 		break;
 
 	case 18: // Being said that, let's allow your opponent to attack first! I will show you how to dodge it perfectly, so you can win without getting hurt!
 		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Being said that, let's\nallow your opponent to\nattack first! I will show\nyou how to dodge it\nperfectly, so you can win\nwithout getting hurt!");
 		break;
 
 	case 19:
 		textBoxPos = { 1290,0 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("");
 		break;
 	}
 }
 
 void Combat::JumpInstructionLogic()
 {
-	if (jumpInstructionStep == 0)
+	if (jumpInstructionStep == 0 && jumpInstruction)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) || app->input->GetControl(UP_PAD) == KEY_DOWN)
+		textBoxPos = { 330,150 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("NOW, JUMP!\n\n\nPRESS SPACE / W (keyboard) \nPRESS UP (gamepad)");
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN|| app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN|| app->input->GetControl(UP_PAD) == KEY_DOWN)
 		{
+			textBoxPos = { 1290,0 };
 			jumpInstructionStep = 1;
 			bossTAttack1Time++;
 		}
@@ -640,8 +705,13 @@ void Combat::JumpInstructionLogic()
 
 	if (jumpInstructionStep == 2)
 	{
-		if (app->input->GetKey(SDL_SCANCODE_RETURN) || app->input->GetControl(A) == KEY_DOWN)
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Well dodged!\nNote that some enemies or\nbosses will attack you from\nthe top, so in that\ncase, you should click\n\nLSHIFT or S (keyboard)\nor\nDOWN (gamepad) to crouch!\n\n Now, beat that golem up!");
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN|| app->input->GetControl(A) == KEY_DOWN)
 		{
+			textBoxPos = { 1290,0 };
 			jumpInstructionStep = 3;
 			jumpInstruction = false;
 			endOfTutorial = true;
@@ -946,7 +1016,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 275, 290, 705, 208 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1100, 290, 180, 208 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 2: // In the top part, you can see your life bar, as well as the life bar of your opponent.
@@ -955,12 +1026,14 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 20, 176, 40 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 276, 20, 748, 40 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1084, 20, 196, 40 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 3: // Now, let`s go to the combat itsef. This is a turn based combat. When your turn arrives, you have to choose an option and create a great strategy to win this battle.
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 4: // You have 5 options to choose, ATTACK, MOVE, ITEM, ESCAPE, SPLIT. Each one of this options consumes a turn, which means, after you select it, will be your opponent's turn.
@@ -968,7 +1041,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 5: // The first option is ATTACK. When you choose it, you will cause damage to your opponent. Depending on your strength and their defense, you'll deal more or less damage.
@@ -976,7 +1050,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 279, 570, 1001, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 6: // But wait! Do you see these white marks on the ground? This is not good, the farther away you are from the opponent, the fewer damage you'll cause to it. 
@@ -984,7 +1059,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 7: // The first position inflicts a 15% of your total power, the second one inflicts a 30%, the third one a 60 %, and the last one the 100 % .But how do we get closer to the enemy ?
@@ -992,7 +1068,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 8: // That's the function of the following option, MOVE. When choosing it, you'll move one step further. Be careful because the closer you are, dodging attacks will be more difficult.
@@ -1000,12 +1077,14 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 324, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 505, 570, 775, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 9: // Note that when you ATTACK, your position will reset the the first one.
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 10: // Then we have the ITEM option. When you select it, a menu will open up. There you can choose the items you want to use, it also have a explanatory description for each one!
@@ -1013,7 +1092,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 550, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 731, 570, 549, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 11: // Next, we have the ESCAPE option. Since you are in a Boss Fight, you can not select it, but I'll tell you its use either way.
@@ -1021,7 +1101,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 12: // The ESCAPE function is used to escape a combat. Depending on your level and your oponent's one, will be easier or harder to escape.Note that escape makes you loose some coins...
@@ -1029,7 +1110,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 13: // Finally, we have the SPLIT option. This is a secret power I am giving to you... Unfortunedly, I don't have enough power to split those golems, but I can with regular enemies.
@@ -1037,7 +1119,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 14: // This power will allow you to "split" the soul of your opponents and use it to deal damage in another combat. There's some conditions to be fulfilled before being able to use it.
@@ -1045,7 +1128,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 15: // First of all, your opponents life must be at the 20% or lower. Then, you must be in the last position. And third, you must have more health than your opponent.
@@ -1053,7 +1137,8 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 16: // This power is too big even for me, so in case you succesfully split your opponent (cause sometimes can fail), its life will be substracted from yours!
@@ -1061,17 +1146,20 @@ void Combat::DrawTutorial()
 		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 17: // Be careful! You can die if you have less life than your opponent!
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 18: // Being said that, let's allow your opponent to attack first! I will show you how to dodge it perfectly, so you can win without getting hurt!
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
-		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 19:
@@ -1089,6 +1177,8 @@ void Combat::DrawJumpInstructions()
 		app->render->DrawRectangle({ 0, 498, 1280, 222 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
 		app->render->DrawRectangle({ 275, 290, 1005, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 1:
@@ -1096,6 +1186,8 @@ void Combat::DrawJumpInstructions()
 
 	case 2:
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
 		break;
 
 	case 3:
@@ -2938,8 +3030,6 @@ void Combat::BossTurn()
 
 	if (steps == 3) app->scene->moveButton->state = GuiControlState::LOCKED;
 	else app->scene->moveButton->state = GuiControlState::NORMAL;
-
-	app->scene->escapeButton->state = GuiControlState::NORMAL;
 
 	turnText->SetString("BOSS TURN");
 
