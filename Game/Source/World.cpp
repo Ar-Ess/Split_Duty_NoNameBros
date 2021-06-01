@@ -80,6 +80,12 @@ void World::Start(Places placex)
 				p->colliderWorld = { 35, 1380, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 35, 1380 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
+
+			if (prevPlace == GOLEM_STONES)
+			{
+				p->colliderWorld = { 3150, 200, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 3150, 200 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
 		}
 
 		AlignCameraPosition();
@@ -176,20 +182,20 @@ void World::Start(Places placex)
 
 		if (lilipadPuzzle1 == nullptr)
 		{
-			lilipadPuzzle1 = new LilipadPuzzle(2, {840 + 14, 1092 + 14, 28, 28}, {980 + 14, 1092 + 14, 28, 28});
+			lilipadPuzzle1 = new LilipadPuzzle(2, { 840 + 14, 1092 + 14, 28, 28 }, { 980 + 14, 1092 + 14, 28, 28 });
 			lilipadPuzzle1->lilipad.At(0)->data.SetPosition(644, 924);
 			lilipadPuzzle1->lilipad.At(1)->data.SetPosition(252, 616);
 		}
 
 		if (stonePuzzle1 == nullptr)
 		{
-			stonePuzzle1 = new StonePuzzle(1, {280, 896, 112, 84});
+			stonePuzzle1 = new StonePuzzle(1, { 280, 896, 112, 84 });
 			stonePuzzle1->stone.At(0)->data.SetPosition(504, 728);
 		}
 
 		if (buttonPuzzle1 == nullptr)
 		{
-			buttonPuzzle1 = new ButtonPuzzle(4, 28, 28, {392, 308, 56, 56}, { 616, 308, 56, 56 }, { 840, 308, 56, 56 });
+			buttonPuzzle1 = new ButtonPuzzle(4, 28, 28, { 392, 308, 56, 56 }, { 616, 308, 56, 56 }, { 840, 308, 56, 56 });
 			buttonPuzzle1->button.At(0)->data.SetPosition(196 + 14, 1064 + 14, 1);
 			buttonPuzzle1->button.At(1)->data.SetPosition(336 + 14, 1148 + 14, 2);
 			buttonPuzzle1->button.At(2)->data.SetPosition(392 + 14, 1372 + 14, 3);
@@ -207,6 +213,21 @@ void World::Start(Places placex)
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
+	}
+	else if (placex == GOLEM_STONES)
+	{
+		map->Load("golem_sanctuary.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			p->colliderWorld = { 25, 800, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+			p->collisionRect = { 25, 800 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
 	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
@@ -344,16 +365,15 @@ void World::Draw()
 {
 	map->Draw();
 
-	if (debugCollisions)
-	{
-		DrawCollisions();
-	}
-	if (place != MAIN_VILLAGE && place != GRASSY_LAND_2)
+	if (debugCollisions) DrawCollisions();
+
+	if (place != MAIN_VILLAGE && place != GRASSY_LAND_2 && place != GOLEM_STONES)
 	{
 		DrawNPC();
 		DrawEnemy();
 		DrawPlayer();
 	}
+
 	return;
 }
 
@@ -487,6 +507,7 @@ void World::WorldChange()
 {
 	if (place == MAIN_VILLAGE)
 	{
+		// ENEMY FIELD
 		for (int i = 0; i < location3.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location3[i]))
@@ -497,24 +518,27 @@ void World::WorldChange()
 			}
 		}
 
+		// GOLEM STONES
 		for (int i = 0; i < location2.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
-			{
-				ChangeMap(MOSSY_ROCKS);
-				return;
-			}
-		}
-
-		for (int i = 0; i < location1.Count(); i++)
-		{
-			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
 				ChangeMap(GOLEM_STONES);
 				return;
 			}
 		}
 
+		// MOSSY ROCKS
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(MOSSY_ROCKS);
+				return;
+			}
+		}
+
+		// HOUSE
 		for (int i = 0; i < houses.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, houses[i]))
@@ -525,6 +549,7 @@ void World::WorldChange()
 			}
 		}
 
+		// TAVERN
 		for (int i = 0; i < tavern.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, tavern[i]))
@@ -535,6 +560,7 @@ void World::WorldChange()
 			}
 		}
 
+		// SHOP
 		for (int i = 0; i < shop.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, shop[i]))
@@ -605,6 +631,26 @@ void World::WorldChange()
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
 				ChangeMap(ENEMY_FIELD);
+				return;
+			}
+		}
+	}
+	else if (place == GOLEM_STONES)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(BOSS_SANCTUARY);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(MAIN_VILLAGE);
 				return;
 			}
 		}
@@ -1273,6 +1319,13 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y > 1110) app->render->camera.y = 720 - 1512;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 675) app->render->camera.x = 1280 - 1288; //1680
+	}
+	else if (placex == GOLEM_STONES)
+	{
+		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 598) app->render->camera.y = 720 - 1000;
+		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 1064) app->render->camera.x = 1280 - 1680; //616
 	}
 }
 

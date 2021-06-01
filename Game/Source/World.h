@@ -59,6 +59,7 @@ enum Places
     TAVERN,
     SHOP,
     GOLEM_STONES,
+    BOSS_SANCTUARY,
     GRASSY_LAND_1,
     GRASSY_LAND_2,
     AUTUM_FALL,
