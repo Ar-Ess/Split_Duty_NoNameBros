@@ -1319,7 +1319,7 @@ void Scene::UpdateCombat()
 
 	RestartPressState();
 
-	DebugSteps();
+	//DebugSteps();
 
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{

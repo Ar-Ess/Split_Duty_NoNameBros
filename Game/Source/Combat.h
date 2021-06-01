@@ -211,6 +211,7 @@ public: //TUTORIAL BOSS INFO
     int jumpInstructionStep = 0;
     bool endOfTutorial = false;
     SDL_Texture* tutorialBox = nullptr;
+    iPoint textBoxPos = {0, 0};
 
 public: //BOSS I info
     int shieldStep = 0;
