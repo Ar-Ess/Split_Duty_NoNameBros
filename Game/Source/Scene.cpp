@@ -1330,10 +1330,18 @@ void Scene::UpdateCombat()
 
 	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
-		player1->strengthStat = 39; //19
+		player1->strengthStat = 19;
 		player1->defenseStat = 13;
 		player1->health = (38 * player1->health) / player1->maxHealth;
 		player1->maxHealth = 38;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+	{
+		player1->strengthStat = 28;
+		player1->defenseStat = 20;
+		player1->health = (50 * player1->health) / player1->maxHealth;
+		player1->maxHealth = 50;
 	}
 }
 
@@ -1367,11 +1375,13 @@ void Scene::UpdateWorld()
 	if (world->secondBossActivation && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
 	world->secondBossActivation = false;
 
-	if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
-	world->thirdBossActivation = false;
+	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
 
-	if (world->finalBossActivation && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
-	world->finalBossActivation = false;
+	/*if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	world->thirdBossActivation = false;*/
+
+	/*if (world->finalBossActivation && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+	world->finalBossActivation = false;*/
 
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) combatScene->secondPlayer = !combatScene->secondPlayer;
 

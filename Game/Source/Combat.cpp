@@ -128,6 +128,20 @@ void Combat::BossStart()
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		for (int i = 0; i < 2; i++) spikeStep[i] = 0;
+		for (int i = 0; i < 2; i++) spike[i] = { spikeStep[i], 488 - 30, 60, 30 };
+		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
+		bigWave = { 1400, 0, 120, 90 };
+		boss2Attack1Time = 0;
+		boss2Attack2Time = 0;
+		boss2Attack3Time = 0;
+		boss2Attack4Time = 0;
+		boss2Attack5Time = 0;
+		boss2Attack6Time = 0;
+		boss2Attack7Time = 0;
+		bossIIStep = 0;
+		spikesFattenator = false;
+		b2heal = false;
 		break;
 	case(BossClass::BOSS_III):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -384,7 +398,7 @@ void Combat::CombatLogic()
 		{
 			BossAttack();
 
-			if (boss->bossClass == BOSS_I)
+			if (boss->bossClass == BOSS_I || boss->bossClass == BOSS_II)
 			{
 				if (boss->attack > 3) PlayerResponse();
 			}
@@ -399,7 +413,7 @@ void Combat::CombatLogic()
 					PlayerResponse();
 				}
 			}
-			else
+			else if (boss->bossClass == BOSS_III)
 			{
 				PlayerResponse();
 			}
@@ -423,6 +437,13 @@ void Combat::CombatLogic()
 				}
 				break;
 			case BossClass::BOSS_II:
+				if (boss->attack == 4) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 5) if (bigWave.x + bigWave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 6)
+				{
+					if (wave[1].x + wave[1].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+					if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x - 48) playerHitAble = true;
+				}
 				break;
 			case BossClass::BOSS_III:
 				break;
@@ -817,12 +838,13 @@ void Combat::DebugDraw()
 			break;
 		case(BossClass::BOSS_I):
 			app->render->DrawRectangle(shield, { 20, 30, 230, 100 });
-			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
-			app->render->DrawRectangle(wave[1], { 230, 30, 20, 100 });
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(wave[i], { 230, 30, 20, 100 });
 			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
 			break;
 		case(BossClass::BOSS_II):
-			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(spike[i], { 10, 130, 120, 100 });
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(wave[i], { 230, 30, 20, 100 });
+			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
 			break;
 		case(BossClass::BOSS_III):
 			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
@@ -1935,6 +1957,299 @@ void Combat::BossAttack()
 		}
 		break;
 	case(BossClass::BOSS_II):
+		if (boss->attack == 1)
+		{
+			if (boss2Attack1Time < 80)
+			{
+				boss2Attack1Time++;
+			}
+			else
+			{
+				int randm = (rand() % 3) + 1;
+
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+
+				boss2Attack1Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (boss2Attack2Time < 100)
+			{
+				if (spikesFattenator)
+				{
+					if (boss2Attack2Time > 85)
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							spike[i].h += 2;
+							spike[i].y -= 2;
+						}
+					}
+				}
+				boss2Attack2Time++;
+			}
+			else
+			{
+				spikesFattenator = false;
+
+				int randm = (rand() % 3) + 1;
+
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+
+				boss2Attack2Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 3)
+		{
+			if (boss2Attack3Time < 100)
+			{
+				boss2Attack3Time++;
+				if (b2heal) if (boss2Attack3Time > 50)
+				{
+					if (boss2Attack3Time > 50) boss->health++;
+				}
+				b2heal = false;
+			}
+			else
+			{
+				//RANDOM POS FOR SPIKE 0
+				int randm = (rand() % 3) + 1;
+				//IF RANDOM POS == PREVIOUS POS, CHANGE IT
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+				//UPDATE SPIKE 0 INFO
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+				
+				//RANDOM POS FOR SPIKE 1
+				int randm1 = rand() % 3;
+				//IF RANDOM POS FOR SPIKE 1 == RANDOM POS FOR SPIKE 0, CHANGE IT
+				if (randm1 == randm)
+				{
+					if (randm1 == 3) randm1 = 1;
+					else randm1++;
+
+					//IF RANDOM POS == PREVIOUS POS, CHANGE IT
+					if (randm1 == spikeStep[1])
+					{
+						if (randm1 == 3) randm1 = 1;
+						else randm1++;
+					}
+				}
+				else if (randm1 == spikeStep[1])
+				{
+					if (randm1 == 3) randm1 = 1;
+					else randm1++;
+
+					if (randm1 == randm)
+					{
+						if (randm1 == 3) randm1 = 1;
+						else randm1++;
+					}
+				}
+				//UPDATE SPIKE 1 INFO
+				spikeStep[1] = randm1;
+				spike[1].x = spikePos[spikeStep[1]];
+
+				boss2Attack3Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 4)
+		{
+			if (boss2Attack4Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack4Time++;
+			}
+			else if (boss2Attack4Time < 52)
+			{
+				if (boss2Attack4Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack4Time++;
+			}
+			else if (boss2Attack4Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (boss2Attack4Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 12;
+				boss2Attack4Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				boss2Attack4Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 5)
+		{
+			if (boss2Attack5Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 0 }, false, 50);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack5Time++;
+			}
+			else if (boss2Attack5Time < 62)
+			{
+				if (boss2Attack5Time == 50) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack5Time++;
+			}
+			else if (boss2Attack5Time < 210)
+			{
+				PlayerBigWaveHitLogic();
+				if (boss2Attack5Time == 62) bigWave = { 950, 403, 120, 85 };
+				bigWave.x -= 14;
+				boss2Attack5Time++;
+			}
+			else
+			{
+				bigWave = { 1400, 0, 120, 90 };
+				boss2Attack5Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 6)
+		{
+			if (boss2Attack6Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack6Time++;
+			}
+			else if (boss2Attack6Time < 52)
+			{
+				if (boss2Attack6Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack6Time++;
+			}
+			else if (boss2Attack6Time < 240)
+			{
+				if (boss2Attack6Time < 92)
+				{
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else if (boss2Attack6Time < 104)
+				{
+					if (boss2Attack6Time == 92) app->scene->iterations = 0;
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else
+				{
+					PlayerWaveHitLogic(1);
+					if (boss2Attack6Time == 104) wave[1] = { 950, 428, 105, 60 };
+					wave[1].x -= 12;
+				}
+
+				PlayerWaveHitLogic(0);
+				if (boss2Attack6Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 14;
+				boss2Attack6Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				wave[1] = { 1400, 0, 105, 60 };
+				boss2Attack6Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 7)
+		{
+			if (boss2Attack7Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 100)
+			{
+				if (boss2Attack7Time == 50)
+				{
+					app->scene->iterations = 0;
+					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
+					else if (steps == 1) boss->colliderCombat.x = 419 - (BOSS_C_W / 2);
+					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
+					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
+				}
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 190)
+			{
+				boss->colliderCombat.y += 3;
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 230)
+			{
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 240)
+			{
+				boss->colliderCombat.y += 17;
+				PlayerHitLogic();
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 285)
+			{
+				boss->colliderCombat.y -= 15;
+				PlayerHitLogic();
+				boss2Attack7Time++;
+				if (boss2Attack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
+			}
+			else
+			{
+				if (boss->colliderCombat.y < BOSS_C_Y) boss->colliderCombat.y += 7;
+				else
+				{
+					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					boss2Attack7Time = 0;
+					AfterBossAttack();
+					playerHitAble = true;
+				}
+			}
+		}
 		break;
 	case(BossClass::BOSS_III):
 		break;
@@ -2100,12 +2415,42 @@ void Combat::PlayerMove()
 		steps++;
 		LOG("Player moved to position : %d", steps);
 
-		if (!secondPlayer)
+		if (bossBattle && boss->bossClass == BOSS_II)
 		{
-			if (enemyBattle) EnemyTurn();
-			else if (bossBattle) BossTurn();
+			for (int i = 0; i < 2; i++)
+			{
+				if (spikeStep[i] == steps)
+				{
+					int damage = EnemyDamageLogic();
+					if (bossIIStep == 1)
+					{
+						damage -= 17;
+						if (damage <= 0) damage = 1;
+						app->scene->player1->health -= damage;
+					}
+					else
+					{
+						damage -= 13;
+						if (damage <= 0) damage = 1;
+						app->scene->player1->health -= damage;
+					}
+				}
+			}
 		}
-		else if (secondPlayer) SecondPlayerTurn();
+
+		if (app->scene->player1->health > 0)
+		{
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
+			else if (secondPlayer) SecondPlayerTurn();
+		}
+		else if (app->scene->player1->health <= 0)
+		{
+			PlayerDie();
+		}
 	}
 }
 
@@ -2653,7 +2998,67 @@ void Combat::BossAttackProbability()
 		}
 		break;
 	case BossClass::BOSS_II:
-		boss->attack = 1;
+		if (bossIIStep == 0)
+		{
+			boss->attack = 1;
+			bossIIStep = 1;
+		}
+		else if (bossIIStep == 1)
+		{
+			if (boss->health < 40)
+			{
+				bossIIStep = 2;
+				boss->attack = 2;
+				spikesFattenator = true;
+			}
+			else
+			{
+				int randm = rand() % 7;
+
+				if (boss->attack == 1) randm = 2;
+
+				if (randm < 2) boss->attack = 1;
+				else boss->attack = 4;
+			}
+		}
+		else if (bossIIStep == 2)
+		{
+			if (boss->health < 20)
+			{
+				bossIIStep = 3;
+				boss->attack = 3;
+				b2heal = true;
+			}
+			else
+			{
+				int randm = rand() % 7;
+
+				if (boss->attack == 1) randm = 2;
+
+				if (randm < 2) boss->attack = 1;
+				else
+				{
+					int randm1 = rand() % 2;
+					if (randm1 == 0) boss->attack = 5;
+					else boss->attack = 6;
+				}
+			}
+		}
+		else if (bossIIStep == 3)
+		{
+			int randm = rand() % 9;
+
+			if (boss->attack == 1) randm = 2;
+
+			if (randm < 2) boss->attack = 3;
+			else if (randm < 6)
+			{
+				int randm1 = rand() % 2;
+				if (randm1 == 0) boss->attack = 5;
+				else boss->attack = 6;
+			}
+			else boss->attack = 7;
+		}
 		break;
 	case BossClass::BOSS_III:
 		boss->attack = 1;
