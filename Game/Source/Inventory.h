@@ -99,17 +99,13 @@ private:
 
 private:
     SDL_Texture* itemsTexture;
-
     
 	GuiString* littleBeefText = nullptr;
 	GuiString* bigBeefText = nullptr;
 	GuiString* featherText = nullptr;
 	GuiString* mantisText = nullptr;
 	GuiString* coinText = nullptr;
-	GuiString* splitText = nullptr;
-
-    
- 
+	GuiString* splitText = nullptr; 
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};

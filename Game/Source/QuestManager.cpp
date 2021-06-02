@@ -42,9 +42,6 @@ bool QuestManager::Update(float dt)
 		//LOGIC
 		currentQuest->QuestLogic();
 
-		/*if (currentQuest->IsActive() == false)
-			DeactivateQuest(currentQuest->id);*/
-
 			//DRAW INFO
 		if (app->scene->GetCurrScene() == Scenes::WORLD)
 		{
@@ -185,15 +182,6 @@ void QuestManager::CheckKillQuest(Enemy* e)
 		return;
 	}
 }
-
-//void QuestManager::CheckGatherQuest(ItemType type, int amount)
-//{
-//	if (static_cast<GatherQuest*>(currentQuest)->iType == type)
-//	{
-//		currentQuest->itemAmount = amount;
-//		return;
-//	}		
-//}
 
 void QuestManager::CheckFindQuest(int npcID)
 {
