@@ -837,8 +837,15 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 	int eDefense = 0;
 	int eVelocity = 0;
 
-	int variation = (200 * (x / 2));
-	int eExp = (x * 150) + (rand() % variation);
+	//LVL EXP OPTION 1
+	/*int variation = (200 * (x / 2));
+	int eExp = (x * 150) + (rand() % variation);*/
+
+	//LVL EXP OPTION 2
+	int variation = (100 * (x / 2));
+	int maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
+	maxExp = (maxExp / 5) - 100;
+	int eExp = maxExp + (rand() % variation);
 
 	SDL_Rect combatCollider = { NULL };
 	SDL_Rect worldCollider = { NULL };
