@@ -1361,13 +1361,17 @@ void Scene::UpdateWorld()
 	}
 
 	// DEBUG
-	if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !bossTBeat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+	if (world->tutorialBossActivation && !bossTBeat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+	world->tutorialBossActivation = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
+	if (world->secondBossActivation && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
+	world->secondBossActivation = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	world->thirdBossActivation = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+	if (world->finalBossActivation && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+	world->finalBossActivation = false;
 
 	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) combatScene->secondPlayer = !combatScene->secondPlayer;
 

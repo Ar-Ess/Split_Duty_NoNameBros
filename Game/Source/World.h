@@ -99,6 +99,8 @@ public:
 
     void LoadNPCs(Places place);
 
+    void GolemCall();
+
     Places GetPlace() const
     {
         return place;
@@ -136,6 +138,16 @@ public:
 
 public:
     bool godMode = false;
+
+public: //GOLEMS
+    bool tutorialBossActivation = false;
+    bool secondBossActivation = false;
+    bool thirdBossActivation = false;
+    bool finalBossActivation = false;
+    const SDL_Rect tutorialBossRect = { 1063, 450, 50, 25 };
+    const SDL_Rect secondBossRect = { 1287, 363, 50, 25 };
+    const SDL_Rect thirdBossRect = { 1513, 450, 50, 25 };
+    //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
 
 private:
 

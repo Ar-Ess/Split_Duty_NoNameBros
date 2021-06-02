@@ -220,14 +220,20 @@ void World::Start(Places placex)
 
 		if (!app->scene->continuePressed)
 		{
-			p->colliderWorld = { 25, 800, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-			p->collisionRect = { 25, 800 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			if (prevPlace == MAIN_VILLAGE)
+			{
+				p->colliderWorld = { 25, 800, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 25, 800 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+			else if (prevPlace == BOSS_SANCTUARY)
+			{
+
+			}
 		}
 
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
-
 	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
@@ -348,6 +354,8 @@ void World::Update()
 	if (app->scene->player1->stabStat > 0) WorldStabLogic();
 
 	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->scene->player1->stabStat = 25;
+
+	GolemCall();
 }
 
 void World::EnemyLogic()
@@ -489,6 +497,13 @@ void World::DrawCollisions()
 		else if (stabRight) app->render->DrawRectangle({ p->colliderWorld.x + off[0], p->colliderWorld.y + off[1], STAB_H, STAB_W }, { 200, 0, 50, 150 });
 		else if (stabDown) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
 		else if (stabUp) app->render->DrawRectangle({ p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H }, { 200, 0, 50, 150 });
+	}
+
+	if (place == GOLEM_STONES)
+	{
+		app->render->DrawRectangle(tutorialBossRect, {100, 0, 100, 150});
+		app->render->DrawRectangle(secondBossRect, { 100, 0, 100, 150 });
+		app->render->DrawRectangle(thirdBossRect, { 100, 0, 100, 150 });
 	}
 
 	p = nullptr;
@@ -1289,6 +1304,34 @@ void World::LoadNPCs(Places placex)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
+	}
+}
+
+void World::GolemCall()
+{
+	SDL_Rect ampPlayerCollider = app->scene->player1->collisionRect;
+	ampPlayerCollider.x -= 15;
+	ampPlayerCollider.y -= 25;
+	ampPlayerCollider.w += 30;
+	ampPlayerCollider.h += 50;
+
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
+	{
+		if (collisionUtils.CheckCollision(tutorialBossRect, ampPlayerCollider))
+		{
+			tutorialBossActivation = true;
+			AsignPrevPosition();
+		}
+		else if (collisionUtils.CheckCollision(secondBossRect, ampPlayerCollider))
+		{
+			secondBossActivation = true;
+			AsignPrevPosition();
+		}
+		else if (collisionUtils.CheckCollision(thirdBossRect, ampPlayerCollider))
+		{
+			thirdBossActivation = true;
+			AsignPrevPosition();
+		}
 	}
 }
 
