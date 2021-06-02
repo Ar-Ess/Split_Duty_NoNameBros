@@ -103,7 +103,8 @@ private:
 	GuiString* featherText = nullptr;
 	GuiString* mantisText = nullptr;
 	GuiString* coinText = nullptr;
-	GuiString* splitText = nullptr; 
+	GuiString* splitText = nullptr;
+    GuiString* currQuestText = nullptr;
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};
@@ -126,6 +127,7 @@ private:
     GuiString* velocityStatText = nullptr;
     GuiString* luckStatText = nullptr;
     GuiString* stabStatText = nullptr;
+
     iPoint statsPos = { 1162,253 };
     iPoint statsOff = { 0,68 };
 
