@@ -24,8 +24,6 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-
-
 class Inventory
 {
 public:
