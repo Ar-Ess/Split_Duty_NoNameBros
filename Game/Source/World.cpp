@@ -216,6 +216,7 @@ void World::Start(Places placex)
 	}
 	else if (placex == GOLEM_STONES)
 	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("golem_sanctuary.tmx");
 
 		if (!app->scene->continuePressed)
