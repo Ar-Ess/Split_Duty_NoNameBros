@@ -382,6 +382,8 @@ void World::Draw()
 		DrawPlayer();
 	}
 
+	DrawText();
+
 	return;
 }
 
@@ -440,6 +442,12 @@ void World::DrawNPC()
 		}
 		npc = nullptr;
 	}
+}
+
+void World::DrawText()
+{
+	if (drawRecomendedII || drawRecomendedIII) lvlRecomendedText->Draw();
+	//lvlRecomendedText->Draw();
 }
 
 void World::DrawCollisions()
@@ -1322,23 +1330,48 @@ void World::GolemCall()
 	ampPlayerCollider.w += 30;
 	ampPlayerCollider.h += 50;
 
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
+	if (collisionUtils.CheckCollision(tutorialBossRect, ampPlayerCollider))
 	{
-		if (collisionUtils.CheckCollision(tutorialBossRect, ampPlayerCollider))
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
 			tutorialBossActivation = true;
 			AsignPrevPosition();
 		}
-		else if (collisionUtils.CheckCollision(secondBossRect, ampPlayerCollider))
+	}
+	else if (collisionUtils.CheckCollision(secondBossRect, ampPlayerCollider))
+	{
+		if (!app->scene->boss2Beat)
+		{
+			drawRecomendedII = true;
+			lvlRecomendedText->bounds = { 460 - app->render->camera.x, 220 + app->render->camera.y, 100, 100 };
+			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
 			secondBossActivation = true;
 			AsignPrevPosition();
 		}
-		else if (collisionUtils.CheckCollision(thirdBossRect, ampPlayerCollider))
+	}
+	else if (collisionUtils.CheckCollision(thirdBossRect, ampPlayerCollider))
+	{
+		if (!app->scene->boss3Beat)
+		{
+			drawRecomendedIII = true;
+			lvlRecomendedText->bounds = { 690 - app->render->camera.x, 300 + app->render->camera.y, 30, 40 };
+			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 60");
+		}
+
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
 			thirdBossActivation = true;
 			AsignPrevPosition();
 		}
+	}
+	else
+	{
+		drawRecomendedII = false;
+		drawRecomendedIII = false;
 	}
 }
 

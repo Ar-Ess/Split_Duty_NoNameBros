@@ -89,6 +89,8 @@ public:
 
     void DrawNPC();
 
+    void DrawText();
+
     void DrawCollisions();
 
     void AlignCameraPosition();
@@ -148,6 +150,9 @@ public: //GOLEMS
     const SDL_Rect secondBossRect = { 1287, 363, 50, 25 };
     const SDL_Rect thirdBossRect = { 1513, 450, 50, 25 };
     //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
+    GuiString* lvlRecomendedText = nullptr;
+    bool drawRecomendedII = false;
+    bool drawRecomendedIII = false;
 
 private:
 

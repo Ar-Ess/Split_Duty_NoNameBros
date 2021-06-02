@@ -129,7 +129,7 @@ void Combat::BossStart()
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 		for (int i = 0; i < 2; i++) spikeStep[i] = 0;
-		for (int i = 0; i < 2; i++) spike[i] = { spikeStep[i], 488 - 30, 60, 30 };
+		for (int i = 0; i < 2; i++) spike[i] = { spikePos[spikeStep[i]], 488 - 30, 60, 30};
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
 		boss2Attack1Time = 0;

@@ -1127,6 +1127,13 @@ void Scene::SetWorld(Places place)
 		//world->inventory->exitInventoryButton->text = "Exit inventory";
 		world->inventory->splitButton->SetObserver(this);
 	}
+	if (world->lvlRecomendedText == nullptr)
+	{
+		world->lvlRecomendedText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		world->lvlRecomendedText->bounds = {0, 0, 40, 50};
+		world->lvlRecomendedText->SetTextFont(app->fontTTF->defaultFont3);
+		world->lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
+	}
 }
 
 void Scene::SetPauseMenu()
@@ -1375,10 +1382,10 @@ void Scene::UpdateWorld()
 	if (world->secondBossActivation && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
 	world->secondBossActivation = false;
 
-	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	//if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
 
-	/*if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
-	world->thirdBossActivation = false;*/
+	if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	world->thirdBossActivation = false;
 
 	/*if (world->finalBossActivation && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
 	world->finalBossActivation = false;*/
