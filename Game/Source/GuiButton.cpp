@@ -76,25 +76,9 @@ bool GuiButton::Update(float dt)
                     app->guiManager->idSelection = -1;
 				}
 			}
-            else if (app->dialogueManager->onDialog)
-            {
-                if (app->input->GetControl(A) == KeyState::KEY_UP)
-                {
-                    app->audio->SetFx(Effect::BUTTON_RELEASED);
-                    app->dialogueManager->OptionSelected(0);
-                    NotifyObserver();
-                }
-                if (app->input->GetControl(B) == KeyState::KEY_UP)
-                {
-                    app->audio->SetFx(Effect::BUTTON_RELEASED);
-                    app->dialogueManager->OptionSelected(1);
-                    NotifyObserver();
-                }
-            }
             else state = GuiControlState::NORMAL;
         } 
     }
-
     return true;
 }
 
