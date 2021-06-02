@@ -190,10 +190,6 @@ uint8_t* Input::UpdateGamepadsInput()
 	if (pad.enabled == true)
 	{
 		buttons[A] = SDL_GameControllerGetButton(pad.sdlController, SDL_CONTROLLER_BUTTON_A) == 1;
-		if (buttons[A] == 1)
-		{
-			int a = 0;
-		}
 		buttons[B] = SDL_GameControllerGetButton(pad.sdlController, SDL_CONTROLLER_BUTTON_B) == 1;
 		buttons[X] = SDL_GameControllerGetButton(pad.sdlController, SDL_CONTROLLER_BUTTON_X) == 1;
 		buttons[Y] = SDL_GameControllerGetButton(pad.sdlController, SDL_CONTROLLER_BUTTON_Y) == 1;

@@ -36,7 +36,7 @@ public: //functions
 	bool CleanUp();
 	/////////////////////////////////	
 	void StartDialogue(int dialogueID);
-
+	void OptionSelected(int option);
 private: //functions
 
 	//////CREATORS//////
@@ -58,6 +58,7 @@ private: //functions
 	void EndDialogue();
 	void DeleteOptions(DialogueNode* node);
 	void DeleteOptionButtons();
+
 
 public: //variables
 	bool				onDialog = false;

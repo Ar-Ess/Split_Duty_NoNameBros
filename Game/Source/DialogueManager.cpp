@@ -143,6 +143,11 @@ void DialogueManager::DeleteOptionButtons()
 	}
 }
 
+void DialogueManager::OptionSelected(int option)
+{
+	
+}
+
 void DialogueManager::DeleteOptions(DialogueNode* node)
 {
 	for (ListItem<DialogueOption*>* itemOption = node->optionsList.start;
@@ -271,8 +276,19 @@ void DialogueManager::Input()
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
-			if(itemOption->data->optionButton != nullptr)
+			if (itemOption->data->optionButton != nullptr)
 				itemOption->data->optionButton->Update(1.0f);
+		}
+
+		if (app->input->GetControl(A) == KEY_DOWN)
+		{
+			currentDialogue->currentNode->optionsList.At(0)->data->optionButton->NotifyObserver();
+			app->audio->SetFx(Effect::BUTTON_RELEASED);
+		}
+		else if (app->input->GetControl(B) == KEY_DOWN)
+		{
+			currentDialogue->currentNode->optionsList.At(1)->data->optionButton->NotifyObserver();
+			app->audio->SetFx(Effect::BUTTON_RELEASED);
 		}
 	}
 }
