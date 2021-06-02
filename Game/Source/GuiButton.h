@@ -25,7 +25,6 @@ public:
     virtual ~GuiButton();
 
     bool Update(float dt);
-    bool UpdateOnClick(float dt);
     bool Draw(float scale = 1, bool useCamera = true, bool drawTexture = true, ButtonType = ButtonType::MENU);
     void ChangeTexture(const char* path);
 	bool buttonFocus = false;

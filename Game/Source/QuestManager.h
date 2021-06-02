@@ -40,6 +40,7 @@ public://FUNCTIONS
 
 private://FUNCTIONS
 	friend class Scene;
+	friend class Inventory;
 
 	void CreateQuestMap(pugi::xml_node& setter);
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;

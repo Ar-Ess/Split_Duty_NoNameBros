@@ -34,17 +34,17 @@ enum GamePadInput
 	B,
 	X,
 	Y,
-	L1,
-	R1,
-	L3,
-	R3,
 	UP_PAD,
 	DOWN_PAD,
 	LEFT_PAD,
 	RIGHT_PAD,
+	L1,
+	R1,
+	L3,
+	R3,
 	START,
-	BACK,
 	GUIDE,
+	BACK,
 };
 
 struct GamePad
@@ -54,22 +54,21 @@ struct GamePad
 	//bool x, y, a, b, l1, r1, l3, r3;
 	//bool up, down, left, right;
 	float l2, r2;
-	float l_x, l_y, r_x, r_y, l_dz, r_dz;
+	float leftX, leftY, rightX, rightY, leftDeadZone, rightDeadZone;
 
 	//Controller data
 	bool enabled = false;
 	int index;
-	_SDL_GameController* controller = nullptr;
+	_SDL_GameController* sdlController = nullptr;
 	_SDL_Haptic* haptic = nullptr;
 
 	//Rumble controller
-	int rumble_countdown;
-	float rumble_strength;
+	int rumbleCountdown;
+	float rumbleStrength;
 };
 
 class Input : public Module
 {
-
 public:
 
 	Input();
@@ -86,7 +85,7 @@ public:
 
 	void UpdateMouseInput();
 
-	void UpdateGamepadsInput();
+	uint8_t* UpdateGamepadsInput();
 
 	bool CleanUp();
 
@@ -97,7 +96,7 @@ public:
 
 	KeyState GetControl(int id) const
 	{
-		return gamePad[id];
+		return controllerButtons[id];
 	}
 
 	KeyState GetMouseButtonDown(int id) const
@@ -107,7 +106,7 @@ public:
 
 	bool GetPadEnabled() const
 	{
-		return pads[0].enabled;
+		return pad.enabled;
 	}
 
 	void ControllerPressedStateLogic(int id);
@@ -129,21 +128,19 @@ public:
 	const char* GetControllerName(int id) const;
 
 private:
-
 	bool windowEvents[WE_COUNT];
 
-	KeyState* keyboard = nullptr;
-	
+	KeyState* keyboard = nullptr;	
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
-	GamePad pads[MAX_PADS];
+
+	GamePad pad;
+	KeyState* controllerButtons = nullptr;
 public:
 		
 	int	mouseMotionX;
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
-public:
-	KeyState* gamePad = nullptr;
 };
 
 #endif // __INPUT_H__

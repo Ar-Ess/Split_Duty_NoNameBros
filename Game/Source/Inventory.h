@@ -104,6 +104,7 @@ private:
 	GuiString* mantisText = nullptr;
 	GuiString* coinText = nullptr;
 	GuiString* splitText = nullptr;
+    GuiString* currQuestTitleText = nullptr;
     GuiString* currQuestText = nullptr;
 
     iPoint itemPos = { 100,160 };

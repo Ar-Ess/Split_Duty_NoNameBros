@@ -415,6 +415,31 @@ void Inventory::SetText()
 		stabStatText->SetString(str, BROWN);
 		stabStatText->CenterAlign();
 	}
+	if (app->questManager->currentQuest != nullptr)
+	{
+		if (currQuestTitleText == nullptr)
+		{
+			currQuestTitleText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			currQuestTitleText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
+			currQuestTitleText->SetTextFont(app->fontTTF->inventoryFont);
+
+			char str[5] = {};
+			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
+			currQuestTitleText->SetString(str, BROWN);
+			currQuestTitleText->CenterAlign();
+		}
+		if (currQuestText == nullptr)
+		{
+			currQuestText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			currQuestText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
+			currQuestText->SetTextFont(app->fontTTF->inventoryFont);
+
+			char str[5] = {};
+			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
+			currQuestText->SetString(str, BROWN);
+			currQuestText->CenterAlign();
+		}
+	}
 
 	//quest
 	
