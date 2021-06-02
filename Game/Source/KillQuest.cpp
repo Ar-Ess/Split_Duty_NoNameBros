@@ -18,11 +18,11 @@ KillQuest::KillQuest(uint16 id, uint16 reward, uint16 goal, const char* textDesc
 void KillQuest::QuestLogic()
 {
 	if (this->enemyDefeated == true)
-	{ 
-		this->count++;	
+	{
+		this->count++;
 		this->enemyDefeated = false;
 	}
-	if (this->count == this->goal)
+	if (this->count >= this->goal)
 	{
 		this->SetCompleted();
 	}

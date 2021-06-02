@@ -4,8 +4,6 @@
 GatherQuest::GatherQuest(uint16 id, uint16 reward, uint16 goal, const char* textDescription, const char* textTitle, ItemType iType) :
 	Quest(QuestType::GATHER)
 {
-	this->count = NULL;
-
 	this->id = id;
 	this->reward = reward;
 	this->goal = goal;
@@ -17,13 +15,29 @@ GatherQuest::GatherQuest(uint16 id, uint16 reward, uint16 goal, const char* text
 
 void GatherQuest::QuestLogic()
 {
-	if (this->itemPicked)
+	bool done = false;
+	switch (iType)
 	{
-		this->count += this->itemAmount;
-		this->itemPicked = false;
-		this->itemAmount = NULL;
+	case ItemType::LITTLE_BEEF_I:
+		done = (app->scene->player1->smallMeatCount >= this->goal);
+		break;
+	case ItemType::BIF_BEEF_I:
+		done = (app->scene->player1->largeMeatCount >= this->goal);
+		break;
+	case ItemType::FEATHER_I:
+		done = (app->scene->player1->featherCount >= this->goal);
+		break;
+	case ItemType::MANTIS_I:
+		done = (app->scene->player1->mantisRodCount >= this->goal);
+		break;
+	case ItemType::COINS_I:
+		done = (app->scene->player1->moneyCount >= this->goal);
+		break;
+	case ItemType::SPLIT_I:
+		done = (app->scene->player1->splitedEnemyCount >= this->goal);
+		break;
 	}
-	if (this->count == this->goal)
+	if (done)
 	{
 		this->SetCompleted();
 	}
@@ -57,4 +71,5 @@ void GatherQuest::QuestLogic()
 		p = nullptr;
 	}
 }
-	
+
+

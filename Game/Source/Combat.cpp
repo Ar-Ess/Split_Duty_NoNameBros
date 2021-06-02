@@ -3288,7 +3288,7 @@ void Combat::ItemDrop(EnemyClass enemy)
 			{
 				if (randMeat < 7) smallMeat++;
 				else largeMeat++;
-				app->questManager->CheckGatherQuest(ItemType::LITTLE_BEEF_I, 1);
+				//app->questManager->CheckGatherQuest(ItemType::LITTLE_BEEF_I, 1);
 			}
 
 			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;

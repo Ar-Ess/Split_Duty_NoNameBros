@@ -21,3 +21,4 @@ public:
 };
 
 #endif //!__KLLQUEST_H__
+

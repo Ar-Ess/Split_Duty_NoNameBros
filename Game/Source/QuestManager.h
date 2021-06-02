@@ -27,12 +27,16 @@ public://FUNCTIONS
 	bool CleanUp();
 
 	void CheckKillQuest(Enemy* e);
-	void CheckGatherQuest(ItemType type, int amount);
+	//void CheckGatherQuest(ItemType type, int amount);
 	void CheckFindQuest(int npcID);
 
 	void ActivateQuest(int id);
 	void DeactivateQuest(int id);
 	void CompleteQuest(int id);
+
+	Quest* GetCurrentQuest() {
+		return currentQuest;
+	}
 
 private://FUNCTIONS
 	friend class Scene;
@@ -42,14 +46,13 @@ private://FUNCTIONS
 
 public://VARIABLES
 private://VARIABLES
-	Quest*						currentQuest = nullptr;
+	Quest* currentQuest = nullptr;
 	int							endline = 0;
 	int							offset = 15;
 
-	SDL_Color           black = { 0  , 0  , 0  , 255 };
+	SDL_Color					black = { 0  , 0  , 0  , 255 };
 
 	std::map<int, Quest*>		questList;
-	std::map<int, Quest*>		activeQuest;
 	std::map<int, Quest*>		finishedQuest;
 
 	SDL_Texture* questTexture = nullptr;
