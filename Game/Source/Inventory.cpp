@@ -36,7 +36,7 @@ void Inventory::Start()
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
 	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face_animations.png");
-	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
+	hiddenStats = app->tex->Load("Assets/Textures/UI/stats.png");
 
 	idleFaceAnim.PushBack({ 0, 0, 70, 68 });
 
@@ -116,7 +116,7 @@ void Inventory::Restart()
 
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(faceAnimationTexture);
-	app->tex->UnLoad(statsTexture);
+	app->tex->UnLoad(hiddenStats);
 
 	blinkFaceAnim.Reset();
 	angryFaceAnim.Reset();
@@ -144,6 +144,8 @@ void Inventory::Update()
 void Inventory::Draw(int y)
 {
 	DrawInterface(y);
+
+	DrawStats(y);
 
 	DrawFace(y);
 
@@ -528,9 +530,9 @@ void Inventory::DrawText(int y)
 	healthStatText->Draw();
 	strenghtStatText->Draw();
 	defenseStatText->Draw();
-	velocityStatText->Draw();
-	stabStatText->Draw();
-	luckStatText->Draw();
+	if (app->scene->player1->velocityStat > 0) velocityStatText->Draw();
+	if (app->scene->player1->stabStat > 0) stabStatText->Draw();
+	if (app->scene->player1->luckStat > 0) luckStatText->Draw();
 
 	healthText->bounds.y -= y;
 	expText->bounds.y -= y;
@@ -549,6 +551,13 @@ void Inventory::DrawText(int y)
 	velocityStatText->bounds.y -= y;
 	stabStatText->bounds.y -= y;
 	luckStatText->bounds.y -= y;
+}
+
+void Inventory::DrawStats(int y)
+{
+	if (app->scene->player1->velocityStat > 0) app->render->DrawTexture(hiddenStats, 846, 455 + y, 1, false, &velocity, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->luckStat > 0) app->render->DrawTexture(hiddenStats, 846, 523 + y, 1, false, &luck, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->stabStat > 0) app->render->DrawTexture(hiddenStats, 846, 591 + y, 1, false, &stab, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::UpdateHealthText()
