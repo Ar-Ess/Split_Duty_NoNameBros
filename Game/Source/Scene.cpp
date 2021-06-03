@@ -1259,10 +1259,13 @@ void Scene::SetEndScreen()
 
 void Scene::UpdateLogoScene()
 {
+	app->render->DrawRectangle(whiteRect, {255, 255, 255, 255});
+
 	if (timer >= 50)
 	{
 		float logoX = EaseLogoBetweenPoints(iPoint(-1280, 0), iPoint(0, 0), false);
 		app->render->DrawTexture(logo, logoX, 0);
+		whiteRect.x += 20;
 	}
 
 	if (timer < 50)
@@ -1271,18 +1274,20 @@ void Scene::UpdateLogoScene()
 	}
 	else if (timer < 80)
 	{
-		app->transition->FadeToBlackEffect(true, 30.0f);
+		//app->transition->FadeToBlackEffect(true, 30.0f);
 		timer++;
 		if (timer == 51) app->audio->SetFx(Effect::LOGO_SCENE_FX);
 	}
 	else if (timer < 250)
 	{
 		timer++;
+		if (timer > 100) whiteRect.x -= 20;
 	}
 	else if (timer >= 250 && timer < 280)
 	{
 		app->transition->FadeToBlackEffect(false, 30.0f);
 		timer++;
+		whiteRect.x -= 20;
 	}
 	else
 	{

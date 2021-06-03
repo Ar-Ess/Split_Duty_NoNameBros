@@ -156,6 +156,7 @@ private: // Textures
 	SDL_Texture* menu = nullptr;
 	SDL_Texture* pause = nullptr;
 	SDL_Texture* pauseBackground = nullptr;
+	SDL_Rect whiteRect = { 0, 0, 1280, 452 };
 
 public:
 	friend class Combat;
