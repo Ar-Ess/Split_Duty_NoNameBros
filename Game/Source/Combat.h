@@ -83,6 +83,45 @@ struct ResponseZone
     }
 };
 
+struct Pusher
+{
+    Pusher()
+    {
+
+    }
+
+    void SetUp(int originx, SDL_Rect rectx, bool drawx, bool pushx)
+    {
+        origin = originx;
+        rect = rectx;
+        draw = drawx;
+        pushing = pushx;
+        Restart();
+    }
+
+    void DebugDraw()
+    {
+        if (draw) app->render->DrawRectangle(rect, {170, 10, 130, 100});
+    }
+
+    SDL_Rect rect;
+    SDL_Texture* tex = nullptr;
+    bool draw = false;
+    bool pushing = false;
+    int origin;
+    void Move()
+    {
+        rect.x -= 12;
+        draw = true;
+    }
+    void Restart()
+    {
+        rect.x = origin;
+        draw = false;
+        pushing = false;
+    }
+};
+
 
 class Combat
 {
@@ -297,6 +336,7 @@ public: //BOSS III info
     short int boss3Attack6Time = 0;
     short int boss3Attack7Time = 0;
     short int bossIIIStep = 0;
+    Pusher pusher;
 
 public:
     short int enemyTimeWait = 0;

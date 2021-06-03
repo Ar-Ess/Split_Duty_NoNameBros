@@ -152,6 +152,8 @@ void Combat::BossStart()
 		bossIIIStep = 0;
 		wave[0] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
+		pusher.SetUp(980 - 20, { 0, 285, 20, 215 }, false, false);
+		pusher.tex = nullptr;
 		boss3Attack1Time = 0;
 		boss3Attack2Time = 0;
 		boss3Attack3Time = 0;
@@ -431,7 +433,7 @@ void Combat::CombatLogic()
 			}
 			else if (boss->bossClass == BOSS_III)
 			{
-				if (boss->attack > 3)
+				if (boss->attack > 3 && boss->attack < 8)
 				{
 					if (rZone.step != (steps + 1)) PlayerResponse();
 				}
@@ -885,6 +887,7 @@ void Combat::DebugDraw()
 			app->render->DrawRectangle(rZone.rect, { 0, 30, 235, 100 });
 			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
 			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
+			pusher.DebugDraw();
 			break;
 		}
 	}
@@ -2353,6 +2356,7 @@ void Combat::BossAttack()
 					if (randm == 4) randm = 1;
 					else randm++;
 				}
+				if (randm == 1) randm = 0;
 				//UPDATE iZone INFO
 				iZone.step = randm;
 				iZone.rect.x = zonePos[iZone.step];
@@ -2383,6 +2387,7 @@ void Combat::BossAttack()
 						else randm1++;
 					}
 				}
+				if (randm1 == 1) randm1 = 0;
 				//UPDATE rZone INFO
 				rZone.step = randm1;
 				rZone.rect.x = zonePos[rZone.step];
@@ -2513,6 +2518,40 @@ void Combat::BossAttack()
 				boss3Attack6Time = 0;
 				AfterBossAttack();
 			}
+		}
+		else if (boss->attack == 7) //JUMP FORWARD
+		{
+			AfterBossAttack();
+		}
+		else if (boss->attack == 8) //SHIELD FORCE PUSH BACK
+		{
+			Player* p = app->scene->player1;
+			Player* p2 = app->scene->player2;
+			if (pusher.rect.x + pusher.rect.w > 0) //TODO FUTURE, BEING ABLE TO SHIFT TO ABOID PUSHING
+			{
+				pusher.Move();
+				if (collisionUtils.CheckCollision(p->colliderCombat, pusher.rect)) pusher.pushing = true;
+				if (pusher.pushing)
+				{
+					if (p->colliderCombat.x + (+p->colliderCombat.w / 2) <= 249)
+					{
+						PlayerPosReset();
+						pusher.pushing = false;
+					}
+					else
+					{
+						p->colliderCombat.x -= 12;
+						if (secondPlayer) p2->colliderCombat.x -= 12;
+					}
+				}
+			}
+			else
+			{
+				pusher.Restart();
+				AfterBossAttack();
+			}
+			p = nullptr;
+			p2 = nullptr;
 		}
 		break;
 	}
@@ -3394,7 +3433,30 @@ void Combat::BossAttackProbability()
 		}
 		else if (bossIIIStep == 3)
 		{
+			int randm = rand() % 14;
+			if (boss->attack == 3) randm = 5;
 
+			if (randm < 5) boss->attack = 3;
+			else
+			{
+				int rndm = rand() % 13;
+				if (rndm < 4) boss->attack = 4;
+				else if (rndm < 8) boss->attack = 7;
+				else if (rndm < 11) boss->attack = 5;
+				else if (rndm < 13)
+				{
+					if (steps == 0) boss->attack = 8;
+					else
+					{
+						rndm = rand() % 8;
+						if (rndm < 3) boss->attack = 4;
+						else if (rndm < 6) boss->attack = 7;
+						else if (rndm < 8) boss->attack = 5;
+					}
+				}
+			}
+
+			if (iZone.step == (steps + 1)) boss->attack = 6;
 		}
 		break;
 	}
@@ -3857,5 +3919,6 @@ void Combat::PlayerSplitWin()
 
 void InstaZone::InstaKill()
 {
-	app->scene->player1->health = 0;
+	if (app->scene->player1->health < 2) app->scene->player1->health = 0;
+	else app->scene->player1->health = 1;
 }

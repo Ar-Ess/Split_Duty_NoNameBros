@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Collider.h"
 #include "Player.h"
+#include "Combat.h"
 
 #include "Log.h"
 
@@ -22,7 +23,7 @@ LevelUp::LevelUp()
 {	
 }
 
-void LevelUp::Start(int exp)
+void LevelUp::Start(int expGained)
 {
 	SetText();
 
@@ -31,14 +32,14 @@ void LevelUp::Start(int exp)
 	interfaceGui = app->tex->Load("Assets/Screens/level_scene_gui.png");
 
 	char str1[24] = {};
-	sprintf(str1, "Gained %d exp", exp);
+	sprintf(str1, "Gained %d exp", expGained);
 	expGainedText->SetString(str1, WHITE);
 
 	levelUpBool = false;
 
 	//------------------------------------------
 	Player* p = app->scene->player1;
-
+	/*
 	actualExp = p->exp; //Actual player experience
 	counter = actualExp; // Counter for exp animation
 	actualLevel = p->lvl;
@@ -84,12 +85,50 @@ void LevelUp::Start(int exp)
 
 	nextLevel = p->lvl;
 	p->exp = newExp;
+	*/
 
+	startExp = p->exp;
+	startLvl = p->lvl;
+	endExp = p->exp;
+	endLvl = p->lvl;
+	counter = startExp;
+
+	bool end = false;
+
+	while (!end)
+	{
+		maxExp = floor(1000 * pow((float)endLvl, 1.25f));
+
+		if (expGained >= maxExp)
+		{
+			endLvl++;
+			expGained -= maxExp;
+			endExp = expGained;
+			levelUpBool = true;
+			counter = 0;
+		}
+		else
+		{
+			endExp = expGained;
+			end = true;
+		}
+	}
+
+	if (endExp == 0) endExp = 1;
+
+	sumUp = ceil(endExp / 475);
+	if (sumUp <= 0) sumUp = 1;
+
+	UpgradeStats(endLvl);
+	if (app->scene->combatScene->GetSecondPlayerExistance()) Upgrade2Stats(endLvl);
+
+	p->exp = endExp;
+	p->lvl = endLvl;
 	p = nullptr;
 
 	//TEXTS
 	char str[24] = {};
-	sprintf(str, "Level Up! %d to %d", actualLevel, nextLevel);
+	sprintf(str, "Level Up! %d to %d", startLvl, endLvl);
 	levelUpText->SetString(str, WHITE);
 }
 
@@ -98,6 +137,13 @@ void LevelUp::Restart()
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(interfaceGui);
 	app->tex->UnLoad(barTexture);
+
+	maxExp = 0;
+	startLvl = 0;
+	endLvl = 0;
+	startExp = 0;
+	endExp = 0;
+	levelUpBool = false;
 }
 
 void LevelUp::Update()
@@ -138,6 +184,26 @@ void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 	app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, {0, 40, 200, 255}, true, false);
 	app->render->DrawTexture(barTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
+}
+
+void LevelUp::UpgradeStats(int x)
+{
+	Player* p = app->scene->player1;
+	p->maxHealth = ceil((x / 2.0f) + 20.0f);
+	p->strengthStat = ceil((x / 2.8f) + 6.0f);
+	p->defenseStat = ceil((x / 3.0f) + 3.0f);
+	if (p->luckStat != 0) p->luckStat = floor((x / 5.0f) + 1.0f);
+	if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+	if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
+	p = nullptr;
+}
+
+void LevelUp::Upgrade2Stats(int x)
+{
+	Player* p = app->scene->player1;
+	p->maxHealth = ceil(pow((float)x, 0.75f) + 5);
+	p->strengthStat = ceil((x / 3.5f) + 3.0f);
+	p->defenseStat = ceil(pow((float)x, (9.0f / 14.0f)) + 2.0f);
 }
 
 void LevelUp::UpdateButtons()

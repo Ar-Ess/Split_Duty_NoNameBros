@@ -47,6 +47,9 @@ public:
     void DrawButtons(int x);
 
     void DrawBar(iPoint pos, int current, int max, SDL_Color color);
+
+    void UpgradeStats(int lvl);
+    void Upgrade2Stats(int lvl);
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
@@ -54,12 +57,13 @@ private:
     SDL_Texture* barTexture = nullptr;
 
     const SDL_Rect expBarRect = { 0,742,261,22 };
-    
-    short int plusExp = 0;
-    short int actualExp = 0;
-    short int maxExp = 0;
-	short int actualLevel = 0;
-	short int nextLevel = 0;
+
+    int maxExp = 0;
+
+	int startLvl = 0;
+    int endLvl = 0;
+    int startExp = 0;
+    int endExp = 0;
 
     bool levelUpBool = false;
 
