@@ -66,6 +66,7 @@ private:
     int endExp = 0;
 
     bool levelUpBool = false;
+    bool maxLevel = false;
 
     int counter = 0;
     int sumUp = 0;
@@ -83,6 +84,8 @@ public:
     GuiString* expText = nullptr;
 
     GuiString* winText = nullptr;
+
+    GuiString* maxLvlText = nullptr;
 
 };
 

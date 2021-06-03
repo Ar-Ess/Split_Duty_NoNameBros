@@ -115,9 +115,14 @@ void LevelUp::Start(int expGained)
 	}
 
 	if (endExp == 0) endExp = 1;
+	sumUp = (0.5f * endExp) / 100;
 
-	sumUp = ceil(endExp / 475);
-	if (sumUp <= 0) sumUp = 1;
+	if (endLvl > 100)
+	{
+		endLvl = 100;
+		endExp = 0;
+		maxLevel = true;
+	}
 
 	UpgradeStats(endLvl);
 	if (app->scene->combatScene->GetSecondPlayerExistance()) Upgrade2Stats(endLvl);
@@ -144,6 +149,7 @@ void LevelUp::Restart()
 	startExp = 0;
 	endExp = 0;
 	levelUpBool = false;
+	maxLevel = false;
 }
 
 void LevelUp::Update()
@@ -161,12 +167,10 @@ void LevelUp::Draw(int x)
 
     DrawText(x);
 
-	if (counter < app->scene->player1->exp) counter += sumUp;
+	if (!maxLevel) if (counter < app->scene->player1->exp) counter += sumUp;
 
 
 	DrawBar({530 + x, 400}, counter, maxExp, BLUE);
-
-	//app->guiManager->DrawCursor();
 }
 
 void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
@@ -236,6 +240,15 @@ void LevelUp::SetText()
 		winText->SetString("YOU WON!", WHITE);
 	}
 
+	if (maxLvlText == nullptr)
+	{
+		maxLvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		maxLvlText->bounds = { 600, 180, 300, 100 };
+		maxLvlText->SetTextFont(app->fontTTF->defaultFont);
+
+		maxLvlText->SetString("MAX LEVEL REACHED", WHITE);
+	}
+
 	if (expGainedText == nullptr)
 	{
 		expGainedText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
@@ -267,18 +280,26 @@ void LevelUp::SetText()
 
 void LevelUp::DrawText(int x)
 {
-	if (levelUpBool)
+	if (!maxLevel)
 	{
-		levelUpText->bounds.x += x;
-		levelUpText->Draw();
-		levelUpText->bounds.x -= x;
+		if (levelUpBool)
+		{
+			levelUpText->bounds.x += x;
+			levelUpText->Draw();
+			levelUpText->bounds.x -= x;
+		}
+		if (!levelUpBool)
+		{
+			winText->bounds.x += x;
+			winText->Draw();
+			winText->bounds.x -= x;
+		}
 	}
-
-	if (!levelUpBool)
+	else
 	{
-		winText->bounds.x += x;
-		winText->Draw();
-		winText->bounds.x -= x;
+		maxLvlText->bounds.x += x;
+		maxLvlText->Draw();
+		maxLvlText->bounds.x -= x;
 	}
 	
 	expGainedText->bounds.x += x;
