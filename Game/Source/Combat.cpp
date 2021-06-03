@@ -481,6 +481,7 @@ void Combat::CombatLogic()
 						once = true;
 					}
 				}
+				else if (boss->attack == 7) if (boss->colliderCombat.x + boss->colliderCombat.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
 				break;
 			}
 		}
@@ -2500,9 +2501,9 @@ void Combat::BossAttack()
 				else
 				{
 					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					playerHitAble = true;
 					boss3Attack5Time = 0;
 					AfterBossAttack();
-					playerHitAble = true;
 				}
 			}
 		}
@@ -2521,7 +2522,45 @@ void Combat::BossAttack()
 		}
 		else if (boss->attack == 7) //JUMP FORWARD
 		{
-			AfterBossAttack();
+			if (boss3Attack7Time < 40)
+			{
+				boss->colliderCombat.x += 3;
+				boss3Attack7Time++;
+			}
+			else if (boss3Attack7Time < 90)
+			{
+				boss3Attack7Time++;
+				playerHitAble = true;
+			}
+			else if (boss3Attack7Time < 180)
+			{
+				if (boss3Attack7Time == 90) app->scene->iterations = 0;
+				boss->colliderCombat.x = BOSS_C_X;
+				boss->colliderCombat.y = BOSS_C_Y;
+				fPoint point = app->scene->EaseQuadXY({ boss->colliderCombat.x, boss->colliderCombat.y }, { -70, boss->colliderCombat.y - 80 }, false, 90, 20);
+				boss->colliderCombat.x += ((int)point.x - BOSS_C_X);
+				boss->colliderCombat.y += ((int)point.y - BOSS_C_Y);
+				PlayerHitLogic();
+				boss3Attack7Time++;
+			}
+			else if (boss3Attack7Time < 255)
+			{
+				if (boss3Attack7Time == 180)
+				{
+					app->scene->iterations = 0;
+					boss->colliderCombat = { 1280, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+				}
+
+				boss->colliderCombat.x -= 4;
+				boss3Attack7Time++;
+			}
+			else
+			{
+				boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+				playerHitAble = true;
+				boss3Attack7Time = 0;
+				AfterBossAttack();
+			}
 		}
 		else if (boss->attack == 8) //SHIELD FORCE PUSH BACK
 		{

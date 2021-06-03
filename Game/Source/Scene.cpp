@@ -1701,6 +1701,25 @@ float Scene::EaseQuadY(iPoint posA, iPoint posB, bool repeat, int totalIter)
 	return value;
 }
 
+fPoint Scene::EaseQuadXY(iPoint posA, iPoint posB, bool repeat, int totalIterX, int totalIterY)
+{
+	float valueX = easing.backEaseOut(iterations, posA.x, posB.x - posA.x, totalIterX);
+	float valueY = easing.backEaseOut(iterations, posA.y, posB.y - posA.y, totalIterY);
+
+	int totalIter = 0;
+	if (totalIterX > totalIterY) totalIter = totalIterX;
+	else totalIter = totalIterY;
+
+	if (iterations < totalIter) {
+		iterations++;
+	}
+	else {
+		if (repeat)	iterations = 0;
+	}
+
+	return {valueX, valueY};
+}
+
 float Scene::EaseBossJumpUp(iPoint posA, iPoint posB, bool repeat, int totalIter)
 {
 	float value = easing.backEaseIn(iterations, posA.y, posB.y - posA.y, totalIter);
