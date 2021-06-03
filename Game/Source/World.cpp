@@ -176,6 +176,30 @@ void World::Start(Places placex)
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
+	else if (placex == GRASSY_LAND_1)
+	{
+		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+
+		map->Load("grassy_lands_1.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == ENEMY_FIELD)
+			{
+				p->colliderWorld = { 1141, 2716, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1141, 2716 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+			else if (prevPlace == GRASSY_LAND_2)
+			{
+				p->colliderWorld = { 1904, 84, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1904, 84 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+	}
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
@@ -376,7 +400,7 @@ void World::Draw()
 
 	if (debugCollisions) DrawCollisions();
 
-	if (place != MAIN_VILLAGE && place != GRASSY_LAND_2 && place != GOLEM_STONES)
+	if (place == HOUSE || place == ENEMY_FIELD || place == TAVERN)
 	{
 		DrawNPC();
 		DrawEnemy();
@@ -633,7 +657,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
-				ChangeMap(GRASSY_LAND_2);
+				ChangeMap(GRASSY_LAND_1);
 				return;
 			}
 		}
@@ -1396,6 +1420,10 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y > 1838) app->render->camera.y = 720 - 2240;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1068) app->render->camera.x = 1280 - 1680;
+	}
+	else if (placex == GRASSY_LAND_1)
+	{
+
 	}
 	else if (placex == GRASSY_LAND_2)
 	{

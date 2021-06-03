@@ -127,7 +127,7 @@ void Inventory::Restart()
 	if (p->stabStat > 9) stabStatText->bounds.x += 8;
 	if (p->velocityStat > 9) velocityStatText->bounds.x += 8;
 	if (p->defenseStat > 9) defenseStatText->bounds.x += 8;
-	if (p->maxHealth > 9) healthStatText->bounds.x += 8;
+	if (p->maxHealth > 9) if (healthStatText != nullptr) healthStatText->bounds.x += 8;
 	if (p->strengthStat > 9) strenghtStatText->bounds.x += 8;
 	p = nullptr;
 }
