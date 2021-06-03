@@ -19,7 +19,7 @@ class QuestManager : public Module
 {
 public://FUNCTIONS
 	QuestManager();
-	virtual ~QuestManager() {};
+	virtual ~QuestManager();
 
 	bool Awake(pugi::xml_node&);
 	bool Start();

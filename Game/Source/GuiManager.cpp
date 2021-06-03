@@ -192,13 +192,16 @@ void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 	}
 }
 
-void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
+void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y, int sizex)
 {
-	int size = 4;
+	int size = sizex;
 	int thickness = 20;
 	int offset = maxLife * size;
+
 	app->render->DrawRectangle({x - offset,y,maxLife*size,thickness }, MAGENTA);
-	lifeBar = { x-life*4,y,life * size,thickness };
+
+	lifeBar = { x-life*size,y,life * size,thickness };
+
 	if (life > 0)
 	{
 		//if life is critical blinks
@@ -207,7 +210,9 @@ void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
 			BlinkLifeBar(life, RED, SOFT_RED);
 		}
 		else
+		{
 			app->render->DrawRectangle(lifeBar, RED);
+		}
 	}
 }
 
@@ -247,7 +252,8 @@ void GuiManager::DrawCombatInterface(Boss* boss)
 
 	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
 
-	DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
+	if (boss->bossClass == BossClass::BOSS_III) DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30, 2);
+	else DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
 }
 
 void GuiManager::DisableAllButtons()

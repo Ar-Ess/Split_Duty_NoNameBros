@@ -8,6 +8,11 @@ QuestManager::QuestManager()
 	endline = 200;
 }
 
+QuestManager::~QuestManager()
+{
+
+}
+
 bool QuestManager::Awake(pugi::xml_node&)
 {
 	bool ret = true;
@@ -58,7 +63,6 @@ bool QuestManager::Update(float dt)
 bool QuestManager::CleanUp()
 {
 	bool ret = true;
-	currentQuest = nullptr;
 	questList.clear();
 	finishedQuest.clear();
 

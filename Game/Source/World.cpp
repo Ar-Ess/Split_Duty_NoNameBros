@@ -696,16 +696,16 @@ void World::WorldEnemySpawn()
 	}
 
 	//ENEMY LEVELING SYSTEM
-	//ENEMY FIELD -> 1 to 10
-	//GRASSY LANDS 1 -> 11 to 20
+	//ENEMY FIELD -> 1 to 11
+	//GRASSY LANDS 1 -> 12 to 22
 	//GRASSY LANDS 2 -> PUZZLE
-	//GRASSY LANDS 3 -> 21 to 30
+	//GRASSY LANDS 3 -> 23 to 33
 	//BOSS 2 -> 35
-	//AUTUM FALL 1 -> 36 to 45
-	//AUTUM FALL 2 -> 46 to 55
-	//BOSS 3 -> 60
-	//MOSSY ROCKS 1 -> 61 to 70
-	//MOSSY ROCKS 2 -> 71 to 80
+	//AUTUM FALL 1 -> 41 to 51
+	//AUTUM FALL 2 -> 52 to 62
+	//BOSS 3 -> 65
+	//MOSSY ROCKS 1 -> 67 to 77
+	//MOSSY ROCKS 2 -> 78 to 88
 	//FINAL BOSS -> 90
 }
 
@@ -1360,7 +1360,7 @@ void World::GolemCall()
 		{
 			drawRecomendedIII = true;
 			lvlRecomendedText->bounds = { 690 - app->render->camera.x, 300 + app->render->camera.y, 30, 40 };
-			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 60");
+			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 65");
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)

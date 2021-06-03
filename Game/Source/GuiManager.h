@@ -44,7 +44,7 @@ public:
 
 	void DrawPlayerLifeBar(int life, int maxLife, int x, int y);
 
-	void DrawEnemyLifeBar(int life, int maxLife, int x, int y);
+	void DrawEnemyLifeBar(int life, int maxLife, int x, int y, int size = 4);
 
 	void BlinkLifeBar(int life,SDL_Color color1 , SDL_Color color2);
 

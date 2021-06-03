@@ -45,6 +45,45 @@ enum CombatState
     ESCAPE
 };
 
+struct InstaZone
+{
+    InstaZone()
+    {
+
+    }
+
+    short int step = 0;
+    SDL_Rect rect = { 1300, 488 - 15,  70, 30 };
+    SDL_Texture* tex = nullptr;
+
+    void SetUp(int stepx, SDL_Rect rectx)
+    {
+        step = stepx;
+        rect = rectx;
+    }
+
+    void InstaKill();
+};
+
+struct ResponseZone
+{
+    ResponseZone()
+    {
+
+    }
+
+    short int step = 0;
+    SDL_Rect rect = { 1300, 488 - 15,  70, 30 };
+    SDL_Texture* tex = nullptr;
+
+    void SetUp(int stepx, SDL_Rect rectx)
+    {
+        step = stepx;
+        rect = rectx;
+    }
+};
+
+
 class Combat
 {
 public:
@@ -208,6 +247,7 @@ public: //Getters
 public: //GENERAL BOSS INFO
     SDL_Rect wave[2] = { 1400, 0, 105, 60 };
     SDL_Rect bigWave = { 1400, 0, 120, 90 };
+    bool once = false;
 
 public: //TUTORIAL BOSS INFO
     bool tutorialActive = false;
@@ -244,6 +284,19 @@ public: //BOSS II info
     short int bossIIStep = 0;
     bool spikesFattenator = false;
     bool b2heal = false;
+
+public: //BOSS III info
+    InstaZone iZone = {};
+    ResponseZone rZone = {};
+    const short int zonePos[5] = { 1300, 249 - 35, 419 - 35, 589 - 35, 759 - 35 };
+    short int boss3Attack1Time = 0;
+    short int boss3Attack2Time = 0;
+    short int boss3Attack3Time = 0;
+    short int boss3Attack4Time = 0;
+    short int boss3Attack5Time = 0;
+    short int boss3Attack6Time = 0;
+    short int boss3Attack7Time = 0;
+    short int bossIIIStep = 0;
 
 public:
     short int enemyTimeWait = 0;
@@ -423,5 +476,4 @@ private:
 
     SDL_Texture* combatInventory = nullptr;
 };
-
 #endif // __COMBAT_H__
