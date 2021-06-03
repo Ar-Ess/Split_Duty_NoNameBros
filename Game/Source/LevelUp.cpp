@@ -193,20 +193,34 @@ void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 void LevelUp::UpgradeStats(int x)
 {
 	Player* p = app->scene->player1;
-	p->maxHealth = ceil((x / 2.0f) + 20.0f);
+
+	int mHealth= ceil((x / 2.0f) + 20.0f);
+	p->health = (mHealth * p->health) / p->maxHealth;
+	p->maxHealth = mHealth;
+
 	p->strengthStat = ceil((x / 2.8f) + 6.0f);
+
 	p->defenseStat = ceil((x / 3.0f) + 3.0f);
-	if (p->luckStat != 0) p->luckStat = floor((x / 5.0f) + 1.0f);
+
+	if (p->luckStat != 0) p->luckStat = ceil((x / 5.0f));
+
 	if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+
 	if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
+
 	p = nullptr;
 }
 
 void LevelUp::Upgrade2Stats(int x)
 {
-	Player* p = app->scene->player1;
-	p->maxHealth = ceil(pow((float)x, 0.75f) + 5);
+	Player* p = app->scene->player2;
+
+	int mHealth = ceil(pow((float)x, 0.75f) + 5);
+	p->health = (mHealth * p->health) / p->maxHealth;
+	p->maxHealth = mHealth;
+
 	p->strengthStat = ceil((x / 3.5f) + 3.0f);
+
 	p->defenseStat = ceil(pow((float)x, (9.0f / 14.0f)) + 2.0f);
 }
 
