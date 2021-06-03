@@ -1418,6 +1418,11 @@ void Scene::UpdateWorld()
 		if (player1->godMode) player1->playerSpeed = 14;
 		else player1->playerSpeed = PLAYER_SPEED;
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+	{
+		levelUpScene->UpgradeStats(100);
+	}
 }
 
 void Scene::UpdatePauseMenu()

@@ -56,48 +56,57 @@ void Inventory::Start()
 	currPlayerFaceAnim = &idleFaceAnim;
 
 	//TEXT
+	Player* p = app->scene->player1;
+
 	SetText();
 
 	char str[5] = {};
-	sprintf(str, "%d", app->scene->player1->lvl);
+	sprintf(str, "%d", p->lvl);
 	lvlText->SetString(str, YELLOW);
 
 	//STATS TEXT
 	char str1[5] = {};
-	sprintf(str1, "%d", app->scene->player1->healthStat);
+	sprintf(str1, "%d", p->maxHealth);
 	healthStatText->SetString(str1, BROWN);
+	if (p->maxHealth > 9) healthStatText->bounds.x -= 8;
 
 	char str2[5] = {};
-	sprintf(str2, "%d", app->scene->player1->strengthStat);
+	sprintf(str2, "%d", p->strengthStat);
 	strenghtStatText->SetString(str2, BROWN);
+	if (p->strengthStat > 9) strenghtStatText->bounds.x -= 8;
 
 	char str3[5] = {};
-	sprintf(str3, "%d", app->scene->player1->defenseStat);
+	sprintf(str3, "%d", p->defenseStat);
 	defenseStatText->SetString(str3, BROWN);
+	if (p->defenseStat > 9) defenseStatText->bounds.x -= 8;
 
 	char str4[5] = {};
-	sprintf(str4, "%d", app->scene->player1->velocityStat);
+	sprintf(str4, "%d", p->velocityStat);
 	velocityStatText->SetString(str4, BROWN);
+	if (p->velocityStat > 9) velocityStatText->bounds.x -= 8;
 
 	char str5[5] = {};
-	sprintf(str5, "%d", app->scene->player1->stabStat);
+	sprintf(str5, "%d", p->stabStat);
 	stabStatText->SetString(str5, BROWN);
+	if (p->stabStat > 9) stabStatText->bounds.x -= 8;
 
 	char str6[5] = {};
-	sprintf(str6, "%d", app->scene->player1->luckStat);
+	sprintf(str6, "%d", p->luckStat);
 	luckStatText->SetString(str6, BROWN);
+	if (p->luckStat > 9) luckStatText->bounds.x -= 8;
 
 	//HEALTH 
 	char hpText[20] = {};
-	sprintf(hpText, "%d / %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	sprintf(hpText, "%d / %d", p->health, p->maxHealth);
 	healthText->SetString(hpText, YELLOW);
 
 	//XP
 	char xpText[20] = {};
-	maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
-
-	sprintf(xpText, "%d / %d", app->scene->player1->exp, maxExp);
+	maxExp = int(floor(1000 * pow((float)p->lvl, 1.25f)));
+	sprintf(xpText, "%d / %d", p->exp, maxExp);
 	expText->SetString(xpText, YELLOW);
+
+	p = nullptr;
 		
 }
 
@@ -112,6 +121,15 @@ void Inventory::Restart()
 	blinkFaceAnim.Reset();
 	angryFaceAnim.Reset();
 	idleFaceAnim.Reset();
+
+	Player* p = app->scene->player1;
+	if (p->luckStat > 9) luckStatText->bounds.x += 8;
+	if (p->stabStat > 9) stabStatText->bounds.x += 8;
+	if (p->velocityStat > 9) velocityStatText->bounds.x += 8;
+	if (p->defenseStat > 9) defenseStatText->bounds.x += 8;
+	if (p->maxHealth > 9) healthStatText->bounds.x += 8;
+	if (p->strengthStat > 9) strenghtStatText->bounds.x += 8;
+	p = nullptr;
 }
 
 void Inventory::Update()
