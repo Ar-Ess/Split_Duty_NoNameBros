@@ -878,6 +878,23 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_1)
+				{
+					switch (tileId)
+					{
+					case 2890: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 2888: // GRASSY LAND 2
+						app->scene->world->location1.Add(r);
+						break;
+
+					case 2889: // ENEMY FIELD
+						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
 				{
 					switch (tileId)
@@ -885,10 +902,10 @@ void Map::LoadColliders(MapLayer* layer)
 					case 1799: // COLLIDER
 						app->scene->world->collisions.Add(r);
 						break;
-					case 1796: // GRAVEYARD
+					case 1796: // GRASSY LANDS 1
 						app->scene->world->location1.Add(r);
 						break;
-					case 1798: // Nothing
+					case 1798: // GRASSY LANDS 3
 						app->scene->world->location2.Add(r);
 						break;
 					case 1795: // IMMERSIVE GROUND

@@ -13,6 +13,7 @@
 #define REL_CAMY_PLAYERY 318
 
 #define ENEMY_FIELD_ENEMY_MAX 5
+#define GRASSY_1_ENEMY_MAX 4
 
 #define ENEMY_RUN_SPEED 4
 #define ENEMY_WALK_SPEED 2
@@ -62,6 +63,7 @@ enum Places
     BOSS_SANCTUARY,
     GRASSY_LAND_1,
     GRASSY_LAND_2,
+    GRASSY_LAND_3,
     AUTUM_FALL,
     MOSSY_ROCKS
 };

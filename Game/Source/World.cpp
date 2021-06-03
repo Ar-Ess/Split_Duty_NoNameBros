@@ -186,19 +186,23 @@ void World::Start(Places placex)
 		{
 			if (prevPlace == ENEMY_FIELD)
 			{
-				p->colliderWorld = { 1141, 2716, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 1141, 2716 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				p->colliderWorld = { 1080, 2640, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1080, 2640 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 			else if (prevPlace == GRASSY_LAND_2)
 			{
-				p->colliderWorld = { 1904, 84, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 1904, 84 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				p->colliderWorld = { 1784, 64, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1784, 64 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
 
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 	else if (placex == GRASSY_LAND_2)
 	{
@@ -501,7 +505,7 @@ void World::DrawCollisions()
 		npc = nullptr;
 	}
 
-	if (place == ENEMY_FIELD)
+	if (place == ENEMY_FIELD || place == GRASSY_LAND_1)
 	{
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
@@ -672,13 +676,42 @@ void World::WorldChange()
 			}
 		}
 	}
+	else if (place == GRASSY_LAND_1)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(GRASSY_LAND_2);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(ENEMY_FIELD);
+				return;
+			}
+		}
+	}
 	else if (place == GRASSY_LAND_2)
 	{
 		for (int i = 0; i < location1.Count(); i++)
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
-				ChangeMap(ENEMY_FIELD);
+				ChangeMap(GRASSY_LAND_1);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(GRASSY_LAND_3);
 				return;
 			}
 		}
@@ -713,8 +746,19 @@ void World::WorldEnemySpawn()
 	{
 		while (app->entityManager->enemies.Count() < ENEMY_FIELD_ENEMY_MAX)
 		{
-			int lvl = (rand() % 10) + 1;
+			int lvl = (rand() % 11) + 1;
 			app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == GRASSY_LAND_1)
+	{
+		while (app->entityManager->enemies.Count() < GRASSY_1_ENEMY_MAX)
+		{
+			int randm = rand() % 5;
+			int lvl = (rand() % 11) + 12;
+			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
 			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
 		}
 	}
@@ -789,7 +833,20 @@ void World::WorldEnemyDetection()
 void World::WorldEnemyChasing()
 {
 	Player* p = app->scene->player1;
-	if (collisionUtils.CheckCollision(p->collisionRect, { 196, 168, 1120, 1512 }) && !playerInmunity)
+	SDL_Rect conflictZone = {};
+
+	switch (place)
+	{
+	case ENEMY_FIELD:
+		conflictZone = { 196, 168, 1120, 1512 };
+		break;
+
+	case GRASSY_LAND_1:
+		conflictZone = { 640, 392, 876, 484 };
+		break;
+	}
+
+	if (collisionUtils.CheckCollision(p->collisionRect, conflictZone) && !playerInmunity)
 	{
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
 		{
@@ -913,8 +970,18 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 		break;
 	}
 
-	worldCollider.x = 196 + (rand() % 1121);
-	worldCollider.y = 168 + (rand() % 1513);
+	switch (place)
+	{
+	case ENEMY_FIELD:
+		worldCollider.x = 196 + (rand() % 1121);
+		worldCollider.y = 168 + (rand() % 1513);
+		break;
+
+	case GRASSY_LAND_1:
+		worldCollider.x = 644 + (rand() % 896);
+		worldCollider.y = 392 + (rand() % 504);
+		break;
+	}
 
 	e->SetUp(combatCollider, worldCollider, lvl, eExp, eHealth, eStrength, eDefense, eVelocity);
 }
@@ -1423,7 +1490,8 @@ void World::RectifyCameraPosition(Places placex)
 	}
 	else if (placex == GRASSY_LAND_1)
 	{
-
+		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 2398) app->render->camera.y = 720 - 2800;
 	}
 	else if (placex == GRASSY_LAND_2)
 	{
