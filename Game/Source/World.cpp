@@ -37,6 +37,7 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("main_village.tmx");
+		app->scene->enviroment = Environments::GRASSY_LANDS;
 
 		if (!app->scene->continuePressed)
 		{
@@ -127,6 +128,8 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("graveyard.tmx");
+
+		app->scene->enviroment = Environments::GRASSY_LANDS;
 
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
@@ -243,10 +246,25 @@ void World::Start(Places placex)
 
 		RectifyCameraPosition(placex);
 	}
+	else if (placex == AUTUM_FALL_1)
+	{
+		app->scene->enviroment = Environments::AUTUM_FALLS;
+	}
+	else if (placex == AUTUM_FALL_2)
+	{
+	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		app->scene->enviroment = Environments::MOSSY_LANDS;
+	}
+	else if (placex == MOSSY_ROCKS_2)
+	{
+	}
 	else if (placex == GOLEM_STONES)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("golem_sanctuary.tmx");
+		app->scene->enviroment = Environments::BOSS_LANDS;
 
 		if (!app->scene->continuePressed)
 		{
@@ -1461,22 +1479,22 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->NPCs.end->data->SetUp({ 150, 150 }, NPCtype::BARMAN, placex, dialog);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 8, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 11, 3);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 8, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 12, 2);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 8, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 13, 3);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 33*28 - 10, 17*28 }, NPCtype::ADVENTURER, placex, 8, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 33*28 - 10, 17*28 }, NPCtype::ADVENTURER, placex, 14, 3);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 24*28, 9*28 }, NPCtype::ADVENTURER, placex, 8, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28, 9*28 }, NPCtype::ADVENTURER, placex, 15, 4);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 13*28 - 15, 18*28 - 15 }, NPCtype::CITIZEN_1, placex, 8, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 13*28 - 15, 18*28 - 15 }, NPCtype::CITIZEN_1, placex, 16, 4);
 	}
 	else if (placex == ENEMY_FIELD)
 	{

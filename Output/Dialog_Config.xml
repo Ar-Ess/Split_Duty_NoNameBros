@@ -241,5 +241,49 @@
         <Option NextNode="-1" ReturnCode="1">Let's go!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="11">
+      <Node ID="0">
+        <NPCTalk>I'VE BEEN SITTING ON THIS CHAIR EVERY DAY OF MY LIFE SINCE THIS TAVERN WAS OPEN!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Wow</Option>
+      </Node>
+      <Node ID="0">
+        <NPCTalk>THANKS FOR YOUR ADMIRATION, YOUNG WOMAN!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">:)</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="12">
+      <Node ID="0">
+        <NPCTalk>... AND THEN I TOOK THAT UGLY MANTIS AND I GOT THE MANTIS ROD! NOW I HAVE INMUNITY FOR ONE ENEMY HIT!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="13">
+      <Node ID="0">
+        <NPCTalk>... YES BUT I DID NOMETHING BETTER! I USED A FEATHER TO JUMP UPON A WOLF CHARGE! BEAT THIS!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="14">
+      <Node ID="0">
+        <NPCTalk>YOU MIGHT THINK THIS IS SUPOSEDLY A BEER, BUT IS SUPPOSEDLY NOT, IT IS REALLY A RED TEA, HAHAHAHAHAHAHAHA! IF YOU REALLY NEED SUPPOSED HEALTH YOU BARELY MIGHT EAT SOME MIGHT... I MEAN, MEAT!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Thanks...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="15">
+      <Node ID="0">
+        <NPCTalk>I WANT TO ORDER SOMETHING TO THE BARMAN BUT I CAN MOVE FROM HERE, SOMETHING IS FORCING ME STAY HERE! HELP!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Not my fault</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>EITHERWAY, THE BARMAN SEEMS TO NOT BE ABLE TO MOVE TOO, MAYBE HE HAS SOMETHING TO TELL YOU...</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Ooooo!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="16">
+      <Node ID="0">
+        <NPCTalk>I MIGHT BE THE ONE WITH BETTER CLOTHE TASTE IN THIS BUILDING ;)</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Sure...</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

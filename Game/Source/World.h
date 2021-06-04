@@ -64,8 +64,10 @@ enum Places
     GRASSY_LAND_1,
     GRASSY_LAND_2,
     GRASSY_LAND_3,
-    AUTUM_FALL,
-    MOSSY_ROCKS
+    AUTUM_FALL_1,
+    AUTUM_FALL_2,
+    MOSSY_ROCKS_1,
+    MOSSY_ROCKS_2
 };
 
 
