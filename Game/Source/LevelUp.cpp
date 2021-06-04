@@ -116,6 +116,7 @@ void LevelUp::Start(int expGained)
 
 	if (endExp == 0) endExp = 1;
 	sumUp = (0.5f * endExp) / 100;
+	if (sumUp == 0) sumUp = 1;
 
 	if (endLvl > 100)
 	{

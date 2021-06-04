@@ -93,6 +93,8 @@ public:
 
     void DrawText();
 
+    void DrawObstacles();
+
     void DrawCollisions();
 
     void AlignCameraPosition();
@@ -155,6 +157,13 @@ public: //GOLEMS
     GuiString* lvlRecomendedText = nullptr;
     bool drawRecomendedII = false;
     bool drawRecomendedIII = false;
+
+public: //obstacles
+    SDL_Texture* leaves = nullptr;
+    SDL_Rect leavesCollision = {-10, 1960, 200, 200};
+    const SDL_Rect bush = {0,0,58,50};
+    SDL_Texture* fallenLog = nullptr;
+    SDL_Rect logCollision = {};
 
 private:
 

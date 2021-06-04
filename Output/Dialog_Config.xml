@@ -134,5 +134,112 @@
         <Option NextNode="-1" ReturnCode="2">Okey!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="7">
+      <Node ID="0">
+        <NPCTalk>DO YOU WANT ME TO REMEMBER YOUR OBJECTIVE?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Okey!</Option>
+        <Option NextNode="-1" ReturnCode="1">Missclick</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>IN THE NORTH-EAST OF THE TOWN THERE IS A SANCTUARY WHERE THERE ARE GOLEMS IMPRISIONING YOU AND THIS VILLAGE. KILL THEM, VISIT THE CAVE, AND YOU'LL BE FREE!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Thanks!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="8">
+      <Node ID="0">
+        <NPCTalk>HEY ADVENTURER, WHAT IS BRINGING YOU HERE?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Some beer</Option>
+        <Option NextNode="2" ReturnCode="1">Adventure</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>OHHH, THAT'S A SHAME, THIS IS AN ABSTEMIC TAVERN, WE DO NOT OFFER BEER...</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Ooooo...</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>THEN YOU SHOULD BE INTERESTED IN GETTING PREPARED FOR IT RIGHT?</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">OF COURSE!</Option>
+        <Option NextNode="3" ReturnCode="1">NOT REALLY...</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>WELL THEN, SEE YOU NEXT TIME!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">BIE!</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>I HEARD ABOUT A MAGIC ITEM WHICH ACCELERATES YOU, MAKING YOU CAN ATTACK ENEMIES FIRST IF YOU HAVE THE LEVEL ENOUGH!</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">TELL ME!</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>IF MY MIND DOES NOT BETRAY ME, THE ROUTE WAS AROUND THE WEST CAMP. AN UPWARD PATH SHOULD BE THERE, TO SUM UP, NORTH-WEST FROM HERE.</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">OKEY!</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>WAIT! I REMEMBER THERE WAS A RIVER THERE, YOU'LL HAVE TO FIND THE WAY TO CROSS IT...</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">NOTE IT</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="9">
+      <Node ID="0">
+        <NPCTalk>HEY ADVENTURER, WHAT IS BRINGING YOU HERE?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Some beer</Option>
+        <Option NextNode="2" ReturnCode="1">Adventure</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>OHHH, THAT'S A SHAME, THIS IS AN ABSTEMIC TAVERN, WE DO NOT OFFER BEER...</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Ooooo...</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>I HAVE SOME INFORMATION FROM A GARDENER AROUND HERE</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">TELL ME</Option>
+        <Option NextNode="3" ReturnCode="1">I DON'T CARE</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>WELL, MAYBE IT IS NOT USEFUL TO YOU...</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">MAYBE</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>HE TOLD ME THEY ALREADY CLEANED A BEAUTIFUL AUTUMN PATH. MAYBE YOU CAN EXPLORE AND "LUCKILY" FIND SOMETHING INTERESTING!</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Where?</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>THE ROUTE WAS AROUND THE WEST CAMP AS WELL. THERE ARE SOME GARDENERS WORKING THERE, IN THE SOUTH PART OF THAT FIELD</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Thanks!</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>WELL THEN, SEE YOU SOON!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="1">Bie!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="10">
+      <Node ID="0">
+        <NPCTalk>HEY ADVENTURER, WHAT IS BRINGING YOU HERE?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Some beer</Option>
+        <Option NextNode="2" ReturnCode="1">Adventure</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>OHHH, THAT'S A SHAME, THIS IS AN ABSTEMIC TAVERN, WE DO NOT OFFER BEER...</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Ooooo...</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>WELL, IN FACT I KNEW THAT... JAJAJA! WANNA NEW INFORMATION? SOME FORESTAL FRIENDS TOLD ME SOME THINGS!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">TALK!</Option>
+        <Option NextNode="3" ReturnCode="1">NO NEED TO...</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>WELL, IF YOU DO NOT NEED IT... I'LL SEE YOU LATER!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Totally!</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>THIS VILLAGE HAD A VERY BEAUTIFUL PLACE, BUT SOME TIME AGO A LOG FELT AND IT BECAMED INNACCESSIBLE.</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">SOOO..</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>THOSE FRIENDS OF MINE TOLD ME THEY ALREADY REMOVED THAT LOG! IT IS SAID THAT A LEGENDARY WEPON WAS HIDDEN THERE. GO CHECK IT OUT!</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>THAT'S THE RIGHT ATTITUDE! LET'S GO!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="1">Let's go!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

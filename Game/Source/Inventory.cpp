@@ -123,12 +123,12 @@ void Inventory::Restart()
 	idleFaceAnim.Reset();
 
 	Player* p = app->scene->player1;
-	if (p->luckStat > 9) luckStatText->bounds.x += 8;
-	if (p->stabStat > 9) stabStatText->bounds.x += 8;
-	if (p->velocityStat > 9) velocityStatText->bounds.x += 8;
-	if (p->defenseStat > 9) defenseStatText->bounds.x += 8;
+	if (p->luckStat > 9) if (luckStatText != nullptr) luckStatText->bounds.x += 8;
+	if (p->stabStat > 9) if (stabStatText != nullptr) stabStatText->bounds.x += 8;
+	if (p->velocityStat > 9) if (velocityStatText != nullptr) velocityStatText->bounds.x += 8;
+	if (p->defenseStat > 9) if (defenseStatText != nullptr) defenseStatText->bounds.x += 8;
 	if (p->maxHealth > 9) if (healthStatText != nullptr) healthStatText->bounds.x += 8;
-	if (p->strengthStat > 9) strenghtStatText->bounds.x += 8;
+	if (p->strengthStat > 9) if (strenghtStatText != nullptr) strenghtStatText->bounds.x += 8;
 	p = nullptr;
 }
 
