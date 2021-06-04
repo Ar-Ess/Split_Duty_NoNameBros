@@ -19,7 +19,7 @@ class QuestManager : public Module
 {
 public://FUNCTIONS
 	QuestManager();
-	virtual ~QuestManager() {};
+	virtual ~QuestManager();
 
 	bool Awake(pugi::xml_node&);
 	bool Start();
@@ -27,29 +27,33 @@ public://FUNCTIONS
 	bool CleanUp();
 
 	void CheckKillQuest(Enemy* e);
-	void CheckGatherQuest(ItemType type, int amount);
+	//void CheckGatherQuest(ItemType type, int amount);
 	void CheckFindQuest(int npcID);
 
 	void ActivateQuest(int id);
 	void DeactivateQuest(int id);
 	void CompleteQuest(int id);
 
+	Quest* GetCurrentQuest() {
+		return currentQuest;
+	}
+
 private://FUNCTIONS
 	friend class Scene;
+	friend class Inventory;
 
 	void CreateQuestMap(pugi::xml_node& setter);
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;
 
 public://VARIABLES
 private://VARIABLES
-	Quest*						currentQuest = nullptr;
+	Quest* currentQuest = nullptr;
 	int							endline = 0;
 	int							offset = 15;
 
-	SDL_Color           black = { 0  , 0  , 0  , 255 };
+	SDL_Color					black = { 0  , 0  , 0  , 255 };
 
 	std::map<int, Quest*>		questList;
-	std::map<int, Quest*>		activeQuest;
 	std::map<int, Quest*>		finishedQuest;
 
 	SDL_Texture* questTexture = nullptr;

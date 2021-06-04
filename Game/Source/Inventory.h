@@ -24,8 +24,6 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-
-
 class Inventory
 {
 public:
@@ -38,25 +36,29 @@ public:
 
     void Update();
 
-    void Draw();
+    void Draw(int y);
 
-    void DrawInterface();
+    void DrawInterface(int y);
 
     void DrawBar(iPoint pos,int current, int max, SDL_Color color);
 
     void UpdateButtons();
 
-    void DrawButtons();
+    void DrawButtons(int y);
 
 	void UpdateFace();
 
-    void DrawFace();
+    void DrawFace(int y);
 
 	void SetText();
 
     void UpdateText();
 
-    void DrawText();
+    void DrawText(int y);
+
+    void DrawStats(int y);
+
+    void UpdateHealthText();
 
 private:
     int playerExp;
@@ -78,8 +80,6 @@ private:
 
 	GuiString* upgradeText = nullptr;
 
-
-
 private:
     SDL_Texture* interfaceTexture = nullptr;
 
@@ -98,8 +98,12 @@ private:
     int maxExp = 0;
 
 private:
-    SDL_Texture* itemsTexture;
+    SDL_Texture* itemsTexture = nullptr;
+    SDL_Texture* hiddenStats = nullptr;
 
+    const SDL_Rect velocity = { 0, 0, 367, 55 };
+    const SDL_Rect luck = { 0, 68, 367, 55 };
+    const SDL_Rect stab = { 0, 136, 367, 55 };
     
 	GuiString* littleBeefText = nullptr;
 	GuiString* bigBeefText = nullptr;
@@ -107,16 +111,13 @@ private:
 	GuiString* mantisText = nullptr;
 	GuiString* coinText = nullptr;
 	GuiString* splitText = nullptr;
-
-    
- 
+    GuiString* currQuestTitleText = nullptr;
+    GuiString* currQuestText = nullptr;
 
     iPoint itemPos = { 100,160 };
     iPoint itemOff = { 190,134};
 	iPoint numberItemPos = {185-16,208-11 };
 	iPoint numberItemOff = { 190,132 };
-
-    SDL_Texture* statsTexture = nullptr;
 
 	int sprite = 80;
     SDL_Rect healthStatRect = { 0,0,60,60 };
@@ -132,6 +133,7 @@ private:
     GuiString* velocityStatText = nullptr;
     GuiString* luckStatText = nullptr;
     GuiString* stabStatText = nullptr;
+
     iPoint statsPos = { 1162,253 };
     iPoint statsOff = { 0,68 };
 
@@ -139,7 +141,7 @@ public:
 
     //items
     GuiButton* bigBeefButton = nullptr;
-    GuiButton* littlebeefButton = nullptr;
+    GuiButton* littleBeefButton = nullptr;
     GuiButton* featherButton = nullptr;
     GuiButton* mantisButton = nullptr;
     GuiButton* coinButton = nullptr;

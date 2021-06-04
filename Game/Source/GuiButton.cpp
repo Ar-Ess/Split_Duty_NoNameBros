@@ -7,6 +7,7 @@
 #include "GuiManager.h"
 #include "Audio.h"
 #include "Textures.h"
+#include "DialogueManager.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -56,68 +57,28 @@ bool GuiButton::Update(float dt)
                     NotifyObserver();
                 }
             }
-			else if (app->input->GetPadEnabled() && buttonFocus)
+			else if (/*app->input->GetPadEnabled() &&*/ buttonFocus)
 			{
 				if (state == GuiControlState::NORMAL)
 				{
 					app->audio->SetFx(Effect::BUTTON_FOCUSSED);
 				}
 				state = GuiControlState::FOCUSED;
-				if ((app->input->GetControl(A) == KeyState::KEY_REPEAT))
+				if ((app->input->GetControl(A) == KeyState::KEY_REPEAT) || (app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_REPEAT))
 				{
 					state = GuiControlState::PRESSED;
 				}
 
-				if (app->input->GetControl(A) == KeyState::KEY_UP)
+				if ((app->input->GetControl(A) == KeyState::KEY_UP) || (app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_UP))
 				{
 					app->audio->SetFx(Effect::BUTTON_RELEASED);
 					NotifyObserver();
+                    app->guiManager->idSelection = -1;
 				}
 			}
             else state = GuiControlState::NORMAL;
         } 
     }
-
-    return true;
-}
-
-bool GuiButton::UpdateOnClick(float dt)
-{
-    if (state != GuiControlState::DISABLED)
-    {
-        if (state == GuiControlState::PRESSED)
-        {
-            state = GuiControlState::NORMAL;
-        }
-
-        if (state == GuiControlState::LOCKED)
-        {
-
-        }
-        else
-        {
-            int mouseX, mouseY;
-            app->input->GetMousePosition(mouseX, mouseY);
-
-            if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-                (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
-            {
-                if (state == GuiControlState::NORMAL)
-                {
-                    app->audio->SetFx(Effect::BUTTON_FOCUSSED);
-                }
-                state = GuiControlState::FOCUSED;
-                if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN || (app->input->GetControl(A) == KeyState::KEY_DOWN && app->input->gamePad != nullptr))
-                {
-                    state = GuiControlState::PRESSED;
-                }
-
-               
-            }
-            else state = GuiControlState::NORMAL;
-        }
-    }
-
     return true;
 }
 

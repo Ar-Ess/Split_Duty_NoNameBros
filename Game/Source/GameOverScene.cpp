@@ -36,6 +36,15 @@ void GameOverScene::Start()
 		backToMenuText->SetString("MENU");
 		backToMenuText->CenterAlign();
 	}
+
+	if (continueText == nullptr)
+	{
+		continueText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		continueText->bounds = continueButton->bounds;
+		continueText->SetTextFont(app->fontTTF->defaultFont);
+		continueText->SetString("CONTINUE");
+		continueText->CenterAlign();
+	}
 }
 
 void GameOverScene::Restart()
@@ -46,13 +55,26 @@ void GameOverScene::Restart()
 void GameOverScene::Update()
 {
 	backToMenuButton->Update(1.0f);
+
+	continueButton->Update(1.0f);
 }
 
-void GameOverScene::Draw()
+void GameOverScene::Draw(int y)
 {
-	app->render->DrawTexture(background, 0, 0);
+	app->render->DrawTexture(background, 0, y);
+
+	backToMenuButton->bounds.y += y;
+	continueButton->bounds.y += y;
+	backToMenuText->bounds.y += y;
+	continueText->bounds.y += y;
 
 	backToMenuButton->Draw();
-
+	continueButton->Draw();
 	backToMenuText->Draw();
+	continueText->Draw();
+
+	backToMenuButton->bounds.y -= y;
+	continueButton->bounds.y -= y;
+	backToMenuText->bounds.y -= y;
+	continueText->bounds.y -= y;
 }

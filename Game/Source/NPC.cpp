@@ -44,6 +44,10 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog)
 	case(NPCtype::PRIEST):
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/priest_spritesheet.png");
 		break;
+	case(NPCtype::BARMAN):
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/knight_spritesheet.png");
+		contactCollider.h += 40;
+		break;
 	case(NPCtype::SIGN):
 		texture = app->tex->Load("Assets/Textures/Environment/sign.png");
 		break;

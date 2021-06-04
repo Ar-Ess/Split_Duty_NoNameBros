@@ -124,8 +124,8 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
     <ClCompile Include="Source\QuestManager.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Render.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Spline.cpp" />
     <ClCompile Include="Source\StonePuzzle.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
@@ -173,12 +173,12 @@
     <ClInclude Include="Source\Quest.h" />
     <ClInclude Include="Source\QuestManager.h" />
     <ClInclude Include="Source\Queue.h" />
-    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Audio.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Render.h" />
+    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Spline.h" />
     <ClInclude Include="Source\StonePuzzle.h" />
     <ClInclude Include="Source\Textures.h" />

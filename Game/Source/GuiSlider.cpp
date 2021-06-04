@@ -36,6 +36,16 @@ bool GuiSlider::Update(float dt)
 
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN) sliderClicked = true;
         }
+        else if (/*app->input->GetPadEnabled() &&*/ sliderFocus)
+        {
+            if (state == GuiControlState::NORMAL)
+            {
+                app->audio->SetFx(Effect::BUTTON_FOCUSSED);
+            }
+            state = GuiControlState::FOCUSED;
+
+            sliderClicked = true;
+        }
         else if (!sliderClicked) state = GuiControlState::NORMAL;
 
         if (sliderClicked)
@@ -53,7 +63,38 @@ bool GuiSlider::Update(float dt)
                 else if ((mouseX - (int)(slider.w * 0.5)) < bounds.x) slider.x = bounds.x;
                 UpdateValue();
             }
-            else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP) sliderClicked = false;
+            else if (app->input->GetControl(LEFT_PAD) == KeyState::KEY_DOWN || app->input->GetKey(SDL_SCANCODE_LEFT) == KeyState::KEY_DOWN)
+            {
+                if (state == GuiControlState::FOCUSED)
+                {
+                    if (strcmp(text.GetString(), "FxVolumeSlider") == 0) app->audio->SetFx(Effect::BUTTON_RELEASED);
+                }
+                state = GuiControlState::SELECTED;
+
+                slider.x -= 10;
+
+                if (((slider.w / 2) + slider.x) < bounds.x)
+                {
+                    slider.x = bounds.x - (slider.w / 2);
+                }
+
+                UpdateValue();
+            }
+            else if (app->input->GetControl(RIGHT_PAD) == KeyState::KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RIGHT) == KeyState::KEY_DOWN)
+            {
+                if (state == GuiControlState::FOCUSED)
+                {
+                    if (strcmp(text.GetString(), "FxVolumeSlider") == 0) app->audio->SetFx(Effect::BUTTON_RELEASED);
+                }
+                state = GuiControlState::SELECTED;
+
+                slider.x += 10;
+
+                if (((slider.w / 2) + slider.x) > bounds.x + bounds.w) slider.x = bounds.x + bounds.w - (slider.w / 2);
+
+                UpdateValue();
+            }
+            else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP || app->input->GetControl(A) == KeyState::KEY_UP || !sliderFocus) sliderClicked = false;
         }
     }
 
@@ -82,7 +123,7 @@ bool GuiSlider::Draw(SliderType type)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicNormal);
             else if (app->scene->optionsMenu->musicVolumeSlider->GetValue()  >0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicNormal);
-            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicNormal);
 
         }
@@ -90,7 +131,7 @@ bool GuiSlider::Draw(SliderType type)
         {
             if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxNormal);
-            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxNormal);
             
         }
@@ -106,7 +147,7 @@ bool GuiSlider::Draw(SliderType type)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicFocused);
             else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicFocused);
-            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicFocused);
 
         }
@@ -114,7 +155,7 @@ bool GuiSlider::Draw(SliderType type)
         {
             if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxFocused);
-            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxFocused);
 
         }
@@ -130,7 +171,7 @@ bool GuiSlider::Draw(SliderType type)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &musicPressed);
             else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() > 0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &lowMusicPressed);
-            else if (app->scene->optionsMenu->musicVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedMusicPressed);
 
         }
@@ -138,7 +179,7 @@ bool GuiSlider::Draw(SliderType type)
         {
             if (app->scene->optionsMenu->fxVolumeSlider->GetValue() > 0)
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &fxPressed);
-            else if (app->scene->optionsMenu->fxVolumeSlider->GetValue() == 0)
+            else
                 app->render->DrawTexture(app->guiManager->buttonSpriteSheet, slider.x - off.x, slider.y - off.y, &mutedFxPressed);
 
         }

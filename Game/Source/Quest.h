@@ -22,7 +22,7 @@ public: //FUNCTIONS
 
 	Quest() {}
 
-	Quest(QuestType type) : type(type), trigger(false), isActive(false), isCompleted(false), isPinned(false), enemyDefeated(false), itemPicked(false), itemAmount(0), npcFound(false) {}
+	Quest(QuestType type) : type(type), isActive(false), isCompleted(false), isPinned(false), enemyDefeated(false), npcFound(false) {}
 
 	virtual ~Quest() {}
 
@@ -30,9 +30,8 @@ public: //FUNCTIONS
 
 	virtual void QuestLogic() {};
 
-	void DrawPinnedQuest()
+	void DrawCurrentQuest()
 	{
-
 		this->title->bounds.x = 25;
 		this->title->bounds.y = 50;
 		this->title->Draw();
@@ -77,28 +76,27 @@ public: //FUNCTIONS
 private: //FUNCTIONS
 
 public: //VARIABLES
+	friend class Player;
+
 	uint16				id;
 	uint16				reward;
 
-	bool				trigger = false;
 	bool				isActive = false;
 	bool				isCompleted = false;
 	bool				isPinned = false;
 
-	const char* textDescription;
-	const char* textTitle;
+	const char*			textDescription;
+	const char*			textTitle;
 
-	GuiString* title;
-	GuiString* description;
+	GuiString*			title;
+	GuiString*			description;
 
 	QuestType			type;
 
 	bool				enemyDefeated = false;
-	bool				itemPicked = false;
 	bool				npcFound = false;
-	int					itemAmount = 0;
 
 	SDL_Texture* texture = nullptr;
-	
+
 };
 #endif // !_QUEST_H_

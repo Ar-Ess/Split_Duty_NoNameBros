@@ -25,9 +25,9 @@ public:
     virtual ~GuiButton();
 
     bool Update(float dt);
-    bool UpdateOnClick(float dt);
     bool Draw(float scale = 1, bool useCamera = true, bool drawTexture = true, ButtonType = ButtonType::MENU);
     void ChangeTexture(const char* path);
+	bool buttonFocus = false;
 
 private:
     //Texture sections
@@ -85,8 +85,6 @@ private:
     //lvl up scene
     const SDL_Rect upgradeNormal = { 0,0,52,55 };
     const SDL_Rect upgradePressed = { 52,0,52,55 };
-
-	bool buttonFocus = false;
     
 };
 

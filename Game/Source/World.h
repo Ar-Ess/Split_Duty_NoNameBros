@@ -13,11 +13,16 @@
 #define REL_CAMY_PLAYERY 318
 
 #define ENEMY_FIELD_ENEMY_MAX 5
+#define GRASSY_1_ENEMY_MAX 4
 
 #define ENEMY_RUN_SPEED 4
 #define ENEMY_WALK_SPEED 2
 
 #define PLAYER_INMUNITY_TIME 100
+
+#define STAB_TIME 10
+#define STAB_W 22
+#define STAB_H 50
 
 class Enemy;
 enum EnemyClass;
@@ -55,8 +60,10 @@ enum Places
     TAVERN,
     SHOP,
     GOLEM_STONES,
+    BOSS_SANCTUARY,
     GRASSY_LAND_1,
     GRASSY_LAND_2,
+    GRASSY_LAND_3,
     AUTUM_FALL,
     MOSSY_ROCKS
 };
@@ -84,6 +91,10 @@ public:
 
     void DrawNPC();
 
+    void DrawText();
+
+    void DrawObstacles();
+
     void DrawCollisions();
 
     void AlignCameraPosition();
@@ -93,6 +104,8 @@ public:
     void PlayerInmunityLogic();
 
     void LoadNPCs(Places place);
+
+    void GolemCall();
 
     Places GetPlace() const
     {
@@ -132,6 +145,26 @@ public:
 public:
     bool godMode = false;
 
+public: //GOLEMS
+    bool tutorialBossActivation = false;
+    bool secondBossActivation = false;
+    bool thirdBossActivation = false;
+    bool finalBossActivation = false;
+    const SDL_Rect tutorialBossRect = { 1063, 450, 50, 25 };
+    const SDL_Rect secondBossRect = { 1287, 363, 50, 25 };
+    const SDL_Rect thirdBossRect = { 1513, 450, 50, 25 };
+    //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
+    GuiString* lvlRecomendedText = nullptr;
+    bool drawRecomendedII = false;
+    bool drawRecomendedIII = false;
+
+public: //obstacles
+    SDL_Texture* leaves = nullptr;
+    SDL_Rect leavesCollision = {-10, 1960, 200, 200};
+    const SDL_Rect bush = {0,0,58,50};
+    SDL_Texture* fallenLog = nullptr;
+    SDL_Rect logCollision = {};
+
 private:
 
     void WorldMovement();
@@ -144,7 +177,9 @@ private:
 
     void WorldEnemyChasing();
 
-    void EnemyStatsGeneration(Enemy* enemy, Player* player);
+	void WorldStabLogic();
+
+    void EnemyStatsGeneration(Enemy* enemy, Player* player, int lvl);
 
     void EnemyRunChasing(Enemy* e, Player* p);
 
@@ -168,6 +203,16 @@ private:
 
 public:
     bool inventoryOpen = false;
+
+public:
+	bool stabActive = false;
+	int stabTime = 0;
+	bool stabLeft = false;
+	bool stabRight = false;
+	bool stabUp = false;
+	bool stabDown = false; 
+	SDL_Rect stabRect = {};
+
 private:
 
     friend class Map;

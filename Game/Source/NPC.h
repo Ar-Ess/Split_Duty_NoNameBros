@@ -20,6 +20,7 @@ enum NPCtype
     OLD,
     PRIEST,
     NO_NPC,
+    BARMAN,
     SIGN
 };
 

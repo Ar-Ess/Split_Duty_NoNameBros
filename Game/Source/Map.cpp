@@ -220,7 +220,7 @@ void Map::Draw()
 
 	UpdateLayers();
 
-	if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE || app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
+	if (app->scene->world->GetPlace() != Places::HOUSE && app->scene->world->GetPlace() != Places::TAVERN)
 	{
 		// L06: DONE 4: Make sure we draw all the layers and not just the first one
 		for (int i = 0; i < data.orgLayers.Count(); i++)
@@ -285,7 +285,7 @@ void Map::DrawLayer(int num)
 			{
 				//CANVIAR
 				int tileId = 0;
-				if (app->scene->world->GetPlace() == Places::MAIN_VILLAGE || app->scene->world->GetPlace() == Places::GRASSY_LAND_2) tileId = data.orgLayers[num]->Get(x, y);
+				if (app->scene->world->GetPlace() != Places::HOUSE && app->scene->world->GetPlace() != Places::TAVERN) tileId = data.orgLayers[num]->Get(x, y);
 				else
 				{
 					tileId = data.layers[num]->Get(x, y);
@@ -878,6 +878,23 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_1)
+				{
+					switch (tileId)
+					{
+					case 2890: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 2888: // GRASSY LAND 2
+						app->scene->world->location1.Add(r);
+						break;
+
+					case 2889: // ENEMY FIELD
+						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_2)
 				{
 					switch (tileId)
@@ -885,10 +902,10 @@ void Map::LoadColliders(MapLayer* layer)
 					case 1799: // COLLIDER
 						app->scene->world->collisions.Add(r);
 						break;
-					case 1796: // GRAVEYARD
+					case 1796: // GRASSY LANDS 1
 						app->scene->world->location1.Add(r);
 						break;
-					case 1798: // Nothing
+					case 1798: // GRASSY LANDS 3
 						app->scene->world->location2.Add(r);
 						break;
 					case 1795: // IMMERSIVE GROUND
@@ -896,6 +913,23 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					case 1800: //Whatever we need
 						app->scene->world->lilipadPuzzle1->riverTracks.Add({ r, true });
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
+				{
+					switch (tileId)
+					{
+					case 2890: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 2887: // BOSS_SANCTUARY
+						app->scene->world->location1.Add(r);
+						break;
+
+					case 2888: // MAIN_VILLAGE
+						app->scene->world->location2.Add(r);
 						break;
 					}
 				}

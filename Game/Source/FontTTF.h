@@ -36,6 +36,7 @@ public:
 	List<_TTF_Font*> fonts;
 	_TTF_Font* defaultFont = nullptr;
 	_TTF_Font* defaultFont2 = nullptr;
+	_TTF_Font* defaultFont3 = nullptr;
 	_TTF_Font* inventoryFont = nullptr;
 	_TTF_Font* winLoseFont = nullptr;
 };

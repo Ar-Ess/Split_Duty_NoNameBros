@@ -35,112 +35,136 @@ void Inventory::Start()
 	playerExp = app->scene->player1->exp;
 
 	interfaceTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
-	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face-animations.png");
-	statsTexture = app->tex->Load("Assets/Textures/UI/stats.png");
+	faceAnimationTexture = app->tex->Load("Assets/Textures/UI/face_animations.png");
+	hiddenStats = app->tex->Load("Assets/Textures/UI/stats.png");
 
 	idleFaceAnim.PushBack({ 0, 0, 70, 68 });
 
 	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
 	blinkFaceAnim.PushBack({ 70, 0, 70, 68 });
 	blinkFaceAnim.PushBack({ 0, 0, 70, 68 });
-	blinkFaceAnim.speed = 0.1f;
+	blinkFaceAnim.speed = 0.05f;
 	blinkFaceAnim.loop = false;
 
 	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
 	angryFaceAnim.PushBack({ 0, 70, 70, 68 });
 	angryFaceAnim.PushBack({ 70, 70, 70, 68 });
 	angryFaceAnim.PushBack({ 0, 0, 70, 68 });
-	angryFaceAnim.speed = 0.1f;
+	angryFaceAnim.speed = 0.05f;
 	angryFaceAnim.loop = false;
 
 	currPlayerFaceAnim = &idleFaceAnim;
 
 	//TEXT
+	Player* p = app->scene->player1;
+
 	SetText();
 
 	char str[5] = {};
-	sprintf(str, "%d", app->scene->player1->lvl);
+	sprintf(str, "%d", p->lvl);
 	lvlText->SetString(str, YELLOW);
 
 	//STATS TEXT
 	char str1[5] = {};
-	sprintf(str1, "%d", app->scene->player1->healthStat);
+	sprintf(str1, "%d", p->maxHealth);
 	healthStatText->SetString(str1, BROWN);
+	if (p->maxHealth > 9) healthStatText->bounds.x -= 8;
 
 	char str2[5] = {};
-	sprintf(str2, "%d", app->scene->player1->strengthStat);
+	sprintf(str2, "%d", p->strengthStat);
 	strenghtStatText->SetString(str2, BROWN);
+	if (p->strengthStat > 9) strenghtStatText->bounds.x -= 8;
 
 	char str3[5] = {};
-	sprintf(str3, "%d", app->scene->player1->defenseStat);
+	sprintf(str3, "%d", p->defenseStat);
 	defenseStatText->SetString(str3, BROWN);
+	if (p->defenseStat > 9) defenseStatText->bounds.x -= 8;
 
 	char str4[5] = {};
-	sprintf(str4, "%d", app->scene->player1->velocityStat);
+	sprintf(str4, "%d", p->velocityStat);
 	velocityStatText->SetString(str4, BROWN);
+	if (p->velocityStat > 9) velocityStatText->bounds.x -= 8;
 
 	char str5[5] = {};
-	sprintf(str5, "%d", app->scene->player1->stabStat);
+	sprintf(str5, "%d", p->stabStat);
 	stabStatText->SetString(str5, BROWN);
+	if (p->stabStat > 9) stabStatText->bounds.x -= 8;
 
 	char str6[5] = {};
-	sprintf(str6, "%d", app->scene->player1->luckStat);
+	sprintf(str6, "%d", p->luckStat);
 	luckStatText->SetString(str6, BROWN);
+	if (p->luckStat > 9) luckStatText->bounds.x -= 8;
 
 	//HEALTH 
 	char hpText[20] = {};
-	sprintf(hpText, "%d / %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	sprintf(hpText, "%d / %d", p->health, p->maxHealth);
 	healthText->SetString(hpText, YELLOW);
 
 	//XP
 	char xpText[20] = {};
-	maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
-
-	sprintf(xpText, "%d / %d", app->scene->player1->exp, maxExp);
+	maxExp = int(floor(1000 * pow((float)p->lvl, 1.25f)));
+	sprintf(xpText, "%d / %d", p->exp, maxExp);
 	expText->SetString(xpText, YELLOW);
+
+	p = nullptr;
 		
 }
 
 void Inventory::Restart()
 {
+	app->scene->iterations = 0;
+
 	app->tex->UnLoad(interfaceTexture);
 	app->tex->UnLoad(faceAnimationTexture);
-	app->tex->UnLoad(statsTexture);
+	app->tex->UnLoad(hiddenStats);
 
 	blinkFaceAnim.Reset();
 	angryFaceAnim.Reset();
 	idleFaceAnim.Reset();
+
+	Player* p = app->scene->player1;
+	if (p->luckStat > 9) if (luckStatText != nullptr) luckStatText->bounds.x += 8;
+	if (p->stabStat > 9) if (stabStatText != nullptr) stabStatText->bounds.x += 8;
+	if (p->velocityStat > 9) if (velocityStatText != nullptr) velocityStatText->bounds.x += 8;
+	if (p->defenseStat > 9) if (defenseStatText != nullptr) defenseStatText->bounds.x += 8;
+	if (p->maxHealth > 9) if (healthStatText != nullptr) healthStatText->bounds.x += 8;
+	if (p->strengthStat > 9) if (strenghtStatText != nullptr) strenghtStatText->bounds.x += 8;
+	p = nullptr;
 }
 
 void Inventory::Update()
 {
 	UpdateText();
 
+	UpdateFace();
+
 	UpdateButtons();
 }
 
-void Inventory::Draw()
+void Inventory::Draw(int y)
 {
-	DrawInterface();
+	DrawInterface(y);
 
-	DrawFace();
+	DrawStats(y);
 
-	DrawBar(healthBarPos, app->scene->player1->health, app->scene->player1->maxHealth, RED);
-	DrawBar(expBarPos, app->scene->player1->exp, maxExp, BLUE);
+	DrawFace(y);
+
+	DrawBar({ healthBarPos.x, healthBarPos.y + y }, app->scene->player1->health, app->scene->player1->maxHealth, RED);
+	DrawBar({ expBarPos.x, expBarPos.y + y }, app->scene->player1->exp, maxExp, BLUE);
 
 	//DrawStats();
 
-	DrawButtons();
+	DrawButtons(y);
 
-	DrawText();
+	DrawText(y);
 
 	//app->guiManager->DrawCursor();
 
 }
 
-void Inventory::DrawInterface()
+void Inventory::DrawInterface(int y)
 {
-	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(interfaceTexture, 0, y, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
@@ -171,37 +195,54 @@ void Inventory::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 
 void Inventory::UpdateButtons()
 {
-	littlebeefButton->Update(1.0f);
+	littleBeefButton->Update(1.0f);
 	bigBeefButton->Update(1.0f);
 	featherButton->Update(1.0f);
 	mantisButton->Update(1.0f);
 	coinButton->Update(1.0f);
 	splitButton->Update(1.0f);
 
-	if (app->scene->player1->smallMeatCount == 0) littlebeefButton->state = GuiControlState::DISABLED;
-	else littlebeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->largeMeatCount == 0) bigBeefButton->state = GuiControlState::DISABLED;
-	else bigBeefButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->featherCount == 0) featherButton->state = GuiControlState::DISABLED;
-	else featherButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->mantisRodCount == 0) mantisButton->state = GuiControlState::DISABLED;
-	else mantisButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->moneyCount == 0) coinButton->state = GuiControlState::DISABLED;
-	else coinButton->state = GuiControlState::NORMAL;
-	if (app->scene->player1->splitedEnemyCount == 0) splitButton->state = GuiControlState::DISABLED;
-	else splitButton->state = GuiControlState::NORMAL;
+	if (app->scene->player1->smallMeatCount == 0 && littleBeefButton->state != GuiControlState::DISABLED) littleBeefButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->smallMeatCount > 0 && littleBeefButton->state == GuiControlState::DISABLED) littleBeefButton->state = GuiControlState::NORMAL;
+
+	if (app->scene->player1->largeMeatCount == 0 && bigBeefButton->state != GuiControlState::DISABLED) bigBeefButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->largeMeatCount > 0 && bigBeefButton->state == GuiControlState::DISABLED) bigBeefButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->featherCount == 0 && featherButton->state != GuiControlState::DISABLED) featherButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->featherCount > 0 && featherButton->state == GuiControlState::DISABLED) featherButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->mantisRodCount == 0 && mantisButton->state != GuiControlState::DISABLED) mantisButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->mantisRodCount > 0 && mantisButton->state == GuiControlState::DISABLED) mantisButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->moneyCount == 0 && coinButton->state != GuiControlState::DISABLED) coinButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->moneyCount > 0 && coinButton->state == GuiControlState::DISABLED) coinButton->state = GuiControlState::NORMAL;
+	
+	if (app->scene->player1->splitedEnemyCount == 0 && splitButton->state != GuiControlState::DISABLED) splitButton->state = GuiControlState::DISABLED;
+	else if (app->scene->player1->splitedEnemyCount > 0 && splitButton->state == GuiControlState::DISABLED) splitButton->state = GuiControlState::NORMAL;
 }
 
-void Inventory::DrawButtons()
+void Inventory::DrawButtons(int y)
 {
-	
+	littleBeefButton->bounds.y += y;
+	bigBeefButton->bounds.y += y;
+	featherButton->bounds.y += y;
+	mantisButton->bounds.y += y;
+	coinButton->bounds.y += y;
+	splitButton->bounds.y += y;
 
-	littlebeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
+	littleBeefButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
 	bigBeefButton->Draw(1, true, true, ButtonType::BIG_BEEF_B);
 	featherButton->Draw(1, true, true, ButtonType::FEATHER_B);
 	mantisButton->Draw(1, true, true, ButtonType::MANTIS_B);
 	coinButton->Draw(1, true, true, ButtonType::COIN_B);
 	splitButton->Draw(1, true, true, ButtonType::SPLIT_B);
+
+	littleBeefButton->bounds.y -= y;
+	bigBeefButton->bounds.y -= y;
+	featherButton->bounds.y -= y;
+	mantisButton->bounds.y -= y;
+	coinButton->bounds.y -= y;
+	splitButton->bounds.y -= y;
 }
 
 void Inventory::UpdateFace()
@@ -222,15 +263,11 @@ void Inventory::UpdateFace()
 	}
 }
 
-void Inventory::DrawFace()
+void Inventory::DrawFace(int y)
 {
-	UpdateFace();
-
 	currPlayerFaceAnim->Update(1.0f);
 
-	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-
-
+	app->render->DrawTexture(faceAnimationTexture, playerFacePos.x, playerFacePos.y + y, 1.4f, false, &currPlayerFaceAnim->GetCurrentFrame(), 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 }
 
 void Inventory::SetText()
@@ -398,6 +435,31 @@ void Inventory::SetText()
 		stabStatText->SetString(str, BROWN);
 		stabStatText->CenterAlign();
 	}
+	if (app->questManager->currentQuest != nullptr)
+	{
+		if (currQuestTitleText == nullptr)
+		{
+			currQuestTitleText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			currQuestTitleText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
+			currQuestTitleText->SetTextFont(app->fontTTF->inventoryFont);
+
+			char str[5] = {};
+			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
+			currQuestTitleText->SetString(str, BROWN);
+			currQuestTitleText->CenterAlign();
+		}
+		if (currQuestText == nullptr)
+		{
+			currQuestText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			currQuestText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
+			currQuestText->SetTextFont(app->fontTTF->inventoryFont);
+
+			char str[5] = {};
+			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
+			currQuestText->SetString(str, BROWN);
+			currQuestText->CenterAlign();
+		}
+	}
 
 	//quest
 	
@@ -434,9 +496,26 @@ void Inventory::UpdateText()
 
 }
 
-void Inventory::DrawText()
+void Inventory::DrawText(int y)
 {
-	
+	healthText->bounds.y += y;
+	expText->bounds.y += y;
+	lvlText->bounds.y += y;
+
+	littleBeefText->bounds.y += y;
+	bigBeefText->bounds.y += y;
+	featherText->bounds.y += y;
+	mantisText->bounds.y += y;
+	coinText->bounds.y += y;
+	splitText->bounds.y += y;
+
+	healthStatText->bounds.y += y;
+	strenghtStatText->bounds.y += y;
+	defenseStatText->bounds.y += y;
+	velocityStatText->bounds.y += y;
+	stabStatText->bounds.y += y;
+	luckStatText->bounds.y += y;
+
 	healthText->Draw();
 	expText->Draw();
 	lvlText->Draw();
@@ -451,9 +530,39 @@ void Inventory::DrawText()
 	healthStatText->Draw();
 	strenghtStatText->Draw();
 	defenseStatText->Draw();
-	velocityStatText->Draw();
-	stabStatText->Draw();
-	luckStatText->Draw();
+	if (app->scene->player1->velocityStat > 0) velocityStatText->Draw();
+	if (app->scene->player1->stabStat > 0) stabStatText->Draw();
+	if (app->scene->player1->luckStat > 0) luckStatText->Draw();
 
-	
+	healthText->bounds.y -= y;
+	expText->bounds.y -= y;
+	lvlText->bounds.y -= y;
+
+	littleBeefText->bounds.y -= y;
+	bigBeefText->bounds.y -= y;
+	featherText->bounds.y -= y;
+	mantisText->bounds.y -= y;
+	coinText->bounds.y -= y;
+	splitText->bounds.y -= y;
+
+	healthStatText->bounds.y -= y;
+	strenghtStatText->bounds.y -= y;
+	defenseStatText->bounds.y -= y;
+	velocityStatText->bounds.y -= y;
+	stabStatText->bounds.y -= y;
+	luckStatText->bounds.y -= y;
+}
+
+void Inventory::DrawStats(int y)
+{
+	if (app->scene->player1->velocityStat > 0) app->render->DrawTexture(hiddenStats, 846, 455 + y, 1, false, &velocity, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->luckStat > 0) app->render->DrawTexture(hiddenStats, 846, 523 + y, 1, false, &luck, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	if (app->scene->player1->stabStat > 0) app->render->DrawTexture(hiddenStats, 846, 591 + y, 1, false, &stab, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+}
+
+void Inventory::UpdateHealthText()
+{
+	char hpText[20] = {};
+	sprintf(hpText, "%d / %d", app->scene->player1->health, app->scene->player1->maxHealth);
+	healthText->SetString(hpText, YELLOW);
 }

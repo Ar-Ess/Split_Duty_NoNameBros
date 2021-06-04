@@ -44,19 +44,22 @@ public:
 
 	void DrawPlayerLifeBar(int life, int maxLife, int x, int y);
 
-	void DrawEnemyLifeBar(int life, int maxLife, int x, int y);
+	void DrawEnemyLifeBar(int life, int maxLife, int x, int y, int size = 4);
 
 	void BlinkLifeBar(int life,SDL_Color color1 , SDL_Color color2);
 
 	void DrawCombatInterface(Enemy* enemy);
 
 	void DrawCombatInterface(Boss* boss);
-	
-	
+
+	void DisableAllButtons();
+
+	void SelectButtonsLogic();
 
 public:
 
 	List<GuiControl*> controls;
+	List<GuiControl*> buttons;
 	bool debugGui = false;
 
 public: //Textures
@@ -100,6 +103,9 @@ public:
 private:
 	int secondsCounter;
 	int frameCounter;
+
+public:
+	int idSelection = -1;
 };
 
 #endif // __GUIMANAGER_H__

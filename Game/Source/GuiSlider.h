@@ -5,6 +5,8 @@
 
 #include "Point.h"
 
+class OptionsMenu;
+
 enum SliderType {
     MUSIC,
     FX,
@@ -33,7 +35,10 @@ public:
     float GetPercentValue() const;
     void SetSlider(SDL_Rect bounds);
 
+    bool sliderFocus = false;
+
 private:
+    friend class OptionsMenu;
 
     SDL_Rect slider;
     int value;

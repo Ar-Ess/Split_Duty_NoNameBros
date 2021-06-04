@@ -24,47 +24,52 @@ struct SDL_Texture;
 struct SDL_Rect;
 class GuiString;
 
-
-
 class LevelUp
 {
 public:
 
     LevelUp();
 
-    void Start(short int exp);
+    void Start(int exp);
 
     void Restart();
 
     void Update();
 
-    void Draw();
+    void Draw(int x);
 
     void UpdateButtons();
 
     void SetText();
 
-    void DrawText();
+    void DrawText(int x);
 
-    void DrawButtons();
+    void DrawButtons(int x);
 
     void DrawBar(iPoint pos, int current, int max, SDL_Color color);
+
+    void UpgradeStats(int lvl);
+    void Upgrade2Stats(int lvl);
   
 private:
     SDL_Texture* interfaceTexture = nullptr;
+    SDL_Texture* interfaceGui = nullptr;
     SDL_Texture* barTexture = nullptr;
 
     const SDL_Rect expBarRect = { 0,742,261,22 };
-    
-    short int plusExp = 0;
-    short int actualExp = 0;
-    short int maxExp = 0;
-	short int actualLevel = 0;
-	short int nextLevel = 0;
+
+    int maxExp = 0;
+
+	int startLvl = 0;
+    int endLvl = 0;
+    int startExp = 0;
+    int endExp = 0;
 
     bool levelUpBool = false;
+    bool maxLevel = false;
 
     int counter = 0;
+    int sumUp = 0;
 
 public:
 
@@ -79,6 +84,8 @@ public:
     GuiString* expText = nullptr;
 
     GuiString* winText = nullptr;
+
+    GuiString* maxLvlText = nullptr;
 
 };
 

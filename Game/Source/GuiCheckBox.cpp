@@ -46,6 +46,26 @@ bool GuiCheckBox::Update(float dt)
                 NotifyObserver();
             }
         }
+        else if (/*app->input->GetPadEnabled() &&*/ checkBoxFocus)
+        {
+            if (state == GuiControlState::NORMAL)
+            {
+                app->audio->SetFx(Effect::BUTTON_FOCUSSED);
+            }
+            state = GuiControlState::FOCUSED;
+
+            if ((app->input->GetControl(A) == KeyState::KEY_REPEAT) || (app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_REPEAT))
+            {
+                state = GuiControlState::PRESSED;
+            }
+
+            if ((app->input->GetControl(A) == KeyState::KEY_UP) || (app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_UP))
+            {
+                checked = !checked;
+                app->audio->SetFx(Effect::BUTTON_RELEASED);
+                NotifyObserver();
+            }
+        }
         else state = GuiControlState::NORMAL;
     }
 

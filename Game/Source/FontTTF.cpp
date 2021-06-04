@@ -43,6 +43,8 @@ bool FontTTF::Awake(pugi::xml_node& conf)
 		inventoryFont = Load(path2, size2);
 
 		defaultFont2 = Load(path, 14);
+
+		defaultFont3 = Load(path, 17);
 	}
 
 	return ret;

@@ -6,6 +6,11 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "Combat.h"
+#include "OptionsMenu.h"
+#include "LevelUp.h"
+#include "GameOverScene.h"
+#include "World.h"
+#include "Inventory.h"
 
 #include "Log.h"
 
@@ -31,7 +36,15 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type)
 	default: break;
 	}
 
-	if (control != nullptr) controls.Add(control);
+	if (control != nullptr)
+	{
+		controls.Add(control);
+		switch (type)
+		{
+		case GuiControlType::BUTTON: buttons.Add(control); break;
+		default: break;
+		}
+	}
 
 	
 
@@ -109,6 +122,9 @@ bool GuiManager::Update(float dt)
 		doLogic = false;
 	}
 
+	Scene* s = app->scene;
+	if (s->GetCurrScene() != Scenes::LOGO_SCENE) SelectButtonsLogic();
+
 	return true;
 }
 
@@ -176,13 +192,16 @@ void GuiManager::DrawPlayerLifeBar(int life,int maxLife,int x,int y)
 	}
 }
 
-void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
+void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y, int sizex)
 {
-	int size = 4;
+	int size = sizex;
 	int thickness = 20;
 	int offset = maxLife * size;
+
 	app->render->DrawRectangle({x - offset,y,maxLife*size,thickness }, MAGENTA);
-	lifeBar = { x-life*4,y,life * size,thickness };
+
+	lifeBar = { x-life*size,y,life * size,thickness };
+
 	if (life > 0)
 	{
 		//if life is critical blinks
@@ -191,7 +210,9 @@ void GuiManager::DrawEnemyLifeBar(int life, int maxLife, int x, int y)
 			BlinkLifeBar(life, RED, SOFT_RED);
 		}
 		else
+		{
 			app->render->DrawRectangle(lifeBar, RED);
+		}
 	}
 }
 
@@ -212,11 +233,11 @@ void GuiManager::DrawCombatInterface(Enemy* enemy)
 	//const SDL_Rect faceRect = { 0,0,70,69 };
 	//app->render->DrawTexture(faceAnimationsTexture, 71, 27, &faceRect);
 
-	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 182, 30);
+	app->guiManager->DrawPlayerLifeBar(app->scene->player1->health, app->scene->player1->maxHealth, 186, 30);
 
-	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
+	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 186, 80);
 
-	DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1080, 30);
+	DrawEnemyLifeBar(enemy->health, enemy->maxHealth, 1074, 30);
 }
 
 void GuiManager::DrawCombatInterface(Boss* boss)
@@ -231,7 +252,173 @@ void GuiManager::DrawCombatInterface(Boss* boss)
 
 	if (app->scene->combatScene->GetSecondPlayerExistance()) app->guiManager->DrawPlayerLifeBar(app->scene->player2->health, app->scene->player2->maxHealth, 182, 80);
 
-	DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
+	if (boss->bossClass == BossClass::BOSS_III) DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30, 2);
+	else DrawEnemyLifeBar(boss->health, boss->maxHealth, 1080, 30);
+}
+
+void GuiManager::DisableAllButtons()
+{
+	Scene* s = app->scene;
+
+	switch (s->GetCurrScene())
+	{
+	case MAIN_MENU:
+		s->newGameButton->buttonFocus = false;
+		s->continueButton->buttonFocus = false;
+		s->optionsButton->buttonFocus = false;
+		s->exitButton->buttonFocus = false;
+		break;
+
+	case PAUSE_MENU:
+		s->backToGameButton->buttonFocus = false;
+		s->saveGameButton->buttonFocus = false;
+		s->optionsPauseButton->buttonFocus = false;
+		s->backToMenuButton->buttonFocus = false;
+		break;
+
+	case OPTIONS_MENU:
+		s->optionsMenu->fullScreenCheckBox->checkBoxFocus = false;
+		s->optionsMenu->dFullScreenCheckBox->checkBoxFocus = false;
+		s->optionsMenu->vSyncCheckBox->checkBoxFocus = false;
+		s->optionsMenu->musicVolumeSlider->sliderFocus = false;
+		s->optionsMenu->fxVolumeSlider->sliderFocus = false;
+		s->optionsMenu->returnMenuButton->buttonFocus = false;
+		break;
+
+	case LEVEL_UP:
+		s->levelUpScene->skipButton->buttonFocus = false;
+		break;
+
+	case END_SCREEN:
+		s->endScene->continueButton->buttonFocus = false;
+		s->endScene->backToMenuButton->buttonFocus = false;
+		break;
+
+	case COMBAT:
+		s->attackButton->buttonFocus = false;
+		s->moveButton->buttonFocus = false;
+		s->itemButton->buttonFocus = false;
+		s->splitButton->buttonFocus = false;
+		s->escapeButton->buttonFocus = false;
+		s->secondAttackButton->buttonFocus = false;
+		s->protectButton->buttonFocus = false;
+		s->buffButton->buttonFocus = false;
+		s->combatScene->smallMeatButton->buttonFocus = false;
+		s->combatScene->largeMeatButton->buttonFocus = false;
+		s->combatScene->featherButton->buttonFocus = false;
+		s->combatScene->mantisButton->buttonFocus = false;
+		s->combatScene->enemySplitButton->buttonFocus = false;
+		s->combatScene->moneyButton->buttonFocus = false;
+		break;
+
+	case WORLD:
+		s->world->inventory->littleBeefButton->buttonFocus = false;
+		s->world->inventory->bigBeefButton->buttonFocus = false;
+		s->world->inventory->featherButton->buttonFocus = false;
+		s->world->inventory->mantisButton->buttonFocus = false;
+		s->world->inventory->coinButton->buttonFocus = false;
+		s->world->inventory->splitButton->buttonFocus = false;
+		break;
+	}
+
+	s = nullptr;
+}
+
+void GuiManager::SelectButtonsLogic()
+{
+	Scene* s = app->scene;
+
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || app->input->GetControl(L3) == KEY_DOWN)
+	{
+		idSelection++;
+		DisableAllButtons();
+	}
+
+	switch (s->GetCurrScene())
+	{
+	case MAIN_MENU:
+		if (idSelection == 0) s->newGameButton->buttonFocus = true;
+		else if (idSelection == 1) s->continueButton->buttonFocus = true;
+		else if (idSelection == 2) s->optionsButton->buttonFocus = true;
+		else if (idSelection == 3) s->exitButton->buttonFocus = true;
+		else if (idSelection == 4) idSelection = -1;
+		break;
+
+	case PAUSE_MENU:
+		if (idSelection == 0) s->backToGameButton->buttonFocus = true;
+		else if (idSelection == 1) s->saveGameButton->buttonFocus = true;
+		else if (idSelection == 2) s->optionsPauseButton->buttonFocus = true;
+		else if (idSelection == 3) s->backToMenuButton->buttonFocus = true;
+		else if (idSelection == 4) idSelection = -1;
+		break;
+
+	case OPTIONS_MENU:
+		if (idSelection == 0) s->optionsMenu->dFullScreenCheckBox->checkBoxFocus = true;
+		else if (idSelection == 1) s->optionsMenu->fullScreenCheckBox->checkBoxFocus = true;
+		else if (idSelection == 2) s->optionsMenu->vSyncCheckBox->checkBoxFocus = true;
+		else if (idSelection == 3) s->optionsMenu->musicVolumeSlider->sliderFocus = true;
+		else if (idSelection == 4) s->optionsMenu->fxVolumeSlider->sliderFocus = true;
+		else if (idSelection == 5) s->optionsMenu->returnMenuButton->buttonFocus = true;
+		else if (idSelection == 6) idSelection = -1;
+		break;
+
+	case LEVEL_UP:
+		if (idSelection == 0) s->levelUpScene->skipButton->buttonFocus = true;
+		else if (idSelection == 1) idSelection = -1;
+		break;
+
+	case END_SCREEN:
+		if (idSelection == 0) s->endScene->continueButton->buttonFocus = true;
+		if (idSelection == 1) s->endScene->backToMenuButton->buttonFocus = true;
+		else if (idSelection == 2) idSelection = -1;
+		break;
+
+	case COMBAT:
+		if (!s->combatScene->drawInventory)
+		{
+			if (s->combatScene->GetTurn() == CombatState::PLAYER_TURN)
+			{
+				if (idSelection == 0) s->attackButton->buttonFocus = true;
+				else if (idSelection == 1) s->moveButton->buttonFocus = true;
+				else if (idSelection == 2) s->itemButton->buttonFocus = true;
+				else if (idSelection == 3) s->escapeButton->buttonFocus = true;
+				else if (idSelection == 4) s->splitButton->buttonFocus = true;
+				else if (idSelection == 5) idSelection = -1;
+			}
+			else if (s->combatScene->GetTurn() == CombatState::SECOND_PLAYER_TURN)
+			{
+				if (idSelection == 0) s->secondAttackButton->buttonFocus = true;
+				else if (idSelection == 1) s->protectButton->buttonFocus = true;
+				else if (idSelection == 2) s->buffButton->buttonFocus = true;
+				else if (idSelection == 3) idSelection = -1;
+			}
+		}
+		else
+		{
+			if (idSelection == 0) s->combatScene->smallMeatButton->buttonFocus = true;
+			else if (idSelection == 1) s->combatScene->largeMeatButton->buttonFocus = true;
+			else if (idSelection == 2) s->combatScene->featherButton->buttonFocus = true;
+			else if (idSelection == 3) s->combatScene->mantisButton->buttonFocus = true;
+			else if (idSelection == 4) s->combatScene->enemySplitButton->buttonFocus = true;
+			else if (idSelection == 5) s->combatScene->moneyButton->buttonFocus = true;     
+			else if (idSelection == 6) idSelection = -1;
+		}
+		break;
+
+	case WORLD:
+		if (s->world->inventoryOpen)
+		{
+			if (idSelection == 0) s->world->inventory->littleBeefButton->buttonFocus = true;
+			else if (idSelection == 1)s->world->inventory->bigBeefButton->buttonFocus = true;
+			else if (idSelection == 2)s->world->inventory->featherButton->buttonFocus = true;
+			else if (idSelection == 3)s->world->inventory->mantisButton->buttonFocus = true;
+			else if (idSelection == 4)s->world->inventory->coinButton->buttonFocus = true;
+			else if (idSelection == 5)s->world->inventory->splitButton->buttonFocus = true;
+			else if (idSelection == 6) idSelection = -1;
+		}
+		break;
+	}
+	s = nullptr;
 }
 
 bool GuiManager::CleanUp()

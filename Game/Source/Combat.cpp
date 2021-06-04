@@ -8,6 +8,7 @@
 #include "World.h"
 #include "Audio.h"
 #include "EntityManager.h"
+#include "DialogueManager.h"
 
 #include "Combat.h"
 #include "Enemy.h"
@@ -52,6 +53,8 @@ void Combat::Start()
 	//Bool preparation for combat
 	BoolStart();
 
+	app->scene->buffButton->state = GuiControlState::LOCKED;
+
 	//LuckArray fill
 	int pLuck = p->luckStat;
 	if (pLuck > 0)
@@ -86,6 +89,8 @@ void Combat::EnemyStart()
 	FirstTurnLogic();
 
 	currentEnemyAnim = &enemy->idleAnim;
+
+	app->scene->escapeButton->state = GuiControlState::NORMAL;
 }
 
 void Combat::BossStart()
@@ -96,19 +101,72 @@ void Combat::BossStart()
 	{
 	case(BossClass::BOSS_TUTORIAL):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
+		tutorialBox = app->tex->Load("Assets/Textures/UI/tutorial_textbox.png");
+		tutorialActive = true;
+		jumpInstruction = false;
+		tutorialStep = 0;
+		wave[0] = { 1400, 0, 105, 60 };
+		app->dialogueManager->StartDialogue(6);
+		bossTAttack1Time = 0;
+		jumpInstructionStep = 0;
+		endOfTutorial = false;
+		bossTAttack2Time = 0;
+		tutorialText->bounds = {0, 0, 322, 241};
+		tutorialText->SetString("You are this guy here,\nand right in front of you,\nthere is your opponent.");
 		break;
 	case(BossClass::BOSS_I):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		shieldStep = 0;
+		shield.x = shieldPos[shieldStep];
+		shield = { 0, 285, 40, 215 };
+		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
+		bigWave = { 1400, 0, 120, 90 };
+		boss1Attack4Time = 0;
+		boss1Attack5Time = 0;
+		boss1Attack6Time = 0;
+		boss1Attack7Time = 0;
 		break;
 	case(BossClass::BOSS_II):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		for (int i = 0; i < 2; i++) spikeStep[i] = 0;
+		for (int i = 0; i < 2; i++) spike[i] = { spikePos[spikeStep[i]], 488 - 30, 60, 30};
+		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
+		bigWave = { 1400, 0, 120, 90 };
+		boss2Attack1Time = 0;
+		boss2Attack2Time = 0;
+		boss2Attack3Time = 0;
+		boss2Attack4Time = 0;
+		boss2Attack5Time = 0;
+		boss2Attack6Time = 0;
+		boss2Attack7Time = 0;
+		bossIIStep = 0;
+		spikesFattenator = false;
+		b2heal = false;
 		break;
 	case(BossClass::BOSS_III):
 		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		iZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
+		iZone.tex = nullptr;
+		rZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
+		rZone.tex = nullptr;
+		bossIIIStep = 0;
+		wave[0] = { 1400, 0, 105, 60 };
+		bigWave = { 1400, 0, 120, 90 };
+		pusher.SetUp(980 - 20, { 0, 285, 20, 215 }, false, false);
+		pusher.tex = nullptr;
+		boss3Attack1Time = 0;
+		boss3Attack2Time = 0;
+		boss3Attack3Time = 0;
+		boss3Attack4Time = 0;
+		boss3Attack5Time = 0;
+		boss3Attack6Time = 0;
+		boss3Attack7Time = 0;
 		break;
 	}
 
 	currentBossAnim = &boss->idleAnim;
+
+	app->scene->escapeButton->state = GuiControlState::LOCKED;
 }
 
 void Combat::Restart()
@@ -130,6 +188,7 @@ void Combat::Restart()
 	app->tex->UnLoad(bossSpritesheet);
 	app->tex->UnLoad(grassyLandsBackground);
 	app->tex->UnLoad(combatInventory);
+	if (tutorialBox != nullptr) app->tex->UnLoad(tutorialBox);
 
 	PlayerPosReset();
 	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
@@ -147,6 +206,8 @@ void Combat::BoolStart()
 	playerHitAble = true;
 	playerChoice = true;
 	steps = 0;
+
+	once = false;
 
 	itemChoice = true;
 	healPlayerSmall = false;
@@ -216,7 +277,11 @@ void Combat::Update()
 	if (enemyBattle) currentEnemyAnim->Update(1.0f);
 	else if (bossBattle) currentBossAnim->Update(1.0f);
 
-	CombatLogic();
+
+	if (!tutorialActive) CombatLogic();
+	else TutorialLogic();
+
+	if (jumpInstruction) JumpInstructionLogic();
 
 	if (enemyBattle)
 	{
@@ -225,11 +290,14 @@ void Combat::Update()
 	}
 	else if (bossBattle) app->scene->splitButton->state = GuiControlState::LOCKED;
 
+	//DEBUG
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
 		if (enemyBattle) enemy->health -= enemy->health;
 		else if (bossBattle) boss->health -= boss->health;
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) app->scene->player1->health = 1;
 }
 
 void Combat::UpdateButtons()
@@ -264,6 +332,19 @@ void Combat::UpdatePopUps()
 		mantisButton->Update(1.0f);
 		enemySplitButton->Update(1.0f);
 		moneyButton->Update(1.0f);
+
+		if (app->scene->player1->smallMeatCount == 0 && smallMeatButton->state != GuiControlState::DISABLED) smallMeatButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->smallMeatCount > 0 && smallMeatButton->state == GuiControlState::DISABLED) smallMeatButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->largeMeatCount == 0 && largeMeatButton->state != GuiControlState::DISABLED) largeMeatButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->largeMeatCount > 0 && largeMeatButton->state == GuiControlState::DISABLED) largeMeatButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->featherCount == 0 && featherButton->state != GuiControlState::DISABLED) featherButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->featherCount > 0 && featherButton->state == GuiControlState::DISABLED) featherButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->mantisRodCount == 0 && mantisButton->state != GuiControlState::DISABLED) mantisButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->mantisRodCount > 0 && mantisButton->state == GuiControlState::DISABLED) mantisButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->moneyCount == 0 && moneyButton->state != GuiControlState::DISABLED) moneyButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->moneyCount > 0 && moneyButton->state == GuiControlState::DISABLED) moneyButton->state = GuiControlState::NORMAL;
+		if (app->scene->player1->splitedEnemyCount == 0 && enemySplitButton->state != GuiControlState::DISABLED) enemySplitButton->state = GuiControlState::DISABLED;
+		else if (app->scene->player1->splitedEnemyCount > 0 && enemySplitButton->state == GuiControlState::DISABLED) enemySplitButton->state = GuiControlState::NORMAL;
 	}
 }
 
@@ -333,20 +414,74 @@ void Combat::CombatLogic()
 		}
 		else
 		{
-			BossAttack(boss->bossClass);
+			BossAttack();
 
-			PlayerResponse();
+			if (boss->bossClass == BOSS_I || boss->bossClass == BOSS_II)
+			{
+				if (boss->attack > 3) PlayerResponse();
+			}
+			else if (boss->bossClass == BOSS_TUTORIAL)
+			{
+				if (jumpInstructionStep == 0)
+				{
+					if (jumpInstruction) PlayerResponse();
+				}
+				else
+				{
+					PlayerResponse();
+				}
+			}
+			else if (boss->bossClass == BOSS_III)
+			{
+				if (boss->attack > 3 && boss->attack < 8)
+				{
+					if (rZone.step != (steps + 1)) PlayerResponse();
+				}
+			}
 
-			//PLAYER RESPONSE FALSE LOGIC TODO
+			//PLAYER RESPONSE GOING FALSE LOGIC TODO
 			switch (boss->bossClass)
 			{
 			case BossClass::BOSS_TUTORIAL:
+				if (boss->attack == 1) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
 				break;
 			case BossClass::BOSS_I:
+				if (boss->attack == 4) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 5) if (bigWave.x + bigWave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 6)
+				{
+					if (wave[1].x + wave[1].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+					if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x - 48 && !once)
+					{
+						playerHitAble = true;
+						once = true;
+					}
+				}
 				break;
 			case BossClass::BOSS_II:
+				if (boss->attack == 4) if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 5) if (bigWave.x + bigWave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+				if (boss->attack == 6)
+				{
+					if (wave[1].x + wave[1].w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+					if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x - 48 && !once)
+					{
+						playerHitAble = true;
+						once = true;
+					}
+				}
 				break;
 			case BossClass::BOSS_III:
+				if (boss->attack == 4)
+				{
+					if (bigWave.x + bigWave.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
+					if (wave[0].x + wave[0].w < app->scene->player1->colliderCombat.x - 48 && !once)
+					{
+						playerHitAble = true;
+						once = true;
+					}
+				}
+				else if (boss->attack == 7) if (boss->colliderCombat.x + boss->colliderCombat.w < app->scene->player1->colliderCombat.x) playerResponseAble = false;
 				break;
 			}
 		}
@@ -461,6 +596,187 @@ void Combat::CombatLogic()
 	}
 }
 
+void Combat::TutorialLogic()
+{
+	Scene* s = app->scene;
+
+	if (tutorialStep != 0) if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) tutorialStep++;
+
+	switch (tutorialStep)
+	{
+	case 0: // Dialog 6
+		textBoxPos = { 1290,0 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		break;
+
+	case 1: // You are this guy here, and right in front of you, there is your opponent.
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		break;
+
+	case 2: // In the top part, you can see your life bar, as well as the life bar of your opponent.
+		textBoxPos = { 470,60 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("In the top part, you can\nsee your life bar, as well\nas the life bar of\nyour opponent.");
+		break;
+
+	case 3: // Now, let`s go to the combat itsef. This is a turn based combat. When your turn arrives, you have to choose an option and create a great strategy to win this battle.
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Now, let`s go to the combat\nitsef. This is a turn based\ncombat. When your turn\narrives, you have to choose\nan option and create a\ngreat strategy to win\nthis battle.");
+		break;
+
+	case 4: // You have 5 options to choose, ATTACK, MOVE, ITEM, ESCAPE, SPLIT. Each one of this options consumes a turn, which means, after you select it, will be your opponent's turn.
+		textBoxPos = { 470,290 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("You have 5 options to\nchoose, ATTACK, MOVE, ITEM,\nESCAPE, SPLIT.\nEach one of this options\nconsumes a turn, which\nmeans, after you select it,\nwill be your \nopponent's turn.");
+		break;
+
+	case 5: // The first option is ATTACK. When you choose it, you will cause damage to your opponent. Depending on your strength and their defense, you'll deal more or less damage.
+		textBoxPos = { 130,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The first option is ATTACK.\nWhen you choose it, you\nwill cause damage to your\nopponent. Depending on your\nstrength and their defense,\nyou'll deal more\nor less damage.");
+		break;
+
+	case 6: // But wait! Do you see these white marks on the ground? This is not good, the farther away you are from the opponent, the fewer damage you'll cause to it. 
+		textBoxPos = { 340,210 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("But wait!\nDo you see these white\nmarks on the ground?\nThis is not good, the\nfarther away you are from\nthe opponent, the fewer\ndamage you'll cause to it.");
+		break;
+
+	case 7: // The first position inflicts a 15% of your total power, the second one inflicts a 30%, the third one a 60 %, and the last one the 100 % .But how do we get closer to the enemy ?
+		textBoxPos = { 340,210 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The first position inflicts\na 15 prcnt of your total\npower, the second one\ninflicts a 30 prcnt,\nthe third one a 60 prcnt,\nthe last one the 100 prcnt.\nBut how do we get closer\nto the enemy ?");
+		break;
+
+	case 8: // That's the function of the following option, MOVE. When choosing it, you'll move one step further. Be careful because the closer you are, dodging attacks will be more difficult.
+		textBoxPos = { 310,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("That's the function of the\nfollowing option, MOVE.\nWhen choosing it, you'll\nmove one step further.\nBe careful because the\ncloser you are, dodging\nattacks will be\nmore difficult.");
+		break;
+
+	case 9: // Note that when you ATTACK, your position will reset the the first one.
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Note that when you ATTACK,\nyour position will reset\nthe the first one.");
+		break;
+
+	case 10: // Then we have the ITEM option. When you select it, a menu will open up. There you can choose the items you want to use, it also have a explanatory description for each one!
+		textBoxPos = { 470,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Then we have an ITEM option\nWhen you select it, a menu\nwill open up. There you can\nchoose the items you want\nto use, it also have a\nexplanatory description\nfor each one!");
+		break;
+
+	case 11: // Next, we have the ESCAPE option. Since you are in a Boss Fight, you can not select it, but I'll tell you its use either way.
+		textBoxPos = { 650,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Next, the ESCAPE option.\nSince you are in a\nBoss Fight, you can not\nselect it, but I'll tell\nyou its use either way.");
+		break;
+
+	case 12: // The ESCAPE function is used to escape a combat. Depending on your level and your oponent's one, will be easier or harder to escape.Note that escape makes you loose some coins...
+		textBoxPos = { 650,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("The ESCAPE function is used\nto escape a combat.\nDepending on your level and\nyour oponent's one, will be\neasier or harder to escape.\nNote that escape makes you\nloose some coins...");
+		break;
+
+	case 13: // Finally, we have the SPLIT option. This is a secret power I am giving to you... Unfortunedly, I don't have enough power to split those golems, but I can with regular enemies.
+		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Finally, the SPLIT option.\nThis is a secret power I am\ngiving to you...\nUnfortunedly, I don't have\nenough power to split those\ngolems, but I can with\nregular enemies.");
+		break;
+
+	case 14: // This power will allow you to "split" the soul of your opponents and use it to deal damage in another combat. There's some conditions to be fulfilled before being able to use it.
+		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("This power will allow you\nto 'split' the soul of your\nopponents and use it to\ndeal damage in another\ncombat. There's some\nconditions to be fulfilled\nbefore being able\nto use it.");
+		break;
+
+	case 15: // First of all, your opponents life must be at the 20% or lower. Then, you must be in the last position. And third, you must have more health than your opponent.
+		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("First of all, the opponents\nlife must be at 20 prcnt\nor lower.\nThen, you must be in the\nlast position. And third,\nyou must have more health\nthan your opponent.");
+		break;
+
+	case 16: // This power is too big even for me, so in case you succesfully split your opponent (cause sometimes can fail), its life will be substracted from yours!
+		textBoxPos = { 780,270 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("This power is too big even\nfor me, so in the case you\nsuccesfully split your\nopponent\n(cause sometimes can fail)\nits life will be\nsubstracted from yours!");
+		break;
+
+	case 17: // Be careful! You can die if you have less life than your opponent!
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Be careful! You can die if\nyou have less life than\nyour opponent!");
+		break;
+
+	case 18: // Being said that, let's allow your opponent to attack first! I will show you how to dodge it perfectly, so you can win without getting hurt!
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Being said that, let's\nallow your opponent to\nattack first! I will show\nyou how to dodge it\nperfectly, so you can win\nwithout getting hurt!");
+		break;
+
+	case 19:
+		textBoxPos = { 1290,0 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("");
+		break;
+	}
+}
+
+void Combat::JumpInstructionLogic()
+{
+	if (jumpInstructionStep == 0 && jumpInstruction)
+	{
+		textBoxPos = { 330,150 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("NOW, JUMP!\n\n\nPRESS SPACE / W (keyboard) \nPRESS UP (gamepad)");
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN|| app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN|| app->input->GetControl(UP_PAD) == KEY_DOWN)
+		{
+			textBoxPos = { 1290,0 };
+			jumpInstructionStep = 1;
+			bossTAttack1Time++;
+		}
+	}
+
+	if (jumpInstructionStep == 2)
+	{
+		textBoxPos = { 470,230 };
+		tutorialText->bounds.x = textBoxPos.x + TUTORIAL_TEXT_MARGIN_X;
+		tutorialText->bounds.y = textBoxPos.y + TUTORIAL_TEXT_MARGIN_Y;
+		tutorialText->SetString("Well dodged!\nNote that some enemies or\nbosses will attack you from\nthe top, so in that\ncase, you should click\n\nLSHIFT or S (keyboard)\nor\nDOWN (gamepad) to crouch!\n\n Now, beat that golem up!");
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN|| app->input->GetControl(A) == KEY_DOWN)
+		{
+			textBoxPos = { 1290,0 };
+			jumpInstructionStep = 3;
+			jumpInstruction = false;
+			endOfTutorial = true;
+			bossTAttack1Time++;
+		}
+	}
+}
+
 // DRAW
 
 void Combat::Draw()
@@ -490,7 +806,13 @@ void Combat::Draw()
 
 	DrawPopUps();
 
+	app->scene->DebugSteps();
+
 	app->guiManager->DrawCursor();
+
+	if (tutorialActive) DrawTutorial();
+
+	if (jumpInstruction) DrawJumpInstructions();
 }
 
 void Combat::DrawPlayer()
@@ -526,14 +848,50 @@ void Combat::DrawPlayer()
 
 void Combat::DebugDraw()
 {
+	// PLAYER
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
 
-	if (enemyBattle) app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
-	else if (bossBattle) app->render->DrawRectangle(boss->colliderCombat, { 255, 0, 0 , 150 });
-
+	// SECOND PLAYER
 	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
-	//BULLETS
-	if (enemyBattle) if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+
+	//ENEMY
+	if (enemyBattle)
+	{
+		app->render->DrawRectangle(enemy->colliderCombat, { 255, 0, 0 , 150 });
+		//BULLETS
+		if (enemy->enemyClass == EnemyClass::MANTIS) for (int i = 0; i < 5; i++) enemy->bullet[i].DebugDraw();
+	}
+	
+	//BOSS
+	if (bossBattle)
+	{
+		app->render->DrawRectangle(boss->colliderCombat, { 255, 0, 0 , 150 });
+
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_TUTORIAL):
+			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
+			break;
+		case(BossClass::BOSS_I):
+			app->render->DrawRectangle(shield, { 20, 30, 230, 100 });
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(wave[i], { 230, 30, 20, 100 });
+			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
+			break;
+		case(BossClass::BOSS_II):
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(spike[i], { 10, 130, 120, 100 });
+			for (int i = 0; i < 2; i++) app->render->DrawRectangle(wave[i], { 230, 30, 20, 100 });
+			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
+			break;
+		case(BossClass::BOSS_III):
+			//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+			app->render->DrawRectangle(iZone.rect, { 230, 30, 20, 100 });
+			app->render->DrawRectangle(rZone.rect, { 0, 30, 235, 100 });
+			app->render->DrawRectangle(bigWave, { 230, 30, 20, 100 });
+			app->render->DrawRectangle(wave[0], { 230, 30, 20, 100 });
+			pusher.DebugDraw();
+			break;
+		}
+	}
 }
 
 void Combat::DrawSecondPlayer()
@@ -561,7 +919,7 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
-
+	app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x, boss->colliderCombat.y, 1, 1, false, &currentBossAnim->GetCurrentFrame());
 }
 
 void Combat::DrawBakcground()
@@ -587,7 +945,25 @@ void Combat::DrawPopUps()
 	//INVENTORY
 	if (drawInventory)
 	{
-		app->render->DrawTexture(combatInventory, 0, -20, 1, false);
+		int x = int(app->scene->EaseQuadX(iPoint(-1280, 0), iPoint(0, 0), false, 45));
+		Uint8 o = Uint8(app->scene->EaseQuadX(iPoint(0, 0), iPoint(150, 0), false, 45));
+
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, {0, 0, 0, o});
+		app->render->DrawTexture(combatInventory, x, -20, 1, false);
+
+		smallMeatButton->bounds.x += x;
+		largeMeatButton->bounds.x += x;
+		featherButton->bounds.x += x;
+		mantisButton->bounds.x += x;
+		enemySplitButton->bounds.x += x;
+		moneyButton->bounds.x += x;
+
+		smallMeatDescription->bounds.x += x;
+		largeMeatDescription->bounds.x += x;
+		featherDescription->bounds.x += x;
+		mantisRodDescription->bounds.x += x;
+		enemySplitDescription->bounds.x += x;
+		moneyDescription->bounds.x += x;
 
 		// DRAW BUTTONS
 		smallMeatButton->Draw(1, true, true, ButtonType::LITTLE_BEEF_B);
@@ -604,7 +980,22 @@ void Combat::DrawPopUps()
 		if (mantisButton->state == GuiControlState::FOCUSED || mantisButton->state == GuiControlState::PRESSED) mantisRodDescription->Draw();
 		if (enemySplitButton->state == GuiControlState::FOCUSED || enemySplitButton->state == GuiControlState::PRESSED) enemySplitDescription->Draw();
 		if (moneyButton->state == GuiControlState::FOCUSED || moneyButton->state == GuiControlState::PRESSED) moneyDescription->Draw();
+
+		smallMeatButton->bounds.x -= x;
+		largeMeatButton->bounds.x -= x;
+		featherButton->bounds.x -= x;
+		mantisButton->bounds.x -= x;
+		enemySplitButton->bounds.x -= x;
+		moneyButton->bounds.x -= x;
+
+		smallMeatDescription->bounds.x -= x;
+		largeMeatDescription->bounds.x -= x;
+		featherDescription->bounds.x -= x;
+		mantisRodDescription->bounds.x -= x;
+		enemySplitDescription->bounds.x -= x;
+		moneyDescription->bounds.x -= x;
 	}
+	else if (combatState == PLAYER_TURN) app->scene->iterations = 0;
 
 	//BUFFS MENU
 	if (drawBuffMenu)
@@ -674,6 +1065,199 @@ void Combat::DrawText()
 	}
 }
 
+void Combat::DrawTutorial()
+{
+	switch (tutorialStep)
+	{
+	case 0:
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		break;
+
+	case 1: // You are this guy here, and right in front of you, there is your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 290 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 498, 1280, 222 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 275, 290, 705, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1100, 290, 180, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 2: // In the top part, you can see your life bar, as well as the life bar of your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 20 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 60, 1280, 660 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 20, 176, 40 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 276, 20, 748, 40 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1084, 20, 196, 40 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 3: // Now, let`s go to the combat itsef. This is a turn based combat. When your turn arrives, you have to choose an option and create a great strategy to win this battle.
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 4: // You have 5 options to choose, ATTACK, MOVE, ITEM, ESCAPE, SPLIT. Each one of this options consumes a turn, which means, after you select it, will be your opponent's turn.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 5: // The first option is ATTACK. When you choose it, you will cause damage to your opponent. Depending on your strength and their defense, you'll deal more or less damage.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 98, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 279, 570, 1001, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 6: // But wait! Do you see these white marks on the ground? This is not good, the farther away you are from the opponent, the fewer damage you'll cause to it. 
+		app->render->DrawRectangle({ 0, 0, 1280, 488 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 7: // The first position inflicts a 15% of your total power, the second one inflicts a 30%, the third one a 60 %, and the last one the 100 % .But how do we get closer to the enemy ?
+		app->render->DrawRectangle({ 0, 0, 1280, 488 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 520, 1280, 200 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 488, 229, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 779, 488, 501, 32 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 8: // That's the function of the following option, MOVE. When choosing it, you'll move one step further. Be careful because the closer you are, dodging attacks will be more difficult.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 324, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 505, 570, 775, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 9: // Note that when you ATTACK, your position will reset the the first one.
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 10: // Then we have the ITEM option. When you select it, a menu will open up. There you can choose the items you want to use, it also have a explanatory description for each one!
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 550, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 731, 570, 549, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 11: // Next, we have the ESCAPE option. Since you are in a Boss Fight, you can not select it, but I'll tell you its use either way.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 12: // The ESCAPE function is used to escape a combat. Depending on your level and your oponent's one, will be easier or harder to escape.Note that escape makes you loose some coins...
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 776, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 957, 570, 323, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 13: // Finally, we have the SPLIT option. This is a secret power I am giving to you... Unfortunedly, I don't have enough power to split those golems, but I can with regular enemies.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 14: // This power will allow you to "split" the soul of your opponents and use it to deal damage in another combat. There's some conditions to be fulfilled before being able to use it.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.8f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 15: // First of all, your opponents life must be at the 20% or lower. Then, you must be in the last position. And third, you must have more health than your opponent.
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 16: // This power is too big even for me, so in case you succesfully split your opponent (cause sometimes can fail), its life will be substracted from yours!
+		app->render->DrawRectangle({ 0, 0, 1280, 570 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 652, 1280, 68 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 570, 1002, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 1183, 570, 97, 82 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 17: // Be careful! You can die if you have less life than your opponent!
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 18: // Being said that, let's allow your opponent to attack first! I will show you how to dodge it perfectly, so you can win without getting hurt!
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.7f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 19:
+		tutorialActive = false;
+		break;
+	}
+}
+
+void Combat::DrawJumpInstructions()
+{
+	switch (jumpInstructionStep)
+	{
+	case 0:
+		app->render->DrawRectangle({ 0, 0, 1280, 290 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 498, 1280, 222 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 0, 290, 215, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawRectangle({ 275, 290, 1005, 208 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 0.6f, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 1:
+		break;
+
+	case 2:
+		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
+		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+		tutorialText->Draw();
+		break;
+
+	case 3:
+		break;
+	}
+}
+
 // END
 
 void Combat::EndBattleSolving()
@@ -685,17 +1269,30 @@ void Combat::EndBattleSolving()
 		if (enemyBattle) ItemDrop(enemy->enemyClass);
 		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
 
-		short int experience = 0;
+		int experience = 0;
 		if (enemyBattle)
 		{
 			experience = enemy->exp;
 			short int id = app->entityManager->enemies.Find(enemy);
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
-		else if (bossBattle) experience = boss->exp;
+
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
+		
+		if (bossBattle)
+		{
+			experience = boss->exp;
+			if (boss->bossClass == BOSS_TUTORIAL) app->scene->bossTBeat = true;
+			else if (boss->bossClass == BOSS_I) app->scene->boss1Beat = true;
+			else if (boss->bossClass == BOSS_II) app->scene->boss2Beat = true;
+			else if (boss->bossClass == BOSS_III) app->scene->boss3Beat = true;
+		}
 
 		//TODO DELETE BOSS
-
 		app->scene->SetScene(LEVEL_UP, experience);
 	}
 	else if (playerLose)
@@ -717,6 +1314,12 @@ void Combat::EndBattleSolving()
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
 
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
+
 		//TODO DELETE BOSS
 
 		app->scene->SetScene(LEVEL_UP);
@@ -728,6 +1331,12 @@ void Combat::EndBattleSolving()
 
 		if (enemyBattle) enemy->Refill();
 		else if (bossBattle) boss->Refill();
+
+		if (app->scene->player2->health <= 0)
+		{
+			app->scene->player2->Refill();
+			secondPlayer = true;
+		}
 
 		s->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 		s->SetScene(WORLD, app->scene->world->GetPlace());
@@ -773,6 +1382,7 @@ void Combat::PlayerChoiceLogic()
 			EscapeProbability(probabilityRange);
 		}
 		else if (bossBattle) EscapeProbability(-8);
+
 		return;
 	}
 	else if (app->scene->splitPressed)
@@ -822,6 +1432,20 @@ int Combat::PlayerDamageLogic()
 	else if (steps == 2) damage += floor(65 * pDamage / 100);
 	else if (steps == 3) damage += pDamage;
 
+	if (bossBattle)
+	{
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_I):
+			if (steps < shieldStep) return 0;
+			break;
+		case(BossClass::BOSS_II):
+			break;
+		case(BossClass::BOSS_III):
+			break;
+		}
+	}
+
 	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
 	{
 		damage = 1;
@@ -856,6 +1480,20 @@ int Combat::SecondPlayerDamageLogic()
 	else if (negative) damage -= variation;
 
 	if (damage <= 0) damage = 1;
+
+	if (bossBattle)
+	{
+		switch (boss->bossClass)
+		{
+		case(BossClass::BOSS_I):
+			if (steps < shieldStep) return 0;
+			break;
+		case(BossClass::BOSS_II):
+			break;
+		case(BossClass::BOSS_III):
+			break;
+		}
+	}
 
 	return damage;
 }
@@ -1064,21 +1702,898 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 	}
 }
 
-void Combat::BossAttack(BossClass boss)
+void Combat::BossAttack()
 {
-	switch (boss)
+	switch (boss->bossClass)
 	{
 	case(BossClass::BOSS_TUTORIAL):
+		if (boss->attack == 1)
+		{
+			if (bossTAttack1Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack1Time++;
+			}
+			else if (bossTAttack1Time < 52)
+			{
+				if (bossTAttack1Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack1Time++;
+			}
+			else if (bossTAttack1Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (bossTAttack1Time == 52) wave[0] = { 950, 428, 105, 60 };
+
+				if (bossTAttack1Time == 102)
+				{
+					jumpInstruction = true;
+				}
+				else if (bossTAttack1Time == 130)
+				{
+					jumpInstructionStep = 2;
+				}
+				else
+				{
+					bossTAttack1Time++;
+					wave[0].x -= 12;
+				}
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				bossTAttack1Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (bossTAttack2Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack2Time++;
+			}
+			else if (bossTAttack2Time < 52)
+			{
+				if (bossTAttack2Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				bossTAttack2Time++;
+			}
+			else if (bossTAttack2Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (bossTAttack2Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 12;
+				bossTAttack2Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				bossTAttack2Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
 		break;
 	case(BossClass::BOSS_I):
+		if (boss->attack == 1)
+		{
+			if (shield.x < shieldPos[1]) shield.x += 4;
+			else
+			{
+				shieldStep = 1;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (shield.x < shieldPos[2]) shield.x += 4;
+			else
+			{
+				shieldStep = 2;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 3)
+		{
+			if (shield.x < shieldPos[3])
+			{
+				shield.x += 4;
+				if (shield.x > shieldPos[3] - 40) boss->health++;
+			}
+			else
+			{
+				shieldStep = 3;
+				shield.x = shieldPos[shieldStep];
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 4)
+		{
+			if (boss1Attack4Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack4Time++;
+			}
+			else if (boss1Attack4Time < 52)
+			{
+				if (boss1Attack4Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack4Time++;
+			}
+			else if (boss1Attack4Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (boss1Attack4Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 12;
+				boss1Attack4Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				boss1Attack4Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 5)
+		{
+			if (boss1Attack5Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 0 }, false, 50);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack5Time++;
+			}
+			else if (boss1Attack5Time < 62)
+			{
+				if (boss1Attack5Time == 50) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack5Time++;
+			}
+			else if (boss1Attack5Time < 210)
+			{
+				PlayerBigWaveHitLogic();
+				if (boss1Attack5Time == 62) bigWave = { 950, 403, 120, 85 };
+				bigWave.x -= 14;
+				boss1Attack5Time++;
+			}
+			else
+			{
+				bigWave = { 1400, 0, 120, 90 };
+				boss1Attack5Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 6)
+		{
+			if (boss1Attack6Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack6Time++;
+			}
+			else if (boss1Attack6Time < 52)
+			{
+				if (boss1Attack6Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack6Time++;
+			}
+			else if (boss1Attack6Time < 240)
+			{
+				if (boss1Attack6Time < 92)
+				{
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else if (boss1Attack6Time < 104)
+				{
+					if (boss1Attack6Time == 92) app->scene->iterations = 0;
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else
+				{
+					PlayerWaveHitLogic(1);
+					if (boss1Attack6Time == 104) wave[1] = { 950, 428, 105, 60 };
+					wave[1].x -= 14;
+				}
+
+				PlayerWaveHitLogic(0);
+				if (boss1Attack6Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 14;
+				boss1Attack6Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				wave[1] = { 1400, 0, 105, 60 };
+				boss1Attack6Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 7)
+		{
+			if (boss1Attack7Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss1Attack7Time++;
+			}
+			else if (boss1Attack7Time < 100)
+			{
+				if (boss1Attack7Time == 50)
+				{
+					app->scene->iterations = 0;
+					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
+					else if (steps == 1) boss->colliderCombat.x = 419 - (BOSS_C_W / 2);
+					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
+					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
+				}
+				boss1Attack7Time++;
+			}
+			else if (boss1Attack7Time < 190)
+			{
+				boss->colliderCombat.y += 3;
+				boss1Attack7Time++;
+			}
+			else if (boss1Attack7Time < 230)
+			{
+				boss1Attack7Time++;
+			}
+			else if (boss1Attack7Time < 240)
+			{
+				boss->colliderCombat.y += 17;
+				PlayerHitLogic();
+				boss1Attack7Time++;
+			}
+			else if (boss1Attack7Time < 285)
+			{
+				boss->colliderCombat.y -= 15;
+				PlayerHitLogic();
+				boss1Attack7Time++;
+				if (boss1Attack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
+				if (boss3Attack5Time == 255) playerResponseAble = false;
+			}
+			else
+			{
+				if (boss->colliderCombat.y < BOSS_C_Y) boss->colliderCombat.y += 7;
+				else
+				{
+					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					boss1Attack7Time = 0;
+					AfterBossAttack();
+					playerHitAble = true;
+				}
+			}
+		}
 		break;
 	case(BossClass::BOSS_II):
+		if (boss->attack == 1)
+		{
+			if (boss2Attack1Time < 80)
+			{
+				boss2Attack1Time++;
+			}
+			else
+			{
+				int randm = (rand() % 3) + 1;
+
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+
+				boss2Attack1Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (boss2Attack2Time < 100)
+			{
+				if (spikesFattenator)
+				{
+					if (boss2Attack2Time > 85)
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							spike[i].h += 2;
+							spike[i].y -= 2;
+						}
+					}
+				}
+				boss2Attack2Time++;
+			}
+			else
+			{
+				spikesFattenator = false;
+
+				int randm = (rand() % 3) + 1;
+
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+
+				boss2Attack2Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 3)
+		{
+			if (boss2Attack3Time < 100)
+			{
+				boss2Attack3Time++;
+				if (b2heal) if (boss2Attack3Time > 50)
+				{
+					if (boss2Attack3Time > 50) boss->health++;
+				}
+				b2heal = false;
+			}
+			else
+			{
+				//RANDOM POS FOR SPIKE 0
+				int randm = (rand() % 3) + 1;
+				//IF RANDOM POS == PREVIOUS POS, CHANGE IT
+				if (spikeStep[0] == randm)
+				{
+					if (randm == 3) randm = 1;
+					else randm++;
+				}
+				//UPDATE SPIKE 0 INFO
+				spikeStep[0] = randm;
+				spike[0].x = spikePos[spikeStep[0]];
+
+				//RANDOM POS FOR SPIKE 1
+				int randm1 = (rand() % 3) + 1;
+				//IF RANDOM POS FOR SPIKE 1 == RANDOM POS FOR SPIKE 0, CHANGE IT
+				if (randm1 == randm)
+				{
+					if (randm1 == 3) randm1 = 1;
+					else randm1++;
+
+					//IF RANDOM POS == PREVIOUS POS, CHANGE IT
+					if (randm1 == spikeStep[1])
+					{
+						if (randm1 == 3) randm1 = 1;
+						else randm1++;
+					}
+				}
+				else if (randm1 == spikeStep[1])
+				{
+					if (randm1 == 3) randm1 = 1;
+					else randm1++;
+
+					if (randm1 == randm)
+					{
+						if (randm1 == 3) randm1 = 1;
+						else randm1++;
+					}
+				}
+				//UPDATE SPIKE 1 INFO
+				spikeStep[1] = randm1;
+				spike[1].x = spikePos[spikeStep[1]];
+
+				boss2Attack3Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 4)
+		{
+			if (boss2Attack4Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack4Time++;
+			}
+			else if (boss2Attack4Time < 52)
+			{
+				if (boss2Attack4Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack4Time++;
+			}
+			else if (boss2Attack4Time < 200)
+			{
+				PlayerWaveHitLogic(0);
+				if (boss2Attack4Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 12;
+				boss2Attack4Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				boss2Attack4Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 5)
+		{
+			if (boss2Attack5Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 0 }, false, 50);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack5Time++;
+			}
+			else if (boss2Attack5Time < 62)
+			{
+				if (boss2Attack5Time == 50) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack5Time++;
+			}
+			else if (boss2Attack5Time < 210)
+			{
+				PlayerBigWaveHitLogic();
+				if (boss2Attack5Time == 62) bigWave = { 950, 403, 120, 85 };
+				bigWave.x -= 14;
+				boss2Attack5Time++;
+			}
+			else
+			{
+				bigWave = { 1400, 0, 120, 90 };
+				boss2Attack5Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 6)
+		{
+			if (boss2Attack6Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack6Time++;
+			}
+			else if (boss2Attack6Time < 52)
+			{
+				if (boss2Attack6Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack6Time++;
+			}
+			else if (boss2Attack6Time < 240)
+			{
+				if (boss2Attack6Time < 92)
+				{
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else if (boss2Attack6Time < 104)
+				{
+					if (boss2Attack6Time == 92) app->scene->iterations = 0;
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else
+				{
+					PlayerWaveHitLogic(1);
+					if (boss2Attack6Time == 104) wave[1] = { 950, 428, 105, 60 };
+					wave[1].x -= 14;
+				}
+
+				PlayerWaveHitLogic(0);
+				if (boss2Attack6Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 14;
+				boss2Attack6Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				wave[1] = { 1400, 0, 105, 60 };
+				boss2Attack6Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 7)
+		{
+			if (boss2Attack7Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 100)
+			{
+				if (boss2Attack7Time == 50)
+				{
+					app->scene->iterations = 0;
+					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
+					else if (steps == 1) boss->colliderCombat.x = 419 - (BOSS_C_W / 2);
+					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
+					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
+				}
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 190)
+			{
+				boss->colliderCombat.y += 3;
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 230)
+			{
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 240)
+			{
+				boss->colliderCombat.y += 17;
+				PlayerHitLogic();
+				boss2Attack7Time++;
+			}
+			else if (boss2Attack7Time < 285)
+			{
+				boss->colliderCombat.y -= 15;
+				PlayerHitLogic();
+				boss2Attack7Time++;
+				if (boss2Attack7Time == 284) boss->colliderCombat.x = BOSS_C_X;
+				if (boss3Attack5Time == 255) playerResponseAble = false;
+			}
+			else
+			{
+				if (boss->colliderCombat.y < BOSS_C_Y) boss->colliderCombat.y += 7;
+				else
+				{
+					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					boss2Attack7Time = 0;
+					AfterBossAttack();
+					playerHitAble = true;
+				}
+			}
+		}
 		break;
 	case(BossClass::BOSS_III):
+		if (boss->attack == 1)
+		{
+			if (boss3Attack1Time < 80)
+			{
+				boss3Attack1Time++;
+			}
+			else
+			{
+				int randm = (rand() % 4) + 1;
+
+				if (randm == rZone.step)
+				{
+					if (randm == 4) randm = 1;
+					else randm++;
+				}
+
+				rZone.step = randm;
+				rZone.rect.x = zonePos[rZone.step];
+
+				boss3Attack1Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 2)
+		{
+			if (boss3Attack2Time < 80)
+			{
+				boss3Attack2Time++;
+			}
+			else
+			{
+				int randm = (rand() % 4) + 1;
+
+				if (randm == iZone.step)
+				{
+					if (randm == 4) randm = 1;
+					else randm++;
+				}
+
+				iZone.step = randm;
+				iZone.rect.x = zonePos[iZone.step];
+
+				boss3Attack2Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 3)
+		{
+			if (boss3Attack3Time < 80)
+			{
+				boss3Attack3Time++;
+			}
+			else
+			{
+				//RANDOM STEP FOR iZone
+				int randm = (rand() % 4) + 1;
+				//IF RANDOM STEP == PREVIOUS STEP, CHANGE IT
+				if (iZone.step == randm)
+				{
+					if (randm == 4) randm = 1;
+					else randm++;
+				}
+				if (randm == 1) randm = 0;
+				//UPDATE iZone INFO
+				iZone.step = randm;
+				iZone.rect.x = zonePos[iZone.step];
+
+				//RANDOM STEP FOR rZone
+				int randm1 = (rand() % 4) + 1;
+				//IF RANDOM STEP FOR rZone == RANDOM STEP FOR iZone, CHANGE IT
+				if (randm1 == randm)
+				{
+					if (randm1 == 4) randm1 = 1;
+					else randm1++;
+
+					//IF RANDOM STEP == PREVIOUS STEP, CHANGE IT
+					if (randm1 == rZone.step)
+					{
+						if (randm1 == 4) randm1 = 1;
+						else randm1++;
+					}
+				}
+				else if (randm1 == rZone.step)
+				{
+					if (randm1 == 4) randm1 = 1;
+					else randm1++;
+
+					if (randm1 == randm)
+					{
+						if (randm1 == 4) randm1 = 1;
+						else randm1++;
+					}
+				}
+				if (randm1 == 1) randm1 = 0;
+				//UPDATE rZone INFO
+				rZone.step = randm1;
+				rZone.rect.x = zonePos[rZone.step];
+
+				boss3Attack3Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 4)
+		{
+			if (boss3Attack4Time < 40)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss3Attack4Time++;
+			}
+			else if (boss3Attack4Time < 52)
+			{
+				if (boss3Attack4Time == 40) app->scene->iterations = 0;
+
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss3Attack4Time++;
+			}
+			else if (boss3Attack4Time < 240)
+			{
+				if (boss3Attack4Time < 92)
+				{
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, 30 }, false, 40);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else if (boss3Attack4Time < 104)
+				{
+					if (boss3Attack4Time == 92) app->scene->iterations = 0;
+					boss->colliderCombat.y = BOSS_C_Y;
+					int y = (int)app->scene->EaseBossFallDown({ boss->colliderCombat.x, 30 }, { boss->colliderCombat.x, boss->colliderCombat.y }, false, 10);
+					boss->colliderCombat.y += (y - BOSS_C_Y);
+				}
+				else
+				{
+					PlayerBigWaveHitLogic();
+					if (boss3Attack4Time == 104) bigWave = { 950, 403, 120, 85 };
+					bigWave.x -= 14;
+				}
+
+				PlayerWaveHitLogic(0);
+				if (boss3Attack4Time == 52) wave[0] = { 950, 428, 105, 60 };
+				wave[0].x -= 14;
+				boss3Attack4Time++;
+			}
+			else
+			{
+				wave[0] = { 1400, 0, 105, 60 };
+				bigWave = { 1400, 0, 120, 85 };
+				boss3Attack4Time = 0;
+				AfterBossAttack();
+				playerHitAble = true;
+			}
+		}
+		else if (boss->attack == 5)
+		{
+			if (boss3Attack5Time < 50)
+			{
+				boss->colliderCombat.y = BOSS_C_Y;
+				int y = (int)app->scene->EaseBossJumpUp({ boss->colliderCombat.x, boss->colliderCombat.y }, { boss->colliderCombat.x, (BOSS_C_W * (-1)) - 100 }, false, 40);
+				boss->colliderCombat.y += (y - BOSS_C_Y);
+				boss3Attack5Time++;
+			}
+			else if (boss3Attack5Time < 100)
+			{
+				if (boss3Attack5Time == 50)
+				{
+					app->scene->iterations = 0;
+					if (steps == 0) boss->colliderCombat.x = 249 - (BOSS_C_W / 2);
+					else if (steps == 1) boss->colliderCombat.x = 419 - (BOSS_C_W / 2);
+					else if (steps == 2) boss->colliderCombat.x = 589 - (BOSS_C_W / 2);
+					else if (steps == 3) boss->colliderCombat.x = 759 - (BOSS_C_W / 2);
+				}
+				boss3Attack5Time++;
+			}
+			else if (boss3Attack5Time < 190)
+			{
+				boss->colliderCombat.y += 3;
+				boss3Attack5Time++;
+			}
+			else if (boss3Attack5Time < 230)
+			{
+				boss3Attack5Time++;
+			}
+			else if (boss3Attack5Time < 240)
+			{
+				boss->colliderCombat.y += 17;
+				PlayerHitLogic();
+				boss3Attack5Time++;
+			}
+			else if (boss3Attack5Time < 285)
+			{
+				boss->colliderCombat.y -= 15;
+				PlayerHitLogic();
+				boss3Attack5Time++;
+				if (boss3Attack5Time == 255) playerResponseAble = false;
+				if (boss3Attack5Time == 284) boss->colliderCombat.x = BOSS_C_X;
+			}
+			else
+			{
+				if (boss->colliderCombat.y < BOSS_C_Y) boss->colliderCombat.y += 7;
+				else
+				{
+					boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+					playerHitAble = true;
+					boss3Attack5Time = 0;
+					AfterBossAttack();
+				}
+			}
+		}
+		else if (boss->attack == 6)
+		{
+			if (boss3Attack6Time < 80)
+			{
+				boss3Attack6Time++;
+			}
+			else
+			{
+				iZone.InstaKill();
+				boss3Attack6Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 7) //JUMP FORWARD
+		{
+			if (boss3Attack7Time < 40)
+			{
+				boss->colliderCombat.x += 3;
+				boss3Attack7Time++;
+			}
+			else if (boss3Attack7Time < 90)
+			{
+				boss3Attack7Time++;
+				playerHitAble = true;
+			}
+			else if (boss3Attack7Time < 180)
+			{
+				if (boss3Attack7Time == 90) app->scene->iterations = 0;
+				boss->colliderCombat.x = BOSS_C_X;
+				boss->colliderCombat.y = BOSS_C_Y;
+				fPoint point = app->scene->EaseQuadXY({ boss->colliderCombat.x, boss->colliderCombat.y }, { -70, boss->colliderCombat.y - 80 }, false, 90, 20);
+				boss->colliderCombat.x += ((int)point.x - BOSS_C_X);
+				boss->colliderCombat.y += ((int)point.y - BOSS_C_Y);
+				PlayerHitLogic();
+				boss3Attack7Time++;
+			}
+			else if (boss3Attack7Time < 255)
+			{
+				if (boss3Attack7Time == 180)
+				{
+					app->scene->iterations = 0;
+					boss->colliderCombat = { 1280, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+				}
+
+				boss->colliderCombat.x -= 4;
+				boss3Attack7Time++;
+			}
+			else
+			{
+				boss->colliderCombat = { BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H };
+				playerHitAble = true;
+				boss3Attack7Time = 0;
+				AfterBossAttack();
+			}
+		}
+		else if (boss->attack == 8) //SHIELD FORCE PUSH BACK
+		{
+			Player* p = app->scene->player1;
+			Player* p2 = app->scene->player2;
+			if (pusher.rect.x + pusher.rect.w > 0) //TODO FUTURE, BEING ABLE TO SHIFT TO ABOID PUSHING
+			{
+				pusher.Move();
+				if (collisionUtils.CheckCollision(p->colliderCombat, pusher.rect)) pusher.pushing = true;
+				if (pusher.pushing)
+				{
+					if (p->colliderCombat.x + (+p->colliderCombat.w / 2) <= 249)
+					{
+						PlayerPosReset();
+						pusher.pushing = false;
+					}
+					else
+					{
+						p->colliderCombat.x -= 12;
+						if (secondPlayer) p2->colliderCombat.x -= 12;
+					}
+				}
+			}
+			else
+			{
+				pusher.Restart();
+				AfterBossAttack();
+			}
+			p = nullptr;
+			p2 = nullptr;
+		}
 		break;
 	}
-
-	AfterBossAttack();
 }
 
 void Combat::AfterEnemyAttack()
@@ -1108,14 +2623,13 @@ void Combat::AfterBossAttack()
 	{
 		PlayerDie();
 	}
+
+	bossTimeWait = 0;
 }
 
 void Combat::PlayerAttack()
 {
 	int enemyHealth = 0;
-
-	if (enemyBattle) enemyHealth = enemy->health;
-	else if (bossBattle) enemyHealth = boss->health;
 
 	currentPlayerAnim = &app->scene->player1->cAttackAnim;
 
@@ -1135,6 +2649,8 @@ void Combat::PlayerAttack()
 			}
 
 			enemy->health -= PlayerDamageLogic();
+			enemyHealth = enemy->health;
+
 			LOG("Enemy Hit, EH: %d", enemy->health);
 		}
 		else if (bossBattle)
@@ -1142,10 +2658,10 @@ void Combat::PlayerAttack()
 			//app->audio->SetFx(Effect::BOSS_HURT_FX);
 
 			boss->health -= PlayerDamageLogic();
-			LOG("Enemy Hit, EH: %d", boss->health);
-		}
+			enemyHealth = boss->health;
 
-		
+			LOG("Boss Hit, EH: %d", boss->health);
+		}
 
 		playerTimeAttack = 0;
 		playerAttack = false;
@@ -1239,12 +2755,42 @@ void Combat::PlayerMove()
 		steps++;
 		LOG("Player moved to position : %d", steps);
 
-		if (!secondPlayer)
+		if (bossBattle && boss->bossClass == BOSS_II)
 		{
-			if (enemyBattle) EnemyTurn();
-			else if (bossBattle) BossTurn();
+			for (int i = 0; i < 2; i++)
+			{
+				if (spikeStep[i] == steps)
+				{
+					int damage = EnemyDamageLogic();
+					if (bossIIStep == 1)
+					{
+						damage -= 17;
+						if (damage <= 0) damage = 1;
+						app->scene->player1->health -= damage;
+					}
+					else
+					{
+						damage -= 13;
+						if (damage <= 0) damage = 1;
+						app->scene->player1->health -= damage;
+					}
+				}
+			}
 		}
-		else if (secondPlayer) SecondPlayerTurn();
+
+		if (app->scene->player1->health > 0)
+		{
+			if (!secondPlayer)
+			{
+				if (enemyBattle) EnemyTurn();
+				else if (bossBattle) BossTurn();
+			}
+			else if (secondPlayer) SecondPlayerTurn();
+		}
+		else if (app->scene->player1->health <= 0)
+		{
+			PlayerDie();
+		}
 	}
 }
 
@@ -1669,6 +3215,13 @@ int Combat::EnemyItemDamage()
 	return damage + damagePlus;
 }
 
+int Combat::EnemyStabDamage()
+{
+	int realStab = (app->scene->player1->stabStat * 20) / 25;
+
+	return ceil((enemy->health * realStab) / 100);
+}
+
 void Combat::PlayerResponse()
 {
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_DOWN)
@@ -1682,7 +3235,7 @@ void Combat::PlayerResponse()
 
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetControl(DOWN_PAD) == KEY_DOWN)
 	{
-		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump)
+		if (!app->scene->player1->crouch && playerResponseAble && !app->scene->player1->jump && !jumpInstruction)
 		{
 			app->scene->player1->crouch = true;
 			currentPlayerAnim = &app->scene->player1->cCrouchAnim;
@@ -1759,16 +3312,191 @@ void Combat::BossAttackProbability()
 	switch (boss->bossClass)
 	{
 	case BossClass::BOSS_TUTORIAL:
-		boss->attack = 1;
+		if (!endOfTutorial) boss->attack = 1;
+		else boss->attack = 2;
 		break;
 	case BossClass::BOSS_I:
-		boss->attack = 1;
+		if (shieldStep == 0) boss->attack = 1;
+		else if (boss->health <= 30 && boss->health >= 15 && shieldStep < 2) boss->attack = 2;
+		else if (boss->health < 15 && shieldStep < 3) boss->attack = 3;
+		else
+		{
+			if (shieldStep == 1) boss->attack = 4;
+			else if (shieldStep == 2)
+			{
+				int randm = rand() % 2;
+				if (randm == 0) boss->attack = 5;
+				else boss->attack = 6;
+			}
+			else if (shieldStep == 3)
+			{
+				int randm = rand() % 6;
+				if (randm < 1) boss->attack = 6;
+				else if (randm < 3) boss->attack = 5;
+				else boss->attack = 7;
+			}
+		}
 		break;
 	case BossClass::BOSS_II:
-		boss->attack = 1;
+		if (bossIIStep == 0)
+		{
+			boss->attack = 1;
+			bossIIStep = 1;
+		}
+		else if (bossIIStep == 1)
+		{
+			if (boss->health < 40)
+			{
+				bossIIStep = 2;
+				boss->attack = 2;
+				spikesFattenator = true;
+			}
+			else
+			{
+				int randm = rand() % 7;
+
+				if (boss->attack == 1) randm = 2;
+
+				if (randm < 2) boss->attack = 1;
+				else boss->attack = 4;
+			}
+		}
+		else if (bossIIStep == 2)
+		{
+			if (boss->health < 20)
+			{
+				bossIIStep = 3;
+				boss->attack = 3;
+				b2heal = true;
+			}
+			else
+			{
+				int randm = rand() % 7;
+
+				if (boss->attack == 1) randm = 2;
+
+				if (randm < 2) boss->attack = 1;
+				else
+				{
+					int randm1 = rand() % 2;
+					if (randm1 == 0) boss->attack = 5;
+					else boss->attack = 6;
+				}
+			}
+		}
+		else if (bossIIStep == 3)
+		{
+			int randm = rand() % 9;
+
+			if (boss->attack == 1) randm = 2;
+
+			if (randm < 2) boss->attack = 3;
+			else if (randm < 6)
+			{
+				int randm1 = rand() % 2;
+				if (randm1 == 0) boss->attack = 5;
+				else boss->attack = 6;
+			}
+			else boss->attack = 7;
+		}
 		break;
 	case BossClass::BOSS_III:
-		boss->attack = 1;
+		if (bossIIIStep == 0)
+		{
+			boss->attack = 1;
+			bossIIIStep = 1;
+		}
+		else if (bossIIIStep == 1)
+		{
+			if (boss->health < 104)
+			{
+				bossIIIStep = 2;
+				boss->attack = 2;
+				rZone.step = 0;
+				rZone.rect.x = zonePos[rZone.step];
+			}
+			else
+			{
+				int randm = rand() % 8;
+
+				if (boss->attack == 1) randm = 3;
+
+				if (randm < 3) boss->attack = 1;
+				else
+				{
+					int fifty = rand() % 2;
+					if (fifty == 0) boss->attack = 4;
+					else boss->attack = 5;
+				}
+
+				if (rZone.step == (steps + 1))
+				{
+					int fifty = rand() % 2;
+					if (fifty == 0) boss->attack = 4;
+					else boss->attack = 5;
+				}
+			}
+		}
+		else if (bossIIIStep == 2)
+		{
+			if (boss->health < 52)
+			{
+				bossIIIStep = 3;
+				boss->attack = 3;
+				iZone.step = 0;
+				iZone.rect.x = zonePos[iZone.step];
+			}
+			else
+			{
+				int randm = rand() % 8;
+
+				if (boss->attack == 2) randm = 3;
+
+				if (randm < 3) boss->attack = 2;
+				else
+				{
+					int fifty = rand() % 2;
+					if (fifty == 0) boss->attack = 4;
+					else boss->attack = 5;
+				}
+
+				if (rZone.step == (steps + 1))
+				{
+					int fifty = rand() % 2;
+					if (fifty == 0) boss->attack = 4;
+					else boss->attack = 5;
+				}
+
+				if (iZone.step == (steps + 1)) boss->attack = 6;
+			}
+		}
+		else if (bossIIIStep == 3)
+		{
+			int randm = rand() % 14;
+			if (boss->attack == 3) randm = 5;
+
+			if (randm < 5) boss->attack = 3;
+			else
+			{
+				int rndm = rand() % 13;
+				if (rndm < 4) boss->attack = 4;
+				else if (rndm < 8) boss->attack = 7;
+				else if (rndm < 11) boss->attack = 5;
+				else if (rndm < 13)
+				{
+					if (steps == 0) boss->attack = 8;
+					else
+					{
+						rndm = rand() % 8;
+						if (rndm < 3) boss->attack = 4;
+						else if (rndm < 6) boss->attack = 7;
+						else if (rndm < 8) boss->attack = 5;
+					}
+				}
+			}
+
+			if (iZone.step == (steps + 1)) boss->attack = 6;
+		}
 		break;
 	}
 }
@@ -1864,6 +3592,64 @@ void Combat::PlayerHitLogic()
 	}
 }
 
+void Combat::PlayerWaveHitLogic(int i)
+{
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, wave[i]))
+	{
+		if (app->scene->player1->godMode) LOG("Player is inmune");
+		else
+		{
+			playerHitAble = false;
+			if (!wearMantisLeg)
+			{
+				int waveReduction = 0;
+				if (boss->attack == 6) waveReduction = 2;
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() - waveReduction;
+				else if (secondPlayerProtection)
+				{
+					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+				}
+
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+
+				app->audio->SetFx(Effect::PLAYER_HURT_FX);
+
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
+		}
+	}
+}
+
+void Combat::PlayerBigWaveHitLogic()
+{
+	if (playerHitAble && collisionUtils.CheckCollision(app->scene->player1->colliderCombat, bigWave))
+	{
+		if (app->scene->player1->godMode) LOG("Player is inmune");
+		else
+		{
+			playerHitAble = false;
+			if (!wearMantisLeg)
+			{
+				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() + 3;
+				else if (secondPlayerProtection)
+				{
+					app->scene->player1->health -= floor((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
+					app->scene->player2->health -= ceil((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+				}
+
+				LOG("Player Hit - PH: %d", app->scene->player1->health);
+
+				app->audio->SetFx(Effect::PLAYER_HURT_FX);
+
+			}
+			else if (wearMantisLeg) wearMantisLeg = false;
+		}
+	}
+}
+
 void Combat::PlayerBulletHitLogic()
 {
 	for (int i = 0; i < 5; i++)
@@ -1879,8 +3665,8 @@ void Combat::PlayerBulletHitLogic()
 					if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
 					else if (secondPlayerProtection)
 					{
-						app->scene->player1->health -= floor(EnemyDamageLogic() / 2);
-						app->scene->player2->health -= ceil(EnemyDamageLogic() / 2);
+						app->scene->player1->health -= floor((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
+						app->scene->player2->health -= ceil((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
 						LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 					}
 
@@ -1937,7 +3723,7 @@ void Combat::ItemDrop(EnemyClass enemy)
 			{
 				if (randMeat < 7) smallMeat++;
 				else largeMeat++;
-				app->questManager->CheckGatherQuest(ItemType::LITTLE_BEEF_I, 1);
+				//app->questManager->CheckGatherQuest(ItemType::LITTLE_BEEF_I, 1);
 			}
 
 			if (smallMeat > MAX_MEAT) smallMeat = MAX_MEAT;
@@ -1996,7 +3782,7 @@ void Combat::UpdateBuffs()
 	}
 	else
 	{
-		app->scene->buffButton->state = GuiControlState::NORMAL;
+		//app->scene->buffButton->state = GuiControlState::NORMAL;
 
 		if (attackBuff)
 		{
@@ -2085,8 +3871,6 @@ void Combat::BossTurn()
 	if (steps == 3) app->scene->moveButton->state = GuiControlState::LOCKED;
 	else app->scene->moveButton->state = GuiControlState::NORMAL;
 
-	app->scene->escapeButton->state = GuiControlState::NORMAL;
-
 	turnText->SetString("BOSS TURN");
 
 	//app->audio->SetFx(Effect::BOSS_TURN_FX);
@@ -2101,11 +3885,14 @@ void Combat::PlayerTurn()
 	if (wearFeather) wearFeather = false;
 	if (wearMantisLeg) wearMantisLeg = false;
 
+	once = false;
+
 	if (app->scene->player2->health <= 0) SecondPlayerDie();
 
 	if (steps < 3 && !playerStepDenied) app->scene->moveButton->state = GuiControlState::NORMAL;
 
-	currentEnemyAnim = &enemy->idleAnim;
+	if (enemyBattle) currentEnemyAnim = &enemy->idleAnim;
+	else if (bossBattle) currentBossAnim = &boss->idleAnim;
 
 	turnText->SetString("PLAYER TURN");
 
@@ -2167,4 +3954,10 @@ void Combat::PlayerSplitWin()
 	LOG("ENEMY SPLITED");
 	splitedEnemy++;
 	combatState = SPLIT;
+}
+
+void InstaZone::InstaKill()
+{
+	if (app->scene->player1->health < 2) app->scene->player1->health = 0;
+	else app->scene->player1->health = 1;
 }

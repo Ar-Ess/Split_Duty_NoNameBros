@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Collider.h"
 #include "Player.h"
+#include "Combat.h"
 
 #include "Log.h"
 
@@ -22,26 +23,30 @@ LevelUp::LevelUp()
 {	
 }
 
-void LevelUp::Start(short int exp)
+void LevelUp::Start(int expGained)
 {
 	SetText();
 
 	interfaceTexture = app->tex->Load("Assets/Screens/level_scene.png");
 	barTexture = app->tex->Load("Assets/Textures/UI/inventory.png");
+	interfaceGui = app->tex->Load("Assets/Screens/level_scene_gui.png");
 
 	char str1[24] = {};
-	sprintf(str1, "Gained %d exp", exp);
+	sprintf(str1, "Gained %d exp", expGained);
 	expGainedText->SetString(str1, WHITE);
 
 	levelUpBool = false;
 
 	//------------------------------------------
 	Player* p = app->scene->player1;
-
+	/*
 	actualExp = p->exp; //Actual player experience
 	counter = actualExp; // Counter for exp animation
 	actualLevel = p->lvl;
 	maxExp = floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)); //Max EXP for actual lvl
+
+	sumUp = ceil(exp / 475);
+	if (sumUp <= 0) sumUp = 1;
 
 	int newExp = actualExp + exp; //Sum of the actual experience plus the experience given by the enemy
 	
@@ -68,31 +73,84 @@ void LevelUp::Start(short int exp)
 
 	if (levelUpBool)
 	{
-		int x = p->lvl;
+		float x = (float)p->lvl;
 
-		p->maxHealth = floor((x / 2) + 20);
-		p->strengthStat = floor((x / 3) + 6);
-		p->defenseStat = floor((x / 3) + 3);
-		if (p->luckStat != 0) p->luckStat = floor((x / 5) + 1);
-		if (p->stabStat != 0) p->stabStat = floor((x / 4) + 1);
-		if (p->velocityStat != 0) p->velocityStat = floor((x / 3) + 5);
+		p->maxHealth = ceil((x / 2.0f) + 20.0f);
+		p->strengthStat = ceil((x / 2.8f) + 6.0f);
+		p->defenseStat = ceil((x / 3.0f) + 3.0f);
+		if (p->luckStat != 0) p->luckStat = floor((x / 5.0f) + 1.0f);
+		if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+		if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
 	}
 
 	nextLevel = p->lvl;
 	p->exp = newExp;
+	*/
 
+	startExp = p->exp;
+	startLvl = p->lvl;
+	endExp = p->exp;
+	endLvl = p->lvl;
+	counter = startExp;
+
+	bool end = false;
+
+	while (!end)
+	{
+		maxExp = floor(1000 * pow((float)endLvl, 1.25f));
+
+		if (expGained >= maxExp)
+		{
+			endLvl++;
+			expGained -= maxExp;
+			endExp = expGained;
+			levelUpBool = true;
+			counter = 0;
+		}
+		else
+		{
+			endExp = expGained;
+			end = true;
+		}
+	}
+
+	if (endExp == 0) endExp = 1;
+	sumUp = (0.5f * endExp) / 100;
+	if (sumUp == 0) sumUp = 1;
+
+	if (endLvl > 100)
+	{
+		endLvl = 100;
+		endExp = 0;
+		maxLevel = true;
+	}
+
+	UpgradeStats(endLvl);
+	if (app->scene->combatScene->GetSecondPlayerExistance()) Upgrade2Stats(endLvl);
+
+	p->exp = endExp;
+	p->lvl = endLvl;
 	p = nullptr;
 
 	//TEXTS
 	char str[24] = {};
-	sprintf(str, "Level Up! %d to %d", actualLevel, nextLevel);
+	sprintf(str, "Level Up! %d to %d", startLvl, endLvl);
 	levelUpText->SetString(str, WHITE);
 }
 
 void LevelUp::Restart()
 {
 	app->tex->UnLoad(interfaceTexture);
+	app->tex->UnLoad(interfaceGui);
 	app->tex->UnLoad(barTexture);
+
+	maxExp = 0;
+	startLvl = 0;
+	endLvl = 0;
+	startExp = 0;
+	endExp = 0;
+	levelUpBool = false;
+	maxLevel = false;
 }
 
 void LevelUp::Update()
@@ -100,20 +158,20 @@ void LevelUp::Update()
 	if (counter >= app->scene->player1->exp) UpdateButtons();
 }
 
-void LevelUp::Draw()
+void LevelUp::Draw(int x)
 {
 	LOG("Drawing lvl up scene...");
 	app->render->DrawTexture(interfaceTexture, 0, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
+	app->render->DrawTexture(interfaceGui, x, 0, 1, false, 0, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
-	if (counter >= app->scene->player1->exp) DrawButtons();
+	if (counter >= app->scene->player1->exp) DrawButtons(x);
 
-    DrawText();
+    DrawText(x);
 
-	if (counter < app->scene->player1->exp) counter += 5;
+	if (!maxLevel) if (counter < app->scene->player1->exp) counter += sumUp;
 
-	DrawBar({530, 400}, counter, maxExp, BLUE);
 
-	//app->guiManager->DrawCursor();
+	DrawBar({530 + x, 400}, counter, maxExp, BLUE);
 }
 
 void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
@@ -131,6 +189,44 @@ void LevelUp::DrawBar(iPoint pos, int current, int max, SDL_Color color)
 	app->render->DrawRectangle({ pos.x,pos.y,int(floor(size * percent)),thickness }, {0, 40, 200, 255}, true, false);
 	app->render->DrawTexture(barTexture, pos.x, pos.y, 1, false, &expBarRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 
+}
+
+void LevelUp::UpgradeStats(int x)
+{
+	Player* p = app->scene->player1;
+
+	int mHealth= ceil((x / 2.0f) + 20.0f);
+	p->health = (mHealth * p->health) / p->maxHealth;
+	p->maxHealth = mHealth;
+
+	p->strengthStat = ceil((x / 2.8f) + 6.0f);
+
+	p->defenseStat = ceil((x / 3.0f) + 3.0f);
+
+	if (p->luckStat != 0) p->luckStat = ceil((x / 5.0f));
+
+	if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+
+	if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
+
+	p->lvl = x;
+
+	p = nullptr;
+}
+
+void LevelUp::Upgrade2Stats(int x)
+{
+	Player* p = app->scene->player2;
+
+	int mHealth = ceil(pow((float)x, 0.75f) + 5);
+	p->health = (mHealth * p->health) / p->maxHealth;
+	p->maxHealth = mHealth;
+
+	p->strengthStat = ceil((x / 3.5f) + 3.0f);
+
+	p->defenseStat = ceil(pow((float)x, (9.0f / 14.0f)) + 2.0f);
+
+	p->lvl = x;
 }
 
 void LevelUp::UpdateButtons()
@@ -163,6 +259,15 @@ void LevelUp::SetText()
 		winText->SetString("YOU WON!", WHITE);
 	}
 
+	if (maxLvlText == nullptr)
+	{
+		maxLvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		maxLvlText->bounds = { 600, 180, 300, 100 };
+		maxLvlText->SetTextFont(app->fontTTF->defaultFont);
+
+		maxLvlText->SetString("MAX LEVEL REACHED", WHITE);
+	}
+
 	if (expGainedText == nullptr)
 	{
 		expGainedText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
@@ -192,18 +297,47 @@ void LevelUp::SetText()
 	}
 }
 
-void LevelUp::DrawText()
+void LevelUp::DrawText(int x)
 {
-	if (levelUpBool) levelUpText->Draw();
-
-	if (!levelUpBool) winText->Draw();
+	if (!maxLevel)
+	{
+		if (levelUpBool)
+		{
+			levelUpText->bounds.x += x;
+			levelUpText->Draw();
+			levelUpText->bounds.x -= x;
+		}
+		if (!levelUpBool)
+		{
+			winText->bounds.x += x;
+			winText->Draw();
+			winText->bounds.x -= x;
+		}
+	}
+	else
+	{
+		maxLvlText->bounds.x += x;
+		maxLvlText->Draw();
+		maxLvlText->bounds.x -= x;
+	}
 	
+	expGainedText->bounds.x += x;
 	expGainedText->Draw();
+	expGainedText->bounds.x -= x;
 
-	if (counter >= app->scene->player1->exp) skipText->Draw();
+	if (counter >= app->scene->player1->exp)
+	{
+		skipText->bounds.x += x;
+		skipText->Draw();
+		skipText->bounds.x -= x;
+	}
 }
 
-void LevelUp::DrawButtons()
+void LevelUp::DrawButtons(int x)
 {
+	skipButton->bounds.x += x;
+
 	skipButton->Draw();
+
+	skipButton->bounds.x -= x;
 }

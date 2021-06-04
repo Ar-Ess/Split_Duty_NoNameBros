@@ -16,7 +16,6 @@ public:
 	void QuestLogic();
 
 public:
-	uint16 count;
 	uint16 goal;
 
 	ItemType iType;
