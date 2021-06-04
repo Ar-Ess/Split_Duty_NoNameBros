@@ -1449,7 +1449,7 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M, placex, 2);
 	}
 	else if (placex == TAVERN)
 	{
@@ -1458,7 +1458,25 @@ void World::LoadNPCs(Places placex)
 		else if (app->scene->bossTBeat && app->scene->boss1Beat && !app->scene->boss2Beat) dialog = 9;
 		else if (app->scene->bossTBeat && app->scene->boss1Beat && app->scene->boss2Beat) dialog = 10;
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 150, 150 }, NPCtype::BARMAN, placex, 8);
+		app->entityManager->NPCs.end->data->SetUp({ 150, 150 }, NPCtype::BARMAN, placex, dialog);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 8, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 8, 2);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 8, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 33*28 - 10, 17*28 }, NPCtype::ADVENTURER, placex, 8, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28, 9*28 }, NPCtype::ADVENTURER, placex, 8, 4);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 13*28 - 15, 18*28 - 15 }, NPCtype::CITIZEN_1, placex, 8, 4);
 	}
 	else if (placex == ENEMY_FIELD)
 	{

@@ -16,11 +16,15 @@ enum Places;
 
 enum NPCtype
 {
-    KNIGHT,
+    KNIGHT_M,
+    KNIGHT_F,
     OLD,
     PRIEST,
     NO_NPC,
     BARMAN,
+    WITCH,
+    CITIZEN_1,
+    ADVENTURER,
     SIGN
 };
 
@@ -34,7 +38,7 @@ public:
 
     ~NPC();
 
-    void SetUp(iPoint position, NPCtype type, Places place, int dialog);
+    void SetUp(iPoint position, NPCtype type, Places place, int dialog, int direction = 1);
 
     void Update(SDL_Rect pCollAmp);
 
@@ -56,6 +60,7 @@ private:
     Places place;
     SDL_Texture* texture = nullptr;
     int dialog;
+    int direction;
 
     Collision collisionUtils;
 };
