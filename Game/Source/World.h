@@ -14,6 +14,7 @@
 
 #define ENEMY_FIELD_ENEMY_MAX 5
 #define GRASSY_1_ENEMY_MAX 4
+#define GRASSY_3_ENEMY_MAX 6
 
 #define ENEMY_RUN_SPEED 4
 #define ENEMY_WALK_SPEED 2
@@ -101,6 +102,8 @@ public:
 
     void DrawFilters();
 
+    void DrawStomps();
+
     void AlignCameraPosition();
 
     void NPCLogic();
@@ -168,6 +171,16 @@ public: //obstacles
     const SDL_Rect bush = { 0,0,58,50 };
     SDL_Texture* fallenLog = nullptr;
     SDL_Rect logCollision = {};
+    SDL_Texture* stomp = nullptr;
+    const SDL_Rect stompRect = { 0, 40, 308, 270 };
+    SDL_Texture* statItems = nullptr;
+    SDL_Rect velocityStatRect = { (40 * 28), (5 * 28) - 6, 37, 45, };
+    const SDL_Rect velocityStat = { 0, 0, 74, 91 };
+    const SDL_Rect stabStat = { 74, 0, 74, 91 };
+    const SDL_Rect luckStat = { 148, 0, 74, 91 };
+    bool velocityTaken = false;
+    bool luckTaken = false;
+    bool stabTaken = false;
 
 private:
 
@@ -206,6 +219,8 @@ private:
     void AsignPrevPosition();
 
     void Teleport(iPoint pos);
+
+    void WorldStatGet();
 
 public:
     bool inventoryOpen = false;

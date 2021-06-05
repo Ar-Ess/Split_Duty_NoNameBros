@@ -365,5 +365,15 @@
         <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="19">
+      <Node ID="0">
+        <NPCTalk>WOW! THAT'S A VELOCITY STAT GEM, NOW, DEPENDING ON THAT STAT, THE FIRST TURN OF THE COMBAT IS YOURS! CHECK YOUR INVENTORY!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">WOW!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>ALSO, TRY TO WALK NOW, I THINK YOU'LL BE FASTER!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

@@ -404,6 +404,10 @@ bool App::LoadGame()
 		scene->boss1Beat = boss.attribute("Boss_I").as_bool();
 		scene->boss2Beat = boss.attribute("Boss_II").as_bool();
 		scene->boss3Beat = boss.attribute("Boss_III").as_bool();
+		stats = gameProgress.child("Stats");
+		scene->world->velocityTaken = stats.attribute("velocity_taken").as_bool();
+		scene->world->stabTaken = stats.attribute("stab_taken").as_bool();
+		scene->world->luckTaken = stats.attribute("luck_taken").as_bool();
 
 		LOG("Loading finished...");
 	}
@@ -490,6 +494,10 @@ bool App::SaveGame() const
 		gameProgress.append_attribute("Boss_I").set_value(scene->boss1Beat);
 		gameProgress.append_attribute("Boss_II").set_value(scene->boss2Beat);
 		gameProgress.append_attribute("Boss_III").set_value(scene->boss3Beat);
+		gameProgress = saveNode.append_child("Stats");
+		gameProgress.append_attribute("velocity_taken").set_value(scene->world->velocityTaken);
+		gameProgress.append_attribute("luck_taken").set_value(scene->world->luckTaken);
+		gameProgress.append_attribute("stab_taken").set_value(scene->world->stabTaken);
 
 		saveDoc.save_file("save_game.xml");
 		LOG("Game saved correctly");

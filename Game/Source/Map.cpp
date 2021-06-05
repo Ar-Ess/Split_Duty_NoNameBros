@@ -245,6 +245,7 @@ void Map::Draw()
 
 						w->DrawNPC();
 						w->DrawEnemy();
+						w->DrawStomps();
 						w->DrawPlayer();
 						playerDraw = true;
 						i--;

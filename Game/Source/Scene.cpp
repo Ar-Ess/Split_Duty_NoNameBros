@@ -1542,6 +1542,9 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			IIBossCombat = false;
 			IIIBossCombat = false;
 			IIIIBossCombat = false;
+			world->velocityTaken = false;
+			world->luckTaken = false;
+			world->stabTaken = false;
 		}
 		else if (strcmp(control->text.GetString(), "ContinueButton") == 0)
 		{

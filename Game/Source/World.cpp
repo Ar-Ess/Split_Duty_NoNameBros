@@ -15,6 +15,7 @@
 #include "StonePuzzle.h"
 #include "ButtonsPuzzle.h"
 #include "Inventory.h"
+#include "LevelUp.h"
 
 #include "Log.h"
 #include <time.h>
@@ -186,10 +187,6 @@ void World::Start(Places placex)
 
 		map->Load("grassy_lands_1.tmx");
 
-		buttonPuzzle1->finished = false;
-		lilipadPuzzle1->finished = false;
-		stonePuzzle1->finished = false;
-
 		if (!app->scene->continuePressed)
 		{
 			if (prevPlace == ENEMY_FIELD)
@@ -201,6 +198,7 @@ void World::Start(Places placex)
 			{
 				p->colliderWorld = { 1784, 64, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 1784, 64 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				buttonPuzzle1->resultActive = false;
 			}
 		}
 
@@ -251,6 +249,7 @@ void World::Start(Places placex)
 			{
 				p->colliderWorld = { 616, 84, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 616, 84 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				buttonPuzzle1->resultActive = true;
 			}
 		}
 
@@ -263,10 +262,6 @@ void World::Start(Places placex)
 		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
 
 		map->Load("grassy_lands_3.tmx");
-
-		buttonPuzzle1->finished = true;
-		lilipadPuzzle1->finished = true;
-		stonePuzzle1->finished = true;
 
 		if (!app->scene->continuePressed)
 		{
@@ -284,6 +279,8 @@ void World::Start(Places placex)
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		stomp = app->tex->Load("Assets/Textures/Environment/stumps.png");
+		statItems = app->tex->Load("Assets/Textures/UI/collectible_items.png");
 	}
 	else if (placex == AUTUM_FALL_1)
 	{
@@ -365,6 +362,8 @@ void World::Restart(Scenes scene)
 	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
 	if (mantisSpritesheet != nullptr)app->tex->UnLoad(mantisSpritesheet);
 	if (leaves != nullptr)app->tex->UnLoad(leaves);
+	if (stomp != nullptr)app->tex->UnLoad(stomp);
+	if (statItems != nullptr)app->tex->UnLoad(statItems);
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	
@@ -424,6 +423,8 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	WorldStatGet();
 
 	if (place == GRASSY_LAND_2)
 	{
@@ -626,6 +627,8 @@ void World::DrawCollisions()
 		app->render->DrawRectangle(thirdBossRect, { 100, 0, 100, 150 });
 	}
 
+	if (place == GRASSY_LAND_3) app->render->DrawRectangle(velocityStatRect, { 100, 0, 100, 150 });
+
 	p = nullptr;
 }
 
@@ -640,6 +643,15 @@ void World::DrawFilters()
 		p = nullptr;
 		app->render->DrawTexture(night, x, y, 1, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		app->render->DrawRectangle({ -app->render->camera.x, -app->render->camera.y, 1280, y + app->render->camera.y }, {0, 0, 0, 255});
+	}
+}
+
+void World::DrawStomps()
+{
+	if (place == GRASSY_LAND_3)
+	{
+		app->render->DrawTexture(stomp, (38 * 28) + 18, (6 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!velocityTaken) app->render->DrawTexture(statItems, (40 * 28), (5 * 28) - 6, 0.5f, 0.5f, false, &velocityStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
 }
 
@@ -815,9 +827,9 @@ void World::WorldChange()
 	}
 	else if (place == GRASSY_LAND_3)
 	{
-		for (int i = 0; i < location1.Count(); i++)
+		for (int i = 0; i < location2.Count(); i++)
 		{
-			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
 				ChangeMap(GRASSY_LAND_2);
 				return;
@@ -865,6 +877,17 @@ void World::WorldEnemySpawn()
 		{
 			int randm = rand() % 5;
 			int lvl = (rand() % 11) + 12;
+			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == GRASSY_LAND_3)
+	{
+		while (app->entityManager->enemies.Count() < GRASSY_3_ENEMY_MAX)
+		{
+			int randm = rand() % 5;
+			int lvl = (rand() % 11) + 23;
 			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
 			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
 			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
@@ -1088,6 +1111,11 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 	case GRASSY_LAND_1:
 		worldCollider.x = 644 + (rand() % 896);
 		worldCollider.y = 392 + (rand() % 504);
+		break;
+
+	case GRASSY_LAND_3:
+		worldCollider.x = 784 + (rand() % 644);
+		worldCollider.y = 784 + (rand() % 672);
 		break;
 	}
 
@@ -1729,4 +1757,40 @@ void World::Teleport(iPoint pos)
 	p->collisionRect = { pos.x, pos.y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 	AlignCameraPosition();
 	RectifyCameraPosition(place);
+}
+
+void World::WorldStatGet()
+{
+	if (place == GRASSY_LAND_3)
+	{
+		if (!velocityTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, velocityStatRect))
+		{
+			app->scene->player1->velocityStat = 1;
+			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
+			velocityTaken = true;
+			app->dialogueManager->StartDialogue(19);
+			app->scene->player1->playerSpeed = 7;
+			UpdateWorldSpeed();
+		}
+	}
+	/*else if (place == AUTUM_FALL_2)
+	{
+		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, luckStatRect))
+		{
+			app->scene->player1->luckStat = 1;
+			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
+			luckTaken = true;
+			app->dialogueManager->StartDialogue(20);
+		}
+	}
+	else if (place == MOSSY_ROCKS_2)
+	{
+		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
+		{
+			app->scene->player1->stabStat = 1;
+			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
+			stabTaken = true;
+			app->dialogueManager->StartDialogue(21);
+		}
+	}*/
 }
