@@ -916,6 +916,18 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_3)
+				{
+					switch (tileId)
+					{
+					case 2890: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+					case 2889: // GRASSY LANDS 2
+						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
 				{
 					switch (tileId)

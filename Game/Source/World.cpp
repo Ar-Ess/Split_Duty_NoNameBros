@@ -186,6 +186,10 @@ void World::Start(Places placex)
 
 		map->Load("grassy_lands_1.tmx");
 
+		buttonPuzzle1->finished = false;
+		lilipadPuzzle1->finished = false;
+		stonePuzzle1->finished = false;
+
 		if (!app->scene->continuePressed)
 		{
 			if (prevPlace == ENEMY_FIELD)
@@ -238,13 +242,48 @@ void World::Start(Places placex)
 
 		if (!app->scene->continuePressed)
 		{
-			p->colliderWorld = { 616, 1390, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-			p->collisionRect = { 616, 1390 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			if (prevPlace == GRASSY_LAND_1)
+			{
+				p->colliderWorld = { 616, 1390, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 616, 1390 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+			else if (prevPlace == GRASSY_LAND_3)
+			{
+				p->colliderWorld = { 616, 84, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 616, 84 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
 		}
 
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
+	}
+	else if (placex == GRASSY_LAND_3)
+	{
+		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+
+		map->Load("grassy_lands_3.tmx");
+
+		buttonPuzzle1->finished = true;
+		lilipadPuzzle1->finished = true;
+		stonePuzzle1->finished = true;
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == GRASSY_LAND_2)
+			{
+				p->colliderWorld = { 1098, 2380, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1098, 2380 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 	else if (placex == AUTUM_FALL_1)
 	{
@@ -770,6 +809,17 @@ void World::WorldChange()
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
 				ChangeMap(GRASSY_LAND_3);
+				return;
+			}
+		}
+	}
+	else if (place == GRASSY_LAND_3)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(GRASSY_LAND_2);
 				return;
 			}
 		}
@@ -1642,6 +1692,11 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y > 1110) app->render->camera.y = 720 - 1512;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 675) app->render->camera.x = 1280 - 1288; //1680
+	}
+	else if (placex == GRASSY_LAND_3)
+	{
+		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 2118) app->render->camera.y = 720 - 2520;
 	}
 	else if (placex == GOLEM_STONES)
 	{

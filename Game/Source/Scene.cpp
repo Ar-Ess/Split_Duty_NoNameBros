@@ -1160,6 +1160,10 @@ void Scene::SetPauseMenu()
 		saveGameButton->bounds = { 640 - buttonPrefab.w / 2 , 295,buttonPrefab.w,buttonPrefab.h };
 		saveGameButton->text = "SaveGameButton";
 		saveGameButton->SetObserver(this);
+	}
+
+	if (saveGameButton != nullptr)
+	{
 		if (world->GetPlace() == Places::GRASSY_LAND_2) saveGameButton->state = GuiControlState::LOCKED;
 		else saveGameButton->state = GuiControlState::NORMAL;
 	}
