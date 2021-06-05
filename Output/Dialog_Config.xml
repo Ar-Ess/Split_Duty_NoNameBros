@@ -292,7 +292,7 @@
       </Node>
       <Node ID="1">
         <NPCTalk>DO YOU KNOW WHERE ARE YOU?</NPCTalk>
-        <Option NextNode="2" ReturnCode="1">No..</Option>
+        <Option NextNode="12" ReturnCode="1">No..</Option>
       </Node>
       <Node ID="2">
         <NPCTalk>I SUPPOSED SO. WELL, LET ME TELL YOU A STORY SO YOU CAN UNDERSTAND...</NPCTalk>
@@ -303,15 +303,15 @@
         <Option NextNode="4" ReturnCode="1">Right</Option>
       </Node>
       <Node ID="4">
-        <NPCTalk>UNFORTUNEDLY, THE MAJORITY OF HUMANS WHERE CORRUPTED, AND EVENTUALLY, THEY DIED... BUT A REALLY SMALL AMOUNT OF THEM MANAGED TO ESCAPE. THEY FOUND A SMALL PLACE, AT THE END OF A CAVE, WHERE THAT VIRUS WAS NOT ABLE TO ATTACK THEM. AFTER THAT, THEY CREATED THEIR VILLAGE AGAIN.</NPCTalk>
+        <NPCTalk>UNFORTUNEDLY, HUMANS WHERE CORRUPTED, BUT A REALLY SMALL AMOUNT OF THEM MANAGED TO ESCAPE. THEY FOUND A SMALL PLACE, AT THE END OF A CAVE, WHERE THAT VIRUS WAS NOT ABLE TO ATTACK THEM. AFTER THAT, THEY CREATED THEIR VILLAGE AGAIN.</NPCTalk>
         <Option NextNode="5" ReturnCode="1">Village?</Option>
       </Node>
       <Node ID="5">
-        <NPCTalk>YES! RIGHT! YOU ARE STARTING TO RECOVER YOUR MEMORY, THAT VILLAGE IS FROM WHERE YOU COME.</NPCTalk>
+        <NPCTalk>YES! RIGHT! YOU ARE STARTING TO RECOVER YOUR MEMORY, THAT VILLAGE IS FROM WHERE YOU COME FROM.</NPCTalk>
         <Option NextNode="6" ReturnCode="1">That's true</Option>
       </Node>
       <Node ID="6">
-        <NPCTalk>THE PROBLEM COMES WHEN A BUNCH OF GOLEMS MADE THAT VILLAGE PRISONERS BY BLOCKING THEIR FREEDOM, AS WELL AS THE PATH TO GO OUT THE CAVE... THE CITIZENS THINK THOSE GOLEMS ARE PROTECTING THEM, BUT THEY ARE REALLY NOT!</NPCTalk>
+        <NPCTalk>THE PROBLEM COMES WHEN A BUNCH OF GOLEMS MADE THAT VILLAGERS PRISONERS BY BLOCKING THEIR FREEDOM, AS WELL AS THE PATH TO GO OUT THE CAVE... THE CITIZENS THINK THOSE GOLEMS ARE PROTECTING THEM, BUT THEY ARE REALLY NOT!</NPCTalk>
         <Option NextNode="7" ReturnCode="1">WHAT???</Option>
       </Node>
       <Node ID="7">
@@ -323,16 +323,46 @@
         <Option NextNode="9" ReturnCode="1">I'll do it!</Option>
       </Node>
       <Node ID="9">
-        <NPCTalk>RIGHT, THAT'S THE RIGHT WAY TO SEE THINGS! DON'T WORRY, I'LL HELP YOU TOO! IF DURING YOUR ADVENTURE YOU WANT ME TO REMEMBER YOUR OBJECTIVE, JUST CLICK H OR R3 AND I'LL REMEMBER IT TO YOU!</NPCTalk>
+        <NPCTalk>RIGHT, THAT'S THE RIGHT WAY TO SEE THINGS! DON'T WORRY, I'LL HELP YOU TOO! IF DURING YOUR ADVENTURE YOU WANT ME TO REMEMBER YOUR OBJECTIVE, JUST CLICK H OR R3 AND I'LL REMEMBER IT FOR YOU!</NPCTalk>
         <Option NextNode="10" ReturnCode="1">Nice, but...</Option>
       </Node>
       <Node ID="10">
         <NPCTalk>HOW WILL YOU DEFEAT THOSE GOLEMS? NO PROBLEM, JUST DO WHAT I SAY, AND YOU'LL BE FINE! TO MOVE AROUND THE MAP, YOU CAN USE W/A/S/D OF THE CONTROL PAD.</NPCTalk>
         <Option NextNode="11" ReturnCode="1">I can't... m..</Option>
       </Node>
-      <Node ID="111">
+      <Node ID="11">
         <NPCTalk>I KNOW YOU CAN'T MOVE... YOUR LEGS ARE SO TIRED FROM WHAT HAS HAPPENED. TO GO TO WHERE I WANT TO BRING TO YOU, YOU JUST NEED TO GO FORWARD (W or UP).</NPCTalk>
-        <Option NextNode="12" ReturnCode="-1">Okey...</Option>
+        <Option NextNode="-1" ReturnCode="-1">Okey...</Option>
+      </Node>
+      <Node ID="12">
+        <NPCTalk>YOU ARE IN THE A SANCTUARY, LOCATED IN THE NORTH-EST FROM THE VILLAG... I MEAN, WELL, I'LL EXPLAIN YOU LATER... DO YOU KNOW WHY ARE YOU HERE?</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">No...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="18">
+      <Node ID="0">
+        <NPCTalk>THIS IS A GOLEM STONE. PEOPLE COMES HERE AND GIVES THANKS TO THEM, PUAJ.... THEY DON'T KNOW THEIR REALITY...</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Puaj...</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>DO YOU SEE THOSE MARKS? YOU ARE THE ONLY ONE CAPABLE TO DO SO. IF YOU SEE THEM WITH A LIVELY COLOUR MEANS THIS GOLEM IS STILL ALIVE!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>BUT BE CAREFULL, THOSE GOLEMS ARE VERY STRONG, YOU'LL HAVE TO GET BETTER OR IT IS PROBABLE YOU'LL DIE!</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">Noted it</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>WITH MY POWER, I CAN TRANSPORT YOU TO WHERE THAT GOLEM LIES TO BATTLE IT. YOU JUST HAVE TO CLICK RETURN OR A TO INTERACT WITH THE STONES, AS WELL AS WITH PEOPLE!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">But...</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>WHAT?</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Who are you?</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>JUST CLICK RETURN OR A TO BATTLE THE GOLEM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
       </Node>
     </Dialog>
   </Dialogs>

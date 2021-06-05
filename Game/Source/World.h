@@ -164,8 +164,8 @@ public: //GOLEMS
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;
-    SDL_Rect leavesCollision = {-10, 1960, 200, 200};
-    const SDL_Rect bush = {0,0,58,50};
+    SDL_Rect leavesCollision = { -10, 1960, 200, 200 };
+    const SDL_Rect bush = { 0,0,58,50 };
     SDL_Texture* fallenLog = nullptr;
     SDL_Rect logCollision = {};
 
@@ -181,7 +181,7 @@ private:
 
     void WorldEnemyChasing();
 
-	void WorldStabLogic();
+    void WorldStabLogic();
 
     void EnemyStatsGeneration(Enemy* enemy, Player* player, int lvl);
 
@@ -209,17 +209,20 @@ private:
 
 public:
     bool inventoryOpen = false;
+
+public: //TUTORIAL
     bool gameStart = false;
+    bool tutorialDialogueOnce = false;
     SDL_Texture* night = nullptr;
 
 public:
-	bool stabActive = false;
-	int stabTime = 0;
-	bool stabLeft = false;
-	bool stabRight = false;
-	bool stabUp = false;
-	bool stabDown = false; 
-	SDL_Rect stabRect = {};
+    bool stabActive = false;
+    int stabTime = 0;
+    bool stabLeft = false;
+    bool stabRight = false;
+    bool stabUp = false;
+    bool stabDown = false;
+    SDL_Rect stabRect = {};
 
 private:
 
@@ -241,7 +244,7 @@ private:
 
     ButtonPuzzle* buttonPuzzle1 = nullptr;
 
-	DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
+    DialogueManager* dialogs = nullptr; //Dialogs update twice because in world there is a dialogManager Update as well as the update for being module (it is not a module)
 
     Places place;
 
@@ -272,7 +275,7 @@ private:
     const SDL_Rect sensor4House = { 2660, 1792, 112, 56 };
     const SDL_Rect sensor5House = { 2044, 1792, 112, 56 };
     const SDL_Rect sensor6House = { 3080, 1260, 112, 56 };
-    const SDL_Rect sensorVillageField1 = { 0, 140, 28, 196};
+    const SDL_Rect sensorVillageField1 = { 0, 140, 28, 196 };
     const SDL_Rect sensorVillageField2 = { 0, 1316, 28, 196 };
     const SDL_Rect sensorFieldVillage1 = { 1652, 280, 28, 196 };
     const SDL_Rect sensorFieldVillage2 = { 1652, 1456, 28, 196 };
@@ -284,8 +287,8 @@ private: //Textures
     SDL_Texture* mantisSpritesheet = nullptr;
     SDL_Texture* walkingSpritesheet = nullptr;
 
-    const SDL_Rect wolfRect = {65,0, 60, 35};
-    const SDL_Rect birdRect = { 32*3, 0, 32, 32 };
+    const SDL_Rect wolfRect = { 65,0, 60, 35 };
+    const SDL_Rect birdRect = { 32 * 3, 0, 32, 32 };
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;

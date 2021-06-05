@@ -1389,17 +1389,29 @@ void Scene::UpdateWorld()
 	}
 
 	// DEBUG
-	if (world->tutorialBossActivation && !bossTBeat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
-	world->tutorialBossActivation = false;
+	if (tBossCombat && !bossTBeat)
+	{
+		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+		tBossCombat = false;
+	}
 
-	if (world->secondBossActivation && !boss1Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
-	world->secondBossActivation = false;
+	if (IIBossCombat && !boss1Beat && bossTBeat)
+	{
+		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
+		IIBossCombat = false;
+	}
 
-	if (world->thirdBossActivation && !boss2Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
-	world->thirdBossActivation = false;
+	if (IIIBossCombat && !boss2Beat && boss1Beat && bossTBeat)
+	{
+		IIIBossCombat = false;
+		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+	}
 
-	/*if (world->finalBossActivation && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
-	world->finalBossActivation = false;*/
+	if (IIIIBossCombat && !boss3Beat && boss2Beat && boss1Beat && bossTBeat)
+	{
+		IIIIBossCombat = false;
+		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+	}
 
 	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
 
@@ -1408,14 +1420,14 @@ void Scene::UpdateWorld()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
 	{
-		if (!world->inventoryOpen && !app->dialogueManager->onDialog)
+		if (!world->inventoryOpen && !app->dialogueManager->onDialog && !world->gameStart)
 		{
 			prevCam = { app->render->camera.x, app->render->camera.y };
 			SetScene(PAUSE_MENU);
 		}
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !world->gameStart)
 	{
 		player1->godMode = !player1->godMode;
 		world->godMode = !world->godMode;
@@ -1432,10 +1444,20 @@ void Scene::UpdateWorld()
 	if (app->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
 	{
 		world->gameStart = true;
+		world->tutorialDialogueOnce = true;
 		SetScene(WORLD, GOLEM_STONES);
 		world->Teleport({ 1064, 896 });
 		app->dialogueManager->StartDialogue(17);
 	}
+
+	if (world->tutorialBossActivation) tBossCombat = true;
+	else if (world->secondBossActivation) IIBossCombat = true;
+	else if (world->thirdBossActivation) IIIBossCombat = true;
+	else if (world->finalBossActivation) IIIIBossCombat = true;
+	world->tutorialBossActivation = false;
+	world->secondBossActivation = false;
+	world->thirdBossActivation = false;
+	world->finalBossActivation = false;
 }
 
 void Scene::UpdatePauseMenu()
@@ -1508,6 +1530,14 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			player2->RestartPlayer();
 			world->AlignCameraPosition();
 			continueButton->state = GuiControlState::LOCKED;
+			app->scene->boss1Beat = false;
+			app->scene->boss1Beat = false;
+			app->scene->boss2Beat = false;
+			app->scene->boss3Beat = false;
+			tBossCombat = false;
+			IIBossCombat = false;
+			IIIBossCombat = false;
+			IIIIBossCombat = false;
 		}
 		else if (strcmp(control->text.GetString(), "ContinueButton") == 0)
 		{
@@ -1615,6 +1645,11 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			SetScene(WORLD, world->place);
 			world->AlignCameraPosition();
 			iterations = 0;
+			if (world->gameStart)
+			{
+				world->gameStart = false;
+				app->SaveGameRequest();
+			}
 		}
 
 	case END_SCREEN:

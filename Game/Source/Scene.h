@@ -182,6 +182,11 @@ public:
 
 	bool sp = false;
 
+	bool tBossCombat = false;
+	bool IIBossCombat = false;
+	bool IIIBossCombat = false;
+	bool IIIIBossCombat = false;
+
 private: //Scene Manager
 	friend class World;
 	friend class App;

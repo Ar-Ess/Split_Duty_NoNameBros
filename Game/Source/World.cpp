@@ -395,7 +395,7 @@ void World::Update()
 
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN || app->input->GetControl(Y) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
 	{
-		if (!app->dialogueManager->onDialog)
+		if (!app->dialogueManager->onDialog && !gameStart)
 		{
 			inventoryOpen = !inventoryOpen;
 			if (inventoryOpen) inventory->Start();
@@ -1280,9 +1280,13 @@ void World::ChangePlayerState()
 	short unsigned int directionsActive = 0;
 
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetControl(UP_PAD) == KEY_DOWN || app->input->GetControl(UP_PAD) == KEY_REPEAT) ford = true;
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || app->input->GetControl(DOWN_PAD) == KEY_DOWN || app->input->GetControl(DOWN_PAD) == KEY_REPEAT) back = true;
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetControl(LEFT_PAD) == KEY_DOWN || app->input->GetControl(LEFT_PAD) == KEY_REPEAT) left = true;
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetControl(RIGHT_PAD) == KEY_DOWN || app->input->GetControl(RIGHT_PAD) == KEY_REPEAT) right = true;
+	
+	if (!gameStart)
+	{
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || app->input->GetControl(DOWN_PAD) == KEY_DOWN || app->input->GetControl(DOWN_PAD) == KEY_REPEAT) back = true;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetControl(LEFT_PAD) == KEY_DOWN || app->input->GetControl(LEFT_PAD) == KEY_REPEAT) left = true;
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || app->input->GetControl(RIGHT_PAD) == KEY_DOWN || app->input->GetControl(RIGHT_PAD) == KEY_REPEAT) right = true;
+	}
 
 	if (ford && !back && !left && !right) playerState = PlayerState::UP;
 	if (!ford && back && !left && !right) playerState = PlayerState::DOWN;
@@ -1317,7 +1321,8 @@ bool World::PlayerMovement()
 	case(PlayerState::UP):
 		currentPlayerAnimation = &p->walkUpAnim;
 		p->walkUpAnim.loop = true;
-		p->collisionRect.y -= worldSpeed;
+		if (!gameStart) p->collisionRect.y -= worldSpeed;
+		else p->collisionRect.y -= 1;
 		break;
 
 	case(PlayerState::DOWN):
@@ -1389,7 +1394,11 @@ void World::CameraMovement(bool move)
 			break;
 
 		case(PlayerState::UP):
-			if (place != HOUSE) app->render->camera.y += worldSpeed;
+			if (place != HOUSE)
+			{
+				if (!gameStart) app->render->camera.y += worldSpeed;
+				else app->render->camera.y += 1;
+			}
 			break;
 
 		case(PlayerState::DOWN):
@@ -1530,6 +1539,7 @@ void World::LoadNPCs(Places placex)
 
 void World::GolemCall()
 {
+	Player* p = app->scene->player1;
 	SDL_Rect ampPlayerCollider = app->scene->player1->collisionRect;
 	ampPlayerCollider.x -= 15;
 	ampPlayerCollider.y -= 25;
@@ -1538,10 +1548,21 @@ void World::GolemCall()
 
 	if (collisionUtils.CheckCollision(tutorialBossRect, ampPlayerCollider))
 	{
+		if (tutorialDialogueOnce)
+		{
+			app->dialogueManager->StartDialogue(18);
+			tutorialDialogueOnce = false;
+			p->walkUpAnim.loop = false;
+			p->walkUpAnim.Reset();
+		}
+
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
-			tutorialBossActivation = true;
-			AsignPrevPosition();
+			if (!app->dialogueManager->onDialog && !inventoryOpen)
+			{
+				tutorialBossActivation = true;
+				AsignPrevPosition();
+			}
 		}
 	}
 	else if (collisionUtils.CheckCollision(secondBossRect, ampPlayerCollider))
@@ -1555,8 +1576,12 @@ void World::GolemCall()
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
-			secondBossActivation = true;
-			AsignPrevPosition();
+			if (!app->dialogueManager->onDialog && !inventoryOpen)
+			{
+				app->SaveGameRequest();
+				secondBossActivation = true;
+				AsignPrevPosition();
+			}
 		}
 	}
 	else if (collisionUtils.CheckCollision(thirdBossRect, ampPlayerCollider))
@@ -1570,8 +1595,12 @@ void World::GolemCall()
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
 		{
-			thirdBossActivation = true;
-			AsignPrevPosition();
+			if (!app->dialogueManager->onDialog && !inventoryOpen)
+			{
+				app->SaveGameRequest();
+				thirdBossActivation = true;
+				AsignPrevPosition();
+			}
 		}
 	}
 	else
