@@ -246,7 +246,7 @@
         <NPCTalk>I'VE BEEN SITTING ON THIS CHAIR EVERY DAY OF MY LIFE SINCE THIS TAVERN WAS OPEN!</NPCTalk>
         <Option NextNode="1" ReturnCode="1">Wow</Option>
       </Node>
-      <Node ID="0">
+      <Node ID="1">
         <NPCTalk>THANKS FOR YOUR ADMIRATION, YOUNG WOMAN!</NPCTalk>
         <Option NextNode="-1" ReturnCode="-1">:)</Option>
       </Node>
@@ -259,7 +259,7 @@
     </Dialog>
     <Dialog ID="13">
       <Node ID="0">
-        <NPCTalk>... YES BUT I DID NOMETHING BETTER! I USED A FEATHER TO JUMP UPON A WOLF CHARGE! BEAT THIS!</NPCTalk>
+        <NPCTalk>... YES BUT I DID SOMETHING BETTER! I USED A FEATHER TO JUMP UPON A WOLF CHARGE! BEAT THIS!</NPCTalk>
         <Option NextNode="-1" ReturnCode="-1">...</Option>
       </Node>
     </Dialog>

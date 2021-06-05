@@ -1641,15 +1641,20 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case LEVEL_UP:
 		if (strcmp(control->text.GetString(), "SkipButton") == 0)
 		{
-			world->SetInmunityTime(PLAYER_INMUNITY_TIME);
-			SetScene(WORLD, world->place);
-			world->AlignCameraPosition();
-			iterations = 0;
-			if (world->gameStart)
+			if (!world->gameStart)
+			{
+				world->SetInmunityTime(PLAYER_INMUNITY_TIME);
+				SetScene(WORLD, world->place);
+			}
+			else if (world->gameStart)
 			{
 				world->gameStart = false;
+				SetScene(WORLD, MAIN_VILLAGE);
+				world->Teleport({INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y});
 				app->SaveGameRequest();
 			}
+			world->AlignCameraPosition();
+			iterations = 0;
 		}
 
 	case END_SCREEN:
