@@ -169,10 +169,10 @@ public: //obstacles
     SDL_Texture* leaves = nullptr;
     SDL_Rect leavesCollision = { -10, 1960, 200, 200 };
     const SDL_Rect bush = { 0,0,58,50 };
-    SDL_Texture* fallenLog = nullptr;
-    SDL_Rect logCollision = {};
+    SDL_Rect logCollision = {4 * 28, 13 * 28, 8 * 28, 3 * 28};
     SDL_Texture* stomp = nullptr;
     const SDL_Rect stompRect = { 0, 40, 308, 270 };
+    const SDL_Rect fallenWoodRect = { 330, 160, 320, 140 };
     SDL_Texture* statItems = nullptr;
     SDL_Rect velocityStatRect = { (40 * 28), (5 * 28) - 6, 37, 45, };
     const SDL_Rect velocityStat = { 0, 0, 74, 91 };

@@ -929,6 +929,23 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::MOSSY_ROCKS_1)
+				{
+					switch (tileId)
+					{
+					case 426: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 424: // MAIN_VILLAGE
+						app->scene->world->location1.Add(r);
+						break;
+
+					case 423: // MOSSY ROCKS 2
+						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
 				{
 					switch (tileId)
