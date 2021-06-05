@@ -291,6 +291,33 @@ void World::Start(Places placex)
 	else if (placex == MOSSY_ROCKS_1)
 	{
 		app->scene->enviroment = Environments::MOSSY_LANDS;
+
+		//app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
+
+		map->Load("mossy_rocks_1.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == MAIN_VILLAGE)
+			{
+				p->colliderWorld = { 28 * 31, 28 * 2, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 31, (28 * 2) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+			else if (prevPlace == MOSSY_ROCKS_2)
+			{
+				p->colliderWorld = { 57 * 28, 28 * 18, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 57 * 28, (28 * 18) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		stomp = app->tex->Load("Assets/Textures/Environment/stumps.png");
 	}
 	else if (placex == MOSSY_ROCKS_2)
 	{
@@ -555,6 +582,10 @@ void World::DrawObstacles()
 	{
 		app->render->DrawTexture(leaves, leavesCollision.x, leavesCollision.y, 3.5f, 3.5f, false, &bush, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
+	else if (place == MOSSY_ROCKS_1 && !app->scene->boss2Beat)
+	{
+		app->render->DrawTexture(stomp, logCollision.x, logCollision.y, 0.8f, 0.8f, false, &fallenWoodRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
 }
 
 void World::DrawCollisions()
@@ -586,6 +617,11 @@ void World::DrawCollisions()
 	if (place == ENEMY_FIELD && !app->scene->boss1Beat)
 	{
 		app->render->DrawRectangle(leavesCollision, {255, 0, 0, 100});
+	}
+
+	if (place == MOSSY_ROCKS_1 && !app->scene->boss2Beat)
+	{
+		app->render->DrawRectangle(logCollision, { 255, 0, 0, 100 });
 	}
 
 	if (place == ENEMY_FIELD || place == GRASSY_LAND_1)
@@ -831,6 +867,37 @@ void World::WorldChange()
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
 				ChangeMap(GRASSY_LAND_2);
+				return;
+			}
+		}
+	}
+	else if (place == MOSSY_ROCKS_1)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(MAIN_VILLAGE);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(MOSSY_ROCKS_2);
+				return;
+			}
+		}
+	}
+	else if (place == MOSSY_ROCKS_2)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(MOSSY_ROCKS_1);
 				return;
 			}
 		}
@@ -1317,6 +1384,35 @@ bool World::CollisionSolver(iPoint prevPos)
 	if (place == ENEMY_FIELD)
 	{
 		if (!app->scene->boss1Beat && collisionUtils.CheckCollision(p->collisionRect, leavesCollision))
+		{
+			//Millorar perquè no es quedi parat sense tocar la valla
+			//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
+
+			if (prevPos.y - p->collisionRect.y < 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+			}
+			if (prevPos.x - p->collisionRect.x < 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+			}
+			if (prevPos.y - p->collisionRect.y > 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+			}
+			if (prevPos.x - p->collisionRect.x > 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+			}
+
+			p = nullptr;
+			return false; //Player Can Not Move
+		}
+	}
+
+	if (place == MOSSY_ROCKS_1)
+	{
+		if (!app->scene->boss2Beat && collisionUtils.CheckCollision(p->collisionRect, logCollision))
 		{
 			//Millorar perquè no es quedi parat sense tocar la valla
 			//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
