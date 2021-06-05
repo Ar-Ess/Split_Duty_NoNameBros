@@ -198,7 +198,6 @@ void World::Start(Places placex)
 			{
 				p->colliderWorld = { 1784, 64, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 1784, 64 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
-				buttonPuzzle1->resultActive = false;
 			}
 		}
 
@@ -1761,6 +1760,8 @@ void World::Teleport(iPoint pos)
 
 void World::WorldStatGet()
 {
+	Player* p = app->scene->player1;
+
 	if (place == GRASSY_LAND_3)
 	{
 		if (!velocityTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, velocityStatRect))
@@ -1771,6 +1772,14 @@ void World::WorldStatGet()
 			app->dialogueManager->StartDialogue(19);
 			app->scene->player1->playerSpeed = 7;
 			UpdateWorldSpeed();
+			p->walkUpAnim.loop = false;
+			p->walkUpAnim.Reset();
+			p->walkDownAnim.loop = false;
+			p->walkDownAnim.Reset();
+			p->walkLeftAnim.loop = false;
+			p->walkLeftAnim.Reset();
+			p->walkRightAnim.loop = false;
+			p->walkRightAnim.Reset();
 		}
 	}
 	/*else if (place == AUTUM_FALL_2)
@@ -1781,6 +1790,14 @@ void World::WorldStatGet()
 			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
 			luckTaken = true;
 			app->dialogueManager->StartDialogue(20);
+			p->walkUpAnim.loop = false;
+			p->walkUpAnim.Reset();
+			p->walkDownAnim.loop = false;
+			p->walkDownAnim.Reset();
+			p->walkLeftAnim.loop = false;
+			p->walkLeftAnim.Reset();
+			p->walkRightAnim.loop = false;
+			p->walkRightAnim.Reset();
 		}
 	}
 	else if (place == MOSSY_ROCKS_2)
@@ -1791,6 +1808,14 @@ void World::WorldStatGet()
 			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
 			stabTaken = true;
 			app->dialogueManager->StartDialogue(21);
+			p->walkUpAnim.loop = false;
+			p->walkUpAnim.Reset();
+			p->walkDownAnim.loop = false;
+			p->walkDownAnim.Reset();
+			p->walkLeftAnim.loop = false;
+			p->walkLeftAnim.Reset();
+			p->walkRightAnim.loop = false;
+			p->walkRightAnim.Reset();
 		}
 	}*/
 }
