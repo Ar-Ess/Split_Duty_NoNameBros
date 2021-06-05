@@ -937,11 +937,11 @@ void Map::LoadColliders(MapLayer* layer)
 						app->scene->world->collisions.Add(r);
 						break;
 
-					case 424: // MAIN_VILLAGE
+					case 425: // MAIN_VILLAGE
 						app->scene->world->location1.Add(r);
 						break;
 
-					case 423: // MOSSY ROCKS 2
+					case 424: // MOSSY ROCKS 2
 						app->scene->world->location2.Add(r);
 						break;
 					}

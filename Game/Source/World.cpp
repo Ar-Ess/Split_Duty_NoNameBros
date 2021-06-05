@@ -88,6 +88,11 @@ void World::Start(Places placex)
 				p->colliderWorld = { 3150, 200, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 3150, 200 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
+			else if (prevPlace == MOSSY_ROCKS_1)
+			{
+				p->colliderWorld = { 1736, 1932, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 1736, 1932 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
 		}
 
 		AlignCameraPosition();
@@ -584,7 +589,7 @@ void World::DrawObstacles()
 	}
 	else if (place == MOSSY_ROCKS_1 && !app->scene->boss2Beat)
 	{
-		app->render->DrawTexture(stomp, logCollision.x, logCollision.y, 0.8f, 0.8f, false, &fallenWoodRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		app->render->DrawTexture(stomp, logCollision.x, logCollision.y, 0.7f, 0.7f, false, &fallenWoodRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
 }
 
@@ -1821,6 +1826,13 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 2118) app->render->camera.y = 720 - 2520;
 	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
+		if (app->scene->player1->colliderWorld.y > 1276) app->render->camera.y = 720 - 1680;
+		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 1006) app->render->camera.x = 1280 - 1680; //616
+	}
 	else if (placex == GOLEM_STONES)
 	{
 		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
@@ -1828,6 +1840,8 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1064) app->render->camera.x = 1280 - 1680; //616
 	}
+
+	LOG("%d", app->scene->player1->collisionRect.x);
 }
 
 void World::UpdateWorldSpeed()
