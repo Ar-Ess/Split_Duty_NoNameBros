@@ -285,5 +285,55 @@
         <Option NextNode="-1" ReturnCode="-1">Sure...</Option>
       </Node>
     </Dialog>
+    <Dialog ID="17">
+      <Node ID="0">
+        <NPCTalk>HEY, DO YOU LISTEN TO ME?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yes...</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>DO YOU KNOW WHERE ARE YOU?</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">No..</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>I SUPPOSED SO. WELL, LET ME TELL YOU A STORY SO YOU CAN UNDERSTAND...</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">Mh...</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>A LONG TIME AGO, THERE WAS A LARGE SOCIETY OF HUMANS LIVING IN THIS WORLD, PEACEFULLY. BUT ONE DAY, A CATASTROPHIC VIRUS WAS BORN AND IT STARTED TO CONTAMINATE AND CORRUPT ALL IN ITS WAY.</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Right</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>UNFORTUNEDLY, THE MAJORITY OF HUMANS WHERE CORRUPTED, AND EVENTUALLY, THEY DIED... BUT A REALLY SMALL AMOUNT OF THEM MANAGED TO ESCAPE. THEY FOUND A SMALL PLACE, AT THE END OF A CAVE, WHERE THAT VIRUS WAS NOT ABLE TO ATTACK THEM. AFTER THAT, THEY CREATED THEIR VILLAGE AGAIN.</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Village?</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>YES! RIGHT! YOU ARE STARTING TO RECOVER YOUR MEMORY, THAT VILLAGE IS FROM WHERE YOU COME.</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">That's true</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>THE PROBLEM COMES WHEN A BUNCH OF GOLEMS MADE THAT VILLAGE PRISONERS BY BLOCKING THEIR FREEDOM, AS WELL AS THE PATH TO GO OUT THE CAVE... THE CITIZENS THINK THOSE GOLEMS ARE PROTECTING THEM, BUT THEY ARE REALLY NOT!</NPCTalk>
+        <Option NextNode="7" ReturnCode="1">WHAT???</Option>
+      </Node>
+      <Node ID="7">
+        <NPCTalk>YES, THAT'S THE REALITY. AND REGARDING IT, I WANT TO ASK YOU A FABOUR TO SAVE YOUR VILLAGE AS WELL AS YOU, AND BE A HERO!</NPCTalk>
+        <Option NextNode="8" ReturnCode="1">Ask me!</Option>
+      </Node>
+      <Node ID="8">
+        <NPCTalk>I NEED YOU TO KILL THOSE GOLEMS. THAT WAY, YOU WILL BREAK THE THE JAIL WHERE YOU CURRENTLY ARE!</NPCTalk>
+        <Option NextNode="9" ReturnCode="1">I'll do it!</Option>
+      </Node>
+      <Node ID="9">
+        <NPCTalk>RIGHT, THAT'S THE RIGHT WAY TO SEE THINGS! DON'T WORRY, I'LL HELP YOU TOO! IF DURING YOUR ADVENTURE YOU WANT ME TO REMEMBER YOUR OBJECTIVE, JUST CLICK H OR R3 AND I'LL REMEMBER IT TO YOU!</NPCTalk>
+        <Option NextNode="10" ReturnCode="1">Nice, but...</Option>
+      </Node>
+      <Node ID="10">
+        <NPCTalk>HOW WILL YOU DEFEAT THOSE GOLEMS? NO PROBLEM, JUST DO WHAT I SAY, AND YOU'LL BE FINE! TO MOVE AROUND THE MAP, YOU CAN USE W/A/S/D OF THE CONTROL PAD.</NPCTalk>
+        <Option NextNode="11" ReturnCode="1">I can't... m..</Option>
+      </Node>
+      <Node ID="111">
+        <NPCTalk>I KNOW YOU CAN'T MOVE... YOUR LEGS ARE SO TIRED FROM WHAT HAS HAPPENED. TO GO TO WHERE I WANT TO BRING TO YOU, YOU JUST NEED TO GO FORWARD (W or UP).</NPCTalk>
+        <Option NextNode="12" ReturnCode="-1">Okey...</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

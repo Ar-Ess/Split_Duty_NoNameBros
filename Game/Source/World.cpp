@@ -279,6 +279,8 @@ void World::Start(Places placex)
 			}
 		}
 
+		if (gameStart) night = app->tex->Load("Assets/Textures/Environment/darkness2.png");
+
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
@@ -317,6 +319,8 @@ void World::Restart(Scenes scene)
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+
+	if (night != nullptr) app->tex->UnLoad(night);
 
 	if (wolfSpritesheet != nullptr) app->tex->UnLoad(wolfSpritesheet);
 	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
@@ -437,6 +441,8 @@ void World::Draw()
 	}
 
 	DrawText();
+
+	DrawFilters();
 
 	return;
 }
@@ -584,6 +590,20 @@ void World::DrawCollisions()
 	p = nullptr;
 }
 
+void World::DrawFilters()
+{
+	if (gameStart)
+	{
+		const SDL_Rect a = { 0, 0, 1280, 720 };
+		Player* p = app->scene->player1;
+		int x = (p->colliderWorld.x + 22 - 640);
+		int y = (p->colliderWorld.y + 42 - 360);
+		p = nullptr;
+		app->render->DrawTexture(night, x, y, 1, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		app->render->DrawRectangle({ -app->render->camera.x, -app->render->camera.y, 1280, y + app->render->camera.y }, {0, 0, 0, 255});
+	}
+}
+
 //-------------------------------------------------------------------
 
 void World::WorldMovement()
@@ -623,7 +643,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
-				ChangeMap(MOSSY_ROCKS);
+				ChangeMap(MOSSY_ROCKS_1);
 				return;
 			}
 		}
@@ -690,7 +710,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
-				ChangeMap(AUTUM_FALL);
+				ChangeMap(AUTUM_FALL_1);
 				return;
 			}
 		}
@@ -1616,4 +1636,13 @@ void World::ChangeMap(Places place)
 void World::AsignPrevPosition()
 {
 	prevPosition = { app->scene->player1->collisionRect.x, app->scene->player1->collisionRect.y };
+}
+
+void World::Teleport(iPoint pos)
+{
+	Player* p = app->scene->player1;
+	p->colliderWorld = { pos.x, pos.y, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+	p->collisionRect = { pos.x, pos.y + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+	AlignCameraPosition();
+	RectifyCameraPosition(place);
 }

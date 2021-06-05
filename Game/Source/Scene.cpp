@@ -1428,6 +1428,14 @@ void Scene::UpdateWorld()
 	{
 		levelUpScene->UpgradeStats(100);
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
+	{
+		world->gameStart = true;
+		SetScene(WORLD, GOLEM_STONES);
+		world->Teleport({ 1064, 896 });
+		app->dialogueManager->StartDialogue(17);
+	}
 }
 
 void Scene::UpdatePauseMenu()

@@ -99,6 +99,8 @@ public:
 
     void DrawCollisions();
 
+    void DrawFilters();
+
     void AlignCameraPosition();
 
     void NPCLogic();
@@ -203,8 +205,12 @@ private:
 
     void AsignPrevPosition();
 
+    void Teleport(iPoint pos);
+
 public:
     bool inventoryOpen = false;
+    bool gameStart = false;
+    SDL_Texture* night = nullptr;
 
 public:
 	bool stabActive = false;
@@ -283,8 +289,6 @@ private: //Textures
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;
-
-    
 };
 
 #endif // __WORLD_H__
