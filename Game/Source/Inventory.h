@@ -56,6 +56,8 @@ public:
 
     void DrawText(int y);
 
+    void DrawStats(int y);
+
     void UpdateHealthText();
 
 private:
@@ -96,7 +98,12 @@ private:
     int maxExp = 0;
 
 private:
-    SDL_Texture* itemsTexture;
+    SDL_Texture* itemsTexture = nullptr;
+    SDL_Texture* hiddenStats = nullptr;
+
+    const SDL_Rect velocity = { 0, 0, 367, 55 };
+    const SDL_Rect luck = { 0, 68, 367, 55 };
+    const SDL_Rect stab = { 0, 136, 367, 55 };
     
 	GuiString* littleBeefText = nullptr;
 	GuiString* bigBeefText = nullptr;
@@ -111,8 +118,6 @@ private:
     iPoint itemOff = { 190,134};
 	iPoint numberItemPos = {185-16,208-11 };
 	iPoint numberItemOff = { 190,132 };
-
-    SDL_Texture* statsTexture = nullptr;
 
 	int sprite = 80;
     SDL_Rect healthStatRect = { 0,0,60,60 };

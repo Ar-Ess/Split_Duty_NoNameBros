@@ -64,8 +64,10 @@ enum Places
     GRASSY_LAND_1,
     GRASSY_LAND_2,
     GRASSY_LAND_3,
-    AUTUM_FALL,
-    MOSSY_ROCKS
+    AUTUM_FALL_1,
+    AUTUM_FALL_2,
+    MOSSY_ROCKS_1,
+    MOSSY_ROCKS_2
 };
 
 
@@ -92,6 +94,8 @@ public:
     void DrawNPC();
 
     void DrawText();
+
+    void DrawObstacles();
 
     void DrawCollisions();
 
@@ -155,6 +159,13 @@ public: //GOLEMS
     GuiString* lvlRecomendedText = nullptr;
     bool drawRecomendedII = false;
     bool drawRecomendedIII = false;
+
+public: //obstacles
+    SDL_Texture* leaves = nullptr;
+    SDL_Rect leavesCollision = {-10, 1960, 200, 200};
+    const SDL_Rect bush = {0,0,58,50};
+    SDL_Texture* fallenLog = nullptr;
+    SDL_Rect logCollision = {};
 
 private:
 

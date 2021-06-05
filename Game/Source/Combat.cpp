@@ -38,7 +38,18 @@ void Combat::Start()
 	//Texture loading
 	character1Spritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/combat_female_character_spritesheet.png");
 	character2Spritesheet = app->tex->Load("Assets/Textures/Characters/Second_Player/second_player.png");
-	grassyLandsBackground = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
+	switch(app->scene->enviroment)
+	{
+	case GRASSY_LANDS:
+		background = app->tex->Load("Assets/Textures/Environment/grassy_lands_combat_scene.png");
+		break;
+	case AUTUM_FALLS:
+		background = app->tex->Load("Assets/Textures/Environment/autumn_falls_combat_scene.png");
+		break;
+	case MOSSY_LANDS:
+		background = app->tex->Load("Assets/Textures/Environment/mossy_rocks_combat_scene.png");
+		break;
+	}
 	combatInventory = app->tex->Load("Assets/Screens/combat_inventory.png");
 
 	if (enemyBattle) EnemyStart();
@@ -186,7 +197,7 @@ void Combat::Restart()
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(bossSpritesheet);
-	app->tex->UnLoad(grassyLandsBackground);
+	app->tex->UnLoad(background);
 	app->tex->UnLoad(combatInventory);
 	if (tutorialBox != nullptr) app->tex->UnLoad(tutorialBox);
 
@@ -924,20 +935,7 @@ void Combat::DrawBoss()
 
 void Combat::DrawBakcground()
 {
-	switch (app->scene->enviroment)
-	{
-		case GRASSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-		break;
-
-		case AUTUM_FALLS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
-
-		case MOSSY_LANDS:
-			app->render->DrawTexture(grassyLandsBackground, 0, 0, &backgroundRect);
-			break;
-	}
+	app->render->DrawTexture(background, 0, 0);
 }
 
 void Combat::DrawPopUps()

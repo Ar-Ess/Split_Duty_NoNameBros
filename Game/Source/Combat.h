@@ -510,9 +510,7 @@ private:
     SDL_Texture* enemySpritesheet = nullptr;
     SDL_Texture* bossSpritesheet = nullptr;
 
-    SDL_Texture* grassyLandsBackground = nullptr;
-    SDL_Texture* autummFallsBackground = nullptr;
-    SDL_Texture* mossyLandsBackground = nullptr;
+    SDL_Texture* background = nullptr;
 
     SDL_Texture* combatInventory = nullptr;
 };

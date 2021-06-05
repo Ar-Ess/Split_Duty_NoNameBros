@@ -39,7 +39,8 @@ enum Environments
 {
 	GRASSY_LANDS,
 	AUTUM_FALLS,
-	MOSSY_LANDS
+	MOSSY_LANDS,
+	BOSS_LANDS
 };
 
 class Scene : public Module

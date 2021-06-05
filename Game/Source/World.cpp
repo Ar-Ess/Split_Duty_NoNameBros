@@ -37,6 +37,7 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("main_village.tmx");
+		app->scene->enviroment = Environments::GRASSY_LANDS;
 
 		if (!app->scene->continuePressed)
 		{
@@ -128,6 +129,8 @@ void World::Start(Places placex)
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("graveyard.tmx");
 
+		app->scene->enviroment = Environments::GRASSY_LANDS;
+
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
 		{
@@ -175,6 +178,7 @@ void World::Start(Places placex)
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
 		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		leaves = app->tex->Load("Assets/Textures/Environment/leafs.png");
 	}
 	else if (placex == GRASSY_LAND_1)
 	{
@@ -242,10 +246,25 @@ void World::Start(Places placex)
 
 		RectifyCameraPosition(placex);
 	}
+	else if (placex == AUTUM_FALL_1)
+	{
+		app->scene->enviroment = Environments::AUTUM_FALLS;
+	}
+	else if (placex == AUTUM_FALL_2)
+	{
+	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		app->scene->enviroment = Environments::MOSSY_LANDS;
+	}
+	else if (placex == MOSSY_ROCKS_2)
+	{
+	}
 	else if (placex == GOLEM_STONES)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("golem_sanctuary.tmx");
+		app->scene->enviroment = Environments::BOSS_LANDS;
 
 		if (!app->scene->continuePressed)
 		{
@@ -302,6 +321,7 @@ void World::Restart(Scenes scene)
 	if (wolfSpritesheet != nullptr) app->tex->UnLoad(wolfSpritesheet);
 	if (birdSpritesheet != nullptr)app->tex->UnLoad(birdSpritesheet);
 	if (mantisSpritesheet != nullptr)app->tex->UnLoad(mantisSpritesheet);
+	if (leaves != nullptr)app->tex->UnLoad(leaves);
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	
@@ -384,7 +404,10 @@ void World::Update()
 
 	if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) app->scene->player1->stabStat = 25;
 
-	GolemCall();
+	if (place == GOLEM_STONES) GolemCall();
+
+	if (app->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN || app->input->GetControl(R3) == KEY_DOWN)
+		if (!app->dialogueManager->onDialog && !inventoryOpen) app->dialogueManager->StartDialogue(7);
 }
 
 void World::EnemyLogic()
@@ -402,9 +425,11 @@ void World::Draw()
 {
 	map->Draw();
 
+	DrawObstacles();
+
 	if (debugCollisions) DrawCollisions();
 
-	if (place == HOUSE || place == ENEMY_FIELD || place == TAVERN)
+	if (place == HOUSE || place == TAVERN)
 	{
 		DrawNPC();
 		DrawEnemy();
@@ -479,6 +504,14 @@ void World::DrawText()
 	//lvlRecomendedText->Draw();
 }
 
+void World::DrawObstacles()
+{
+	if (place == ENEMY_FIELD && !app->scene->boss1Beat)
+	{
+		app->render->DrawTexture(leaves, leavesCollision.x, leavesCollision.y, 3.5f, 3.5f, false, &bush, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+}
+
 void World::DrawCollisions()
 {
 	Player* p = app->scene->player1;
@@ -503,6 +536,11 @@ void World::DrawCollisions()
 			app->render->DrawRectangle(npc->contactCollider, { 100, 250, 100, 150 });
 		}
 		npc = nullptr;
+	}
+
+	if (place == ENEMY_FIELD && !app->scene->boss1Beat)
+	{
+		app->render->DrawRectangle(leavesCollision, {255, 0, 0, 100});
 	}
 
 	if (place == ENEMY_FIELD || place == GRASSY_LAND_1)
@@ -1179,6 +1217,35 @@ bool World::CollisionSolver(iPoint prevPos)
 		}
 	}
 
+	if (place == ENEMY_FIELD)
+	{
+		if (!app->scene->boss1Beat && collisionUtils.CheckCollision(p->collisionRect, leavesCollision))
+		{
+			//Millorar perquè no es quedi parat sense tocar la valla
+			//Com fer-ho? if (prev.y - actual.y < 0) Esta fent collision des d'adalt (continual la llògica)
+
+			if (prevPos.y - p->collisionRect.y < 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING UP TO DOWN
+			}
+			if (prevPos.x - p->collisionRect.x < 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING LEFT TO RIGHT
+			}
+			if (prevPos.y - p->collisionRect.y > 0)
+			{
+				p->collisionRect.y = prevPos.y; //COLLIDING DOWN TO UP
+			}
+			if (prevPos.x - p->collisionRect.x > 0)
+			{
+				p->collisionRect.x = prevPos.x; //COLLIDING RIGHT TO LEFT
+			}
+
+			p = nullptr;
+			return false; //Player Can Not Move
+		}
+	}
+
 	p = nullptr;
 	return true; //Player Can Move
 }
@@ -1400,7 +1467,34 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M, placex, 2);
+	}
+	else if (placex == TAVERN)
+	{
+		int dialog = 0;
+		if (app->scene->bossTBeat && !app->scene->boss1Beat && !app->scene->boss2Beat) dialog = 8;
+		else if (app->scene->bossTBeat && app->scene->boss1Beat && !app->scene->boss2Beat) dialog = 9;
+		else if (app->scene->bossTBeat && app->scene->boss1Beat && app->scene->boss2Beat) dialog = 10;
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 150, 150 }, NPCtype::BARMAN, placex, dialog);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 11, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 12, 2);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 13, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 33*28 - 10, 17*28 }, NPCtype::ADVENTURER, placex, 14, 3);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 24*28, 9*28 }, NPCtype::ADVENTURER, placex, 15, 4);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 13*28 - 15, 18*28 - 15 }, NPCtype::CITIZEN_1, placex, 16, 4);
 	}
 	else if (placex == ENEMY_FIELD)
 	{
