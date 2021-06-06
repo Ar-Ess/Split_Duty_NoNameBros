@@ -174,12 +174,17 @@ void World::Start(Places placex)
 			{
 				p->colliderWorld = { 812, 50, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 812, 50 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
-
-				AlignCameraPosition();
-
-				RectifyCameraPosition(placex);
+			}
+			else if (prevPlace == AUTUM_FALL_1)
+			{
+				p->colliderWorld = { 28 * 3, 28 * 72, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 3, (28 * 72) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
 
 		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
 		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
@@ -289,9 +294,57 @@ void World::Start(Places placex)
 	else if (placex == AUTUM_FALL_1)
 	{
 		app->scene->enviroment = Environments::AUTUM_FALLS;
+
+		//app->audio->SetMusic(SoundTrack::AUTUM_FALLS_TRACK);
+
+		map->Load("autumn_falls_1.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == ENEMY_FIELD)
+			{
+				p->colliderWorld = { 136 * 28, 28 * 49, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 136 * 28, (28 * 49) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+			else if (prevPlace == AUTUM_FALL_2)
+			{
+				p->colliderWorld = { 3 * 28, 28 * 72, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 3 * 28, (28 * 72) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
 	}
 	else if (placex == AUTUM_FALL_2)
 	{
+		//app->audio->SetMusic(SoundTrack::AUTUM_FALLS_TRACK);
+
+		map->Load("autumn_falls_2.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == AUTUM_FALL_1)
+			{
+				p->colliderWorld = { 28 * 116, 28 * 82, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 116, (28 * 82) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		stomp = app->tex->Load("Assets/Textures/Environment/stumps.png");
+		statItems = app->tex->Load("Assets/Textures/UI/collectible_items.png");
 	}
 	else if (placex == MOSSY_ROCKS_1)
 	{
@@ -326,6 +379,29 @@ void World::Start(Places placex)
 	}
 	else if (placex == MOSSY_ROCKS_2)
 	{
+
+		//app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
+
+		map->Load("mossy_rocks_2.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == MOSSY_ROCKS_1)
+			{
+				p->colliderWorld = { 2 * 28, 28 * 25, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 2 * 28, (28 * 25) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+
+		wolfSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/wolf_spritesheet.png");
+		birdSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		mantisSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		stomp = app->tex->Load("Assets/Textures/Environment/stumps.png");
+		statItems = app->tex->Load("Assets/Textures/UI/collectible_items.png");
 	}
 	else if (placex == GOLEM_STONES)
 	{
@@ -340,13 +416,31 @@ void World::Start(Places placex)
 				p->colliderWorld = { 25, 800, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 25, 800 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
-			else if (prevPlace == BOSS_SANCTUARY)
+			else if (prevPlace == CAVE)
 			{
-
+				p->colliderWorld = { 46 * 28, 4 * 28, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 46 * 28, (4 * 28) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
 
 		if (gameStart) night = app->tex->Load("Assets/Textures/Environment/darkness2.png");
+
+		AlignCameraPosition();
+
+		RectifyCameraPosition(placex);
+	}
+	else if (placex == CAVE)
+	{
+		map->Load("cave.tmx");
+
+		if (!app->scene->continuePressed)
+		{
+			if (prevPlace == GOLEM_STONES)
+			{
+				p->colliderWorld = { 28 * 21, 28 * 27, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 21, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
+		}
 
 		AlignCameraPosition();
 
@@ -443,6 +537,8 @@ void World::Restart(Scenes scene)
 void World::Update()
 {
 	if (!app->dialogueManager->onDialog && !inventoryOpen) WorldMovement();
+
+	LOG("X:%d, Y:%d", app->scene->player1->colliderWorld.x, app->scene->player1->colliderWorld.y);
 
 	WorldChange();
 
@@ -876,6 +972,37 @@ void World::WorldChange()
 			}
 		}
 	}
+	else if (place == AUTUM_FALL_1)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(ENEMY_FIELD);
+				return;
+			}
+		}
+
+		for (int i = 0; i < location2.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
+			{
+				ChangeMap(AUTUM_FALL_2);
+				return;
+			}
+		}
+	}
+	else if (place == AUTUM_FALL_2)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(AUTUM_FALL_1);
+				return;
+			}
+		}
+	}
 	else if (place == MOSSY_ROCKS_1)
 	{
 		for (int i = 0; i < location1.Count(); i++)
@@ -913,7 +1040,7 @@ void World::WorldChange()
 		{
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
 			{
-				ChangeMap(BOSS_SANCTUARY);
+				ChangeMap(CAVE);
 				return;
 			}
 		}
@@ -923,6 +1050,17 @@ void World::WorldChange()
 			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location2[i]))
 			{
 				ChangeMap(MAIN_VILLAGE);
+				return;
+			}
+		}
+	}
+	else if (place == CAVE)
+	{
+		for (int i = 0; i < location1.Count(); i++)
+		{
+			if (collisionUtils.CheckCollision(app->scene->player1->collisionRect, location1[i]))
+			{
+				ChangeMap(GOLEM_STONES);
 				return;
 			}
 		}
@@ -961,6 +1099,51 @@ void World::WorldEnemySpawn()
 			int lvl = (rand() % 11) + 23;
 			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
 			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == AUTUM_FALL_1)
+	{
+		while (app->entityManager->enemies.Count() < AUTUMN_1_ENEMY_MAX)
+		{
+			int randm = rand() % 9;
+			int lvl = (rand() % 11) + 41;
+			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			else if (randm < 8) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == AUTUM_FALL_2)
+	{
+		while (app->entityManager->enemies.Count() < AUTUMN_2_ENEMY_MAX)
+		{
+			int randm = rand() % 6;
+			int lvl = (rand() % 11) + 52;
+			if (randm < 5) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == MOSSY_ROCKS_1)
+	{
+		while (app->entityManager->enemies.Count() < MOSSY_1_ENEMY_MAX)
+		{
+			int randm = rand() % 7;
+			int lvl = (rand() % 11) + 67;
+			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
+			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
+		}
+	}
+	else if (place == MOSSY_ROCKS_2)
+	{
+		while (app->entityManager->enemies.Count() < MOSSY_2_ENEMY_MAX)
+		{
+			int randm = rand() % 5;
+			int lvl = (rand() % 11) + 78;
+			if (randm == 0) app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::BIRD);
+			else app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::MANTIS);
 			EnemyStatsGeneration(app->entityManager->enemies.end->data, app->scene->player1, lvl);
 		}
 	}
@@ -1045,6 +1228,26 @@ void World::WorldEnemyChasing()
 
 	case GRASSY_LAND_1:
 		conflictZone = { 640, 392, 876, 484 };
+		break;
+
+	case GRASSY_LAND_3:
+		conflictZone = { 784, 784, 644, 672 };
+		break;
+
+	case AUTUM_FALL_1:
+		conflictZone = { (41 * 28), (85 * 28), (80 * 28), (15 * 28) };
+		break;
+
+	case AUTUM_FALL_2:
+		conflictZone = { (66 * 28), (17 * 28), (30 * 28), (44 * 28) };
+		break;
+
+	case MOSSY_ROCKS_1:
+		conflictZone = { (5 * 28), (44 * 28), (51 * 28), (12 * 28) };
+		break;
+
+	case MOSSY_ROCKS_2:
+		conflictZone = { (33 * 28), (21 * 28), (13 * 28), (16 * 28) };
 		break;
 	}
 
@@ -1187,6 +1390,26 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 	case GRASSY_LAND_3:
 		worldCollider.x = 784 + (rand() % 644);
 		worldCollider.y = 784 + (rand() % 672);
+		break;
+
+	case AUTUM_FALL_1:
+		worldCollider.x = (41 * 28) + (rand() % (80 * 28));
+		worldCollider.y = (85 * 28) + (rand() % (15 * 28));
+		break;
+
+	case AUTUM_FALL_2:
+		worldCollider.x = (66 * 28) + (rand() % (30 * 28));
+		worldCollider.y = (17 * 28) + (rand() % (44 * 28));
+		break;
+
+	case MOSSY_ROCKS_1:
+		worldCollider.x = (5 * 28) + (rand() % (51 * 28));
+		worldCollider.y = (44 * 28) + (rand() % (12 * 28));
+		break;
+
+	case MOSSY_ROCKS_2:
+		worldCollider.x = (33 * 28) + (rand() % (13 * 28));
+		worldCollider.y = (21 * 28) + (rand() % (16 * 28));
 		break;
 	}
 
@@ -1584,18 +1807,18 @@ void World::CameraMovement(bool move)
 			break;
 
 		case(PlayerState::LEFT):
-			if (place != TAVERN && place != HOUSE) app->render->camera.x += worldSpeed;
+			if (place != TAVERN && place != HOUSE && place != CAVE && place != SHOP) app->render->camera.x += worldSpeed;
 			break;
 
 		case(PlayerState::RIGHT):
-			if (place != TAVERN && place != HOUSE) app->render->camera.x -= worldSpeed;
+			if (place != TAVERN && place != HOUSE && place != CAVE && place != SHOP) app->render->camera.x -= worldSpeed;
 			break;
 
 		case(PlayerState::UPLEFT):
 			if (place != HOUSE)
 			{
 				app->render->camera.y += worldSpeed;
-				if (place != TAVERN) app->render->camera.x += worldSpeed;
+				if (place != TAVERN && place != CAVE && place != SHOP) app->render->camera.x += worldSpeed;
 			}
 			break;
 
@@ -1603,7 +1826,7 @@ void World::CameraMovement(bool move)
 			if (place != HOUSE)
 			{
 				app->render->camera.y += worldSpeed;
-				if (place != TAVERN) app->render->camera.x -= worldSpeed;
+				if (place != TAVERN && place != CAVE && place != SHOP) app->render->camera.x -= worldSpeed;
 			}
 			break;
 
@@ -1611,7 +1834,7 @@ void World::CameraMovement(bool move)
 			if (place != HOUSE)
 			{
 				app->render->camera.y -= worldSpeed;
-				if (place != TAVERN) app->render->camera.x += worldSpeed;
+				if (place != TAVERN && place != CAVE && place != SHOP) app->render->camera.x += worldSpeed;
 			}
 			break;
 
@@ -1619,7 +1842,7 @@ void World::CameraMovement(bool move)
 			if (place != HOUSE)
 			{
 				app->render->camera.y -= worldSpeed;
-				if (place != TAVERN) app->render->camera.x -= worldSpeed;
+				if (place != TAVERN && place != CAVE && place != SHOP) app->render->camera.x -= worldSpeed;
 			}
 			break;
 		}
@@ -1826,6 +2049,16 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 2118) app->render->camera.y = 720 - 2520;
 	}
+	else if (placex == AUTUM_FALL_1)
+	{
+		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 3294) app->render->camera.x = 1280 - 3920; //616
+	}
+	else if (placex == AUTUM_FALL_2)
+	{
+		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 2744) app->render->camera.x = 1280 - 3360; //616
+	}
 	else if (placex == MOSSY_ROCKS_1)
 	{
 		if (app->scene->player1->colliderWorld.y < 310) app->render->camera.y = 0;
@@ -1833,12 +2066,21 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1006) app->render->camera.x = 1280 - 1680; //616
 	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
+		if (app->scene->player1->colliderWorld.x > 1624) app->render->camera.x = 1280 - 2240; //616
+	}
 	else if (placex == GOLEM_STONES)
 	{
 		if (app->scene->player1->colliderWorld.y < 318) app->render->camera.y = 0;
 		if (app->scene->player1->colliderWorld.y > 598) app->render->camera.y = 720 - 1000;
 		if (app->scene->player1->colliderWorld.x < 668) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1064) app->render->camera.x = 1280 - 1680; //616
+	}
+	else if (placex == CAVE)
+	{
+		if (app->scene->player1->colliderWorld.y > 522) app->render->camera.y = 720 - 924;
 	}
 
 	LOG("%d", app->scene->player1->collisionRect.x);

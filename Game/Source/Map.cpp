@@ -879,6 +879,19 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::SHOP)
+				{
+					switch (tileId)
+					{
+					case 1551: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 1550: // VILLAGE
+						app->scene->world->location1.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GRASSY_LAND_1)
 				{
 					switch (tileId)
@@ -929,6 +942,36 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::AUTUM_FALL_1)
+				{
+					switch (tileId)
+					{
+					case 2890: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 2889: // ENEMY FIELD
+						app->scene->world->location1.Add(r);
+						break;
+
+					case 2888: // AUTUMN FALLS 2
+						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::AUTUM_FALL_2)
+				{
+					switch (tileId)
+					{
+					case 2122: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 2121: // AUTUMN FALL 1
+						app->scene->world->location1.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::MOSSY_ROCKS_1)
 				{
 					switch (tileId)
@@ -946,6 +989,19 @@ void Map::LoadColliders(MapLayer* layer)
 						break;
 					}
 				}
+				else if (app->scene->world->GetPlace() == Places::MOSSY_ROCKS_2)
+				{
+					switch (tileId)
+					{
+					case 426: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 425: // MOSSY ROCKS 1
+						app->scene->world->location1.Add(r);
+						break;
+					}
+				}
 				else if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
 				{
 					switch (tileId)
@@ -960,6 +1016,19 @@ void Map::LoadColliders(MapLayer* layer)
 
 					case 2888: // MAIN_VILLAGE
 						app->scene->world->location2.Add(r);
+						break;
+					}
+				}
+				else if (app->scene->world->GetPlace() == Places::CAVE)
+				{
+					switch (tileId)
+					{
+					case 1877: // COLLIDER
+						app->scene->world->collisions.Add(r);
+						break;
+
+					case 1876: // GOLEM STONES 1
+						app->scene->world->location1.Add(r);
 						break;
 					}
 				}

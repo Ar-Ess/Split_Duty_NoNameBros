@@ -84050,7 +84050,7 @@
    <tile gid="318"/>
   </data>
  </layer>
- <layer id="7" name="Colliders" width="140" height="120" opacity="0.69">
+ <layer id="7" name="colliders" width="140" height="120" opacity="0.69">
   <properties>
    <property name="y" type="int" value="3003"/>
   </properties>
@@ -90774,7 +90774,7 @@
    <tile gid="2890"/>
    <tile gid="2890"/>
    <tile gid="2890"/>
-   <tile gid="2890"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -90914,6 +90914,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -90948,7 +90949,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -91054,6 +91054,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91089,7 +91090,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile gid="2890"/>
    <tile/>
@@ -91106,7 +91106,6 @@
    <tile/>
    <tile/>
    <tile gid="2890"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -91195,6 +91194,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91334,6 +91334,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91369,7 +91370,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -91386,7 +91386,6 @@
    <tile/>
    <tile/>
    <tile gid="2890"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -91475,6 +91474,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91614,6 +91614,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91649,7 +91650,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -91754,6 +91754,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2889"/>
    <tile/>
    <tile/>
    <tile/>
@@ -91789,7 +91790,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -91882,7 +91882,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2890"/>
    <tile gid="2890"/>
    <tile gid="2890"/>
    <tile gid="2890"/>
@@ -91930,6 +91929,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -93855,7 +93855,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2890"/>
+   <tile/>
    <tile gid="2890"/>
    <tile gid="2890"/>
    <tile gid="2890"/>
@@ -93995,6 +93995,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2888"/>
    <tile/>
    <tile/>
    <tile/>
@@ -94012,7 +94013,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -94122,7 +94122,6 @@
    <tile/>
    <tile/>
    <tile gid="2890"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -94136,6 +94135,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2888"/>
    <tile/>
    <tile/>
    <tile/>
@@ -94275,6 +94275,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2888"/>
    <tile/>
    <tile/>
    <tile/>
@@ -94292,7 +94293,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -94401,7 +94401,6 @@
    <tile/>
    <tile/>
    <tile gid="2890"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -94416,6 +94415,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2888"/>
    <tile/>
    <tile/>
    <tile/>
@@ -94555,6 +94555,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="2888"/>
    <tile/>
    <tile/>
    <tile/>
@@ -94572,7 +94573,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="2890"/>
    <tile/>
    <tile/>
@@ -94695,7 +94695,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2890"/>
+   <tile/>
    <tile gid="2890"/>
    <tile gid="2890"/>
    <tile gid="2890"/>
