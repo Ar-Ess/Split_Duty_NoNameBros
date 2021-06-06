@@ -65,9 +65,12 @@ public:
 
 public:
 
+	SDL_Texture* bossSpritesheetTexture = nullptr;
+
 	Animation awakeAnim;
 	Animation idleAnim;
 	Animation attackAnim;
+	Animation dieAnim;
 	Animation moveAnim;
 	Animation bulletMantis;
 };
