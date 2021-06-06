@@ -42,7 +42,7 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 	{
 		awakeAnim.PushBack({ i * tile.x,tile.y,tile.x,tile.y });
 	}
-	for (int i = 10; i >6; i++)
+	for (int i = 10; i >6; i--)
 	{
 		dieAnim.PushBack({ i * tile.x,tile.y*8,tile.x,tile.y });
 	}
