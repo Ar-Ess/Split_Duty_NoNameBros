@@ -543,7 +543,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
-	combatScene->enemy->health -= combatScene->EnemyStabDamage();
+	if (world->stabActive && player1->stabStat > 0) combatScene->enemy->health -= combatScene->EnemyStabDamage();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 

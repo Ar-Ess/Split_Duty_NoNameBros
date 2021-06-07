@@ -68,6 +68,16 @@ public:
 		return currScene;
 	}
 
+	Environments GetEnvironment() const
+	{
+		return enviroment;
+	}
+
+	void SetEnvironment(Environments env)
+	{
+		enviroment = env;
+	}
+
 public: //Combat Buttons
 
 	void RestartPressState();

@@ -397,6 +397,7 @@ bool App::LoadGame()
 
 		world = worldInfo.child("Place");
 		w->SetPlace(world.attribute("place").as_int());
+		scene->SetEnvironment((Environments)world.attribute("environment").as_int());
 
 		gameProgress = data.child("saveState").child("Game_Progression");
 		pugi::xml_node boss = gameProgress.child("Boss");
@@ -415,6 +416,7 @@ bool App::LoadGame()
 	loadGameRequested = false;
 
 	app->scene->continuePressed = true;
+	scene->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 	app->scene->SetScene(WORLD, w->GetPlace());
 	app->scene->continuePressed = false;
 
@@ -486,6 +488,7 @@ bool App::SaveGame() const
 		worldInfo.append_attribute("world_speed").set_value(scene->world->GetWorldSpeed());
 		worldInfo = saveNode.append_child("Place");
 		worldInfo.append_attribute("place").set_value(scene->world->GetPlace());
+		worldInfo.append_attribute("environment").set_value(scene->GetEnvironment());
 
 		//GAME PROGRESSION
 		saveNode = root.append_child("Game_Progression");

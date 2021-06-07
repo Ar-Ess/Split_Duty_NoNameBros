@@ -3215,9 +3215,13 @@ int Combat::EnemyItemDamage()
 
 int Combat::EnemyStabDamage()
 {
-	int realStab = (app->scene->player1->stabStat * 20) / 25;
+	int realStab = ceil((app->scene->player1->stabStat * 20) / 25);
+	if (realStab < 1) realStab = 1;
 
-	return ceil((enemy->health * realStab) / 100);
+	int damage = ceil((enemy->health * realStab) / 100);
+	if (damage < 1) damage = 1;
+
+	return damage;
 }
 
 void Combat::PlayerResponse()

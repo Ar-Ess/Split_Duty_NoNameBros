@@ -786,6 +786,8 @@ void World::DrawCollisions()
 	}
 
 	if (place == GRASSY_LAND_3) app->render->DrawRectangle(velocityStatRect, { 100, 0, 100, 150 });
+	else if (place == AUTUM_FALL_2) app->render->DrawRectangle(luckStatRect, { 100, 0, 100, 150 });
+	else if (place == MOSSY_ROCKS_2) app->render->DrawRectangle(stabStatRect, { 100, 0, 100, 150 });
 
 	p = nullptr;
 }
@@ -815,6 +817,11 @@ void World::DrawStomps()
 	{
 		app->render->DrawTexture(stomp, (24 * 28) + 2, (14 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!luckTaken) app->render->DrawTexture(statItems, (24 * 28) + 40, ((14 * 28) - 10) - 24, 0.5f, 0.5f, false, &luckStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+	else if (place == MOSSY_ROCKS_2)
+	{
+		app->render->DrawTexture(stomp, (71 * 28) - 20, (13 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!luckTaken) app->render->DrawTexture(statItems, (71 * 28) + 18, ((13 * 28) - 10) - 24, 0.5f, 0.5f, false, &stabStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
 }
 
@@ -1217,7 +1224,7 @@ void World::WorldEnemyDetection()
 			else if (stabUp) stabRect = { p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H };
 		}
 
-		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(stabRect, app->entityManager->enemies[i]->colliderRect))
+		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(stabRect, app->entityManager->enemies[i]->colliderWorld))
 		{
 			AsignPrevPosition();
 			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
@@ -2093,7 +2100,7 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1006) app->render->camera.x = 1280 - 1680; //616
 	}
-	else if (placex == MOSSY_ROCKS_1)
+	else if (placex == MOSSY_ROCKS_2)
 	{
 		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1624) app->render->camera.x = 1280 - 2240; //616
@@ -2179,10 +2186,9 @@ void World::WorldStatGet()
 			p->walkRightAnim.Reset();
 		}
 	}
-	/*
 	else if (place == MOSSY_ROCKS_2)
 	{
-		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
+		if (!stabTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
 		{
 			app->scene->player1->stabStat = 1;
 			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
@@ -2197,5 +2203,5 @@ void World::WorldStatGet()
 			p->walkRightAnim.loop = false;
 			p->walkRightAnim.Reset();
 		}
-	}*/
+	}
 }

@@ -138,7 +138,7 @@
       <Node ID="0">
         <NPCTalk>DO YOU WANT ME TO REMEMBER YOUR OBJECTIVE?</NPCTalk>
         <Option NextNode="1" ReturnCode="1">Okey!</Option>
-        <Option NextNode="-1" ReturnCode="1">Missclick</Option>
+        <Option NextNode="-1" ReturnCode="-1">Missclick</Option>
       </Node>
       <Node ID="1">
         <NPCTalk>IN THE NORTH-EAST OF THE TOWN THERE IS A SANCTUARY WHERE THERE ARE GOLEMS IMPRISIONING YOU AND THIS VILLAGE. KILL THEM, VISIT THE CAVE, AND YOU'LL BE FREE!</NPCTalk>
@@ -335,7 +335,7 @@
         <Option NextNode="-1" ReturnCode="-1">Okey...</Option>
       </Node>
       <Node ID="12">
-        <NPCTalk>YOU ARE IN THE A SANCTUARY, LOCATED IN THE NORTH-EST FROM THE VILLAG... I MEAN, WELL, I'LL EXPLAIN YOU LATER... DO YOU KNOW WHY ARE YOU HERE?</NPCTalk>
+        <NPCTalk>YOU ARE IN A SANCTUARY, LOCATED IN THE NORTH-EST FROM THE VILLAG... I MEAN, WELL, I'LL EXPLAIN YOU LATER... DO YOU KNOW WHY ARE YOU HERE?</NPCTalk>
         <Option NextNode="3" ReturnCode="1">No...</Option>
       </Node>
     </Dialog>
@@ -401,5 +401,23 @@
         <Option NextNode="-1" ReturnCode="-1">Yea!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="21">
+        <Node ID="0">
+          <NPCTalk>WOW! THAT'S A STAB STAT GEM, NOW, IF YOU CLICK SPACE, YOU'LL BE ABLE TO ATTACK ENEMIES!</NPCTalk>
+          <Option NextNode="1" ReturnCode="1">WHAT??</Option>
+        </Node>
+        <Node ID="1">
+          <NPCTalk>YES, LET ME TELL YOU!</NPCTalk>
+          <Option NextNode="2" ReturnCode="1">Tell me!</Option>
+        </Node>
+        <Node ID="2">
+          <NPCTalk>IF YOU GET CLOSE TO AN ENEMY AND, BEFORE IT COLLIDES WITH YOU, YOU STAB IT WITH YOUR SWORD, YOU'LL START THE COMBAT WITH A DAMAGE BONUS ON THEIR HEALTH!</NPCTalk>
+          <Option NextNode="3" ReturnCode="1">WOW</Option>
+        </Node>
+        <Node ID="3">
+          <NPCTalk>DEPENDING ON YOUR LEVEL, YOU WILL DEAL MORE DAMAGE OR LESS! LOOK AT YOUR INVENTORY TO CHECK IT OUT!</NPCTalk>
+          <Option NextNode="-1" ReturnCode="-1">Nice!</Option>
+        </Node>
+      </Dialog>
   </Dialogs>
 </DialogSettup>
