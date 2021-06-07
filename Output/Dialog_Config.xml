@@ -419,5 +419,11 @@
           <Option NextNode="-1" ReturnCode="-1">Nice!</Option>
         </Node>
       </Dialog>
+    <Dialog ID="22">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

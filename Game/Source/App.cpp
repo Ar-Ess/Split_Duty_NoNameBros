@@ -409,6 +409,7 @@ bool App::LoadGame()
 		scene->world->velocityTaken = stats.attribute("velocity_taken").as_bool();
 		scene->world->stabTaken = stats.attribute("stab_taken").as_bool();
 		scene->world->luckTaken = stats.attribute("luck_taken").as_bool();
+		scene->lastDialog = stats.attribute("last_dialog").as_bool();
 
 		LOG("Loading finished...");
 	}
@@ -501,6 +502,7 @@ bool App::SaveGame() const
 		gameProgress.append_attribute("velocity_taken").set_value(scene->world->velocityTaken);
 		gameProgress.append_attribute("luck_taken").set_value(scene->world->luckTaken);
 		gameProgress.append_attribute("stab_taken").set_value(scene->world->stabTaken);
+		gameProgress.append_attribute("last_dialog").set_value(scene->lastDialog);
 
 		saveDoc.save_file("save_game.xml");
 		LOG("Game saved correctly");

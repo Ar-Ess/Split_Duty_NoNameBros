@@ -16,6 +16,7 @@
 #include "ButtonsPuzzle.h"
 #include "Inventory.h"
 #include "LevelUp.h"
+#include "Audio.h"
 
 #include "Log.h"
 #include <time.h>
@@ -148,7 +149,27 @@ void World::Start(Places placex)
 			app->render->camera.y = -375;
 		}
 
+		for (int i = 0; i < 4; i++)
+		{
+			shopProduct[i].w = 5 * 28;
+			shopProduct[i].h = 4 * 28;
+		}
+
+		shopProduct[0].x = 9 * 28;
+		shopProduct[0].y = 15 * 28;
+
+		shopProduct[1].x = 9 * 28;
+		shopProduct[1].y = 24 * 28;
+		
+		shopProduct[2].x = 25 * 28;
+		shopProduct[2].y = 15 * 28;
+		
+		shopProduct[3].x = 25 * 28;
+		shopProduct[3].y = 24 * 28;
+
 		app->render->camera.x = 140;
+
+		questionMark = app->tex->Load("Assets/Textures/UI/question_mark_symbol.png");
 
 		RectifyCameraPosition(placex);
 	}
@@ -511,6 +532,7 @@ void World::Restart(Scenes scene)
 	if (leaves != nullptr)app->tex->UnLoad(leaves);
 	if (stomp != nullptr)app->tex->UnLoad(stomp);
 	if (statItems != nullptr)app->tex->UnLoad(statItems);
+	if (questionMark != nullptr) app->tex->UnLoad(questionMark);
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	
@@ -572,6 +594,8 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	if (place == SHOP) StoreLogic();
 
 	WorldStatGet();
 
@@ -711,6 +735,31 @@ void World::DrawText()
 		app->render->DrawRectangle({ 1480, 290, 130, 50 }, {0, 0, 0, 175});
 		lvlRecomendedText->Draw();
 	}
+
+	if (place == SHOP)
+	{
+		shopPriceText->bounds = {(11 * 28) + 10 + app->render->camera.x, (17 * 28) + 5 + app->render->camera.y, 10, 10};
+		shopPriceText->SetString("6", BLACK);
+		shopPriceText->Draw();
+
+		shopPriceText->bounds = { (11 * 28) + app->render->camera.x, (26 * 28) + 5 + app->render->camera.y, 10, 10 };
+		shopPriceText->SetString("12", BLACK);
+		shopPriceText->Draw();
+
+		if (app->scene->boss1Beat)
+		{
+			shopPriceText->bounds = { (27 * 28) + app->render->camera.x, (17 * 28) + 5 + app->render->camera.y, 10, 10 };
+			shopPriceText->SetString("10", BLACK);
+			shopPriceText->Draw();
+		}
+
+		if (app->scene->boss2Beat)
+		{
+			shopPriceText->bounds = { (27 * 28) + app->render->camera.x, (26 * 28) + 5 + app->render->camera.y, 10, 10 };
+			shopPriceText->SetString("14", BLACK);
+			shopPriceText->Draw();
+		}
+	}
 }
 
 void World::DrawObstacles()
@@ -759,6 +808,11 @@ void World::DrawCollisions()
 	if (place == MOSSY_ROCKS_1 && !app->scene->boss2Beat)
 	{
 		app->render->DrawRectangle(logCollision, { 255, 0, 0, 100 });
+	}
+
+	if (place == SHOP)
+	{
+		for (int i = 0; i < 4; i++) app->render->DrawRectangle(shopProduct[i], {100, 100, 0, 150});
 	}
 
 	if (place == ENEMY_FIELD || place == GRASSY_LAND_1)
@@ -817,6 +871,13 @@ void World::DrawFilters()
 		p = nullptr;
 		app->render->DrawTexture(night, x, y, 1, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		app->render->DrawRectangle({ -app->render->camera.x, -app->render->camera.y, 1280, y + app->render->camera.y }, {0, 0, 0, 255});
+	}
+
+	if (place == SHOP)
+	{
+		const SDL_Rect a = {0, 0, 1280, 720};
+		if (!app->scene->boss1Beat) app->render->DrawTexture(questionMark, shopProduct[2].x + 20, shopProduct[2].y, 0.08f, 0.08f, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!app->scene->boss2Beat) app->render->DrawTexture(questionMark, shopProduct[3].x + 20, shopProduct[3].y, 0.08f, 0.08f, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
 }
 
@@ -1920,6 +1981,76 @@ void World::NPCLogic()
 	for (int i = 0; i < app->entityManager->NPCs.Count(); i++)
 	{
 		app->entityManager->NPCs[i]->Update(ampPlayerCollider);
+	}
+}
+
+void World::StoreLogic()
+{
+	Scene* s = app->scene;
+	for (int i = 0; i < 4; i++)
+	{
+		if (collisionUtils.CheckCollision(s->player1->collisionRect, shopProduct[i]))
+		{
+			if (!s->boss1Beat && !s->boss2Beat)
+			{
+				if (i == 2 || i == 3)
+				{
+					app->audio->SetFx(Effect::MEH_FX);
+					return;
+				}
+			}
+			else if (s->boss1Beat && !s->boss2Beat)
+			{
+				if (i == 3)
+				{
+					app->audio->SetFx(Effect::MEH_FX);
+					return;
+				}
+			}
+
+			if (app->input->GetControl(A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				switch (i)
+				{
+				case 0:
+					if (s->player1->moneyCount >= 6)
+					{
+						s->player1->moneyCount -= 6;
+						s->player1->smallMeatCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 1:
+					if (s->player1->moneyCount >= 12)
+					{
+						s->player1->moneyCount -= 12;
+						s->player1->largeMeatCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 2:
+					if (s->player1->moneyCount >= 10)
+					{
+						s->player1->moneyCount -= 10;
+						s->player1->featherCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 3:
+					if (s->player1->moneyCount >= 14)
+					{
+						s->player1->moneyCount -= 14;
+						s->player1->mantisRodCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				}
+			}
+		}
 	}
 }
 

@@ -112,6 +112,8 @@ public:
 
     void NPCLogic();
 
+    void StoreLogic();
+
     void PlayerInmunityLogic();
 
     void LoadNPCs(Places place);
@@ -165,9 +167,14 @@ public: //GOLEMS
     const SDL_Rect secondBossRect = { 1287, 363, 50, 25 };
     const SDL_Rect thirdBossRect = { 1513, 450, 50, 25 };
     //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
-    GuiString* lvlRecomendedText = nullptr;
     bool drawRecomendedII = false;
     bool drawRecomendedIII = false;
+
+public: // SHOP
+    GuiString* lvlRecomendedText = nullptr;
+    GuiString* shopPriceText = nullptr;
+    SDL_Rect shopProduct[4] = { 1, 1, 5 * 28, 4 * 28};
+    SDL_Texture* questionMark = nullptr;
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;

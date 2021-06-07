@@ -196,6 +196,7 @@ public:
 	bool IIBossCombat = false;
 	bool IIIBossCombat = false;
 	bool IIIIBossCombat = false;
+	bool lastDialog = false;
 
 private: //Scene Manager
 	friend class World;

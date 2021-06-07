@@ -1134,6 +1134,13 @@ void Scene::SetWorld(Places place)
 		world->lvlRecomendedText->SetTextFont(app->fontTTF->defaultFont3);
 		world->lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
 	}
+	if (world->shopPriceText == nullptr)
+	{
+		world->shopPriceText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		world->shopPriceText->bounds = { 0, 0, 40, 50 };
+		world->shopPriceText->SetTextFont(app->fontTTF->defaultFont3);
+		world->shopPriceText->SetString("5");
+	}
 }
 
 void Scene::SetPauseMenu()
@@ -1411,7 +1418,7 @@ void Scene::UpdateWorld()
 		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
 	}
 
-	if (IIIIBossCombat && !boss3Beat && boss2Beat && boss1Beat && bossTBeat)
+	if (IIIIBossCombat && !boss3Beat && !boss2Beat && !boss1Beat && !bossTBeat)
 	{
 		IIIIBossCombat = false;
 		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
@@ -1652,6 +1659,13 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			{
 				world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 				SetScene(WORLD, world->place);
+				if (boss2Beat && !lastDialog)
+				{
+					lastDialog = true;
+					world->Teleport({28 * 36, 20 * 28});
+					world->RectifyCameraPosition(GOLEM_STONES);
+					app->dialogueManager->StartDialogue(22);
+				}
 			}
 			else if (world->gameStart)
 			{

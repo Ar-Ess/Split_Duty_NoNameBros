@@ -49,6 +49,9 @@ void Combat::Start()
 	case MOSSY_LANDS:
 		background = app->tex->Load("Assets/Textures/Environment/mossy_rocks_combat_scene.png");
 		break;
+	case BOSS_LANDS:
+		background = app->tex->Load("Assets/Textures/Environment/bosses_combat_scene.png");
+		break;
 	}
 	combatInventory = app->tex->Load("Assets/Screens/combat_inventory.png");
 
