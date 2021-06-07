@@ -695,8 +695,16 @@ void World::DrawNPC()
 
 void World::DrawText()
 {
-	if (drawRecomendedII || drawRecomendedIII) lvlRecomendedText->Draw();
-	//lvlRecomendedText->Draw();
+	if (drawRecomendedII)
+	{
+		app->render->DrawRectangle({ 1250, 210, 130, 50 }, { 0, 0, 0, 175 });
+		lvlRecomendedText->Draw();
+	}
+	else if (drawRecomendedIII)
+	{
+		app->render->DrawRectangle({ 1480, 290, 130, 50 }, {0, 0, 0, 175});
+		lvlRecomendedText->Draw();
+	}
 }
 
 void World::DrawObstacles()
