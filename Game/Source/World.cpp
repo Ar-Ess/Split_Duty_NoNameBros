@@ -662,18 +662,24 @@ void World::DrawEnemy()
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
 					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE, &wolfRect, false);
+					app->render->DrawRectangle({ enemy->colliderWorld.x + 5, enemy->colliderWorld.y - 13, 100, 20 }, {0, 0, 0, 175});
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 20 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 10, 20, 20 };
+					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::BIRD)
 				{
 					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &birdRect, false);
-
+					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 43, 100, 20 }, { 0, 0, 0, 175 });
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 40, 20, 20 };
+					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::MANTIS)
 				{
 					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
+					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 58, 100, 20 }, { 0, 0, 0, 175 });
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 55, 20, 20 };
+					enemy->lvlText->Draw();
 				}
-
-
 			}
 			enemy = nullptr;
 		}
