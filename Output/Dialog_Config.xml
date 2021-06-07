@@ -375,5 +375,31 @@
         <Option NextNode="-1" ReturnCode="-1">Okey</Option>
       </Node>
     </Dialog>
+    <Dialog ID="20">
+      <Node ID="0">
+        <NPCTalk>WOW! THAT'S A LUCK STAT GEM, NOW, DEPENDING ON THAT STAT, YOUR COMBAT WILL CHANGE A LOT IN YOUR FABOUR!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">WHAT??</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>YES, LET ME TELL YOU!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Tell me!</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>FIRST OF ALL, YOU HAVE A PROBABILITY TO INCREASE YOUR ATTACK DAMAGE IN COMBAT! THAT PROBABILITY WILL BE INCREASING WITH YOU AS YOU LEVEL UP, UP TO 25 PERCENT CHANCE!</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">WOW</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>ALSO, YOU HAVE MORE PROBABILITY IN SPLITTING SUCCESSFULLY AN ENEMY! OBVIOUSLY, IT WILL BE INCREASING WITH EACH LEVEL YOU REACH!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">AMAZING</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>THEN, I CAN SAY TO YOU THAT YOU CAN NOW OBTAIN MORE THAT ONE OBJECT IN A BATTLE. ENEMIES WILL BE MORE LIKELY TO DROP YOU THEIR ITEMS!</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>AND THAT WOULD BE ALL, WHAT DO YOU THINK? YOU'LL TRY IT?</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Yea!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

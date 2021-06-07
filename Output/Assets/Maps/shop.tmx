@@ -12,22 +12,16 @@
  <tileset firstgid="1545" name="collisions" tilewidth="16" tileheight="16" tilecount="8" columns="8">
   <image source="collisions.png" width="128" height="16"/>
  </tileset>
- <tileset firstgid="1553" name="beef" tilewidth="16" tileheight="16" tilecount="930" columns="31">
-  <image source="../Textures/UI/Items/beef.png" width="500" height="480"/>
- </tileset>
- <tileset firstgid="2483" name="meat_tile" tilewidth="16" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="1553" name="meat_tile" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="meat_tile.png" width="17" height="16"/>
  </tileset>
- <tileset firstgid="2484" name="items" tilewidth="16" tileheight="16" tilecount="600" columns="30">
-  <image source="../Textures/UI/Items/Items.png" width="480" height="324"/>
- </tileset>
- <tileset firstgid="3084" name="tiem_tales" tilewidth="16" tileheight="16" tilecount="54" columns="9">
+ <tileset firstgid="1554" name="tiem_tales" tilewidth="16" tileheight="16" tilecount="54" columns="9">
   <image source="item_tiles.png" width="149" height="101"/>
  </tileset>
- <tileset firstgid="3138" name="item_tiles2" tilewidth="16" tileheight="16" tilecount="54" columns="9">
+ <tileset firstgid="1608" name="item_tiles2" tilewidth="16" tileheight="16" tilecount="54" columns="9">
   <image source="item_tiles2.png" width="157" height="106"/>
  </tileset>
- <tileset firstgid="3192" name="coin_tile" tilewidth="16" tileheight="16" tilecount="1" columns="1">
+ <tileset firstgid="1662" name="coin_tile" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="coin_tile.png" width="16" height="16"/>
  </tileset>
  <layer id="1" name="ground" width="39" height="40">
@@ -8466,7 +8460,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2483"/>
+   <tile gid="1553"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8482,24 +8476,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3114"/>
-   <tile gid="3115"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1584"/>
+   <tile gid="1585"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8521,7 +8499,23 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3123"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="1593"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8545,7 +8539,7 @@
    <tile/>
    <tile/>
    <tile gid="56"/>
-   <tile gid="3192"/>
+   <tile gid="1662"/>
    <tile/>
    <tile/>
    <tile/>
@@ -8561,7 +8555,7 @@
    <tile/>
    <tile/>
    <tile gid="56"/>
-   <tile gid="3192"/>
+   <tile gid="1662"/>
    <tile/>
    <tile/>
    <tile/>
@@ -11951,7 +11945,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3131"/>
+   <tile gid="1601"/>
    <tile/>
    <tile/>
    <tile/>
@@ -11967,24 +11961,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3170"/>
-   <tile gid="3171"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="1640"/>
+   <tile gid="1641"/>
    <tile/>
    <tile/>
    <tile/>
@@ -12006,7 +11984,23 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="3179"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="1649"/>
    <tile/>
    <tile/>
    <tile/>
@@ -12030,7 +12024,7 @@
    <tile/>
    <tile/>
    <tile gid="56"/>
-   <tile gid="3192"/>
+   <tile gid="1662"/>
    <tile/>
    <tile/>
    <tile/>
@@ -12046,7 +12040,7 @@
    <tile/>
    <tile/>
    <tile gid="56"/>
-   <tile gid="3192"/>
+   <tile gid="1662"/>
    <tile/>
    <tile/>
    <tile/>

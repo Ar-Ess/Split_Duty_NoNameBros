@@ -93,6 +93,11 @@ void World::Start(Places placex)
 				p->colliderWorld = { 1736, 1932, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
 				p->collisionRect = { 1736, 1932 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
+			else if (prevPlace == SHOP)
+			{
+				p->colliderWorld = { 32 * 28, 43 * 28, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 32 * 28, (43 * 28) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			}
 		}
 
 		AlignCameraPosition();
@@ -117,6 +122,23 @@ void World::Start(Places placex)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 		map->Load("tavern.tmx");
+
+		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
+		if (!app->scene->continuePressed)
+		{
+			p->colliderWorld = { 504, 880, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+			p->collisionRect = { 504, 880 + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+			app->render->camera.y = -375;
+		}
+
+		app->render->camera.x = 140;
+
+		RectifyCameraPosition(placex);
+	}
+	else if (placex == SHOP)
+	{
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+		map->Load("shop.tmx");
 
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
 		if (!app->scene->continuePressed)
@@ -788,6 +810,11 @@ void World::DrawStomps()
 	{
 		app->render->DrawTexture(stomp, (38 * 28) + 18, (6 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!velocityTaken) app->render->DrawTexture(statItems, (40 * 28), (5 * 28) - 6, 0.5f, 0.5f, false, &velocityStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+	else if (place == AUTUM_FALL_2)
+	{
+		app->render->DrawTexture(stomp, (24 * 28) + 2, (14 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!luckTaken) app->render->DrawTexture(statItems, (24 * 28) + 40, ((14 * 28) - 10) - 24, 0.5f, 0.5f, false, &luckStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
 }
 
@@ -2020,7 +2047,7 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.x < 612) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 2832) app->render->camera.x = 1280 - 3500;
 	}
-	else if (placex == TAVERN)
+	else if (placex == TAVERN || placex == SHOP)
 	{
 		if (app->scene->player1->colliderWorld.y < 300) app->render->camera.y = -28;
 		if (app->scene->player1->colliderWorld.y > 639) app->render->camera.y = -375;
@@ -2134,7 +2161,7 @@ void World::WorldStatGet()
 			p->walkRightAnim.Reset();
 		}
 	}
-	/*else if (place == AUTUM_FALL_2)
+	else if (place == AUTUM_FALL_2)
 	{
 		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, luckStatRect))
 		{
@@ -2152,6 +2179,7 @@ void World::WorldStatGet()
 			p->walkRightAnim.Reset();
 		}
 	}
+	/*
 	else if (place == MOSSY_ROCKS_2)
 	{
 		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
