@@ -15,6 +15,10 @@
 #define ENEMY_FIELD_ENEMY_MAX 5
 #define GRASSY_1_ENEMY_MAX 4
 #define GRASSY_3_ENEMY_MAX 6
+#define AUTUMN_1_ENEMY_MAX 10
+#define AUTUMN_2_ENEMY_MAX 5
+#define MOSSY_1_ENEMY_MAX 8
+#define MOSSY_2_ENEMY_MAX 4
 
 #define ENEMY_RUN_SPEED 4
 #define ENEMY_WALK_SPEED 2
@@ -61,7 +65,7 @@ enum Places
     TAVERN,
     SHOP,
     GOLEM_STONES,
-    BOSS_SANCTUARY,
+    CAVE,
     GRASSY_LAND_1,
     GRASSY_LAND_2,
     GRASSY_LAND_3,
@@ -175,6 +179,7 @@ public: //obstacles
     const SDL_Rect fallenWoodRect = { 330, 160, 320, 140 };
     SDL_Texture* statItems = nullptr;
     SDL_Rect velocityStatRect = { (40 * 28), (5 * 28) - 6, 37, 45, };
+    SDL_Rect luckStatRect = { (24 * 28) + 40, (14 * 28) - 34, 37, 45, };
     const SDL_Rect velocityStat = { 0, 0, 74, 91 };
     const SDL_Rect stabStat = { 74, 0, 74, 91 };
     const SDL_Rect luckStat = { 148, 0, 74, 91 };
