@@ -491,6 +491,7 @@ void World::Start(Places placex)
 	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
+	interactionText = app->tex->Load("Assets/Textures/UI/interact_texture.png");
 
 	LoadNPCs(placex);
 
@@ -535,6 +536,7 @@ void World::Restart(Scenes scene)
 	if (questionMark != nullptr) app->tex->UnLoad(questionMark);
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
+	if (interactionText != nullptr) app->tex->UnLoad(interactionText);
 	
 	if (scene == WORLD)
 	{
@@ -656,6 +658,8 @@ void World::Draw()
 	DrawText();
 
 	DrawFilters();
+
+	DrawInteraction();
 
 	return;
 }
@@ -898,6 +902,12 @@ void World::DrawStomps()
 		app->render->DrawTexture(stomp, (71 * 28) - 20, (13 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!luckTaken) app->render->DrawTexture(statItems, (71 * 28) + 18, ((13 * 28) - 10) - 24, 0.5f, 0.5f, false, &stabStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
+}
+
+void World::DrawInteraction()
+{
+	const SDL_Rect a = {0, 0, 1280, 720};
+	app->render->DrawTexture(interactionText, app->scene->player1->colliderWorld.x + app->scene->player1->colliderWorld.w, app->scene->player1->colliderWorld.y + 5, 0.07f, &a, false);
 }
 
 //-------------------------------------------------------------------

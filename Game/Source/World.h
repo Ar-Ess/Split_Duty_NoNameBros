@@ -108,6 +108,8 @@ public:
 
     void DrawStomps();
 
+    void DrawInteraction();
+
     void AlignCameraPosition();
 
     void NPCLogic();
@@ -175,6 +177,9 @@ public: // SHOP
     GuiString* shopPriceText = nullptr;
     SDL_Rect shopProduct[4] = { 1, 1, 5 * 28, 4 * 28};
     SDL_Texture* questionMark = nullptr;
+
+public: //INTERACTIONS
+    SDL_Texture* interactionText = nullptr;
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;

@@ -59,7 +59,8 @@ enum Effect
 	MEH_FX,
 	OK_FX,
 	NPC_TALK_FX,
-	INVENTORY_OPEN_FX
+	INVENTORY_OPEN_FX,
+	BUY_ITEM_FX
 };
 
 class AudioManager : public Module
