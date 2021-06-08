@@ -480,8 +480,8 @@ void World::Start(Places placex)
 		{
 			if (prevPlace == GOLEM_STONES)
 			{
-				p->colliderWorld = { 28 * 21, 28 * 27, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 28 * 21, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				p->colliderWorld = { 28 * 22, 28 * 27, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 22, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
 
@@ -498,6 +498,8 @@ void World::Start(Places placex)
 	currentPlayerAnimation = &p->walkDownAnim;
 
 	UpdateWorldSpeed();
+
+	if (placex == CAVE) app->render->camera.x -= 4;
 
 	p = nullptr;
 }
@@ -2130,6 +2132,14 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
 	}
+	else if (placex == CAVE)
+	{
+		if (!app->scene->boss2Beat)
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 22 * 28, -1 * 28}, NPCtype::FINAL_BOSS, placex, 23);
+		}
+	}
 }
 
 void World::GolemCall()
@@ -2277,9 +2287,9 @@ void World::RectifyCameraPosition(Places placex)
 	else if (placex == CAVE)
 	{
 		if (app->scene->player1->colliderWorld.y > 522) app->render->camera.y = 720 - 924;
+
 	}
 
-	LOG("%d", app->scene->player1->collisionRect.x);
 }
 
 void World::UpdateWorldSpeed()

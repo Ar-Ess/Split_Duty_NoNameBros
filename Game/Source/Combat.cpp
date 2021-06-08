@@ -1290,7 +1290,7 @@ void Combat::EndBattleSolving()
 			if (boss->bossClass == BOSS_TUTORIAL) app->scene->bossTBeat = true;
 			else if (boss->bossClass == BOSS_I) app->scene->boss1Beat = true;
 			else if (boss->bossClass == BOSS_II) app->scene->boss2Beat = true;
-			else if (boss->bossClass == BOSS_III) app->scene->boss3Beat = true;
+			else if (boss->bossClass == BOSS_III) app->scene->SetScene(MAIN_MENU);
 		}
 
 		//TODO DELETE BOSS

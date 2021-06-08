@@ -425,5 +425,76 @@
         <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="23">
+      <Node ID="0">
+        <NPCTalk>HEY! LOOK UP, THE CRISTAL IT'S BREAKING! THAT'S A GOOD SINGAL.</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>BUT BEFORE TASTING YOUR FREEDOM YOU MUST BE PREPARED! DO YOU FEEL SO?</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">YEA!</Option>
+        <Option NextNode="2" ReturnCode="1">Nop!</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>OKEY, PREPARE YOURSELF, LEVEL UP, BUY THINGS AND TALK TO ME AGAIN WHEN YOU ARE READY!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>NICE, SO LET'S GO THEN!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Wait!</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>WHAT HAPPENS NOW?</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Your legs?</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>EHMMM, WHICH LEGS??</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Yours</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>I ALWAYS HAD LEGS... I DON'T KNOW WHAT ARE YOU REFERING TO...</NPCTalk>
+        <Option NextNode="7" ReturnCode="1">Lies!</Option>
+      </Node>
+      <Node ID="7">
+        <NPCTalk>MHHH, OKEY, MAYBE IT'S TIME I TELL YOU SOMETHING :)</NPCTalk>
+        <Option NextNode="8" ReturnCode="1">What?</Option>
+      </Node>
+      <Node ID="8">
+        <NPCTalk>:}</NPCTalk>
+        <Option NextNode="9" ReturnCode="1">TELL ME!</Option>
+      </Node>
+      <Node ID="9">
+        <NPCTalk>JAJAJAJJAJAJAJAJAJAJJAJAJJAJAJAJAJAJAJJAJAJJ!!!! :}</NPCTalk>
+        <Option NextNode="10" ReturnCode="1">SPEAK!</Option>
+      </Node>
+      <Node ID="10">
+        <NPCTalk>I'VE BEEN LYING TO YOU THE WHOOOOOOLE TIME :} I REALLY LIKE PEOPLE WHICH IS EASY TO CONVINCE, WHITHOUT FACTS, JUST USING EMOTIONS, IT IS EASY TO MANIPULATE YOU!</NPCTalk>
+        <Option NextNode="11" ReturnCode="1">What!</Option>
+      </Node>
+      <Node ID="11">
+        <NPCTalk>WELL, TIME TO PRESENT MYSELF! HELLO, I AM THE VIRUS, WHICH HAS BEEN CRISTALIZED SINCE A LONG TIME AGO IN THIS CRISTAL RIGHT HERE!</NPCTalk>
+        <Option NextNode="12" ReturnCode="1">Ehhh.</Option>
+      </Node>
+      <Node ID="12">
+        <NPCTalk>I AM THE AUTHOR OF THE CATASTROPHE, AND YOU HAVE HELPED ME TO UNFREEZE MYSELF FORM THOSE GOLEMS! THEY WERE BLOCKING ME OUT!</NPCTalk>
+        <Option NextNode="13" ReturnCode="1">Noooo!</Option>
+      </Node>
+      <Node ID="13">
+        <NPCTalk>BEHIND THIS GLASS THERE IS NOT ANY FREEDOM! THE GOLEMS WERE PROTECTING YOU FROM ME! AND YOU'VE KILLED THEM, YOU DID A GOOD SPLIT DUTY, HOW CUTE FROM YOUR PART :)</NPCTalk>
+        <Option NextNode="14" ReturnCode="1">Why?</Option>
+      </Node>
+      <Node ID="14">
+        <NPCTalk>YOU'LL REALLY DON'T CARE ABOUT WHY, BECAUSE GOING TO...</NPCTalk>
+        <Option NextNode="15" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="15">
+        <NPCTalk>KILL</NPCTalk>
+        <Option NextNode="16" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="16">
+        <NPCTalk>YOU!!!!!!!</NPCTalk>
+        <Option NextNode="17" ReturnCode="8">...</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

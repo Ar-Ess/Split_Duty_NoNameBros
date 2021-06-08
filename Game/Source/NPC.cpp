@@ -64,6 +64,9 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog, int 
 	case(NPCtype::SIGN):
 		texture = app->tex->Load("Assets/Textures/Environment/sign.png");
 		break;
+	case(NPCtype::FINAL_BOSS):
+		//texture = app->tex->Load("Assets/Textures/Environment/sign.png");
+		break;
 	}
 }
 
