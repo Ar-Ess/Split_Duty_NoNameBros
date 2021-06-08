@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "World.h"
 #include "Combat.h"
+#include "ParticleSystem.h"
 #include <time.h>
 
 #include "Defs.h"
@@ -41,6 +42,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	dialogueManager = new DialogueManager();
 	transition = new Transition();
 	questManager = new QuestManager();
+	psystem = new ParticleSystem();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -56,6 +58,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(dialogueManager);
 	AddModule(questManager);
 	AddModule(transition);
+	AddModule(psystem);
 
 	// Render last to swap buffer
 	AddModule(render);
