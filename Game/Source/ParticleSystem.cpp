@@ -54,7 +54,7 @@ bool ParticleSystem::Start()
 {
 	bool ret = true;
 	
-	particleAtlas = app->tex->Load(nameParticleAtlas.c_str());
+	//particleAtlas = app->tex->Load(nameParticleAtlas.c_str());
 	return ret;
 }
 
