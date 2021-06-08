@@ -78,6 +78,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 				app->dialogueManager->StartDialogue(dialog);
 				app->audio->SetFx(Effect::NPC_TALK_FX);
 			}
+			app->scene->world->interactionActive = true;
 		}
 	}
 }

@@ -659,7 +659,11 @@ void World::Draw()
 
 	DrawFilters();
 
-	DrawInteraction();
+	if (interactionActive && !app->dialogueManager->onDialog)
+	{
+		DrawInteraction();
+		interactionActive = false;
+	}
 
 	return;
 }
@@ -2001,6 +2005,7 @@ void World::StoreLogic()
 	{
 		if (collisionUtils.CheckCollision(s->player1->collisionRect, shopProduct[i]))
 		{
+			interactionActive = true;
 			if (!s->boss1Beat && !s->boss2Beat)
 			{
 				if (i == 2 || i == 3)
@@ -2162,6 +2167,7 @@ void World::GolemCall()
 			drawRecomendedII = true;
 			lvlRecomendedText->bounds = { 460 - app->render->camera.x, 220 + app->render->camera.y, 100, 100 };
 			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
+			interactionActive = true;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
@@ -2181,6 +2187,7 @@ void World::GolemCall()
 			drawRecomendedIII = true;
 			lvlRecomendedText->bounds = { 690 - app->render->camera.x, 300 + app->render->camera.y, 30, 40 };
 			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 65");
+			interactionActive = true;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)

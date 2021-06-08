@@ -180,6 +180,7 @@ public: // SHOP
 
 public: //INTERACTIONS
     SDL_Texture* interactionText = nullptr;
+    bool interactionActive = false;
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;
