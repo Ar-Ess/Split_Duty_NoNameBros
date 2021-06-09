@@ -553,7 +553,25 @@ bool App::SaveGame() const
 		for (int i = 0; q->questList[i] != nullptr; ++i)
 		{
 			pugi::xml_node qst = gameProgress.append_child("Quest");
-			qst.append_attribute("")
+			qst.append_attribute("ID").set_value(q->questList[i]->id);
+			qst.append_attribute("reward").set_value(q->questList[i]->reward);
+			qst.append_attribute("title").set_value(q->questList[i]->textTitle);
+			qst.append_attribute("description").set_value(q->questList[i]->textDescription);
+			qst.append_attribute("type").set_value(int(q->questList[i]->type));
+
+			switch (q->questList[i]->type)
+			{
+			case KILL:
+				
+				break;
+			case GATHER:
+			
+				break;
+			case FIND:
+				
+				break;
+			}
+			qst.append_attribute("goal").set_value(q->questList[i]);
 		}
 		for (int i = 0; q->finishedQuest[i] != nullptr; ++i)
 		{
