@@ -120,9 +120,6 @@
     <ClCompile Include="Source\GatherQuest.cpp">
       <Filter>Quests</Filter>
     </ClCompile>
-    <ClCompile Include="Source\KillQuest.cpp">
-      <Filter>Quests</Filter>
-    </ClCompile>
     <ClCompile Include="Source\EasingFunctions.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -134,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="Source\Scene.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Emitter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticlePool.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KillQuest.cpp">
+      <Filter>Quests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +330,18 @@
     <ClInclude Include="Source\Scene.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ParticleSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Emitter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticlePool.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -349,6 +373,9 @@
     </Filter>
     <Filter Include="Puzzles">
       <UniqueIdentifier>{1d1d5f3b-3205-4fb6-9695-605f1777b097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{e325deaa-5a4a-4eac-bb2a-4a60bc8d88c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

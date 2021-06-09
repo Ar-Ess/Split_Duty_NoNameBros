@@ -1,5 +1,6 @@
 #include "KillQuest.h"
 #include "Player.h"
+#include "Combat.h"
 
 KillQuest::KillQuest(uint16 id, uint16 reward, uint16 goal, const char* textDescription, const char* textTitle, EnemyClass eType) : Quest(QuestType::KILL)
 {
@@ -28,6 +29,7 @@ void KillQuest::QuestLogic()
 	}
 	if (this->IsCompleted() == true)
 	{
-		app->scene->player1->moneyCount += reward;
+		if (reward > 0) app->scene->player1->moneyCount += reward;
+		else app->scene->combatScene->secondPlayer = true;
 	}
 }

@@ -32,6 +32,7 @@ class DialogueManager;
 class Transition;
 class QuestManager;
 class AssetsManager;
+class ParticleSystem;
 
 class App
 {
@@ -104,6 +105,7 @@ public:
 	Transition* transition;
 	QuestManager* questManager;
 	AssetsManager* assetsManager;
+	ParticleSystem* psystem;
 
 private:
 

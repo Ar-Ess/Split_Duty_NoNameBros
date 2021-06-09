@@ -25,7 +25,9 @@ enum NPCtype
     WITCH,
     CITIZEN_1,
     ADVENTURER,
-    SIGN
+    SIGN,
+    FINAL_BOSS,
+    SHOP_WOMAN
 };
 
 class NPC : public Entity

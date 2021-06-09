@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "App.h"
-#include "Scene.h"+
+#include "Scene.h"
 #include "Combat.h"
 
 #include "Enemy.h"
@@ -18,6 +20,10 @@ Enemy::Enemy() : Entity(EntityType::ENEMY)
 Enemy::Enemy (EnemyClass enClass) : Entity(EntityType::ENEMY)
 {
     //PathFinding::GetInstance()->CreatePath(*path, iPoint(0, 0), iPoint(0, 0));
+
+    lvlText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+    lvlText->bounds = { 0, 0, 40, 50 };
+    lvlText->SetTextFont(app->fontTTF->defaultFont3);
 
     //Load enemies textures
     //wolf
@@ -95,11 +101,13 @@ Enemy::~Enemy()
     {
         if (bullet[i].bulletSpritesheet != nullptr) app->tex->UnLoad(bullet[i].bulletSpritesheet);
     }
+
+    lvlText->UnLoadTextTexture();
+    lvlText->text.Clear();
 }
 
 void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
 {
-    
     colliderCombat = combatCollider;
     colliderWorld = worldCollider;
     colliderRect = {worldCollider.x, worldCollider.y + worldCollider.h - 28, worldCollider.w, 28};
@@ -112,6 +120,10 @@ void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, in
     strength = xstrength;
     defense = xdefense;
     velocity = xvelocity;
+
+    char str[20] = {};
+    sprintf(str, "LVL. %d", xlvl);
+    lvlText->SetString(str);
 }
 
 void Enemy::Jump()

@@ -5,6 +5,7 @@
 #include "Combat.h"
 #include "Player.h"
 #include "Audio.h"
+#include "World.h"
 
 DialogueManager::DialogueManager()
 {
@@ -358,6 +359,13 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			{
 				app->questManager->CheckFindQuest(currentDialogue->dialogueID);
 				EndDialogue();
+			}
+			else if (itemOption->data->returnCode == 8)
+			{
+				app->scene->world->finalBossActivation = true;
+				EndDialogue();
+				app->SaveGameRequest();
+				return ret;
 			}
 		}
 	}

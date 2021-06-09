@@ -435,7 +435,8 @@ void Inventory::SetText()
 		stabStatText->SetString(str, BROWN);
 		stabStatText->CenterAlign();
 	}
-	if (app->questManager->currentQuest != nullptr)
+
+	/*if (app->questManager->currentQuest != nullptr)
 	{
 		if (currQuestTitleText == nullptr)
 		{
@@ -459,7 +460,7 @@ void Inventory::SetText()
 			currQuestText->SetString(str, BROWN);
 			currQuestText->CenterAlign();
 		}
-	}
+	}*/
 
 	//quest
 	

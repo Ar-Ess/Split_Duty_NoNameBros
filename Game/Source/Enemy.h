@@ -40,6 +40,7 @@ struct SDL_Rect;
 struct Animation;
 struct SDL_Texture;
 struct CircleCollider;
+struct GuiString;
 
 enum EnemyClass
 {
@@ -153,9 +154,10 @@ public:
     int lvl;
     int exp;
 
+    GuiString* lvlText = nullptr;
+
     EnemyClass enemyClass;
 private:
-    DynArray<iPoint>* path;
     MantisBullet bullet[5];
 
 public:

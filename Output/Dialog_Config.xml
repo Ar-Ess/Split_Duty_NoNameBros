@@ -138,7 +138,7 @@
       <Node ID="0">
         <NPCTalk>DO YOU WANT ME TO REMEMBER YOUR OBJECTIVE?</NPCTalk>
         <Option NextNode="1" ReturnCode="1">Okey!</Option>
-        <Option NextNode="-1" ReturnCode="1">Missclick</Option>
+        <Option NextNode="-1" ReturnCode="-1">Missclick</Option>
       </Node>
       <Node ID="1">
         <NPCTalk>IN THE NORTH-EAST OF THE TOWN THERE IS A SANCTUARY WHERE THERE ARE GOLEMS IMPRISIONING YOU AND THIS VILLAGE. KILL THEM, VISIT THE CAVE, AND YOU'LL BE FREE!</NPCTalk>
@@ -335,7 +335,7 @@
         <Option NextNode="-1" ReturnCode="-1">Okey...</Option>
       </Node>
       <Node ID="12">
-        <NPCTalk>YOU ARE IN THE A SANCTUARY, LOCATED IN THE NORTH-EST FROM THE VILLAG... I MEAN, WELL, I'LL EXPLAIN YOU LATER... DO YOU KNOW WHY ARE YOU HERE?</NPCTalk>
+        <NPCTalk>YOU ARE IN A SANCTUARY, LOCATED IN THE NORTH-EST FROM THE VILLAG... I MEAN, WELL, I'LL EXPLAIN YOU LATER... DO YOU KNOW WHY ARE YOU HERE?</NPCTalk>
         <Option NextNode="3" ReturnCode="1">No...</Option>
       </Node>
     </Dialog>
@@ -399,6 +399,142 @@
       <Node ID="5">
         <NPCTalk>AND THAT WOULD BE ALL, WHAT DO YOU THINK? YOU'LL TRY IT?</NPCTalk>
         <Option NextNode="-1" ReturnCode="-1">Yea!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="21">
+        <Node ID="0">
+          <NPCTalk>WOW! THAT'S A STAB STAT GEM, NOW, IF YOU CLICK SPACE, YOU'LL BE ABLE TO ATTACK ENEMIES!</NPCTalk>
+          <Option NextNode="1" ReturnCode="1">WHAT??</Option>
+        </Node>
+        <Node ID="1">
+          <NPCTalk>YES, LET ME TELL YOU!</NPCTalk>
+          <Option NextNode="2" ReturnCode="1">Tell me!</Option>
+        </Node>
+        <Node ID="2">
+          <NPCTalk>IF YOU GET CLOSE TO AN ENEMY AND, BEFORE IT COLLIDES WITH YOU, YOU STAB IT WITH YOUR SWORD, YOU'LL START THE COMBAT WITH A DAMAGE BONUS ON THEIR HEALTH!</NPCTalk>
+          <Option NextNode="3" ReturnCode="1">WOW</Option>
+        </Node>
+        <Node ID="3">
+          <NPCTalk>DEPENDING ON YOUR LEVEL, YOU WILL DEAL MORE DAMAGE OR LESS! LOOK AT YOUR INVENTORY TO CHECK IT OUT!</NPCTalk>
+          <Option NextNode="-1" ReturnCode="-1">Nice!</Option>
+        </Node>
+      </Dialog>
+    <Dialog ID="22">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="23">
+      <Node ID="0">
+        <NPCTalk>HEY! LOOK UP, THE CRISTAL IT'S BREAKING! THAT'S A GOOD SINGAL.</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>BUT BEFORE TASTING YOUR FREEDOM YOU MUST BE PREPARED! DO YOU FEEL SO?</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">YEA!</Option>
+        <Option NextNode="2" ReturnCode="1">Nop!</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>OKEY, PREPARE YOURSELF, LEVEL UP, BUY THINGS AND TALK TO ME AGAIN WHEN YOU ARE READY!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>NICE, SO LET'S GO THEN!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Wait!</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>WHAT HAPPENS NOW?</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Your legs?</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>EHMMM, WHICH LEGS??</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Yours</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>I ALWAYS HAD LEGS... I DON'T KNOW WHAT ARE YOU REFERING TO...</NPCTalk>
+        <Option NextNode="7" ReturnCode="1">Lies!</Option>
+      </Node>
+      <Node ID="7">
+        <NPCTalk>MHHH, OKEY, MAYBE IT'S TIME I TELL YOU SOMETHING :)</NPCTalk>
+        <Option NextNode="8" ReturnCode="1">What?</Option>
+      </Node>
+      <Node ID="8">
+        <NPCTalk>:}</NPCTalk>
+        <Option NextNode="9" ReturnCode="1">TELL ME!</Option>
+      </Node>
+      <Node ID="9">
+        <NPCTalk>JAJAJAJJAJAJAJAJAJAJJAJAJJAJAJAJAJAJAJJAJAJJ!!!! :}</NPCTalk>
+        <Option NextNode="10" ReturnCode="1">SPEAK!</Option>
+      </Node>
+      <Node ID="10">
+        <NPCTalk>I'VE BEEN LYING TO YOU THE WHOOOOOOLE TIME :} I REALLY LIKE PEOPLE WHICH IS EASY TO CONVINCE, WHITHOUT FACTS, JUST USING EMOTIONS, IT IS EASY TO MANIPULATE YOU!</NPCTalk>
+        <Option NextNode="11" ReturnCode="1">What!</Option>
+      </Node>
+      <Node ID="11">
+        <NPCTalk>WELL, TIME TO PRESENT MYSELF! HELLO, I AM THE VIRUS, WHICH HAS BEEN CRISTALIZED SINCE A LONG TIME AGO IN THIS CRISTAL RIGHT HERE!</NPCTalk>
+        <Option NextNode="12" ReturnCode="1">Ehhh.</Option>
+      </Node>
+      <Node ID="12">
+        <NPCTalk>I AM THE AUTHOR OF THE CATASTROPHE, AND YOU HAVE HELPED ME TO UNFREEZE MYSELF FORM THOSE GOLEMS! THEY WERE BLOCKING ME OUT!</NPCTalk>
+        <Option NextNode="13" ReturnCode="1">Noooo!</Option>
+      </Node>
+      <Node ID="13">
+        <NPCTalk>BEHIND THIS GLASS THERE IS NOT ANY FREEDOM! THE GOLEMS WERE PROTECTING YOU FROM ME! AND YOU'VE KILLED THEM, YOU DID A GOOD SPLIT DUTY, HOW CUTE FROM YOUR PART :)</NPCTalk>
+        <Option NextNode="14" ReturnCode="1">Why?</Option>
+      </Node>
+      <Node ID="14">
+        <NPCTalk>YOU'LL REALLY DON'T CARE ABOUT WHY, BECAUSE GOING TO...</NPCTalk>
+        <Option NextNode="15" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="15">
+        <NPCTalk>KILL</NPCTalk>
+        <Option NextNode="16" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="16">
+        <NPCTalk>YOU!!!!!!!</NPCTalk>
+        <Option NextNode="17" ReturnCode="8">...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="24">
+      <Node ID="0">
+        <NPCTalk>HI! I WANT TO ASK YOU A FABOUR AND BELIEVE ME, THE REWARD IS GREAT!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Tell me!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>I FOUND IN THE DARKNESS OF THE FOREST, A HURTED LUMINOUS FLY. I DID NEVER SEEN SOMETHING LIKE THAT... IF YOU ACCEPT THIS MISSION, I WILL GIVE IT TO YOU!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">WOW, ACCEPT!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Nop</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>KILL 5 BATS AND YOU'LL RECIEVE IT! TALK TO ME AGAIN AND I'LL EXPLAIN YOU HOW IT WORKS!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">Nice</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="25">
+      <Node ID="0">
+        <NPCTalk>NICE, YOU ALREADY HAVE IT! DO YOU WANT ME TO TELL YOU HOW IT WORKS??</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Tell me!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Nop!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>THIS AMAZING MONSTER HAS TWO OPTIONS! ATTACK, WHICH DEALS DAMAGE TO THE ENEMY OR PROTECT.</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">OKEY</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>THE PROTECT OPTION MAKES HER PROTECT YOU. SHE WILL TAKE THE 50prcnt OF THE DAMAGE, AS WELL AS YOU. IF SHE DIES, DO NOT WORRY, WHEN THE COMBAT ENDS, SHE WILL RESTORE HER HEALTH.</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">GREAT!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="26">
+      <Node ID="0">
+        <NPCTalk>WELCOME TO THE SHOP! HERE YOU CAN BUY ITEMS.</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">How?</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>EACH TABLE HAS AN ITEM, AND BELOW IT, ITS PRICE. IF YOU HAVE THE RIGHT AMOUNT OF MONEY, YOU WILL BE ABLE TO CLICK RETURN TO BUY IT</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Nice</Option>
       </Node>
     </Dialog>
   </Dialogs>

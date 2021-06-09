@@ -108,9 +108,13 @@ public:
 
     void DrawStomps();
 
+    void DrawInteraction();
+
     void AlignCameraPosition();
 
     void NPCLogic();
+
+    void StoreLogic();
 
     void PlayerInmunityLogic();
 
@@ -165,9 +169,18 @@ public: //GOLEMS
     const SDL_Rect secondBossRect = { 1287, 363, 50, 25 };
     const SDL_Rect thirdBossRect = { 1513, 450, 50, 25 };
     //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
-    GuiString* lvlRecomendedText = nullptr;
     bool drawRecomendedII = false;
     bool drawRecomendedIII = false;
+
+public: // SHOP
+    GuiString* lvlRecomendedText = nullptr;
+    GuiString* shopPriceText = nullptr;
+    SDL_Rect shopProduct[4] = { 1, 1, 5 * 28, 4 * 28};
+    SDL_Texture* questionMark = nullptr;
+
+public: //INTERACTIONS
+    SDL_Texture* interactionText = nullptr;
+    bool interactionActive = false;
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;
@@ -180,6 +193,7 @@ public: //obstacles
     SDL_Texture* statItems = nullptr;
     SDL_Rect velocityStatRect = { (40 * 28), (5 * 28) - 6, 37, 45, };
     SDL_Rect luckStatRect = { (24 * 28) + 40, (14 * 28) - 34, 37, 45, };
+    SDL_Rect stabStatRect = { (71 * 28) + 18, ((13 * 28) - 10) - 24, 37, 45, };
     const SDL_Rect velocityStat = { 0, 0, 74, 91 };
     const SDL_Rect stabStat = { 74, 0, 74, 91 };
     const SDL_Rect luckStat = { 148, 0, 74, 91 };
@@ -312,6 +326,9 @@ private: //Textures
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;
+    Animation* currentEnemyAnimation;
+
+    bool wolfReverse = true;
 };
 
 #endif // __WORLD_H__

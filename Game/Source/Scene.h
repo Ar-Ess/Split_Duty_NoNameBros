@@ -68,9 +68,23 @@ public:
 		return currScene;
 	}
 
+	Environments GetEnvironment() const
+	{
+		return enviroment;
+	}
+
+	void SetEnvironment(Environments env)
+	{
+		enviroment = env;
+	}
+
 public: //Combat Buttons
 
 	void RestartPressState();
+
+	void RestartBossActivation();
+
+	void DebugCommands();
 
 	GuiButton* newGameButton = nullptr;
 
@@ -186,6 +200,7 @@ public:
 	bool IIBossCombat = false;
 	bool IIIBossCombat = false;
 	bool IIIIBossCombat = false;
+	bool lastDialog = false;
 
 private: //Scene Manager
 	friend class World;

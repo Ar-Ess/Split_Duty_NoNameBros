@@ -64,6 +64,12 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog, int 
 	case(NPCtype::SIGN):
 		texture = app->tex->Load("Assets/Textures/Environment/sign.png");
 		break;
+	case(NPCtype::FINAL_BOSS):
+		//texture = app->tex->Load("Assets/Textures/Environment/sign.png");
+		break;
+	case(NPCtype::SHOP_WOMAN):
+		//texture = app->tex->Load("Assets/Textures/Environment/sign.png");
+		break;
 	}
 }
 
@@ -78,6 +84,7 @@ void NPC::Update(SDL_Rect pCollAmp)
 				app->dialogueManager->StartDialogue(dialog);
 				app->audio->SetFx(Effect::NPC_TALK_FX);
 			}
+			app->scene->world->interactionActive = true;
 		}
 	}
 }

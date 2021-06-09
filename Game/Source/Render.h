@@ -47,6 +47,7 @@ public:
 	bool DrawCircle(int x1, int y1, int radius, SDL_Color color, bool filled = false, bool useCamera = true) const;
 
 	//bool DrawText(Font font, const char* text, int x, int y, int size, int spacing, SDL_Color tint);
+	bool BlitParticle(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, const SDL_Rect* rectSize = NULL, SDL_Color color = { 0, 0, 0, 0 }, SDL_BlendMode blendMode = SDL_BLENDMODE_NONE, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);

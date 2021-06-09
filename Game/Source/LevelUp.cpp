@@ -205,9 +205,9 @@ void LevelUp::UpgradeStats(int x)
 
 	if (p->luckStat != 0) p->luckStat = ceil((x / 5.0f));
 
-	if (p->stabStat != 0) p->stabStat = floor(x / 4.0f);
+	if (p->stabStat != 0) p->stabStat = ceil(x / 4.0f);
 
-	if (p->velocityStat != 0) p->velocityStat = floor((x / 3.0f) + 5.0f);
+	if (p->velocityStat != 0) p->velocityStat = ceil((x / 3.0f) + 5.0f);
 
 	p->lvl = x;
 

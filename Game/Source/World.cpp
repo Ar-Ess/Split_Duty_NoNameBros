@@ -16,6 +16,8 @@
 #include "ButtonsPuzzle.h"
 #include "Inventory.h"
 #include "LevelUp.h"
+#include "Audio.h"
+#include "Combat.h"
 
 #include "Log.h"
 #include <time.h>
@@ -148,7 +150,27 @@ void World::Start(Places placex)
 			app->render->camera.y = -375;
 		}
 
+		for (int i = 0; i < 4; i++)
+		{
+			shopProduct[i].w = 5 * 28;
+			shopProduct[i].h = 4 * 28;
+		}
+
+		shopProduct[0].x = 9 * 28;
+		shopProduct[0].y = 15 * 28;
+
+		shopProduct[1].x = 9 * 28;
+		shopProduct[1].y = 24 * 28;
+		
+		shopProduct[2].x = 25 * 28;
+		shopProduct[2].y = 15 * 28;
+		
+		shopProduct[3].x = 25 * 28;
+		shopProduct[3].y = 24 * 28;
+
 		app->render->camera.x = 140;
+
+		questionMark = app->tex->Load("Assets/Textures/UI/question_mark_symbol.png");
 
 		RectifyCameraPosition(placex);
 	}
@@ -459,8 +481,8 @@ void World::Start(Places placex)
 		{
 			if (prevPlace == GOLEM_STONES)
 			{
-				p->colliderWorld = { 28 * 21, 28 * 27, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
-				p->collisionRect = { 28 * 21, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
+				p->colliderWorld = { 28 * 22, 28 * 27, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H };
+				p->collisionRect = { 28 * 22, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
 
@@ -470,12 +492,15 @@ void World::Start(Places placex)
 	}
 
 	walkingSpritesheet = app->tex->Load("Assets/Textures/Characters/Female_Main_Character/walking_spritesheet.png");
+	interactionText = app->tex->Load("Assets/Textures/UI/interact_texture.png");
 
 	LoadNPCs(placex);
 
 	currentPlayerAnimation = &p->walkDownAnim;
 
 	UpdateWorldSpeed();
+
+	if (placex == CAVE) app->render->camera.x -= 4;
 
 	p = nullptr;
 }
@@ -511,8 +536,10 @@ void World::Restart(Scenes scene)
 	if (leaves != nullptr)app->tex->UnLoad(leaves);
 	if (stomp != nullptr)app->tex->UnLoad(stomp);
 	if (statItems != nullptr)app->tex->UnLoad(statItems);
+	if (questionMark != nullptr) app->tex->UnLoad(questionMark);
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
+	if (interactionText != nullptr) app->tex->UnLoad(interactionText);
 	
 	if (scene == WORLD)
 	{
@@ -572,6 +599,8 @@ void World::Update()
 	EnemyLogic();
 
 	NPCLogic();
+
+	if (place == SHOP) StoreLogic();
 
 	WorldStatGet();
 
@@ -633,6 +662,12 @@ void World::Draw()
 
 	DrawFilters();
 
+	if (interactionActive && !app->dialogueManager->onDialog)
+	{
+		DrawInteraction();
+		interactionActive = false;
+	}
+
 	return;
 }
 
@@ -659,21 +694,31 @@ void World::DrawEnemy()
 			Enemy* enemy = app->entityManager->enemies[i];
 			if (enemy->active)
 			{
+				currentEnemyAnimation = &enemy->idleAnim;
+				currentEnemyAnimation->Update(1.0f);
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
-					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE, &wolfRect, false);
+					if (wolfReverse) app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y - 20, SCALE, &currentEnemyAnimation->GetCurrentFrame(), false, 0, SDL_FLIP_HORIZONTAL);
+					else app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y - 20, SCALE, &currentEnemyAnimation->GetCurrentFrame(), false, 0, SDL_FLIP_NONE);
+					app->render->DrawRectangle({ enemy->colliderWorld.x + 5, enemy->colliderWorld.y - 13, 100, 20 }, {0, 0, 0, 175});
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 20 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 10, 20, 20 };
+					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::BIRD)
 				{
-					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &birdRect, false);
 
+					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &currentEnemyAnimation->GetCurrentFrame(), false);
+					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 43, 100, 20 }, { 0, 0, 0, 175 });
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 40, 20, 20 };
+					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::MANTIS)
 				{
-					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
+					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &currentEnemyAnimation->GetCurrentFrame(), false);
+					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 58, 100, 20 }, { 0, 0, 0, 175 });
+					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 55, 20, 20 };
+					enemy->lvlText->Draw();
 				}
-
-
 			}
 			enemy = nullptr;
 		}
@@ -695,8 +740,41 @@ void World::DrawNPC()
 
 void World::DrawText()
 {
-	if (drawRecomendedII || drawRecomendedIII) lvlRecomendedText->Draw();
-	//lvlRecomendedText->Draw();
+	if (drawRecomendedII)
+	{
+		app->render->DrawRectangle({ 1250, 210, 130, 50 }, { 0, 0, 0, 175 });
+		lvlRecomendedText->Draw();
+	}
+	else if (drawRecomendedIII)
+	{
+		app->render->DrawRectangle({ 1480, 290, 130, 50 }, {0, 0, 0, 175});
+		lvlRecomendedText->Draw();
+	}
+
+	if (place == SHOP)
+	{
+		shopPriceText->bounds = {(11 * 28) + 10 + app->render->camera.x, (17 * 28) + 5 + app->render->camera.y, 10, 10};
+		shopPriceText->SetString("6", BLACK);
+		shopPriceText->Draw();
+
+		shopPriceText->bounds = { (11 * 28) + app->render->camera.x, (26 * 28) + 5 + app->render->camera.y, 10, 10 };
+		shopPriceText->SetString("12", BLACK);
+		shopPriceText->Draw();
+
+		if (app->scene->boss1Beat)
+		{
+			shopPriceText->bounds = { (27 * 28) + app->render->camera.x, (17 * 28) + 5 + app->render->camera.y, 10, 10 };
+			shopPriceText->SetString("10", BLACK);
+			shopPriceText->Draw();
+		}
+
+		if (app->scene->boss2Beat)
+		{
+			shopPriceText->bounds = { (27 * 28) + app->render->camera.x, (26 * 28) + 5 + app->render->camera.y, 10, 10 };
+			shopPriceText->SetString("14", BLACK);
+			shopPriceText->Draw();
+		}
+	}
 }
 
 void World::DrawObstacles()
@@ -747,6 +825,11 @@ void World::DrawCollisions()
 		app->render->DrawRectangle(logCollision, { 255, 0, 0, 100 });
 	}
 
+	if (place == SHOP)
+	{
+		for (int i = 0; i < 4; i++) app->render->DrawRectangle(shopProduct[i], {100, 100, 0, 150});
+	}
+
 	if (place == ENEMY_FIELD || place == GRASSY_LAND_1)
 	{
 		for (int i = 0; i < app->entityManager->enemies.Count(); i++)
@@ -786,6 +869,8 @@ void World::DrawCollisions()
 	}
 
 	if (place == GRASSY_LAND_3) app->render->DrawRectangle(velocityStatRect, { 100, 0, 100, 150 });
+	else if (place == AUTUM_FALL_2) app->render->DrawRectangle(luckStatRect, { 100, 0, 100, 150 });
+	else if (place == MOSSY_ROCKS_2) app->render->DrawRectangle(stabStatRect, { 100, 0, 100, 150 });
 
 	p = nullptr;
 }
@@ -802,6 +887,13 @@ void World::DrawFilters()
 		app->render->DrawTexture(night, x, y, 1, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		app->render->DrawRectangle({ -app->render->camera.x, -app->render->camera.y, 1280, y + app->render->camera.y }, {0, 0, 0, 255});
 	}
+
+	if (place == SHOP)
+	{
+		const SDL_Rect a = {0, 0, 1280, 720};
+		if (!app->scene->boss1Beat) app->render->DrawTexture(questionMark, shopProduct[2].x + 20, shopProduct[2].y, 0.08f, 0.08f, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!app->scene->boss2Beat) app->render->DrawTexture(questionMark, shopProduct[3].x + 20, shopProduct[3].y, 0.08f, 0.08f, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
 }
 
 void World::DrawStomps()
@@ -816,6 +908,17 @@ void World::DrawStomps()
 		app->render->DrawTexture(stomp, (24 * 28) + 2, (14 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!luckTaken) app->render->DrawTexture(statItems, (24 * 28) + 40, ((14 * 28) - 10) - 24, 0.5f, 0.5f, false, &luckStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 	}
+	else if (place == MOSSY_ROCKS_2)
+	{
+		app->render->DrawTexture(stomp, (71 * 28) - 20, (13 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+		if (!luckTaken) app->render->DrawTexture(statItems, (71 * 28) + 18, ((13 * 28) - 10) - 24, 0.5f, 0.5f, false, &stabStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+}
+
+void World::DrawInteraction()
+{
+	const SDL_Rect a = {0, 0, 1280, 720};
+	app->render->DrawTexture(interactionText, app->scene->player1->colliderWorld.x + app->scene->player1->colliderWorld.w, app->scene->player1->colliderWorld.y + 5, 0.07f, &a, false);
 }
 
 //-------------------------------------------------------------------
@@ -1217,7 +1320,7 @@ void World::WorldEnemyDetection()
 			else if (stabUp) stabRect = { p->colliderWorld.x + off[2], p->colliderWorld.y - STAB_H + off[3], STAB_W, STAB_H };
 		}
 
-		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(stabRect, app->entityManager->enemies[i]->colliderRect))
+		if (app->entityManager->enemies[i]->active && collisionUtils.CheckCollision(stabRect, app->entityManager->enemies[i]->colliderWorld))
 		{
 			AsignPrevPosition();
 			app->scene->SetScene(Scenes::COMBAT, app->entityManager->enemies[i]);
@@ -1451,10 +1554,18 @@ void World::EnemyRunChasing(Enemy* e, Player* p)
 	int velX = xOffset / ENEMY_RUN_SPEED;
 	int velY = yOffset / ENEMY_RUN_SPEED;
 
-	if (velX > ENEMY_RUN_SPEED) velX = ENEMY_RUN_SPEED;
+	if (velX > ENEMY_RUN_SPEED)
+	{
+		velX = ENEMY_RUN_SPEED;
+		wolfReverse = true;
+	}
 	if (velY > ENEMY_RUN_SPEED) velY = ENEMY_RUN_SPEED;
 
-	if (velX < -ENEMY_RUN_SPEED) velX = -ENEMY_RUN_SPEED;
+	if (velX < -ENEMY_RUN_SPEED)
+	{
+		velX = -ENEMY_RUN_SPEED;
+		wolfReverse = false;
+	}
 	if (velY < -ENEMY_RUN_SPEED) velY = -ENEMY_RUN_SPEED;
 
 	e->colliderRect.x += velX;
@@ -1475,10 +1586,18 @@ void World::EnemyWalkReturn(Enemy* e, Player* p)
 	int velX = xOffset / ENEMY_WALK_SPEED;
 	int velY = yOffset / ENEMY_RUN_SPEED;
 
-	if (velX > ENEMY_WALK_SPEED) velX = ENEMY_WALK_SPEED;
+	if (velX > ENEMY_WALK_SPEED)
+	{
+		velX = ENEMY_WALK_SPEED;
+		wolfReverse = true;
+	}
 	if (velY > ENEMY_WALK_SPEED) velY = ENEMY_WALK_SPEED;
 
-	if (velX < -ENEMY_WALK_SPEED) velX = -ENEMY_WALK_SPEED;
+	if (velX < -ENEMY_WALK_SPEED)
+	{
+		velX = -ENEMY_WALK_SPEED;
+		wolfReverse = false;
+	}
 	if (velY < -ENEMY_WALK_SPEED) velY = -ENEMY_WALK_SPEED;
 
 	e->colliderRect.x += velX;
@@ -1902,6 +2021,77 @@ void World::NPCLogic()
 	}
 }
 
+void World::StoreLogic()
+{
+	Scene* s = app->scene;
+	for (int i = 0; i < 4; i++)
+	{
+		if (collisionUtils.CheckCollision(s->player1->collisionRect, shopProduct[i]))
+		{
+			interactionActive = true;
+			if (!s->boss1Beat && !s->boss2Beat)
+			{
+				if (i == 2 || i == 3)
+				{
+					app->audio->SetFx(Effect::MEH_FX);
+					return;
+				}
+			}
+			else if (s->boss1Beat && !s->boss2Beat)
+			{
+				if (i == 3)
+				{
+					app->audio->SetFx(Effect::MEH_FX);
+					return;
+				}
+			}
+
+			if (app->input->GetControl(A) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+			{
+				switch (i)
+				{
+				case 0:
+					if (s->player1->moneyCount >= 6)
+					{
+						s->player1->moneyCount -= 6;
+						s->player1->smallMeatCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 1:
+					if (s->player1->moneyCount >= 12)
+					{
+						s->player1->moneyCount -= 12;
+						s->player1->largeMeatCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 2:
+					if (s->player1->moneyCount >= 10)
+					{
+						s->player1->moneyCount -= 10;
+						s->player1->featherCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				case 3:
+					if (s->player1->moneyCount >= 14)
+					{
+						s->player1->moneyCount -= 14;
+						s->player1->mantisRodCount++;
+						//app->audio->SetFx(BUY_ITEM);
+					}
+					else app->audio->SetFx(Effect::MEH_FX);
+					break;
+				}
+			}
+		}
+	}
+}
+
 void World::PlayerInmunityLogic()
 {
 	if (playerInmuneTime > 1)
@@ -1963,6 +2153,32 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
 	}
+	else if (placex == CAVE)
+	{
+		if (!app->scene->boss2Beat)
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 22 * 28, -1 * 28}, NPCtype::FINAL_BOSS, placex, 23);
+		}
+	}
+	else if (placex == AUTUM_FALL_1)
+	{
+		if (!app->scene->combatScene->secondPlayer)
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 24);
+		}
+		else
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 25);
+		}
+	}
+	else if (placex == SHOP)
+	{
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SHOP_WOMAN, placex, 26);
+	}
 }
 
 void World::GolemCall()
@@ -2000,6 +2216,7 @@ void World::GolemCall()
 			drawRecomendedII = true;
 			lvlRecomendedText->bounds = { 460 - app->render->camera.x, 220 + app->render->camera.y, 100, 100 };
 			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
+			interactionActive = true;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
@@ -2019,6 +2236,7 @@ void World::GolemCall()
 			drawRecomendedIII = true;
 			lvlRecomendedText->bounds = { 690 - app->render->camera.x, 300 + app->render->camera.y, 30, 40 };
 			lvlRecomendedText->SetString("RECOMENDED\n  LVL. 65");
+			interactionActive = true;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || app->input->GetControl(A) == KEY_DOWN)
@@ -2093,7 +2311,7 @@ void World::RectifyCameraPosition(Places placex)
 		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1006) app->render->camera.x = 1280 - 1680; //616
 	}
-	else if (placex == MOSSY_ROCKS_1)
+	else if (placex == MOSSY_ROCKS_2)
 	{
 		if (app->scene->player1->colliderWorld.x < 608) app->render->camera.x = 0;
 		if (app->scene->player1->colliderWorld.x > 1624) app->render->camera.x = 1280 - 2240; //616
@@ -2108,9 +2326,9 @@ void World::RectifyCameraPosition(Places placex)
 	else if (placex == CAVE)
 	{
 		if (app->scene->player1->colliderWorld.y > 522) app->render->camera.y = 720 - 924;
+
 	}
 
-	LOG("%d", app->scene->player1->collisionRect.x);
 }
 
 void World::UpdateWorldSpeed()
@@ -2179,10 +2397,9 @@ void World::WorldStatGet()
 			p->walkRightAnim.Reset();
 		}
 	}
-	/*
 	else if (place == MOSSY_ROCKS_2)
 	{
-		if (!luckTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
+		if (!stabTaken && collisionUtils.CheckCollision(app->scene->player1->collisionRect, stabStatRect))
 		{
 			app->scene->player1->stabStat = 1;
 			app->scene->levelUpScene->UpgradeStats(app->scene->player1->lvl);
@@ -2197,5 +2414,5 @@ void World::WorldStatGet()
 			p->walkRightAnim.loop = false;
 			p->walkRightAnim.Reset();
 		}
-	}*/
+	}
 }

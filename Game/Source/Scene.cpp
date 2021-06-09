@@ -50,15 +50,12 @@ bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
-	sp = false;
 	return ret;
 }
 
 bool Scene::Start()
 {
 	app->fontTTF->Load("Assets/Fonts/manaspace.regular.ttf", 14);
-
-	//debugPath = app->tex->Load("Assets/Maps/collisions.png");
 
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
 	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
@@ -83,9 +80,6 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	////ENEMY SET                                            -----------------COMBAT RECT----------------                        ---WORLD RECT---              LVL EXP  HP STR DEF  VEL
-	//app->entityManager->enemies.start->data->SetUp({ SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H }, {1000, 180, SMALLWOLF_W_W, SMALLWOLF_W_H}, 2, 200, 25, 15, 10, 20);
-
 	if (FILE* file = fopen("save_game.xml", "r"))
 	{
 		fclose(file);
@@ -104,56 +98,18 @@ bool Scene::Start()
 	totalIterations = 200;
 	easingActive = false;
 
-	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 98, i m'entero, no viu un dia més :) <3
+	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 107, i m'entero, no viu un dia més :) <3
 
 	return true;
 }
 
 bool Scene::PreUpdate()
 {
-	// L12b: Debug pathfing
-	/*static iPoint origin;
-	static bool originSelected = false;
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = world->map->WorldToMap(p.x, p.y);
-	if(app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || app->input->GetControl(A) == KeyState::KEY_DOWN)
-	{
-		if(originSelected == true)
-		{
-			PathFinding::GetInstance()->CreatePath(*debugPathList, origin, p);
-			originSelected = false;
-		}
-		else
-		{
-			origin = p;
-			originSelected = true;
-		}
-	}*/
-
 	return true;
 }
 
 bool Scene::Update(float dt)
 {
-	// L12b: Debug pathfinding
-	/*int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint p = app->render->ScreenToWorld(mouseX, mouseY);
-	p = world->map->WorldToMap(p.x, p.y);
-	p = world->map->MapToWorld(p.x, p.y);
-	const DynArray<iPoint>* path = debugPathList;
-	const SDL_Rect debugPathRect = {0, 0, 16, 16};
-	for(uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = world->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(debugPath, pos.x, pos.y, 1, &debugPathRect);
-	}*/
-
-	//LOG("X:%d Y:%d", player1->colliderWorld.x, player1->colliderWorld.y);
-
-
 	if (currScene == LOGO_SCENE) UpdateLogoScene();
 	else if (currScene == MAIN_MENU) UpdateMainMenu();
 	else if (currScene == OPTIONS_MENU) UpdateOptionsMenu();
@@ -163,26 +119,12 @@ bool Scene::Update(float dt)
 	else if (currScene == PAUSE_MENU) UpdatePauseMenu();
 	else if (currScene == END_SCREEN) UpdateEndScreen();
 
-	//DEBUGGING SPLINE
-	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		if (sp == true)
-			sp = false;
-		else
-			sp = true;
-	}
-	if (sp == true)
-	{
-		spline.DrawSpline(0);
-		spline.DrawSplineControlPoints(0);
-		spline.HandleInput(0);
-	}
 	return true;
 }
 
 bool Scene::PostUpdate()
 {
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
 		world->debugCollisions = !world->debugCollisions;
@@ -543,7 +485,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
-	combatScene->enemy->health -= combatScene->EnemyStabDamage();
+	if (world->stabActive && player1->stabStat > 0) combatScene->enemy->health -= combatScene->EnemyStabDamage();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
@@ -1134,6 +1076,13 @@ void Scene::SetWorld(Places place)
 		world->lvlRecomendedText->SetTextFont(app->fontTTF->defaultFont3);
 		world->lvlRecomendedText->SetString("RECOMENDED\n  LVL. 35");
 	}
+	if (world->shopPriceText == nullptr)
+	{
+		world->shopPriceText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		world->shopPriceText->bounds = { 0, 0, 40, 50 };
+		world->shopPriceText->SetTextFont(app->fontTTF->defaultFont3);
+		world->shopPriceText->SetString("5");
+	}
 }
 
 void Scene::SetPauseMenu()
@@ -1344,29 +1293,7 @@ void Scene::UpdateCombat()
 
 	//DebugSteps();
 
-	if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		player1->strengthStat = 19;
-		player1->defenseStat = 15;
-		player1->health = (38 * player1->health) / player1->maxHealth;
-		player1->maxHealth = 38;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
-	{
-		player1->strengthStat = 30;
-		player1->defenseStat = 24;
-		player1->health = (53 * player1->health) / player1->maxHealth;
-		player1->maxHealth = 53;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
-	{
-		player1->strengthStat = 39;
-		player1->defenseStat = 33;
-		player1->health = (65 * player1->health) / player1->maxHealth;
-		player1->maxHealth = 65;
-	}
+	DebugCommands();
 }
 
 void Scene::UpdateLevelUp()
@@ -1392,7 +1319,16 @@ void Scene::UpdateWorld()
 		world->inventory->Draw((int)y);
 	}
 
-	// DEBUG
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
+	{
+		if (!world->inventoryOpen && !app->dialogueManager->onDialog && !world->gameStart)
+		{
+			prevCam = { app->render->camera.x, app->render->camera.y };
+			SetScene(PAUSE_MENU);
+		}
+	}
+
+	// BOSS
 	if (tBossCombat && !bossTBeat)
 	{
 		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
@@ -1417,51 +1353,10 @@ void Scene::UpdateWorld()
 		SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN && !boss3Beat) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+	RestartBossActivation();
 
-	//DEBUG
-	if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) combatScene->secondPlayer = !combatScene->secondPlayer;
-
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN || app->input->GetControl(BACK) == KEY_DOWN)
-	{
-		if (!world->inventoryOpen && !app->dialogueManager->onDialog && !world->gameStart)
-		{
-			prevCam = { app->render->camera.x, app->render->camera.y };
-			SetScene(PAUSE_MENU);
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !world->gameStart)
-	{
-		player1->godMode = !player1->godMode;
-		world->godMode = !world->godMode;
-
-		if (player1->godMode) player1->playerSpeed = 14;
-		else player1->playerSpeed = PLAYER_SPEED;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-	{
-		levelUpScene->UpgradeStats(100);
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
-	{
-		world->gameStart = true;
-		world->tutorialDialogueOnce = true;
-		SetScene(WORLD, GOLEM_STONES);
-		world->Teleport({ 1064, 896 });
-		app->dialogueManager->StartDialogue(17);
-	}
-
-	if (world->tutorialBossActivation) tBossCombat = true;
-	else if (world->secondBossActivation) IIBossCombat = true;
-	else if (world->thirdBossActivation) IIIBossCombat = true;
-	else if (world->finalBossActivation) IIIIBossCombat = true;
-	world->tutorialBossActivation = false;
-	world->secondBossActivation = false;
-	world->thirdBossActivation = false;
-	world->finalBossActivation = false;
+	// DEBUG
+	DebugCommands();
 }
 
 void Scene::UpdatePauseMenu()
@@ -1652,6 +1547,21 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			{
 				world->SetInmunityTime(PLAYER_INMUNITY_TIME);
 				SetScene(WORLD, world->place);
+				if (boss2Beat && !lastDialog)
+				{
+					lastDialog = true;
+					if (world->place == GOLEM_STONES)
+					{
+						world->Teleport({ 28 * 36, 20 * 28 });
+						world->RectifyCameraPosition(GOLEM_STONES);
+					}
+					app->dialogueManager->StartDialogue(22);
+				}
+				if (boss3Beat)
+				{
+					SetScene(MAIN_MENU);
+					boss3Beat = false;
+				}
 			}
 			else if (world->gameStart)
 			{
@@ -1696,6 +1606,88 @@ void Scene::RestartPressState()
 	mantisPressed = false;
 	enemySplitPressed = false;
 	moneyPressed = false;
+}
+
+void Scene::RestartBossActivation()
+{
+	if (world->tutorialBossActivation) tBossCombat = true;
+	else if (world->secondBossActivation) IIBossCombat = true;
+	else if (world->thirdBossActivation) IIIBossCombat = true;
+	else if (world->finalBossActivation) IIIIBossCombat = true;
+	world->tutorialBossActivation = false;
+	world->secondBossActivation = false;
+	world->thirdBossActivation = false;
+	world->finalBossActivation = false;
+}
+
+void Scene::DebugCommands()
+{
+	switch (currScene)
+	{
+	case WORLD:
+		   //SECOND PLAYER
+		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) combatScene->secondPlayer = !combatScene->secondPlayer;
+
+		   //GOD MODE
+		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN && !world->gameStart)
+		{
+			player1->godMode = !player1->godMode;
+			world->godMode = !world->godMode;
+
+			if (player1->godMode) player1->playerSpeed = 14;
+			else player1->playerSpeed = PLAYER_SPEED;
+		}
+
+		   //LVL 100
+		if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+		{
+			levelUpScene->UpgradeStats(100);
+		}
+
+		   //START STORY
+		if (app->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
+		{
+			world->gameStart = true;
+			world->tutorialDialogueOnce = true;
+			SetScene(WORLD, GOLEM_STONES);
+			world->Teleport({ 1064, 896 });
+			app->dialogueManager->StartDialogue(17);
+		}
+
+		   //DEBUG TUTORIAL BOSS
+		if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_TUTORIAL));
+
+		   //DEBUG SECOND BOSS
+		if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_I));
+
+		   //DEBUG THIRD BOSS
+		if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_II));
+
+		   //DEBUG FINAL BOSS
+		if (app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) SetScene(COMBAT, (Boss*)app->entityManager->CreateEntity(EntityType::BOSS, BossClass::BOSS_III));
+		break;
+
+	case COMBAT:
+		   //SET STATS LVL 35
+		if (app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) levelUpScene->UpgradeStats(35);
+
+		   //SET STATS LVL 65
+		if (app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) levelUpScene->UpgradeStats(65);
+
+		   //SET STATS LVL 90
+		if (app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) levelUpScene->UpgradeStats(90);
+
+		   //KILL ENEMY/BOSS
+		if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+		{
+			if (combatScene->enemyBattle) combatScene->enemy->health -= combatScene->enemy->health;
+			else if (combatScene->bossBattle) combatScene->boss->health -= combatScene->boss->health;
+		}
+
+		   //KILL PLAYER
+		if (app->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN) app->scene->player1->health = 1;
+		break;
+	}
 }
 
 // Debug functions (future in debug module)

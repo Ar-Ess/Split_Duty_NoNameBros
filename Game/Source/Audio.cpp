@@ -220,6 +220,10 @@ void AudioManager::SetFx(Effect fx)
 	{
 		PlayFx(24);
 	}
+	else if (fx == BUY_ITEM_FX)
+	{
+		//PlayFx(25);
+	}
 }
 
 uint AudioManager::GetAngle(iPoint player, iPoint enemy)
