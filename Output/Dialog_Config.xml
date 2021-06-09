@@ -527,5 +527,15 @@
         <Option NextNode="-1" ReturnCode="-1">GREAT!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="26">
+      <Node ID="0">
+        <NPCTalk>WELCOME TO THE SHOP! HERE YOU CAN BUY ITEMS.</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">How?</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>EACH TABLE HAS AN ITEM, AND BELOW IT, ITS PRICE. IF YOU HAVE THE RIGHT AMOUNT OF MONEY, YOU WILL BE ABLE TO CLICK RETURN TO BUY IT</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Nice</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

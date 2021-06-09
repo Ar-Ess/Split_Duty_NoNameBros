@@ -2154,6 +2154,11 @@ void World::LoadNPCs(Places placex)
 			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 25);
 		}
 	}
+	else if (placex == SHOP)
+	{
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SHOP_WOMAN, placex, 26);
+	}
 }
 
 void World::GolemCall()
