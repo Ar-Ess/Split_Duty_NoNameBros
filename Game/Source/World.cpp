@@ -494,6 +494,9 @@ void World::Start(Places placex)
 			}
 		}
 
+		if (!app->scene->boss2Beat) caveWallTex = app->tex->Load("Assets/Screens/cave_crystal_full.png");
+		else caveWallTex = app->tex->Load("Assets/Screens/cave_crystal_broken.png");
+
 		AlignCameraPosition();
 
 		RectifyCameraPosition(placex);
@@ -553,6 +556,7 @@ void World::Restart(Scenes scene)
 	app->tex->UnLoad(secondRockTex);
 	app->tex->UnLoad(thirdRockTex);
 	app->tex->UnLoad(unableRockTex);
+	app->tex->UnLoad(caveWallTex);
 	
 	if (scene == WORLD)
 	{
@@ -925,6 +929,10 @@ void World::DrawStomps()
 	{
 		app->render->DrawTexture(stomp, (71 * 28) - 20, (13 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!luckTaken) app->render->DrawTexture(statItems, (71 * 28) + 18, ((13 * 28) - 10) - 24, 0.5f, 0.5f, false, &stabStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+	else if (place == CAVE)
+	{
+		app->render->DrawTexture(caveWallTex, -1, -512, 1.01f, 1, false);
 	}
 }
 

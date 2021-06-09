@@ -172,6 +172,8 @@ public: //GOLEMS
     SDL_Texture* secondRockTex = nullptr;
     SDL_Texture* thirdRockTex = nullptr;
     SDL_Texture* unableRockTex = nullptr;
+    SDL_Texture* caveWallTex = nullptr;
+
 
     //const SDL_Rect finalBossRect = { 0, 0, 32, 16 };
     bool drawRecomendedII = false;
