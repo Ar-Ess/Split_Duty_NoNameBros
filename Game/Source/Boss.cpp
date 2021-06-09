@@ -18,19 +18,15 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 	{
 	case BOSS_TUTORIAL: 
 		SetUp({BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H}, 1001, 6, 3, 0);
-		bossSpritesheetTexture = app->tex->Load("Assets/Textures/Characters/Enemies/Bosses/golem_grassy_lands_spritesheet.png");
 		break;
 	case BOSS_I:
 		SetUp({ BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H }, 129500, 44, 26, 11); // LVL 35
-		bossSpritesheetTexture = app->tex->Load("Assets/Textures/Characters/Enemies/Bosses/golem_grassy_lands_spritesheet.png");
 		break;
 	case BOSS_II: 
 		SetUp({ BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H }, 278700, 63, 40, 18); // LVL 65
-		bossSpritesheetTexture = app->tex->Load("Assets/Textures/Characters/Enemies/Bosses/golem_grassy_lands_spritesheet.png");
 		break;
 	case BOSS_III:
 		SetUp({ BOSS_C_X, BOSS_C_Y, BOSS_C_W, BOSS_C_H }, 418000, 155, 50, 24); // LVL 90
-		bossSpritesheetTexture = app->tex->Load("Assets/Textures/Characters/Enemies/Bosses/golem_grassy_lands_spritesheet.png");
 		break;
 	}
 	iPoint tile = { 100,100 };

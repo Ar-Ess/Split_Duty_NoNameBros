@@ -297,6 +297,7 @@ public: //TUTORIAL BOSS INFO
     int jumpInstructionStep = 0;
     bool endOfTutorial = false;
     SDL_Texture* tutorialBox = nullptr;
+    SDL_Texture* enterTexture = nullptr;
     iPoint textBoxPos = { 0, 0 };
     GuiString* tutorialText;
 

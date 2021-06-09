@@ -114,8 +114,9 @@ void Combat::BossStart()
 	switch (boss->bossClass)
 	{
 	case(BossClass::BOSS_TUTORIAL):
-		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Wolf/grey_wolf_spritesheet.png");
+		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_grassy_lands_spritesheet.png");
 		tutorialBox = app->tex->Load("Assets/Textures/UI/tutorial_textbox.png");
+		enterTexture = app->tex->Load("Assets/Textures/UI/enter_control.png");
 		tutorialActive = true;
 		jumpInstruction = false;
 		tutorialStep = 0;
@@ -129,7 +130,7 @@ void Combat::BossStart()
 		tutorialText->SetString("You are this guy here,\nand right in front of you,\nthere is your opponent.");
 		break;
 	case(BossClass::BOSS_I):
-		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Bat/bat_spritesheet.png");
+		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_atumn_falls_spritesheet.png");
 		shieldStep = 0;
 		shield.x = shieldPos[shieldStep];
 		shield = { 0, 285, 40, 215 };
@@ -141,7 +142,7 @@ void Combat::BossStart()
 		boss1Attack7Time = 0;
 		break;
 	case(BossClass::BOSS_II):
-		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_mossy_rocks_spritesheet.png");
 		for (int i = 0; i < 2; i++) spikeStep[i] = 0;
 		for (int i = 0; i < 2; i++) spike[i] = { spikePos[spikeStep[i]], 488 - 30, 60, 30};
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
@@ -158,7 +159,7 @@ void Combat::BossStart()
 		b2heal = false;
 		break;
 	case(BossClass::BOSS_III):
-		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Enemies/Mantis/mantis_spritesheet.png");
+		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_atumn_falls_spritesheet.png");
 		iZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
 		iZone.tex = nullptr;
 		rZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
@@ -203,6 +204,7 @@ void Combat::Restart()
 	app->tex->UnLoad(background);
 	app->tex->UnLoad(combatInventory);
 	if (tutorialBox != nullptr) app->tex->UnLoad(tutorialBox);
+	if (enterTexture != nullptr) app->tex->UnLoad(enterTexture);
 
 	PlayerPosReset();
 	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
@@ -502,13 +504,6 @@ void Combat::CombatLogic()
 	}
 	else if (combatState == PLAYER_TURN)
 	{
-		//DEBUG MODE
-		if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		{
-			if (enemyBattle) enemy->health -= enemy->health;
-			if (bossBattle) boss->health -= boss->health;
-		}
-
 		if (!secondPlayerProtection)
 		{
 			if (playerChoice)
@@ -1230,6 +1225,7 @@ void Combat::DrawTutorial()
 		tutorialActive = false;
 		break;
 	}
+	app->render->DrawTexture(enterTexture, 1120, 650, 4.0f, false);
 }
 
 void Combat::DrawJumpInstructions()
@@ -1252,6 +1248,7 @@ void Combat::DrawJumpInstructions()
 		app->render->DrawRectangle({ 0, 0, 1280, 720 }, { 0, 0, 0, 150 });
 		app->render->DrawTexture(tutorialBox, textBoxPos.x, textBoxPos.y, 1, 1, false, (const SDL_Rect*)0, 0.0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
 		tutorialText->Draw();
+		app->render->DrawTexture(enterTexture, 1120, 650, 4.0f, false);
 		break;
 
 	case 3:

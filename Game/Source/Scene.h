@@ -82,6 +82,10 @@ public: //Combat Buttons
 
 	void RestartPressState();
 
+	void RestartBossActivation();
+
+	void DebugCommands();
+
 	GuiButton* newGameButton = nullptr;
 
 	GuiButton* continueButton = nullptr;
