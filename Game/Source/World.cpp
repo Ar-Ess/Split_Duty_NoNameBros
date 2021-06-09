@@ -2118,7 +2118,7 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M_1, placex, 2);
 	}
 	else if (placex == TAVERN)
 	{
@@ -2133,7 +2133,7 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 11, 3);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 12, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M_1, placex, 12, 2);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 13, 3);
@@ -2181,7 +2181,7 @@ void World::LoadNPCs(Places placex)
 	else if (placex == SHOP)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SHOP_WOMAN, placex, 26);
+		app->entityManager->NPCs.end->data->SetUp({ (19 * 28) - 10, 4 * 28 }, NPCtype::SHOP_WOMAN, placex, 26);
 	}
 }
 

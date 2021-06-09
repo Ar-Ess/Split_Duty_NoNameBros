@@ -423,7 +423,7 @@ void Combat::CombatLogic()
 			if (bossTimeWait == 59)
 			{
 				BossAttackProbability();
-				currentBossAnim = &boss->moveAnim;
+				//currentBossAnim = &boss->moveAnim;
 
 				//app->audio->SetFx(Effect::BOSS_ATTACK_FX);
 			}

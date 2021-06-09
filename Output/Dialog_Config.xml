@@ -530,11 +530,25 @@
     <Dialog ID="26">
       <Node ID="0">
         <NPCTalk>WELCOME TO THE SHOP! HERE YOU CAN BUY ITEMS.</NPCTalk>
-        <Option NextNode="1" ReturnCode="1">How?</Option>
+        <Option NextNode="1" ReturnCode="1">Thanks!</Option>
       </Node>
       <Node ID="1">
+        <NPCTalk>WHAT DO YOU WANT TO KNOW?</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Buy?</Option>
+        <Option NextNode="3" ReturnCode="1">Money?</Option>
+      </Node>
+      <Node ID="2">
         <NPCTalk>EACH TABLE HAS AN ITEM, AND BELOW IT, ITS PRICE. IF YOU HAVE THE RIGHT AMOUNT OF MONEY, YOU WILL BE ABLE TO CLICK RETURN TO BUY IT</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Nice</Option>
+        <Option NextNode="4" ReturnCode="1">Nice</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>IN YOUR CASE, YOU CAN EARN MONEY BY CLEARING MISSIONS WHICH SOME PEOPLE AROUND THIS LANDS MAY ASK YOU!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">Ooooh!</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>DO YOU NEED SOMETHING ELSE?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yes!</Option>
+        <Option NextNode="-1" ReturnCode="-1">No</Option>
       </Node>
     </Dialog>
   </Dialogs>

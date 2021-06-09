@@ -16,18 +16,32 @@ enum Places;
 
 enum NPCtype
 {
-    KNIGHT_M,
+    KNIGHT_M_1,
     KNIGHT_F,
     OLD,
     PRIEST,
     NO_NPC,
     BARMAN,
     WITCH,
-    CITIZEN_1,
     ADVENTURER,
-    SIGN,
     FINAL_BOSS,
-    SHOP_WOMAN
+    SHOP_WOMAN, 
+    CAT,
+    CITIZEN_1,
+    CITIZEN_2,
+    CITIZEN_3,
+    CITIZEN_4,
+    CITIZEN_5,
+    CITIZEN_6,
+    CITIZEN_7,
+    CITIZEN_8,
+    CITIZEN_9,
+    CITIZEN_10,
+    GARDENER,
+    FORESTAL,
+    KNIGHT_M_2,
+    KNIGHT_M_3,
+    KNIGHT_M_4,
 };
 
 class NPC : public Entity
