@@ -139,7 +139,7 @@ void World::Start(Places placex)
 	}
 	else if (placex == SHOP)
 	{
-		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
+		app->audio->SetMusic(SoundTrack::OPTIONSMENU_TRACK);
 		map->Load("shop.tmx");
 
 		// IF WE COME FROM CONTINUE BUTTON CLICKED, DONT ENTER HERE
@@ -161,10 +161,10 @@ void World::Start(Places placex)
 
 		shopProduct[1].x = 9 * 28;
 		shopProduct[1].y = 24 * 28;
-		
+
 		shopProduct[2].x = 25 * 28;
 		shopProduct[2].y = 15 * 28;
-		
+
 		shopProduct[3].x = 25 * 28;
 		shopProduct[3].y = 24 * 28;
 
@@ -237,7 +237,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == GRASSY_LAND_1)
 	{
-		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+		app->scene->enviroment = Environments::GRASSY_LANDS;
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 
 		map->Load("grassy_lands_1.tmx");
 
@@ -265,7 +266,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == GRASSY_LAND_2)
 	{
-		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+		app->scene->enviroment = Environments::GRASSY_LANDS;
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 
 		if (lilipadPuzzle1 == nullptr)
 		{
@@ -312,7 +314,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == GRASSY_LAND_3)
 	{
-		app->audio->SetMusic(SoundTrack::GRASSYLANDS_TRACK);
+		app->scene->enviroment = Environments::GRASSY_LANDS;
+		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
 
 		map->Load("grassy_lands_3.tmx");
 
@@ -338,8 +341,7 @@ void World::Start(Places placex)
 	else if (placex == AUTUM_FALL_1)
 	{
 		app->scene->enviroment = Environments::AUTUM_FALLS;
-
-		//app->audio->SetMusic(SoundTrack::AUTUM_FALLS_TRACK);
+		app->audio->SetMusic(SoundTrack::AUTUMN_FALLS_TRACK);
 
 		map->Load("autumn_falls_1.tmx");
 
@@ -367,7 +369,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == AUTUM_FALL_2)
 	{
-		//app->audio->SetMusic(SoundTrack::AUTUM_FALLS_TRACK);
+		app->scene->enviroment = Environments::AUTUM_FALLS;
+		app->audio->SetMusic(SoundTrack::AUTUMN_FALLS_TRACK);
 
 		map->Load("autumn_falls_2.tmx");
 
@@ -393,8 +396,7 @@ void World::Start(Places placex)
 	else if (placex == MOSSY_ROCKS_1)
 	{
 		app->scene->enviroment = Environments::MOSSY_LANDS;
-
-		//app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
+		app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
 
 		map->Load("mossy_rocks_1.tmx");
 
@@ -423,8 +425,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == MOSSY_ROCKS_2)
 	{
-
-		//app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
+		app->scene->enviroment = Environments::MOSSY_LANDS;
+		app->audio->SetMusic(SoundTrack::MOSSY_ROCKS_TRACK);
 
 		map->Load("mossy_rocks_2.tmx");
 
@@ -450,8 +452,8 @@ void World::Start(Places placex)
 	else if (placex == GOLEM_STONES)
 	{
 		app->audio->SetMusic(SoundTrack::MAINVILLAGE_TRACK);
-		map->Load("golem_sanctuary.tmx");
 		app->scene->enviroment = Environments::BOSS_LANDS;
+		map->Load("golem_sanctuary.tmx");
 
 		if (!app->scene->continuePressed)
 		{
@@ -475,6 +477,8 @@ void World::Start(Places placex)
 	}
 	else if (placex == CAVE)
 	{
+		app->audio->SetMusic(SoundTrack::CAVE_TRACK);
+		app->scene->enviroment = Environments::BOSS_LANDS;
 		map->Load("cave.tmx");
 
 		if (!app->scene->continuePressed)
@@ -1467,8 +1471,8 @@ void World::EnemyStatsGeneration(Enemy* e, Player* p, int lvl)
 	int eExp = (x * 150) + (rand() % variation);*/
 
 	//LVL EXP OPTION 2
-	int variation = (100 * (x / 2));
-	int maxExp = int(floor(1000 * pow((float)app->scene->player1->lvl, 1.25f)));
+	int maxExp = int(floor(1000 * pow((float)lvl, 1.25f)));
+	int variation = maxExp / 20;
 	maxExp = (maxExp / 5) - 100;
 	int eExp = maxExp + (rand() % variation);
 
@@ -2114,7 +2118,7 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M, placex, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M_1, placex, 2);
 	}
 	else if (placex == TAVERN)
 	{
@@ -2129,7 +2133,7 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->NPCs.end->data->SetUp({ 24*28 - 10, 29*28 - 20 }, NPCtype::OLD, placex, 11, 3);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M, placex, 12, 2);
+		app->entityManager->NPCs.end->data->SetUp({ 7*28 - 10, 30*28 - 20 }, NPCtype::KNIGHT_M_1, placex, 12, 2);
 
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 3*28 - 15 , 30*28 - 20}, NPCtype::KNIGHT_F, placex, 13, 3);
@@ -2155,7 +2159,7 @@ void World::LoadNPCs(Places placex)
 	}
 	else if (placex == CAVE)
 	{
-		if (!app->scene->boss2Beat)
+		if (app->scene->boss2Beat)
 		{
 			app->entityManager->CreateEntity(EntityType::NPC);
 			app->entityManager->NPCs.end->data->SetUp({ 22 * 28, -1 * 28}, NPCtype::FINAL_BOSS, placex, 23);
@@ -2177,7 +2181,7 @@ void World::LoadNPCs(Places placex)
 	else if (placex == SHOP)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::SHOP_WOMAN, placex, 26);
+		app->entityManager->NPCs.end->data->SetUp({ (19 * 28) - 10, 4 * 28 }, NPCtype::SHOP_WOMAN, placex, 26);
 	}
 }
 

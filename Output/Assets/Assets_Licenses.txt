@@ -47,6 +47,10 @@ please rate this asset on the top right corner , this will make me happy ;)
 
 Credit me if you like [ it's optional ] , Thanks .
 
+5. Wooden Controls for Gamepad/Keyboard by NedoKontent
+
+You can use this asset for personal and commercial purpose.
+Credit is not required but would be appreciated.)
 
 Assets/Items:
 
@@ -104,6 +108,38 @@ How to credit me (for example): Bonsaiheldin | http://bonsaiheld.org
 Although it's not really needed, it makes me happy to know what you do with my work.
 It took me time to create it, so, why not drop me a line somewhere if you happen to use it? :)
 
+3. A pixel art tileset (16x16) based on SunnyLand, by Ansimuz
+
+This is my first pixel art pack, and my first plataform tileset too. I've made this pack because recently I've started to work with GMS2, and downloaded the SunnyLand Forest​, by Ansimuz. I love that style and started to redraw the tiles, using the same palette. I've took a lot of references from this pack on my first tiles (trees and bushes), and actually I'm able to make the tiles on my own.
+
+This pack contains tiles like: Trees, rocks, wines, bushes (a lot), walls, roofs, floors, water, mine carts, rails, tables, bookshelfs, tall grass, bridges, stairs, signs, farm stuff, mushrooms and more. You be able to make at least 3 different maps with those tiles, like: Forest, Caves, Lakes/Underwater, and Interior maps
+
+Pack includes:
+
+• At least 100 tiles
+• 2 Trees 
+• 2 Backgrounds
+• An frog, an snake and a fish
+• Smoke and fire particles
+• Animated Seaweed, Tree and Bush
+• Bubbles, Coins and some other animated stuff​
+
+4. Stringstar fields by Trixie
+
+STRINGSTAR FIELDS
+A dark & soothing tileset <3
+
+contents:
+- A detailed nature environment
+- One-way platforms and spikes
+- Two big, fancy trees and other vegetation
+- A background with 3 parallax layers
+- An optional .aseprite file with everything in it
+
+5. Free Pixel Art Forest by edermunizz
+
+You can use this asset even commercially, just give proper credit.
+
 
 Assets/Textures:
 
@@ -131,6 +167,14 @@ Donations are welcome :)
 - Use and edit freely.
 - Not redistribute or resell this assets.
 - It can be used for game development and other productions.
+
+5. Mecha-Stone Golem [Free] by Kronovi-
+
+You can use this asset pack with your commercial or non-commercial projects and credits are always appreciated (if you like giving credits). 
+
+You can edit the sprites
+
+Reselling and redistributing this asset pack is prohibited. 
 
 Assets/Fonts:
 

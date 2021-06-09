@@ -116,6 +116,22 @@ void AudioManager::SetMusic(SoundTrack sc, float fadeTime)
 	{
 		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_EndScreen_Soundtrack.mp3", fadeTime);
 	}
+	else if (sc == AUTUMN_FALLS_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_AutumnFalls_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == MOSSY_ROCKS_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_MossyRocks_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == CAVE_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_Cave_Soundtrack.mp3", fadeTime);
+	}
+	else if (sc == FINAL_BOSS_TRACK)
+	{
+		if (st != sc) PlayMusic("Assets/Audio/Music/SplitDuty_FinalBoss_Soundtrack.mp3", fadeTime);
+	}
 
 	st = sc;
 }

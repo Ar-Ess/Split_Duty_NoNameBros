@@ -991,7 +991,7 @@ void Scene::SetCombat(Boss* bossSet)
 		combatScene->moneyDescription->SetString("Coin: \n\nJust a coin \n\n\n\n\n - USE: Use a coin an loose it");
 	}
 
-	app->audio->SetMusic(SoundTrack::MAINCOMBAT_TRACK);
+	app->audio->SetMusic(SoundTrack::FINAL_BOSS_TRACK);
 }
 
 void Scene::SetLevelUp(unsigned int exp)
