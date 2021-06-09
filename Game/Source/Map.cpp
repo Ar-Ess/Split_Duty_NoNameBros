@@ -245,15 +245,44 @@ void Map::Draw()
 
 						if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
 						{
-							app->render->DrawTexture(w->tutorialRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 75, 2.9f, false);
-							app->render->DrawTexture(w->secondRockTex, w->secondBossRect.x, w->secondBossRect.y - 75, 2.9f, false);
-							app->render->DrawTexture(w->thirdRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 75, 2.9f, false);
+							bool yes1 = false;
+							bool yes2 = false;
+							if (app->scene->player1->collisionRect.y + app->scene->player1->collisionRect.h >= (17 * 28))
+							{
+								if (!app->scene->bossTBeat) app->render->DrawTexture(w->tutorialRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 95, 2.9f, false);
+
+								if (!app->scene->boss2Beat) app->render->DrawTexture(w->thirdRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 95, 2.9f, false);
+								yes1 = true;
+							}
+							if (app->scene->player1->collisionRect.y + app->scene->player1->collisionRect.h >= (14 * 28))
+							{
+								if (!app->scene->boss1Beat) app->render->DrawTexture(w->secondRockTex, w->secondBossRect.x, w->secondBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->secondBossRect.x, w->secondBossRect.y - 95, 2.9f, false);
+								yes2 = true;
+							}
+
 							w->DrawNPC();
 							w->DrawEnemy();
 							w->DrawStomps();
 							w->DrawPlayer();
 							playerDraw = true;
 							i--;
+
+							if (!yes1)
+							{
+								if (!app->scene->bossTBeat) app->render->DrawTexture(w->tutorialRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 95, 2.9f, false);
+
+								if (!app->scene->boss2Beat) app->render->DrawTexture(w->thirdRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 95, 2.9f, false);
+							}
+							if (!yes2)
+							{
+								if (!app->scene->boss1Beat) app->render->DrawTexture(w->secondRockTex, w->secondBossRect.x, w->secondBossRect.y - 95, 2.9f, false);
+								else app->render->DrawTexture(w->unableRockTex, w->secondBossRect.x, w->secondBossRect.y - 95, 2.9f, false);
+							}
 						}
 						else
 						{
