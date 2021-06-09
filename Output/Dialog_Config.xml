@@ -496,5 +496,36 @@
         <Option NextNode="17" ReturnCode="8">...</Option>
       </Node>
     </Dialog>
+    <Dialog ID="24">
+      <Node ID="0">
+        <NPCTalk>HI! I WANT TO ASK YOU A FABOUR AND BELIEVE ME, THE REWARD IS GREAT!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Tell me!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>I FOUND IN THE DARKNESS OF THE FOREST, A HURTED LUMINOUS FLY. I DID NEVER SEEN SOMETHING LIKE THAT... IF YOU ACCEPT THIS MISSION, I WILL GIVE IT TO YOU!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">WOW, ACCEPT!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Nop</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>KILL 5 BATS AND YOU'LL RECIEVE IT! TALK TO ME AGAIN AND I'LL EXPLAIN YOU HOW IT WORKS!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">Nice</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="25">
+      <Node ID="0">
+        <NPCTalk>NICE, YOU ALREADY HAVE IT! DO YOU WANT ME TO TELL YOU HOW IT WORKS??</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Tell me!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Nop!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>THIS AMAZING MONSTER HAS TWO OPTIONS! ATTACK, WHICH DEALS DAMAGE TO THE ENEMY OR PROTECT.</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">OKEY</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>THE PROTECT OPTION MAKES HER PROTECT YOU. SHE WILL TAKE THE 50prcnt OF THE DAMAGE, AS WELL AS YOU. IF SHE DIES, DO NOT WORRY, WHEN THE COMBAT ENDS, SHE WILL RESTORE HER HEALTH.</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">GREAT!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

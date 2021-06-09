@@ -17,6 +17,7 @@
 #include "Inventory.h"
 #include "LevelUp.h"
 #include "Audio.h"
+#include "Combat.h"
 
 #include "Log.h"
 #include <time.h>
@@ -2138,6 +2139,19 @@ void World::LoadNPCs(Places placex)
 		{
 			app->entityManager->CreateEntity(EntityType::NPC);
 			app->entityManager->NPCs.end->data->SetUp({ 22 * 28, -1 * 28}, NPCtype::FINAL_BOSS, placex, 23);
+		}
+	}
+	else if (placex == AUTUM_FALL_1)
+	{
+		if (!app->scene->combatScene->secondPlayer)
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 24);
+		}
+		else
+		{
+			app->entityManager->CreateEntity(EntityType::NPC);
+			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 25);
 		}
 	}
 }

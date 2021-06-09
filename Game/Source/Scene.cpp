@@ -1550,9 +1550,17 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				if (boss2Beat && !lastDialog)
 				{
 					lastDialog = true;
-					world->Teleport({28 * 36, 20 * 28});
-					world->RectifyCameraPosition(GOLEM_STONES);
+					if (world->place == GOLEM_STONES)
+					{
+						world->Teleport({ 28 * 36, 20 * 28 });
+						world->RectifyCameraPosition(GOLEM_STONES);
+					}
 					app->dialogueManager->StartDialogue(22);
+				}
+				if (boss3Beat)
+				{
+					SetScene(MAIN_MENU);
+					boss3Beat = false;
 				}
 			}
 			else if (world->gameStart)

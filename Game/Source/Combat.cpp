@@ -928,7 +928,7 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
-	app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x, boss->colliderCombat.y, 1, 1, false, &currentBossAnim->GetCurrentFrame());
+	app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
 }
 
 void Combat::DrawBakcground()
@@ -1287,7 +1287,7 @@ void Combat::EndBattleSolving()
 			if (boss->bossClass == BOSS_TUTORIAL) app->scene->bossTBeat = true;
 			else if (boss->bossClass == BOSS_I) app->scene->boss1Beat = true;
 			else if (boss->bossClass == BOSS_II) app->scene->boss2Beat = true;
-			else if (boss->bossClass == BOSS_III) app->scene->SetScene(MAIN_MENU);
+			else if (boss->bossClass == BOSS_III) app->scene->boss3Beat = true;
 		}
 
 		//TODO DELETE BOSS
