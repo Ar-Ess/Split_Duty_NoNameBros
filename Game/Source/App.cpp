@@ -344,6 +344,7 @@ bool App::LoadGame()
 	Player* p1 = app->scene->player1;
 	Player* p2 = app->scene->player2;
 	World* w = app->scene->world;
+	QuestManager* q = app->questManager;
 
 	if (doc == NULL)
 	{
@@ -414,6 +415,45 @@ bool App::LoadGame()
 		scene->world->luckTaken = stats.attribute("luck_taken").as_bool();
 		scene->lastDialog = stats.attribute("last_dialog").as_bool();
 
+		/*for (pugi::xml_node qst = gameProgress.child("Quest"); !qst.empty(); qst = qst.next_sibling("Quest"))
+		{
+			uint16 id = qst.attribute("ID").as_uint();
+			uint16 reward = qst.attribute("reward").as_uint();
+			QuestType type = QuestType(qst.attribute("type").as_int());
+
+			const char* title = qst.attribute("title").as_string();
+			const char* description = qst.child_value();
+
+			uint16 goal = 0;
+			uint16 enemy = 0;
+			uint16 npc = 0;
+			uint16 item = 0;
+
+			KillQuest* newKillQuest = nullptr;
+			GatherQuest* newGathQuest = nullptr;
+			FindQuest* newFindQuest = nullptr;
+
+			switch (type)
+			{
+			case KILL:
+				goal = qst.attribute("goal").as_uint();
+				enemy = qst.attribute("enemy").as_uint();
+				newKillQuest = new KillQuest(id, reward, goal, description, title, EnemyClass(enemy));
+				q->questList[id] = newKillQuest;
+				break;
+			case GATHER:
+				goal = qst.attribute("goal").as_uint();
+				item = qst.attribute("item").as_uint();
+				newGathQuest = new GatherQuest(id, reward, goal, description, title, ItemType(item));
+				q->questList[id] = newGathQuest;
+				break;
+			case FIND:
+				npc = qst.attribute("npcId").as_uint();
+				newFindQuest = new FindQuest(id, reward, npc, description, title);
+				q->questList[id] = newFindQuest;
+				break;
+			}
+		}*/
 		LOG("Loading finished...");
 	}
 
@@ -441,6 +481,7 @@ bool App::SaveGame() const
 	pugi::xml_node playerInfo;
 	pugi::xml_node worldInfo;
 	pugi::xml_node gameProgress;
+	
 
 	if (root != NULL)
 	{
@@ -506,6 +547,18 @@ bool App::SaveGame() const
 		gameProgress.append_attribute("luck_taken").set_value(scene->world->luckTaken);
 		gameProgress.append_attribute("stab_taken").set_value(scene->world->stabTaken);
 		gameProgress.append_attribute("last_dialog").set_value(scene->lastDialog);
+
+		/*gameProgress = saveNode.append_child("Quests");
+		QuestManager* q = app->questManager;
+		for (int i = 0; q->questList[i] != nullptr; ++i)
+		{
+			pugi::xml_node qst = gameProgress.append_child("Quest");
+			qst.append_attribute("")
+		}
+		for (int i = 0; q->finishedQuest[i] != nullptr; ++i)
+		{
+
+		}*/
 
 		saveDoc.save_file("save_game.xml");
 		LOG("Game saved correctly");
