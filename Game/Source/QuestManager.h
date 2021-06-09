@@ -27,7 +27,6 @@ public://FUNCTIONS
 	bool CleanUp();
 
 	void CheckKillQuest(Enemy* e);
-	//void CheckGatherQuest(ItemType type, int amount);
 	void CheckFindQuest(int npcID);
 
 	void ActivateQuest(int id);
@@ -41,6 +40,7 @@ public://FUNCTIONS
 private://FUNCTIONS
 	friend class Scene;
 	friend class Inventory;
+	friend class App;
 
 	void CreateQuestMap(pugi::xml_node& setter);
 	pugi::xml_node LoadQuestConfig(pugi::xml_document&) const;
