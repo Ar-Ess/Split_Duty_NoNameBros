@@ -243,12 +243,27 @@ void Map::Draw()
 							w->buttonPuzzle1->Draw();
 						}
 
-						w->DrawNPC();
-						w->DrawEnemy();
-						w->DrawStomps();
-						w->DrawPlayer();
-						playerDraw = true;
-						i--;
+						if (app->scene->world->GetPlace() == Places::GOLEM_STONES)
+						{
+							app->render->DrawTexture(w->tutorialRockTex, w->tutorialBossRect.x, w->tutorialBossRect.y - 75, 2.9f, false);
+							app->render->DrawTexture(w->secondRockTex, w->secondBossRect.x, w->secondBossRect.y - 75, 2.9f, false);
+							app->render->DrawTexture(w->thirdRockTex, w->thirdBossRect.x, w->thirdBossRect.y - 75, 2.9f, false);
+							w->DrawNPC();
+							w->DrawEnemy();
+							w->DrawStomps();
+							w->DrawPlayer();
+							playerDraw = true;
+							i--;
+						}
+						else
+						{
+							w->DrawNPC();
+							w->DrawEnemy();
+							w->DrawStomps();
+							w->DrawPlayer();
+							playerDraw = true;
+							i--;
+						}
 					}
 					else
 					{

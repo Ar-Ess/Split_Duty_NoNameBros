@@ -551,5 +551,44 @@
         <Option NextNode="-1" ReturnCode="-1">No</Option>
       </Node>
     </Dialog>
+    <Dialog ID="27">
+      <Node ID="0">
+        <NPCTalk>WELCOME TO THE TOWN! I AM THE MASTER OF THE ORIENTATION! I KNOW THIS LANDS AS THEY WHERE MINE. DO YOU WANT TO BE ORIENTATED BY ME?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Let it go!</Option>
+        <Option NextNode="-1" ReturnCode="-1">No need</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>NICE! FIRST OF ALL, WHAT DOES THIS TOWN HAVE? BASICALLY, APART FROM SOME HOUSES, THE MAIN BUILDINGS ARE THE TAVERN AND THE SHOP</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>IN THE TAVERN, SITUATED AT THE SOUTH-EST, YOU CAN TALK WITH PEOPLE, SOCIALIZE, RELAX... BY THE WAY, TALK WITH THE BARMAN, HE ALWAYS KNOWS ABOUT SECRETS IN THIS WORLD, MAYBE CAN BE INTERESTING TO YOU</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">Oooo!</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>I RECOMMEND VISITING HIM SOMETIME, MAYBE HE TELLS YOU OTHER THINGS!</NPCTalk>
+        <Option NextNode="4" ReturnCode="1">...</Option>
+      </Node>
+      <Node ID="4">
+        <NPCTalk>THEN, WE HAVE THE SHOP, SITUATED AT THE SOUTH-WEST. THAT'S AN INTERESTING PLACE, WHERE YOU CAN BUY ITEMS. TALK WITH THE SHOP WOMAN AND SHE WILL EXPLAIN TO YOU HOW IT WORKS</NPCTalk>
+        <Option NextNode="5" ReturnCode="1">Nice!</Option>
+      </Node>
+      <Node ID="5">
+        <NPCTalk>THEN WE HAVE OTHER PATHS, IF YOU GO STRIGHT ON TO THE RIGHT, YOU WILL FIND THE GOLEM SANCTUARY.</NPCTalk>
+        <Option NextNode="6" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="6">
+        <NPCTalk>IF YOU GO TO THE LEFT, YOU'LL REACH A BEAUTIFUL FIELD. BE CAREFUL, THERE'S SOME WOLFS OVER THERE!</NPCTalk>
+        <Option NextNode="7" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="7">
+        <NPCTalk>FINALLY, GOING RIGHT DOWN, THERE IS A MOSSY FOREST, BUT I THINK THERE ARE SOME PROBLEMS WITH FALLEN TREES. I DON'T KNOW IF THEY HAVE SOLVED IT...</NPCTalk>
+        <Option NextNode="8" ReturnCode="1">Noted!</Option>
+      </Node>
+      <Node ID="8">
+        <NPCTalk>NICE, THAT'S ALL, ASK ME AGAIN IF YOU FORGET SOMETHING!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>

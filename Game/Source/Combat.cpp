@@ -159,7 +159,7 @@ void Combat::BossStart()
 		b2heal = false;
 		break;
 	case(BossClass::BOSS_III):
-		//bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_atumn_falls_spritesheet.png");
+		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/Final_Boss/final_boss_spritesheet.png");
 		iZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
 		iZone.tex = nullptr;
 		rZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
@@ -928,7 +928,8 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
-	app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
+	if (boss->bossClass != BOSS_III) app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
+	else app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 3.0f, 3.0f, false, &currentBossAnim->GetCurrentFrame());
 }
 
 void Combat::DrawBakcground()

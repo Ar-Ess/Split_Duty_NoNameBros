@@ -471,8 +471,12 @@ void World::Start(Places placex)
 
 		if (gameStart) night = app->tex->Load("Assets/Textures/Environment/darkness2.png");
 
-		AlignCameraPosition();
+		tutorialRockTex = app->tex->Load("Assets/Textures/Environment/green_rock.png");
+		secondRockTex = app->tex->Load("Assets/Textures/Environment/yellow_rock.png");
+		thirdRockTex = app->tex->Load("Assets/Textures/Environment/red_rock.png");
+		unableRockTex = app->tex->Load("Assets/Textures/Environment/black_rock.png");
 
+		AlignCameraPosition();
 		RectifyCameraPosition(placex);
 	}
 	else if (placex == CAVE)
@@ -544,6 +548,11 @@ void World::Restart(Scenes scene)
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	if (interactionText != nullptr) app->tex->UnLoad(interactionText);
+
+	app->tex->UnLoad(tutorialRockTex);
+	app->tex->UnLoad(secondRockTex);
+	app->tex->UnLoad(thirdRockTex);
+	app->tex->UnLoad(unableRockTex);
 	
 	if (scene == WORLD)
 	{
@@ -2114,9 +2123,9 @@ void World::LoadNPCs(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::OLD, placex, 1);
+		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::ADVENTURER, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 114 * 28, 65 * 28 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M_1, placex, 2);
 	}
