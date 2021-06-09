@@ -30,22 +30,45 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 		break;
 	}
 
-	iPoint tile = { 100,100 };
-	for (int i = 6; i < 10; i++)
+	if (bossClass == BossClass::BOSS_TUTORIAL)
 	{
-		idleAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
+		iPoint tile = { 100,100 };
+		for (int i = 6; i < 10; i++)
+		{
+			idleAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
+		}
+		idleAnim.speed = 0.05f;
+		for (int i = 2; i < 10; i++)
+		{
+			awakeAnim.PushBack({ i * tile.x,tile.y,tile.x,tile.y });
+		}
+		awakeAnim.speed = 0.05f;
+		for (int i = 10; i > 6; i--)
+		{
+			dieAnim.PushBack({ i * tile.x,tile.y * 8,tile.x,tile.y });
+		}
+		dieAnim.speed = 0.05f;
 	}
-	idleAnim.speed = 0.05f;
-	for (int i = 2; i < 10; i++)
+	else
 	{
-		awakeAnim.PushBack({ i * tile.x,tile.y,tile.x,tile.y });
+		iPoint tile = { 72, 96 };
+
+		for (int i = 10; i > 4; i--)
+		{
+			idleAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
+		}
+		idleAnim.speed = 0.05f;
+		for (int i = 10; i > 4; i--)
+		{
+			awakeAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
+		}
+		awakeAnim.speed = 0.05f;
+		for (int i = 10; i > 4; i--)
+		{
+			dieAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
+		}
+		dieAnim.speed = 0.05f;
 	}
-	awakeAnim.speed = 0.05f;
-	for (int i = 10; i >6; i--)
-	{
-		dieAnim.PushBack({ i * tile.x,tile.y*8,tile.x,tile.y });
-	}
-	dieAnim.speed = 0.05f;
 	
 }
 
