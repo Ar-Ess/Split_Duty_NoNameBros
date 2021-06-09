@@ -694,23 +694,27 @@ void World::DrawEnemy()
 			Enemy* enemy = app->entityManager->enemies[i];
 			if (enemy->active)
 			{
+				currentEnemyAnimation = &enemy->idleAnim;
+				currentEnemyAnimation->Update(1.0f);
 				if (enemy->GetClass() == EnemyClass::SMALL_WOLF)
 				{
-					app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE, &wolfRect, false);
+					if (wolfReverse) app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y - 20, SCALE, &currentEnemyAnimation->GetCurrentFrame(), false, 0, SDL_FLIP_HORIZONTAL);
+					else app->render->DrawTexture(wolfSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y - 20, SCALE, &currentEnemyAnimation->GetCurrentFrame(), false, 0, SDL_FLIP_NONE);
 					app->render->DrawRectangle({ enemy->colliderWorld.x + 5, enemy->colliderWorld.y - 13, 100, 20 }, {0, 0, 0, 175});
 					enemy->lvlText->bounds = { enemy->colliderWorld.x + 20 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 10, 20, 20 };
 					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::BIRD)
 				{
-					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &birdRect, false);
+
+					app->render->DrawTexture(birdSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-20, SCALE*1.5f, &currentEnemyAnimation->GetCurrentFrame(), false);
 					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 43, 100, 20 }, { 0, 0, 0, 175 });
 					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 40, 20, 20 };
 					enemy->lvlText->Draw();
 				}
 				if (enemy->GetClass() == EnemyClass::MANTIS)
 				{
-					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &mantisRect, false);
+					app->render->DrawTexture(mantisSpritesheet, enemy->colliderWorld.x, enemy->colliderWorld.y-26-20, SCALE*1.5f, &currentEnemyAnimation->GetCurrentFrame(), false);
 					app->render->DrawRectangle({ enemy->colliderWorld.x - 5, enemy->colliderWorld.y - 58, 100, 20 }, { 0, 0, 0, 175 });
 					enemy->lvlText->bounds = { enemy->colliderWorld.x + 10 + app->render->camera.x, enemy->colliderWorld.y + app->render->camera.y - 55, 20, 20 };
 					enemy->lvlText->Draw();
@@ -1550,10 +1554,18 @@ void World::EnemyRunChasing(Enemy* e, Player* p)
 	int velX = xOffset / ENEMY_RUN_SPEED;
 	int velY = yOffset / ENEMY_RUN_SPEED;
 
-	if (velX > ENEMY_RUN_SPEED) velX = ENEMY_RUN_SPEED;
+	if (velX > ENEMY_RUN_SPEED)
+	{
+		velX = ENEMY_RUN_SPEED;
+		wolfReverse = true;
+	}
 	if (velY > ENEMY_RUN_SPEED) velY = ENEMY_RUN_SPEED;
 
-	if (velX < -ENEMY_RUN_SPEED) velX = -ENEMY_RUN_SPEED;
+	if (velX < -ENEMY_RUN_SPEED)
+	{
+		velX = -ENEMY_RUN_SPEED;
+		wolfReverse = false;
+	}
 	if (velY < -ENEMY_RUN_SPEED) velY = -ENEMY_RUN_SPEED;
 
 	e->colliderRect.x += velX;
@@ -1574,10 +1586,18 @@ void World::EnemyWalkReturn(Enemy* e, Player* p)
 	int velX = xOffset / ENEMY_WALK_SPEED;
 	int velY = yOffset / ENEMY_RUN_SPEED;
 
-	if (velX > ENEMY_WALK_SPEED) velX = ENEMY_WALK_SPEED;
+	if (velX > ENEMY_WALK_SPEED)
+	{
+		velX = ENEMY_WALK_SPEED;
+		wolfReverse = true;
+	}
 	if (velY > ENEMY_WALK_SPEED) velY = ENEMY_WALK_SPEED;
 
-	if (velX < -ENEMY_WALK_SPEED) velX = -ENEMY_WALK_SPEED;
+	if (velX < -ENEMY_WALK_SPEED)
+	{
+		velX = -ENEMY_WALK_SPEED;
+		wolfReverse = false;
+	}
 	if (velY < -ENEMY_WALK_SPEED) velY = -ENEMY_WALK_SPEED;
 
 	e->colliderRect.x += velX;

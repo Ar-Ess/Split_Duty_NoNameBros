@@ -326,6 +326,9 @@ private: //Textures
     const SDL_Rect mantisRect = { 0, 0, 30, 35 };
 
     Animation* currentPlayerAnimation;
+    Animation* currentEnemyAnimation;
+
+    bool wolfReverse = true;
 };
 
 #endif // __WORLD_H__
