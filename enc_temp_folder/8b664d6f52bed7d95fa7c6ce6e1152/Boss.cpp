@@ -30,7 +30,7 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 		break;
 	}
 
-	if (bossClass != BossClass::BOSS_III)
+	if (bossClass == BossClass::BOSS_TUTORIAL)
 	{
 		iPoint tile = { 100,100 };
 		for (int i = 6; i < 10; i++)
