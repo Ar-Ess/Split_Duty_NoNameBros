@@ -21,11 +21,11 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 ![Village](https://user-images.githubusercontent.com/59050045/121593151-e479c980-ca3b-11eb-820d-59b82972e6b5.png)
 
-![GrassyLands1](https://user-images.githubusercontent.com/59050045/121593258-feb3a780-ca3b-11eb-92ce-ab901c4b23ee.png)
+![Grassy Lands](https://user-images.githubusercontent.com/59050045/121593258-feb3a780-ca3b-11eb-92ce-ab901c4b23ee.png)
  
-![AutumnFalls](https://user-images.githubusercontent.com/59050045/121593101-d1ff9000-ca3b-11eb-91da-af531bb9a926.png)
+![Autumn Falls](https://user-images.githubusercontent.com/59050045/121593101-d1ff9000-ca3b-11eb-91da-af531bb9a926.png)
  
-![MossyLands](https://user-images.githubusercontent.com/59050045/121593201-f0fe2200-ca3b-11eb-9f95-9c431be2733a.png)
+![Mossy Lands](https://user-images.githubusercontent.com/59050045/121593201-f0fe2200-ca3b-11eb-9f95-9c431be2733a.png)
 
  
 # Controls
