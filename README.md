@@ -17,7 +17,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 # Media
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tlqRjA4JISs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0HOsWR21pxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/Village.png)
  
@@ -30,7 +30,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
  
 # Controls
 
- ## Mouse and keyboard:
+## Mouse and keyboard:
 - General
      - Confirm selection: Left Mouse Click
  
@@ -49,7 +49,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
      - Crouch: LSHIFT / S
      - Back: Esc
 
- ## Gamepad:
+## Gamepad:
  - General
      - Action selection: L3 to swap, A to confirm and B to go back
  
@@ -68,6 +68,8 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 - Combat
      - Jump: Direction pad up
      - Crouch: Direction pad down
+  
+  
 # Team:
 
 We are NoName Bros, a small team of university students coursing a bachelors degree in Game Design and Development in CITM. We aim to create *Split Duty*, a fully fledged turn based 2D RPG where the player is sent on an epic journey to uncover an ancient mistery and defeat all enemies that stand in its way. All this accompanied with diverse party members to approach each encounter no matter how difficult.
