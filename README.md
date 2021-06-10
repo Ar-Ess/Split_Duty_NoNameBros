@@ -2,7 +2,7 @@
 
 In Split Duty you take on the role of an adventurer tasked with the duty of defeating all 3 ancient golems and defeat the evil that has begun to torment the world. During your journey you will find party members to aid you in your quest and slowly but surely imrprove your abilities to achieve your goal. But beware, not everything is like it seems.
 
-![title_logo](https://user-images.githubusercontent.com/59050045/121594184-032c9000-ca3d-11eb-9ddf-5f25f75e5f90.png)
+![SplitDutyAdapted](https://user-images.githubusercontent.com/59050045/121594382-4be44900-ca3d-11eb-856b-98fea0f1065b.png)
 
 # Features 
 
