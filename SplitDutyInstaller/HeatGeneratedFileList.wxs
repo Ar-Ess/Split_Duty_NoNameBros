@@ -38,6 +38,9 @@
             <Component Id="cmpB21E3B56617B2DF221A2243BA73F9280" Guid="*">
                 <File Id="fil7D11D3D583CE3111891A039CEC47A176" KeyPath="yes" Source="$(var.HarvestPath)\Quest_Config.xml" />
             </Component>
+            <Component Id="cmpC27FF44AFECF57237FFAD7E5327A5A83" Guid="*">
+                <File Id="fil4B82DC508A8DF3C7BA5E8C5D1EDDAD5F" KeyPath="yes" Source="$(var.HarvestPath)\save_game.xml" />
+            </Component>
             <Component Id="cmp77F2718815C37DF1CD595A4164461B7A" Guid="*">
                 <File Id="filC50EEA5B1CD3382FF2ED29C29DF6B8AF" KeyPath="yes" Source="$(var.HarvestPath)\SDL2.dll" />
             </Component>
@@ -629,6 +632,7 @@
             <ComponentRef Id="cmp494E092250B7C893DA1C32C4422DF045" />
             <ComponentRef Id="cmp3644CBBFEF13AB8461F5496479CA3567" />
             <ComponentRef Id="cmpB21E3B56617B2DF221A2243BA73F9280" />
+            <ComponentRef Id="cmpC27FF44AFECF57237FFAD7E5327A5A83" />
             <ComponentRef Id="cmp77F2718815C37DF1CD595A4164461B7A" />
             <ComponentRef Id="cmpD5527425E607FED29E84E1424D4A0F52" />
             <ComponentRef Id="cmp23267DA5F20E5C06C5B8F213F7E64543" />
