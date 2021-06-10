@@ -304,7 +304,7 @@ public: //TUTORIAL BOSS INFO
     SDL_Texture* tutorialBox = nullptr;
     SDL_Texture* enterTexture = nullptr;
     iPoint textBoxPos = { 0, 0 };
-    GuiString* tutorialText;
+    GuiString* tutorialText = nullptr;
 
 public: //BOSS I info
     int shieldStep = 0;
