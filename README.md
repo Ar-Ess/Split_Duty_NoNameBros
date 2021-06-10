@@ -41,6 +41,8 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
      - Inventory: E
      - Help: H
      - Stab: Space
+     - Text speedup: LShift
+     - Skip text animation: Space
 
 - Combat
      - Jump: SPACEBAR / W
@@ -60,6 +62,8 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
      - Inventory: Y
      - Help: R3
      - Stab: X button
+     - Text speedup: B button
+     - Skip text animation: L1
  
 - Combat
      - Jump: Direction pad up
