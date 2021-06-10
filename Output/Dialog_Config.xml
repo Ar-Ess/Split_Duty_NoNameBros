@@ -654,5 +654,63 @@
         <Option NextNode="-1" ReturnCode="-1">Okey...</Option>
       </Node>
     </Dialog>
+    <Dialog ID ="34">
+      <Node ID="0">
+        <NPCTalk>OH GOD! I HAVE LOST MY SON IN THESE FIELDS...</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Where?</Option>
+        <Option NextNode="-1" ReturnCode="-1">Bad luck...</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>I DON'T KNOW, I HAVE TURNED FOR A WHILE AND HE DISAPPEARED... CAN YOU HELP ME?</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">Of Course!</Option>
+        <Option NextNode="-1" ReturnCode="-1">Not now</Option>
+      </Node>  
+    </Dialog>
+  <Dialog ID ="35">
+      <Node ID="0">
+        <NPCTalk>HEY! HAVE YOU FOUND MY FATHER?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yes</Option>
+        <Option NextNode="2" ReturnCode="1">No...</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>WELL! HE IS A BIT OVER WORRIED SOME TIMES... CAN YOU HELP ME HUNTING BATS?</NPCTalk>
+        <Option NextNode="3" ReturnCode="1">Sounds Nice!</Option>
+        <Option NextNode="4" ReturnCode="1">Find him first</Option>
+      </Node>  
+      <Node ID="2">
+        <NPCTalk>OH... OK</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
+      </Node>
+      <Node ID="3">
+        <NPCTalk>LET'S GO THEN! SHOW ME WHAT YOU GOT!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">C'mon!</Option>
+      </Node>  
+      <Node ID="4">
+        <NPCTalk>WELL... YOU ARE RIGHT, THANKS</NPCTalk>
+        <Option NextNode="-1" ReturnCode="7">You're welcome</Option>
+      </Node>  
+    </Dialog>
+    <Dialog ID ="36">
+      <Node ID="0">
+        <NPCTalk>I'M GETTING CRAZY IN THIS PLACE! I JUST WANT TO GO HOME!!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">...</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID ="37">
+      <Node ID="0">
+        <NPCTalk>SHOW ME YOUR TROPHIES!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">What?</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>HUNT SOME WOLVES AND COME TO SEE ME THEN!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">Ok...</Option>
+      </Node>
+    </Dialog>
+  <Dialog ID ="39">
+      <Node ID="0">
+        <NPCTalk>I HAVE BEEN ROUNDING AROUND HERE FOR WEEKS... THERE ARE NO MORE FISHES IN THIS LAKE... HAVE YOU GOT SOME MEAT?</NPCTalk>
+        <Option NextNode="-1" ReturnCode="6">Mh... Let me find</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>
