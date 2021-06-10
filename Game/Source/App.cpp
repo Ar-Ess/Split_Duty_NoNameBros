@@ -69,14 +69,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 App::~App()
 {
 	// Release modules
-	ListItem<Module*>* item = modules.end;
+	/*ListItem<Module*>* item = modules.end;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
-	}
-
+	}*/
 	modules.Clear();
 }
 
