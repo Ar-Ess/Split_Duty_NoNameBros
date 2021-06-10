@@ -2,6 +2,8 @@
 
 In Split Duty you take on the role of an adventurer tasked with the duty of defeating all 3 ancient golems and defeat the evil that has begun to torment the world. During your journey you will find party members to aid you in your quest and slowly but surely imrprove your abilities to achieve your goal. But beware, not everything is like it seems.
 
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Art%20Bible/logo_optimized.png)
+
 # Features 
 
 - Huge fantasy world where you can explore, fight enemies and complete quests. Three different areas whith a fully explorable town serving as your adventure HUB, equipped with a tavern to find quests and a shop where you can buy all you need for your journey.
@@ -17,10 +19,14 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 <Trailer>
 
-<Town>
-<Grassy lands>
-<Autumn falls>
-<Mossy lands>
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/Village.png)
+ 
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/GrassyLands1.png)
+ 
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/AutumnFalls.png)
+ 
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/MossyLands.png)
+
  
 # Controls
 
@@ -33,20 +39,21 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 - Combat
      - Jump: SPACEBAR / W
-     - rouch: LSHIFT / S
+     - Crouch: LSHIFT / S
      - Action Selection: Left Mouse Click
 
  ## Gamepad:
  - Overworld
      -Player Movement: Direction pad
      - NPC Interaction: A button
-     - Option selection: Direction pad
-     - Pause Menu: ESCAPE
+     - Option selection: L2
+     - Select dialog option: A/B button
+     - Pause Menu: B button
  
 - Combat
-     - Jump: SPACEBAR / W
-     - rouch: LSHIFT / S
-     - Action Selection: Left Mouse Click
+     - Jump: Direction pad up
+     - Crouch: Direction pad down
+     - Action Selection: L3 to swap, A to confirm and B to go back
  
 
 # Team:

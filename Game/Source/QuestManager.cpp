@@ -10,7 +10,8 @@ QuestManager::QuestManager()
 
 QuestManager::~QuestManager()
 {
-
+	if (currentQuest != nullptr)
+		currentQuest = nullptr;
 }
 
 bool QuestManager::Awake(pugi::xml_node&)
