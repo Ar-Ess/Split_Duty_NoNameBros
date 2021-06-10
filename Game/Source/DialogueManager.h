@@ -82,7 +82,9 @@ private: // variables
 	SDL_Color           blue =	{ 0  , 0  , 255, 125 };
 	SDL_Rect			buttonPrefab{ 0,0,0,0 };
 
-
+	SDL_Rect			aButton{ 0,0,0,0 };
+	SDL_Rect			bButton{ 0,0,0,0 };
+	SDL_Texture*		optTexture = nullptr;
 	SDL_Texture*		dialogueTexture = nullptr;
 };
 
