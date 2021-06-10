@@ -2153,7 +2153,7 @@ void World::LoadNPCs(Places placex)
 	}
 	else if (placex == TAVERN)
 	{
-		int dialog = 0;
+		int dialog = 8;
 		if (app->scene->bossTBeat && !app->scene->boss1Beat && !app->scene->boss2Beat) dialog = 8;
 		else if (app->scene->bossTBeat && app->scene->boss1Beat && !app->scene->boss2Beat) dialog = 9;
 		else if (app->scene->bossTBeat && app->scene->boss1Beat && app->scene->boss2Beat) dialog = 10;
