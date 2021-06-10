@@ -64,8 +64,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 - Combat
      - Jump: Direction pad up
      - Crouch: Direction pad down
-    
- 
+
 # Team:
 
 We are NoName Bros, a small team of university students coursing a bachelors degree in Game Design and Development in CITM. We aim to create *Split Duty*, a fully fledged turn based 2D RPG where the player is sent on an epic journey to uncover an ancient mistery and defeat all enemies that stand in its way. All this accompanied with diverse party members to approach each encounter no matter how difficult.
