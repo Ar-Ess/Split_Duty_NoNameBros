@@ -19,13 +19,13 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0HOsWR21pxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-![Village](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/Village.jpg)
+![Village](https://raw.githubusercontent.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images%20used/Wiki/Village.jpg)
  
-![GrassyLands](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/GrassyLands1.jpg)
+![Grassy Lands](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/GrassyLands1.jpg)
  
-![AutumnFalls](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/AutumnFalls.jpg)
+![Autumn Falls](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/AutumnFalls.jpg)
  
-![MossyLands](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/MossyLands.jpg)
+![Mossy Lands](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/MossyLands.jpg)
 
  
 # Controls
