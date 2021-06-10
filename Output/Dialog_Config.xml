@@ -590,5 +590,45 @@
         <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
+    <Dialog ID="28">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Okey!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="29">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="30">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="31">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="32">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
+    <Dialog ID="33">
+      <Node ID="0">
+        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+      </Node>
+    </Dialog>
   </Dialogs>
 </DialogSettup>
