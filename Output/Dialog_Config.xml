@@ -592,42 +592,66 @@
     </Dialog>
     <Dialog ID="28">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="1" ReturnCode="1">Okey!</Option>
+        <NPCTalk>HEY! HOW ARE YOU DOING LITTLE BOY?? WE HAVE WORK HERE TO DO!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">What hapens?</Option>
       </Node>
       <Node ID="1">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>NOTHING IMPORTANT, A PLANT HAS GROWN TOO MUCH AND IS BLOCKING THE PATH... I AM WORKING ON REMOVING IT BUT I WILL BE SOME TIME HERE!</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Okey</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>DONT WORRY, I'LL HAVE THE PATH CLEARED AS SOON AS POSSIBLE! GO FINS ADVENTURES IN ANOTHER PLACE!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Nice!</Option>
       </Node>
     </Dialog>
     <Dialog ID="29">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>HEY, I ALREADY FINISHED REMOVING THAT ENORMUS PLANT! NOW YOU CAN EXPLORE THIS PATH!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Perfect!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>IT IS A BEAUTIFUL PLACE, TAKE CARE!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
     <Dialog ID="30">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>HEY BOY! WHAT ARE YOU DOING HERE? DID YOU WANTED TO ENTER THIS MOSSY FOREST?</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Yeah</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>OOOOO, UNFORTUNEDLY A TREE HAS FALLEN INTO THE GROUND AND WE ARE TRYING TO ROLL IT DOWN HILL TO BE ABLE TO PASS...</NPCTalk>
+        <Option NextNode="2" ReturnCode="1">Noooo</Option>
+      </Node>
+      <Node ID="2">
+        <NPCTalk>I KNOW, WIND IS WIND... WAIT, MAYBE I COULD CUT IT AND GET MORE RESOURCES... WELL, I'LL BE THINKING ABOUT IT. BYE</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Bye!</Option>
       </Node>
     </Dialog>
     <Dialog ID="31">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>HEY BOYYYYYYY! I AM SO HAPPY!! THANKS TO THAT FALLEN TRUNCK, I WILL BE ABLE TO BUILD MY OWN HOUSE!</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Congrats</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>WELL, THE POINT IS THAT NOW YOU CAN ENTER THE FOREST!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Thanks</Option>
       </Node>
     </Dialog>
     <Dialog ID="32">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>HEY, I AM JUST THE GUARDIAN OF THIS FORESTAL. THERE IS A LOT OF MONSTERS OUT THERE... BE CAREFULL</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">I will!</Option>
       </Node>
     </Dialog>
     <Dialog ID="33">
       <Node ID="0">
-        <NPCTalk>NICE, NOW YOU CAN BE FREE! -me too- I MEAN... YES! GO TO THE CAVE, YOU WILL TASTE THE FREEDOM!</NPCTalk>
-        <Option NextNode="-1" ReturnCode="-1">Okey!</Option>
+        <NPCTalk>OOOOO, THIS LARGE MEAT LOOKS AWESOME! I WOULD LIKE TO BUY IT BUT I DON'T HAVE ENOUGH MONEY...</NPCTalk>
+        <Option NextNode="1" ReturnCode="1">Work!</Option>
+      </Node>
+      <Node ID="1">
+        <NPCTalk>THAT'S A GREAT IDEA, BUT I STILL CAN'T TAKE MY EYES OFF THIS PIECE OF ART!</NPCTalk>
+        <Option NextNode="-1" ReturnCode="-1">Okey...</Option>
       </Node>
     </Dialog>
   </Dialogs>
