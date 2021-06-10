@@ -2,7 +2,7 @@
 
 In Split Duty you take on the role of an adventurer tasked with the duty of defeating all 3 ancient golems and defeat the evil that has begun to torment the world. During your journey you will find party members to aid you in your quest and slowly but surely imrprove your abilities to achieve your goal. But beware, not everything is like it seems.
 
-![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Art%20Bible/logo_optimized.png)
+![title_logo](https://user-images.githubusercontent.com/59050045/121594184-032c9000-ca3d-11eb-9ddf-5f25f75e5f90.png)
 
 # Features 
 
@@ -73,7 +73,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 # Team:
 
 We are NoName Bros, a small team of university students coursing a bachelors degree in Game Design and Development in CITM. We aim to create *Split Duty*, a fully fledged turn based 2D RPG where the player is sent on an epic journey to uncover an ancient mistery and defeat all enemies that stand in its way. All this accompanied with diverse party members to approach each encounter no matter how difficult.
-![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/LOGO_NONAMEBROS.png)
+![logo_screen](https://user-images.githubusercontent.com/59050045/121594033-d6787880-ca3c-11eb-9760-b7303d83888e.png)
 
 
 # Members:
