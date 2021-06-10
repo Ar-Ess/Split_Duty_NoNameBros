@@ -2167,7 +2167,12 @@ void World::LoadNPCs(Places placex)
 	else if (placex == ENEMY_FIELD)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::OLD, placex, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::KNIGHT_M_2, placex, 4);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		int dial = 28;
+		if (app->scene->boss1Beat) dial = 29;
+		app->entityManager->NPCs.end->data->SetUp({ 9 * 28, 68 * 28 }, NPCtype::GARDENER, placex, dial);
 	}
 	else if (placex == GRASSY_LAND_2)
 	{
@@ -2199,6 +2204,15 @@ void World::LoadNPCs(Places placex)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ (19 * 28) - 10, 4 * 28 }, NPCtype::SHOP_WOMAN, placex, 26);
+	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		int dial = 30;
+		if (app->scene->boss2Beat) dial = 31;
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 12 * 28, 18 }, NPCtype::FORESTAL, placex, dial);
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 17 * 28, 18 }, NPCtype::KNIGHT_M_3, placex, 32);
 	}
 }
 

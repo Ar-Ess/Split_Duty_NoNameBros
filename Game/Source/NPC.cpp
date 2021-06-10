@@ -110,6 +110,9 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog, int 
 	case(NPCtype::CAT):
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/cat_spritesheet.png");
 		break;
+	case(NPCtype::GARDENER):
+		texture = app->tex->Load("Assets/Textures/Characters/NPCs/gardener_spritesheet.png");
+		break;
 	}
 }
 
