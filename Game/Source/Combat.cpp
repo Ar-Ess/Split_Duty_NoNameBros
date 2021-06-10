@@ -81,8 +81,8 @@ void Combat::Start()
 			else if (trufals >= 0) luckArray[i] = false;
 		}
 	}
-
 	p = nullptr;
+
 }
 
 void Combat::EnemyStart()
@@ -1360,6 +1360,8 @@ void Combat::PlayerChoiceLogic()
 		playerStep = true;
 		playerChoice = false;
 
+		moveParticle = app->psystem->AddEmiter(fPoint(app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y+ app->scene->player1->colliderCombat.h), EmitterType::EMITTER_TYPE_SMOKE);
+
 		currentPlayerAnim = &app->scene->player1->cStepAnim;
 		currentPlayerAnim->Reset();
 
@@ -1443,6 +1445,12 @@ int Combat::PlayerDamageLogic()
 		case(BossClass::BOSS_III):
 			break;
 		}
+
+		damamgeParticle = app->psystem->AddEmiter(fPoint(boss->colliderCombat.x + boss->colliderCombat.w / 2, boss->colliderCombat.y + boss->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_BURST);
+	}
+	else
+	{
+		damamgeParticle = app->psystem->AddEmiter(fPoint(enemy->colliderCombat.x + enemy->colliderCombat.w / 2, enemy->colliderCombat.y + enemy->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_BURST);
 	}
 
 	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
@@ -1450,6 +1458,7 @@ int Combat::PlayerDamageLogic()
 		damage = 1;
 		return damage;
 	}
+
 
 	//Set luck
 	if (pLuck == 0) return damage;
@@ -1788,7 +1797,11 @@ void Combat::BossAttack()
 	case(BossClass::BOSS_I):
 		if (boss->attack == 1)
 		{
-			if (shield.x < shieldPos[1]) shield.x += 4;
+			if (shield.x < shieldPos[1])
+			{
+				shield.x += 4;
+
+			}
 			else
 			{
 				shieldStep = 1;
@@ -2655,7 +2668,6 @@ void Combat::PlayerAttack()
 		else if (bossBattle)
 		{
 			//app->audio->SetFx(Effect::BOSS_HURT_FX);
-
 			boss->health -= PlayerDamageLogic();
 			enemyHealth = boss->health;
 
@@ -2745,12 +2757,14 @@ void Combat::PlayerMove()
 	{
 		app->scene->player1->colliderCombat.x += 3;
 		app->scene->player2->colliderCombat.x += 3;
+		moveParticle->MoveEmitter(fPoint(app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h));
 		playerTimeMove++;
 	}
 	else
 	{
 		playerTimeMove = 0;
 		playerStep = false;
+		moveParticle->StopEmission();
 		steps++;
 		LOG("Player moved to position : %d", steps);
 
@@ -3588,7 +3602,8 @@ void Combat::PlayerHitLogic()
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
 
 				app->audio->SetFx(Effect::PLAYER_HURT_FX);
-				
+				hurtParticle = app->psystem->AddEmiter(fPoint(app->scene->player1->colliderCombat.x + app->scene->player1->colliderCombat.w / 2,
+					app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_WAVE_1);
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
 		}
@@ -3618,7 +3633,8 @@ void Combat::PlayerWaveHitLogic(int i)
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
 
 				app->audio->SetFx(Effect::PLAYER_HURT_FX);
-
+				hurtParticle = app->psystem->AddEmiter(fPoint(app->scene->player1->colliderCombat.x + app->scene->player1->colliderCombat.w / 2,
+					app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_WAVE_1);
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
 		}
@@ -3646,7 +3662,8 @@ void Combat::PlayerBigWaveHitLogic()
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
 
 				app->audio->SetFx(Effect::PLAYER_HURT_FX);
-
+				hurtParticle = app->psystem->AddEmiter(fPoint(app->scene->player1->colliderCombat.x + app->scene->player1->colliderCombat.w / 2,
+					app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_WAVE_1);
 			}
 			else if (wearMantisLeg) wearMantisLeg = false;
 		}
@@ -3674,6 +3691,9 @@ void Combat::PlayerBulletHitLogic()
 					}
 
 					LOG("Player Hit - PH: %d", app->scene->player1->health);
+					app->audio->SetFx(Effect::PLAYER_HURT_FX);
+					hurtParticle = app->psystem->AddEmiter(fPoint(app->scene->player1->colliderCombat.x + app->scene->player1->colliderCombat.w / 2,
+						app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h / 2), EmitterType::EMITTER_TYPE_WAVE_1);
 				}
 				else if (wearMantisLeg) wearMantisLeg = false;
 
