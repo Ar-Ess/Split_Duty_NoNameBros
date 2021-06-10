@@ -1440,6 +1440,12 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 			world->velocityTaken = false;
 			world->luckTaken = false;
 			world->stabTaken = false;
+			//START STORY
+			world->gameStart = true;
+			world->tutorialDialogueOnce = true;
+			SetScene(WORLD, GOLEM_STONES);
+			world->Teleport({ 1064, 896 });
+			app->dialogueManager->StartDialogue(17);
 		}
 		else if (strcmp(control->text.GetString(), "ContinueButton") == 0)
 		{
@@ -1643,16 +1649,6 @@ void Scene::DebugCommands()
 		if (app->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
 		{
 			levelUpScene->UpgradeStats(100);
-		}
-
-		   //START STORY
-		if (app->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
-		{
-			world->gameStart = true;
-			world->tutorialDialogueOnce = true;
-			SetScene(WORLD, GOLEM_STONES);
-			world->Teleport({ 1064, 896 });
-			app->dialogueManager->StartDialogue(17);
 		}
 
 		   //DEBUG TUTORIAL BOSS
