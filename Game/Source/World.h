@@ -110,6 +110,8 @@ public:
 
     void DrawInteraction();
 
+    void DrawBossDialog();
+
     void AlignCameraPosition();
 
     void NPCLogic();
@@ -188,6 +190,8 @@ public: // SHOP
 public: //INTERACTIONS
     SDL_Texture* interactionText = nullptr;
     bool interactionActive = false;
+    SDL_Texture* finalBossTex = nullptr;
+    SDL_Texture* finalBossLegsTex = nullptr;
 
 public: //obstacles
     SDL_Texture* leaves = nullptr;

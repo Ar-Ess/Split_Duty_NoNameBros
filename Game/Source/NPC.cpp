@@ -68,7 +68,7 @@ void NPC::SetUp(iPoint position, NPCtype xtype, Places xplace, int xdialog, int 
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/adventurer_spritesheet.png");
 		break;
 	case(NPCtype::FINAL_BOSS):
-		//texture = app->tex->Load("Assets/Textures/Environment/sign.png");
+		texture = app->tex->Load("Assets/Textures/Characters/Bosses/Final_Boss/final_boss.png");
 		break;
 	case(NPCtype::SHOP_WOMAN):
 		texture = app->tex->Load("Assets/Textures/Characters/NPCs/shopper_spritesheet.png");
@@ -141,6 +141,11 @@ void NPC::Draw()
 	else if (direction == 4) spriteDir = { 32, 96, 32, 32 };
 	const SDL_Rect sprite = spriteDir;
 
+	if (npcType == FINAL_BOSS) 
+	{
+		app->render->DrawTexture(texture, collider.x - 10, collider.y - 75, 1, (const SDL_Rect*)0, false);
+		return;
+	}
 	if (npcType != NO_NPC) app->render->DrawTexture(texture, collider.x - 10, collider.y, 2.3f, &sprite, false);
 }
 

@@ -286,6 +286,7 @@ void Map::Draw()
 						}
 						else
 						{
+							if (app->scene->world->GetPlace() == Places::CAVE) app->render->DrawTexture(w->caveWallTex, -1, -512, 1.01f, 1, false);
 							w->DrawNPC();
 							w->DrawEnemy();
 							w->DrawStomps();

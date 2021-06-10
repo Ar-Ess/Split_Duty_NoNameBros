@@ -37,6 +37,14 @@ public: //functions
 	/////////////////////////////////	
 	void StartDialogue(int dialogueID);
 	void OptionSelected(int option);
+
+	int GetDialogId() const
+	{
+		if (currentDialogue == nullptr) return -1;
+
+		return currentDialogue->dialogueID;
+	}
+
 private: //functions
 
 	//////CREATORS//////
