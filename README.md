@@ -31,30 +31,39 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 # Controls
 
  ## Mouse and keyboard:
+- General
+     - Confirm selection: Left Mouse Click
+ 
 - Overworld
      - Player Movement: W/A/S/D 
-     - NPC Interaction: RETURN
-     - Option selection: Left Mouse Click
+     - Interact: Enter
      - Pause Menu: ESCAPE
+     - Inventory: E
+     - Help: H
+     - Stab: Space
 
 - Combat
      - Jump: SPACEBAR / W
      - Crouch: LSHIFT / S
-     - Action Selection: Left Mouse Click
+     - Back: Esc
 
  ## Gamepad:
+ - General
+     - Action selection: L3 to swap, A to confirm and B to go back
+ 
  - Overworld
-     -Player Movement: Direction pad
-     - NPC Interaction: A button
-     - Option selection: L2
+     - Player Movement: Direction pad
+     - Interaction: A button
+     - Option selection: L3
      - Select dialog option: A/B button
      - Pause Menu: B button
+     - Inventory: Y
+     - Help: R3
+     - Stab: X button
  
 - Combat
      - Jump: Direction pad up
      - Crouch: Direction pad down
-     - Action Selection: L3 to swap, A to confirm and B to go back
- 
 
 # Team:
 
