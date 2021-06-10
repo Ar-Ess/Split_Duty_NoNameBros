@@ -55,6 +55,7 @@ public: //FUNCTIONS
 		return this->isPinned;
 	}
 
+
 	//SETTERS
 	void SetActive()
 	{
@@ -72,6 +73,7 @@ public: //FUNCTIONS
 	{
 		this->isPinned = true;
 	}
+
 
 private: //FUNCTIONS
 

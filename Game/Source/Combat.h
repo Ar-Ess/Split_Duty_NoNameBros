@@ -6,6 +6,7 @@
 #include "Animation.h"
 #include "Scene.h"
 #include "QuestManager.h"
+#include "ParticleSystem.h"
 
 #include "Collider.h"
 
@@ -310,6 +311,8 @@ public: //BOSS I info
     short int boss1Attack6Time = 0;
     short int boss1Attack7Time = 0;
 
+    Emitter* shieldParticle = nullptr;
+
 public: //BOSS II info
     int spikeStep[2] = { 0, 0 };
     SDL_Rect spike[2] = { 1300, 488 - 30, 60, 30 };
@@ -417,6 +420,11 @@ public:
     // BATTLE TYPE
     bool enemyBattle = false;
     bool bossBattle = false;
+
+    //PARTICLES
+    Emitter* damamgeParticle = nullptr;
+    Emitter* hurtParticle = nullptr;
+    Emitter* moveParticle = nullptr;
 
 public:
     short int smallMeat = 0;

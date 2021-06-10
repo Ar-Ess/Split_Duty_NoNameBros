@@ -471,8 +471,12 @@ void World::Start(Places placex)
 
 		if (gameStart) night = app->tex->Load("Assets/Textures/Environment/darkness2.png");
 
-		AlignCameraPosition();
+		tutorialRockTex = app->tex->Load("Assets/Textures/Environment/green_rock.png");
+		secondRockTex = app->tex->Load("Assets/Textures/Environment/yellow_rock.png");
+		thirdRockTex = app->tex->Load("Assets/Textures/Environment/red_rock.png");
+		unableRockTex = app->tex->Load("Assets/Textures/Environment/black_rock.png");
 
+		AlignCameraPosition();
 		RectifyCameraPosition(placex);
 	}
 	else if (placex == CAVE)
@@ -489,6 +493,9 @@ void World::Start(Places placex)
 				p->collisionRect = { 28 * 22, (28 * 27) + 56, INIT_PLAYER_WORLD_W, INIT_PLAYER_WORLD_H - 56 };
 			}
 		}
+
+		if (!app->scene->boss2Beat) caveWallTex = app->tex->Load("Assets/Screens/cave_crystal_full.png");
+		else caveWallTex = app->tex->Load("Assets/Screens/cave_crystal_broken.png");
 
 		AlignCameraPosition();
 
@@ -544,6 +551,12 @@ void World::Restart(Scenes scene)
 
 	if (walkingSpritesheet != nullptr) app->tex->UnLoad(walkingSpritesheet);
 	if (interactionText != nullptr) app->tex->UnLoad(interactionText);
+
+	app->tex->UnLoad(tutorialRockTex);
+	app->tex->UnLoad(secondRockTex);
+	app->tex->UnLoad(thirdRockTex);
+	app->tex->UnLoad(unableRockTex);
+	app->tex->UnLoad(caveWallTex);
 	
 	if (scene == WORLD)
 	{
@@ -916,6 +929,10 @@ void World::DrawStomps()
 	{
 		app->render->DrawTexture(stomp, (71 * 28) - 20, (13 * 28) - 10, 0.35f, 0.3f, false, &stompRect, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
 		if (!luckTaken) app->render->DrawTexture(statItems, (71 * 28) + 18, ((13 * 28) - 10) - 24, 0.5f, 0.5f, false, &stabStat, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, true);
+	}
+	else if (place == CAVE)
+	{
+		app->render->DrawTexture(caveWallTex, -1, -512, 1.01f, 1, false);
 	}
 }
 
@@ -2114,9 +2131,9 @@ void World::LoadNPCs(Places placex)
 	if (placex == MAIN_VILLAGE)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::OLD, placex, 1);
+		app->entityManager->NPCs.end->data->SetUp({ 1470, 86}, NPCtype::ADVENTURER, placex, 1);
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1600, 86 }, NPCtype::OLD, placex, 3);
+		app->entityManager->NPCs.end->data->SetUp({ 114 * 28, 65 * 28 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M_1, placex, 2);
 	}
@@ -2150,7 +2167,12 @@ void World::LoadNPCs(Places placex)
 	else if (placex == ENEMY_FIELD)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
-		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::OLD, placex, 4);
+		app->entityManager->NPCs.end->data->SetUp({ 1580, 500 }, NPCtype::KNIGHT_M_2, placex, 4);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		int dial = 28;
+		if (app->scene->boss1Beat) dial = 29;
+		app->entityManager->NPCs.end->data->SetUp({ 9 * 28, 68 * 28 }, NPCtype::GARDENER, placex, dial);
 	}
 	else if (placex == GRASSY_LAND_2)
 	{
@@ -2182,6 +2204,15 @@ void World::LoadNPCs(Places placex)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ (19 * 28) - 10, 4 * 28 }, NPCtype::SHOP_WOMAN, placex, 26);
+	}
+	else if (placex == MOSSY_ROCKS_1)
+	{
+		int dial = 30;
+		if (app->scene->boss2Beat) dial = 31;
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 12 * 28, 18 }, NPCtype::FORESTAL, placex, dial);
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 17 * 28, 18 }, NPCtype::KNIGHT_M_3, placex, 32);
 	}
 }
 

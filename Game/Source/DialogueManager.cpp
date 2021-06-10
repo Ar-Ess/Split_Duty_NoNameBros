@@ -35,6 +35,11 @@ bool DialogueManager::Awake(pugi::xml_node&)
 bool DialogueManager::Start()
 {	
 	dialogueTexture = app->tex->Load("Assets/Textures/UI/dialogSquare.png");
+	optTexture = app->tex->Load("Assets/Textures/UI/dialog_options.png");
+
+	aButton = { 0,0,16,16 };
+	bButton = { 16,0,16,16 };
+
 	buttonPrefab = app->guiManager->buttonPrefab;
 	tempString = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 	tempText.clear();
@@ -247,6 +252,7 @@ void DialogueManager::Draw()
 
 	if (currentDialogue->currentNode->optionsList.Count() != 0 && currentDialogue->currentNode->optionsActive == true)
 	{
+		bool first = true;
 		for (ListItem<DialogueOption*>* itemOption = currentDialogue->currentNode->optionsList.start;
 			itemOption != nullptr; itemOption = itemOption->next)
 		{
@@ -262,10 +268,20 @@ void DialogueManager::Draw()
 			itemOption->data->OptionPlacingX(nodeChart, dscale);
 			itemOption->data->OptionPlacingY();
 			itemOption->data->optionText->CenterAlign();
-
+			
 			//draw buttons options
 			itemOption->data->optionButton->Draw(dscale, false, true);
 			itemOption->data->optionText->Draw();	
+
+			if (first == true)
+			{
+				app->render->DrawTexture(optTexture, 435 - app->render->camera.x, 600 - app->render->camera.y - 20, 2.0f, &aButton, false);
+				first = false;
+			}
+			else
+			{
+				app->render->DrawTexture(optTexture, 810 - app->render->camera.x, 600 - app->render->camera.y - 20, 2.0f, &bButton, false);
+			}
 		}
 	}
 }
@@ -357,8 +373,14 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			}
 			else if (itemOption->data->returnCode == 7)
 			{
-				app->questManager->CheckFindQuest(currentDialogue->dialogueID);
-				EndDialogue();
+				Quest* q = app->questManager->GetCurrentQuest();
+				if (q != nullptr && q->id == (currentDialogue->dialogueID - 1))
+				{
+					app->questManager->CheckFindQuest(currentDialogue->dialogueID);
+					EndDialogue();
+				}
+				else 
+					EndDialogue();
 			}
 			else if (itemOption->data->returnCode == 8)
 			{

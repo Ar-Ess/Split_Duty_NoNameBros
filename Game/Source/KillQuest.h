@@ -13,6 +13,14 @@ public:
 
 	void QuestLogic();
 
+	int GetCount()
+	{
+		return count;
+	}
+	int GetGoal()
+	{
+		return goal;
+	}
 public:
 	uint16 count;
 	uint16 goal;

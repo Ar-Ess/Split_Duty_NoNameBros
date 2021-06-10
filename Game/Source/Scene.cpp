@@ -1570,7 +1570,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 				world->Teleport({INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y});
 				app->SaveGameRequest();
 			}
-			world->AlignCameraPosition();
+
+			if (boss3Beat) world->AlignCameraPosition();
 			iterations = 0;
 		}
 
