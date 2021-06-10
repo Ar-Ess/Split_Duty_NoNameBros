@@ -89,11 +89,11 @@
         <Option NextNode="1" ReturnCode="1">Tell me</Option>
       </Node>
       <Node ID="1">
-        <NPCTalk>An invasion of Giant Mantis is coming to us! We need to protect the village!</NPCTalk>
+        <NPCTalk>An invasion of Giant Wolfs is coming to us! We need to protect the village!</NPCTalk>
         <Option NextNode="2" ReturnCode="1">Ok...</Option>
       </Node>
       <Node ID="2">
-        <NPCTalk>The task will be to kill 10 of them. Me and the guards will do the rest.</NPCTalk>
+        <NPCTalk>The task will be to kill 4 of them. Me and the guards will do the rest.</NPCTalk>
         <Option NextNode="3" ReturnCode="1">Let's do it!</Option>
         <Option NextNode="4" ReturnCode="1">Maybe later</Option>
       </Node>
