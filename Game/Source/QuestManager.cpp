@@ -47,13 +47,6 @@ bool QuestManager::Update(float dt)
 		//LOGIC
 		currentQuest->QuestLogic();
 
-			//DRAW INFO
-		if (app->scene->GetCurrScene() == Scenes::WORLD)
-		{
-			const SDL_Rect a = { 0, 0, 1280, 720 };
-			app->render->DrawTexture(questTexture, 10, 25, 0.2, 0.2, false, &a, 0, INT_MAX, INT_MAX, SDL_FLIP_NONE, false);
-			currentQuest->DrawCurrentQuest();
-		}
 		if (currentQuest->IsCompleted())
 			CompleteQuest(currentQuest->id);
 	}

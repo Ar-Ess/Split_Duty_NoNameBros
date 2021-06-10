@@ -373,8 +373,14 @@ bool DialogueManager::OnGuiMouseClickEvent(GuiControl* option)
 			}
 			else if (itemOption->data->returnCode == 7)
 			{
-				app->questManager->CheckFindQuest(currentDialogue->dialogueID);
-				EndDialogue();
+				Quest* q = app->questManager->GetCurrentQuest();
+				if (q != nullptr && q->id == (currentDialogue->dialogueID - 1))
+				{
+					app->questManager->CheckFindQuest(currentDialogue->dialogueID);
+					EndDialogue();
+				}
+				else 
+					EndDialogue();
 			}
 			else if (itemOption->data->returnCode == 8)
 			{

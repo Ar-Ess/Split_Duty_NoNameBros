@@ -436,34 +436,15 @@ void Inventory::SetText()
 		stabStatText->CenterAlign();
 	}
 
-	/*if (app->questManager->currentQuest != nullptr)
+	//active quest
+	if (currQuestText == nullptr)
 	{
-		if (currQuestTitleText == nullptr)
-		{
-			currQuestTitleText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-			currQuestTitleText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
-			currQuestTitleText->SetTextFont(app->fontTTF->inventoryFont);
+		currQuestText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+		currQuestText->bounds = { 75, 600,50,50 };
+		currQuestText->SetTextFont(app->fontTTF->inventoryFont);
 
-			char str[5] = {};
-			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
-			currQuestTitleText->SetString(str, BROWN);
-			currQuestTitleText->CenterAlign();
-		}
-		if (currQuestText == nullptr)
-		{
-			currQuestText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
-			currQuestText->bounds = { statsPos.x,statsPos.y + statsOff.y * 5,50,50 };
-			currQuestText->SetTextFont(app->fontTTF->inventoryFont);
-
-			char str[5] = {};
-			sprintf(str, "%d", app->questManager->currentQuest->textTitle);
-			currQuestText->SetString(str, BROWN);
-			currQuestText->CenterAlign();
-		}
-	}*/
-
-	//quest
-	
+		currQuestText->SetString("NO QUESTS ACTIVE");
+	}	
 }
 
 void Inventory::UpdateText()
@@ -494,7 +475,48 @@ void Inventory::UpdateText()
 	splitText->SetString(str5, BROWN);
 
 	//STAT
-
+	//QUEST
+	char str6[50] = {};
+	if (app->questManager->currentQuest != nullptr)
+	{
+		KillQuest* q = nullptr;
+		GatherQuest* q1 = nullptr;
+		FindQuest* q2 = nullptr;
+		switch (app->questManager->currentQuest->type)
+		{
+		case QuestType::KILL:
+			q = (KillQuest*)app->questManager->currentQuest;
+			sprintf(str6, "%s: %d / %d", q->title->text.GetString(), q->count, q->goal);
+			currQuestText->SetString(str6, WHITE);
+			break;
+		case QuestType::GATHER:
+			q1 = (GatherQuest*)app->questManager->currentQuest;
+			switch (q1->iType)
+			{
+			case LITTLE_BEEF_I:
+				sprintf(str6, "%s: %d OF LITTLE BEEF", q1->title->text.GetString(), q1->goal);
+				break;
+			case BIF_BEEF_I:
+				sprintf(str6, "%s: %d OF BIG BEEF", q1->title->text.GetString(), q1->goal);
+				break;
+			case FEATHER_I:
+				sprintf(str6, "%s: %d OF FEATHER", q1->title->text.GetString(), q1->goal);
+				break;
+			case MANTIS_I:
+				sprintf(str6, "%s: %d OF MANTIS LEG", q1->title->text.GetString(), q1->goal);
+				break;
+			}
+			currQuestText->SetString(str6, WHITE);
+			break;
+		case QuestType::FIND:
+			q2 = (FindQuest*)app->questManager->currentQuest;
+			sprintf(str6, "%s", q2->title->text.GetString());
+			currQuestText->SetString(str6, WHITE);
+			break;
+		}
+	}
+	else			
+		currQuestText->SetString("NO MISSION ACTIVE", WHITE);
 }
 
 void Inventory::DrawText(int y)
@@ -516,6 +538,7 @@ void Inventory::DrawText(int y)
 	velocityStatText->bounds.y += y;
 	stabStatText->bounds.y += y;
 	luckStatText->bounds.y += y;
+	currQuestText->bounds.y += y;
 
 	healthText->Draw();
 	expText->Draw();
@@ -527,6 +550,8 @@ void Inventory::DrawText(int y)
 	mantisText->Draw();
 	coinText->Draw();
 	splitText->Draw();
+
+	currQuestText->Draw();
 
 	healthStatText->Draw();
 	strenghtStatText->Draw();
@@ -552,6 +577,8 @@ void Inventory::DrawText(int y)
 	velocityStatText->bounds.y -= y;
 	stabStatText->bounds.y -= y;
 	luckStatText->bounds.y -= y;
+	currQuestText->bounds.y -= y;
+
 }
 
 void Inventory::DrawStats(int y)

@@ -15,6 +15,11 @@ public:
 
 	void QuestLogic();
 
+	int GetGoal()
+	{
+		return goal;
+	}
+
 public:
 	uint16 goal;
 
