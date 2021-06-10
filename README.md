@@ -23,6 +23,8 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
  
 ![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/GrassyLands1.png)
  
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/AutumnFalls.png)
+ 
 ![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/MossyLands.png)
 
  
