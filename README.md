@@ -17,7 +17,7 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 # Media
 
-<Trailer>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tlqRjA4JISs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Wiki/Village.png)
  
