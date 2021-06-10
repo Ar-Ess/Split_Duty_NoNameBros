@@ -209,13 +209,13 @@ void DialogueManager::StartDialogue(int dialogueID)
 void DialogueManager::Draw()
 {
 	////WRITTING MACHINE LOOK////
-	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) 
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || app->input->GetControl(L1) == KEY_REPEAT)
 		AccelerateAnim();
 	else 
 		WrittingMachineLook();
 	
 	//SKIP DIALOGUE
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)	
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || app->input->GetControl(B) == KEY_DOWN)	
 		SkipDialogue();
 
 	tempString->SetString(tempText.c_str());

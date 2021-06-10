@@ -51,13 +51,13 @@ Boss::Boss(BossClass bClass) : Entity(EntityType::BOSS)
 	}
 	else
 	{
-		iPoint tile = { 72, 96 };
+		iPoint tile = { 154,154 };
 
-		for (int i = 10; i > 4; i--)
+		for (int i = 9; i > 3; i--)
 		{
 			idleAnim.PushBack({ i * tile.x,0,tile.x,tile.y });
 		}
-		idleAnim.speed = 0.05f;
+		idleAnim.speed = 0.11f;
 		for (int i = 10; i > 4; i--)
 		{
 			awakeAnim.PushBack({ i * tile.x,0,tile.x,tile.y });

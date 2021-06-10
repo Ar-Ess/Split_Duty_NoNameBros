@@ -57,10 +57,11 @@ struct InstaZone
     SDL_Rect rect = { 1300, 488 - 15,  70, 30 };
     SDL_Texture* tex = nullptr;
 
-    void SetUp(int stepx, SDL_Rect rectx)
+    void SetUp(int stepx, SDL_Rect rectx, const char* loadTex)
     {
         step = stepx;
         rect = rectx;
+        this->tex = app->tex->Load(loadTex);
     }
 
     void InstaKill();
@@ -77,10 +78,11 @@ struct ResponseZone
     SDL_Rect rect = { 1300, 488 - 15,  70, 30 };
     SDL_Texture* tex = nullptr;
 
-    void SetUp(int stepx, SDL_Rect rectx)
+    void SetUp(int stepx, SDL_Rect rectx, const char* loadTex)
     {
         step = stepx;
         rect = rectx;
+        this->tex = app->tex->Load(loadTex);
     }
 };
 
@@ -91,12 +93,13 @@ struct Pusher
 
     }
 
-    void SetUp(int originx, SDL_Rect rectx, bool drawx, bool pushx)
+    void SetUp(int originx, SDL_Rect rectx, bool drawx, bool pushx, const char* texture)
     {
         origin = originx;
         rect = rectx;
         draw = drawx;
         pushing = pushx;
+        this->tex = app->tex->Load(texture);
         Restart();
     }
 
@@ -110,6 +113,7 @@ struct Pusher
     bool draw = false;
     bool pushing = false;
     int origin;
+
     void Move()
     {
         rect.x -= 12;
@@ -305,6 +309,7 @@ public: //TUTORIAL BOSS INFO
 public: //BOSS I info
     int shieldStep = 0;
     SDL_Rect shield = { 0, 285, 40, 215 };
+    SDL_Texture* shieldTex = nullptr;
     const int shieldPos[4] = { 155, 325, 495, 665 };
     short int boss1Attack4Time = 0;
     short int boss1Attack5Time = 0;
@@ -316,6 +321,8 @@ public: //BOSS I info
 public: //BOSS II info
     int spikeStep[2] = { 0, 0 };
     SDL_Rect spike[2] = { 1300, 488 - 30, 60, 30 };
+    SDL_Texture* spikeTex = nullptr;
+    float ySpike = 1.0f;
     const int spikePos[4] = { 1300, 310, 480, 650 };
     short int boss2Attack1Time = 0;
     short int boss2Attack2Time = 0;
@@ -341,6 +348,7 @@ public: //BOSS III info
     short int boss3Attack7Time = 0;
     short int bossIIIStep = 0;
     Pusher pusher;
+    SDL_Texture* waveSpritesheet = nullptr;
 
 public:
     short int enemyTimeWait = 0;

@@ -133,6 +133,7 @@ void Combat::BossStart()
 		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_atumn_falls_spritesheet.png");
 		shieldStep = 0;
 		shield.x = shieldPos[shieldStep];
+		shieldTex = app->tex->Load("Assets/Textures/Environment/shield.png");
 		shield = { 0, 285, 40, 215 };
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
@@ -143,6 +144,7 @@ void Combat::BossStart()
 		break;
 	case(BossClass::BOSS_II):
 		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_mossy_rocks_spritesheet.png");
+		spikeTex = app->tex->Load("Assets/Textures/Environment/spikes.png");
 		for (int i = 0; i < 2; i++) spikeStep[i] = 0;
 		for (int i = 0; i < 2; i++) spike[i] = { spikePos[spikeStep[i]], 488 - 30, 60, 30};
 		for (int i = 0; i < 2; i++) wave[i] = { 1400, 0, 105, 60 };
@@ -156,19 +158,19 @@ void Combat::BossStart()
 		boss2Attack7Time = 0;
 		bossIIStep = 0;
 		spikesFattenator = false;
+		ySpike = 1.0f;
 		b2heal = false;
 		break;
 	case(BossClass::BOSS_III):
 		bossSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/Final_Boss/final_boss_spritesheet.png");
-		iZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
-		iZone.tex = nullptr;
-		rZone.SetUp(0, { 1300, 488 - 15,  70, 30 });
-		rZone.tex = nullptr;
+		waveSpritesheet = app->tex->Load("Assets/Textures/Characters/Bosses/golem_mossy_rocks_spritesheet.png");
+		iZone.SetUp(0, { 1300, 488 - 15,  70, 30 }, "Assets/Textures/Environment/red_circle.png");
+		rZone.SetUp(0, { 1300, 488 - 15,  70, 30 }, "Assets/Textures/Environment/blue_circle.png");
 		bossIIIStep = 0;
 		wave[0] = { 1400, 0, 105, 60 };
+		wave[1] = { 1400, 0, 105, 60 };
 		bigWave = { 1400, 0, 120, 90 };
-		pusher.SetUp(980 - 20, { 0, 285, 20, 215 }, false, false);
-		pusher.tex = nullptr;
+		pusher.SetUp(980 - 20, { 0, 285, 20, 215 }, false, false, "Assets/Textures/Environment/shield.png");
 		boss3Attack1Time = 0;
 		boss3Attack2Time = 0;
 		boss3Attack3Time = 0;
@@ -201,10 +203,16 @@ void Combat::Restart()
 	app->tex->UnLoad(character2Spritesheet);
 	app->tex->UnLoad(enemySpritesheet);
 	app->tex->UnLoad(bossSpritesheet);
+	app->tex->UnLoad(waveSpritesheet);
 	app->tex->UnLoad(background);
 	app->tex->UnLoad(combatInventory);
 	if (tutorialBox != nullptr) app->tex->UnLoad(tutorialBox);
 	if (enterTexture != nullptr) app->tex->UnLoad(enterTexture);
+	app->tex->UnLoad(spikeTex);
+	app->tex->UnLoad(iZone.tex);
+	app->tex->UnLoad(rZone.tex);
+	app->tex->UnLoad(pusher.tex);
+	app->tex->UnLoad(shieldTex);
 
 	PlayerPosReset();
 	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
@@ -928,8 +936,38 @@ void Combat::DrawEnemy()
 
 void Combat::DrawBoss()
 {
-	if (boss->bossClass != BOSS_III) app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
-	else app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 3.0f, 3.0f, false, &currentBossAnim->GetCurrentFrame());
+	const SDL_Rect waveRect = { 6 * 100, 9 * 100, 100, 100 };
+	const SDL_Rect bigWaveRect = { 9 * 100, 9 * 100, 100, 100 };
+	switch (boss->bossClass)
+	{
+	case BOSS_TUTORIAL:
+		app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
+		for (int i = 0; i < 2; i++) app->render->DrawTexture(bossSpritesheet, wave[i].x - 15, wave[i].y - 88, 1.9f, 1.6f, false, &waveRect);
+		break;
+	case BOSS_I:
+		app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
+		for (int i = 0; i < 2; i++) app->render->DrawTexture(bossSpritesheet, wave[i].x - 15, wave[i].y - 88, 1.7f, 1.4f, false, &waveRect);
+		app->render->DrawTexture(bossSpritesheet, bigWave.x - 10, bigWave.y - 58, 1.9f, 1.6f, false, &bigWaveRect);
+		app->render->DrawTexture(shieldTex, shield.x - 7, shield.y - 8, 1, 1, false);
+		break;
+	case BOSS_II:
+		app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 180, boss->colliderCombat.y - 140, 4.65f, 4.65f, false, &currentBossAnim->GetCurrentFrame());
+		for (int i = 0; i < 2; i++) app->render->DrawTexture(bossSpritesheet, wave[i].x - 15, wave[i].y - 88, 1.9f, 1.6f, false, &waveRect);
+		app->render->DrawTexture(bossSpritesheet, bigWave.x - 10, bigWave.y - 58, 1.9f, 1.6f, false, &bigWaveRect);
+		for (int i = 0; i < 2; i++) app->render->DrawTexture(spikeTex, spike[i].x - 15, spike[i].y - 20, 1, ySpike, false);
+		break;
+	case BOSS_III:
+		app->render->DrawTexture(bossSpritesheet, boss->colliderCombat.x - 135, boss->colliderCombat.y - 150, 2.4f, 2.4f, false, &currentBossAnim->GetCurrentFrame());
+		for (int i = 0; i < 2; i++)
+		{
+			if (i == 0) app->render->DrawTexture(waveSpritesheet, wave[i].x - 15, wave[i].y - 88, 1.9f, 1.6f, false, &waveRect);
+		}
+		app->render->DrawTexture(waveSpritesheet, bigWave.x - 10, bigWave.y - 58, 1.9f, 1.6f, false, &bigWaveRect);
+		app->render->DrawTexture(iZone.tex, iZone.rect.x + 5, iZone.rect.y - 15, 0.8f, 0.7f, false);
+		app->render->DrawTexture(rZone.tex, rZone.rect.x + 5, rZone.rect.y - 15, 0.8f, 0.7f, false);
+		if (pusher.draw) app->render->DrawTexture(pusher.tex, pusher.rect.x, pusher.rect.y, 1, 1, false);
+		break;
+	}
 }
 
 void Combat::DrawBakcground()
@@ -2046,6 +2084,7 @@ void Combat::BossAttack()
 						{
 							spike[i].h += 2;
 							spike[i].y -= 2;
+							ySpike += 0.02f;
 						}
 					}
 				}
@@ -3501,7 +3540,7 @@ void Combat::BossAttackProbability()
 				else if (rndm < 11) boss->attack = 5;
 				else if (rndm < 13)
 				{
-					if (steps == 0) boss->attack = 8;
+					if (steps != 0) boss->attack = 8;
 					else
 					{
 						rndm = rand() % 8;
