@@ -39,20 +39,21 @@ And if that is not enough, challenge yourself further beyond with 4 completely u
 
 - Combat
      - Jump: SPACEBAR / W
-     - rouch: LSHIFT / S
+     - Crouch: LSHIFT / S
      - Action Selection: Left Mouse Click
 
  ## Gamepad:
  - Overworld
      -Player Movement: Direction pad
      - NPC Interaction: A button
-     - Option selection: Direction pad
-     - Pause Menu: ESCAPE
+     - Option selection: L2
+     - Select dialog option: A/B button
+     - Pause Menu: B button
  
 - Combat
-     - Jump: SPACEBAR / W
-     - rouch: LSHIFT / S
-     - Action Selection: Left Mouse Click
+     - Jump: Direction pad up
+     - Crouch: Direction pad down
+     - Action Selection: L3 to swap, A to confirm and B to go back
  
 
 # Team:
