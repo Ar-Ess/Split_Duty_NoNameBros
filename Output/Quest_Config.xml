@@ -6,5 +6,9 @@
     <Quest ID="2" reward="2" type="2" npcId="3" title="Where is the elder?">Find the elder and talk to him</Quest>
     <Quest ID="1" reward="4"  type="1" goal="3"  item="0" title="MeatPicker">Gather 3 small pieces of meat</Quest>
     <Quest ID="24" reward="0"  type="0" goal="5"  enemy="3" title="BatKiller">Kill 5 Bat</Quest>
+    <Quest ID="34" reward="2" type="2" npcId="35" title="Disappeared Son">Find the adventurer</Quest>
+    <Quest ID="35" reward="4" type="0" goal="6" enemy="3" title="ProHunter">Kill 6 Bat</Quest>
+    <Quest ID="37" reward="3" type="0" goal="5" enemy="0" title="Trophies?">Kill 5 Wolves</Quest>
+    <Quest ID="39" reward="5"  type="1" goal="3"  item="0" title="MeatPicker">Gather 3 small pieces of meat</Quest>
   </Quests>
 </QuestSettup>

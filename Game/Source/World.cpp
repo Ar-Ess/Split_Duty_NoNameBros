@@ -2147,6 +2147,9 @@ void World::LoadNPCs(Places placex)
 		app->entityManager->NPCs.end->data->SetUp({ 114 * 28, 65 * 28 }, NPCtype::OLD, placex, 3);
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 30, 1550 }, NPCtype::KNIGHT_M_1, placex, 2);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 36*28, 48*28 -30}, NPCtype::CITIZEN_10, placex, 37);
 	}
 	else if (placex == TAVERN)
 	{
@@ -2185,10 +2188,21 @@ void World::LoadNPCs(Places placex)
 		if (app->scene->boss1Beat) dial = 29;
 		app->entityManager->NPCs.end->data->SetUp({ 9 * 28, 68 * 28 }, NPCtype::GARDENER, placex, dial);
 	}
+	else if (placex == GRASSY_LAND_1)
+	{
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 32*28, 52*28 }, NPCtype::ADVENTURER, placex, 35, 2);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 51 * 28, 68 * 28 }, NPCtype::FORESTAL, placex, 34, 1);
+	}
 	else if (placex == GRASSY_LAND_2)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ 924, 392 }, NPCtype::NO_NPC, placex, 5);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 22*28, 35*28 }, NPCtype::KNIGHT_F, placex, 36);
 	}
 	else if (placex == CAVE)
 	{
@@ -2210,11 +2224,17 @@ void World::LoadNPCs(Places placex)
 			app->entityManager->CreateEntity(EntityType::NPC);
 			app->entityManager->NPCs.end->data->SetUp({ 69 * 28, 20 * 28 }, NPCtype::CITIZEN_1, placex, 25);
 		}
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ 44 * 28, 78 * 28 }, NPCtype::ADVENTURER, placex, 39);//GATHER
 	}
 	else if (placex == SHOP)
 	{
 		app->entityManager->CreateEntity(EntityType::NPC);
 		app->entityManager->NPCs.end->data->SetUp({ (19 * 28) - 10, 4 * 28 }, NPCtype::SHOP_WOMAN, placex, 26);
+
+		app->entityManager->CreateEntity(EntityType::NPC);
+		app->entityManager->NPCs.end->data->SetUp({ (9 * 28) - 20, 23 * 28 - 10}, NPCtype::CITIZEN_8, placex, 33, 3);
 	}
 	else if (placex == MOSSY_ROCKS_1)
 	{
