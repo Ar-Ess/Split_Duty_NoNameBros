@@ -135,6 +135,23 @@ public:
 		size = 0;
 	}
 
+	void RClear()
+	{
+		ListItem<tdata>* pData;
+		ListItem<tdata>* pPrev;
+		pData = end;
+
+		while (pData != NULL)
+		{
+			pPrev = pData->prev;
+			RELEASE(pData);
+			pData = pPrev;
+		}
+
+		start = end = NULL;
+		size = 0;
+	}
+
 	// Read/write operator access directly to a position in the list
 	tdata& operator [](const unsigned int index)
 	{

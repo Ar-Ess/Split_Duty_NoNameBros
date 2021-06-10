@@ -76,7 +76,7 @@ App::~App()
 		RELEASE(item->data);
 		item = item->prev;
 	}*/
-	modules.Clear();
+	modules.RClear();
 }
 
 void App::AddModule(Module* module)
@@ -343,7 +343,7 @@ bool App::LoadGame()
 	Player* p1 = app->scene->player1;
 	Player* p2 = app->scene->player2;
 	World* w = app->scene->world;
-	QuestManager* q = app->questManager;
+	Quest* q = new Quest();
 
 	if (doc == NULL)
 	{
@@ -414,45 +414,45 @@ bool App::LoadGame()
 		scene->world->luckTaken = stats.attribute("luck_taken").as_bool();
 		scene->lastDialog = stats.attribute("last_dialog").as_bool();
 
-		/*for (pugi::xml_node qst = gameProgress.child("Quest"); !qst.empty(); qst = qst.next_sibling("Quest"))
+		pugi::xml_node quest = gameProgress.child("Quest");
+		if (!quest.empty())
 		{
-			uint16 id = qst.attribute("ID").as_uint();
-			uint16 reward = qst.attribute("reward").as_uint();
-			QuestType type = QuestType(qst.attribute("type").as_int());
 
-			const char* title = qst.attribute("title").as_string();
-			const char* description = qst.child_value();
+			q->id = quest.attribute("ID").as_uint();
+			q->reward = quest.attribute("reward").as_uint();
 
-			uint16 goal = 0;
-			uint16 enemy = 0;
-			uint16 npc = 0;
-			uint16 item = 0;
+			q->title = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
+			q->title->SetString((const char*)quest.attribute("title").as_string());
 
-			KillQuest* newKillQuest = nullptr;
-			GatherQuest* newGathQuest = nullptr;
-			FindQuest* newFindQuest = nullptr;
+			q->type = QuestType(quest.attribute("type").as_uint());
 
-			switch (type)
+			KillQuest* q1 = (KillQuest*)q;
+			GatherQuest* q2 = (GatherQuest*)q;
+			FindQuest* q3 = (FindQuest*)q;
+			switch (q->type)
 			{
-			case KILL:
-				goal = qst.attribute("goal").as_uint();
-				enemy = qst.attribute("enemy").as_uint();
-				newKillQuest = new KillQuest(id, reward, goal, description, title, EnemyClass(enemy));
-				q->questList[id] = newKillQuest;
+			case QuestType::KILL:
+				q1->eType = (EnemyClass)quest.attribute("enemy").as_uint();
+				q1->goal = quest.attribute("goal").as_uint();
+				q1->count = quest.attribute("count").as_uint();
+
+				app->questManager->currentQuest = q1;
 				break;
-			case GATHER:
-				goal = qst.attribute("goal").as_uint();
-				item = qst.attribute("item").as_uint();
-				newGathQuest = new GatherQuest(id, reward, goal, description, title, ItemType(item));
-				q->questList[id] = newGathQuest;
+			case QuestType::GATHER:
+				q2->iType = (ItemType)quest.attribute("itemType").as_uint();
+				q2->goal = quest.attribute("goal").as_uint();
+
+				app->questManager->currentQuest = q2;
 				break;
-			case FIND:
-				npc = qst.attribute("npcId").as_uint();
-				newFindQuest = new FindQuest(id, reward, npc, description, title);
-				q->questList[id] = newFindQuest;
+			case QuestType::FIND:
+				q3->npcID = quest.attribute("npcID").as_uint();
+
+				app->questManager->currentQuest = q3;
+				break;
+			default:
 				break;
 			}
-		}*/
+		}
 		LOG("Loading finished...");
 	}
 
@@ -480,6 +480,7 @@ bool App::SaveGame() const
 	pugi::xml_node playerInfo;
 	pugi::xml_node worldInfo;
 	pugi::xml_node gameProgress;
+	pugi::xml_node questProgress;
 	
 
 	if (root != NULL)
@@ -547,35 +548,38 @@ bool App::SaveGame() const
 		gameProgress.append_attribute("stab_taken").set_value(scene->world->stabTaken);
 		gameProgress.append_attribute("last_dialog").set_value(scene->lastDialog);
 
-		/*gameProgress = saveNode.append_child("Quests");
-		QuestManager* q = app->questManager;
-		for (int i = 0; q->questList[i] != nullptr; ++i)
+		
+		Quest* q = app->questManager->currentQuest;
+		if (q != nullptr)
 		{
-			pugi::xml_node qst = gameProgress.append_child("Quest");
-			qst.append_attribute("ID").set_value(q->questList[i]->id);
-			qst.append_attribute("reward").set_value(q->questList[i]->reward);
-			qst.append_attribute("title").set_value(q->questList[i]->textTitle);
-			qst.append_attribute("description").set_value(q->questList[i]->textDescription);
-			qst.append_attribute("type").set_value(int(q->questList[i]->type));
+			questProgress = saveNode.append_child("Quest");
+			questProgress.append_attribute("ID").set_value(q->id);
+			questProgress.append_attribute("reward").set_value(q->reward);
+			questProgress.append_attribute("type").set_value(int(q->type));
+			questProgress.append_attribute("title").set_value(q->title->text.GetString());
 
-			switch (q->questList[i]->type)
+			KillQuest* q1 = (KillQuest*)q;
+			GatherQuest* q2 = (GatherQuest*)q;
+			FindQuest* q3 = (FindQuest*)q;
+
+			switch (q->type)
 			{
-			case KILL:
-				
+			case QuestType::KILL:
+				questProgress.append_attribute("enemy").set_value(int(q1->eType));
+				questProgress.append_attribute("goal").set_value(q1->goal);
+				questProgress.append_attribute("count").set_value(q1->count);
 				break;
-			case GATHER:
-			
+			case QuestType::GATHER:
+				questProgress.append_attribute("itemType").set_value(int(q2->iType));
+				questProgress.append_attribute("goal").set_value(q2->goal);
 				break;
-			case FIND:
-				
+			case QuestType::FIND:
+				questProgress.append_attribute("npcID").set_value(q3->npcID);
+				break;
+			default:
 				break;
 			}
-			qst.append_attribute("goal").set_value(q->questList[i]);
 		}
-		for (int i = 0; q->finishedQuest[i] != nullptr; ++i)
-		{
-
-		}*/
 
 		saveDoc.save_file("save_game.xml");
 		LOG("Game saved correctly");
