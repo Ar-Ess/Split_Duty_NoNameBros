@@ -2,6 +2,8 @@
 
 In Split Duty you take on the role of an adventurer tasked with the duty of defeating all 3 ancient golems and defeat the evil that has begun to torment the world. During your journey you will find party members to aid you in your quest and slowly but surely imrprove your abilities to achieve your goal. But beware, not everything is like it seems.
 
+![](https://github.com/BooStarGamer/Split_Duty_NoNameBros/blob/main/Wiki%20resources/Images/Art%20Bible/logo_optimized.png)
+
 # Features 
 
 - Huge fantasy world where you can explore, fight enemies and complete quests. Three different areas whith a fully explorable town serving as your adventure HUB, equipped with a tavern to find quests and a shop where you can buy all you need for your journey.
