@@ -38,9 +38,6 @@
             <Component Id="cmpB21E3B56617B2DF221A2243BA73F9280" Guid="*">
                 <File Id="fil7D11D3D583CE3111891A039CEC47A176" KeyPath="yes" Source="$(var.HarvestPath)\Quest_Config.xml" />
             </Component>
-            <Component Id="cmpC27FF44AFECF57237FFAD7E5327A5A83" Guid="*">
-                <File Id="fil4B82DC508A8DF3C7BA5E8C5D1EDDAD5F" KeyPath="yes" Source="$(var.HarvestPath)\save_game.xml" />
-            </Component>
             <Component Id="cmp77F2718815C37DF1CD595A4164461B7A" Guid="*">
                 <File Id="filC50EEA5B1CD3382FF2ED29C29DF6B8AF" KeyPath="yes" Source="$(var.HarvestPath)\SDL2.dll" />
             </Component>
@@ -325,6 +322,9 @@
                     </Component>
                     <Component Id="cmp9258D516303B1D7B6B0E88CF806553D6" Guid="*">
                         <File Id="filFA3E69CADA0A66D6A792CF3B7984C847" KeyPath="yes" Source="$(var.HarvestPath)\Assets\Screens\pause_menu_gui.png" />
+                    </Component>
+                    <Component Id="cmp53E4246B4DE46D90718A2A051DB6DD5F" Guid="*">
+                        <File Id="fil8DAEB6457A43018F899218113DA64AF6" KeyPath="yes" Source="$(var.HarvestPath)\Assets\Screens\square_title_logo.png" />
                     </Component>
                     <Component Id="cmpA5CFE7286053C54F83FC5116A67C6CAA" Guid="*">
                         <File Id="fil75E554FA5C00F756A1AB3E3C338B3985" KeyPath="yes" Source="$(var.HarvestPath)\Assets\Screens\title_logo.png" />
@@ -632,7 +632,6 @@
             <ComponentRef Id="cmp494E092250B7C893DA1C32C4422DF045" />
             <ComponentRef Id="cmp3644CBBFEF13AB8461F5496479CA3567" />
             <ComponentRef Id="cmpB21E3B56617B2DF221A2243BA73F9280" />
-            <ComponentRef Id="cmpC27FF44AFECF57237FFAD7E5327A5A83" />
             <ComponentRef Id="cmp77F2718815C37DF1CD595A4164461B7A" />
             <ComponentRef Id="cmpD5527425E607FED29E84E1424D4A0F52" />
             <ComponentRef Id="cmp23267DA5F20E5C06C5B8F213F7E64543" />
@@ -724,6 +723,7 @@
             <ComponentRef Id="cmp578039E8D0C195587A9CBD44DD31D811" />
             <ComponentRef Id="cmp2F69B15EC134666732D78B4A14C9CEBC" />
             <ComponentRef Id="cmp9258D516303B1D7B6B0E88CF806553D6" />
+            <ComponentRef Id="cmp53E4246B4DE46D90718A2A051DB6DD5F" />
             <ComponentRef Id="cmpA5CFE7286053C54F83FC5116A67C6CAA" />
             <ComponentRef Id="cmpDE889F9E3E0C925E99FF2C1489B7A789" />
             <ComponentRef Id="cmp08D9766E21B78F99C427888889A1B897" />
