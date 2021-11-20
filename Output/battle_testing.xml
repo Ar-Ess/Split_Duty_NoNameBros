@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<BattleState>
+	<Player>
+		<UsingLevelAsPlayerSetter Bool="false" />
+		<level Int="10" />
+		<max_health Int="20" />
+		<strength Int="5" />
+		<defense Int="5" />
+		<velocity Int="5" />
+		<luck Int="5" />
+	</Player>
+	<Enemy>
+		<Class Int="1" />
+		<UsingLevelAsEnemySetter Bool="false" />
+		<level Int="70" />
+		<max_health Int="4" />
+		<strength Int="5" />
+		<defense Int="1" />
+		<velocity Int="5" />
+	</Enemy>
+</BattleState>

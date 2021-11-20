@@ -82,7 +82,7 @@ bool Scene::Start()
 
 	SetScene(LOGO_SCENE);
 
-	if (FILE* file = fopen("save_game.xml", "r"))
+	if (FILE* file = fopen("battle_testing.xml", "r"))
 	{
 		fclose(file);
 		activeContinue = true;
@@ -101,6 +101,8 @@ bool Scene::Start()
 	easingActive = false;
 
 	app->render->scale = 1; //Qui toqui aquesta linia de codi, i m'entero, no viu un dia més :) <3
+
+	//app->SaveGameRequest();
 
 	return true;
 }
@@ -1215,8 +1217,9 @@ void Scene::SetEndScreen()
 void Scene::UpdateLogoScene()
 {
 	app->render->DrawRectangle(whiteRect, {255, 255, 255, 255});
-	Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-	e->SetEnemy(5);
+	EnemyClass eC = app->LoadEnemyClass();
+	Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, eC);
+	app->LoadGame(e);
 
 	if (timer >= 50)
 	{
@@ -1553,10 +1556,11 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case LEVEL_UP:
 		if (strcmp(control->text.GetString(), "SkipButton") == 0)
 		{
-			Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
-			e->SetEnemy(10);
-			player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
-			player1->SetPlayer(10);
+			EnemyClass eC = app->LoadEnemyClass();
+			Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, eC);
+			app->LoadGame(e);
+
+			player1->Refill();
 
 			SetScene(COMBAT, e);
 		}

@@ -97,6 +97,8 @@ public:
     virtual ~Enemy();
 
     void SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
+    
+    void SetUp(int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity);
 
     void SetEnemy(int level);
 

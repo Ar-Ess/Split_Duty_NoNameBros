@@ -126,6 +126,36 @@ void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, in
     lvlText->SetString(str);
 }
 
+void Enemy::SetUp(int xlvl, int xexp, int xhealth, int xstrength, int xdefense, int xvelocity)
+{
+    lvl = xlvl;
+    exp = xexp;
+    health = xhealth;
+    maxHealth = xhealth;
+    strength = xstrength;
+    defense = xdefense;
+    velocity = xvelocity;
+
+    switch (GetClass())
+    {
+    case EnemyClass::SMALL_WOLF:
+        colliderCombat = { SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H };
+        break;
+
+    case EnemyClass::BIRD:
+        colliderCombat = { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H };
+        break;
+
+    case EnemyClass::MANTIS:
+        colliderCombat = { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H };
+        break;
+    }
+
+    char str[20] = {};
+    sprintf(str, "LVL. %d", xlvl);
+    lvlText->SetString(str);
+}
+
 void Enemy::SetEnemy(int level)
 {
     lvl = level;

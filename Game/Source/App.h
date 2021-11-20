@@ -33,6 +33,8 @@ class Transition;
 class QuestManager;
 class AssetsManager;
 class ParticleSystem;
+enum EnemyClass;
+class Enemy;
 
 class App
 {
@@ -64,6 +66,9 @@ public:
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 
+	bool LoadGame(Enemy* e = nullptr);
+	EnemyClass LoadEnemyClass();
+
 	// Load config file
 	// NOTE: It receives config document
 	pugi::xml_node LoadConfig(pugi::xml_document&) const;
@@ -86,7 +91,6 @@ private:
 	bool PostUpdate();
 
 	// Load / Save
-	bool LoadGame();
 	bool SaveGame() const;
 
 public:
