@@ -126,7 +126,7 @@ void LevelUp::Start(int expGained)
 	}
 
 	UpgradeStats(endLvl);
-	if (app->scene->combatScene->GetSecondPlayerExistance()) Upgrade2Stats(endLvl);
+	//if (app->scene->combatScene->GetSecondPlayerExistance()) Upgrade2Stats(endLvl);
 
 	p->exp = endExp;
 	p->lvl = endLvl;
@@ -245,8 +245,8 @@ void LevelUp::SetText()
 		int lvl = app->scene->player1->lvl;
 		int nextLvl = lvl + 1;
 
-		char str[24] = {};
-		sprintf(str, "Level Up! %d to %d", lvl, nextLvl);
+		char str[100] = {};
+		sprintf(str, "Change now the battle settings\n Then click restart");
 		levelUpText->SetString(str, WHITE);
 	}
 
@@ -256,7 +256,7 @@ void LevelUp::SetText()
 		winText->bounds = { 600, 180, 300, 100 };
 		winText->SetTextFont(app->fontTTF->defaultFont);
 
-		winText->SetString("YOU WON!", WHITE);
+		winText->SetString("Change now the battle settings\n\n     Then click restart", WHITE);
 	}
 
 	if (maxLvlText == nullptr)
@@ -275,8 +275,7 @@ void LevelUp::SetText()
 		expGainedText->SetTextFont(app->fontTTF->inventoryFont);
 
 		char str[24] = {};
-		sprintf(str, "Gained %d exp", 0);
-		expGainedText->SetString(str, WHITE);
+		expGainedText->SetString(" ", WHITE);
 	}
 
 	if (expText == nullptr)
@@ -292,7 +291,7 @@ void LevelUp::SetText()
 		skipText = (GuiString*)app->guiManager->CreateGuiControl(GuiControlType::TEXT);
 		skipText->bounds = { 580, 580, 161, 62 };
 		skipText->SetTextFont(app->fontTTF->inventoryFont);
-		skipText->SetString("RETURN ");
+		skipText->SetString("RESTART");
 		skipText->CenterAlign();
 	}
 }
@@ -303,26 +302,26 @@ void LevelUp::DrawText(int x)
 	{
 		if (levelUpBool)
 		{
-			levelUpText->bounds.x += x;
+			levelUpText->bounds.x += x - 100;
 			levelUpText->Draw();
 			levelUpText->bounds.x -= x;
 		}
 		if (!levelUpBool)
 		{
-			winText->bounds.x += x;
+			winText->bounds.x += x - 140;
 			winText->Draw();
-			winText->bounds.x -= x;
+			winText->bounds.x -= x - 140;
 		}
 	}
 	else
 	{
 		maxLvlText->bounds.x += x;
-		maxLvlText->Draw();
+		//maxLvlText->Draw();
 		maxLvlText->bounds.x -= x;
 	}
 	
 	expGainedText->bounds.x += x;
-	expGainedText->Draw();
+	//expGainedText->Draw();
 	expGainedText->bounds.x -= x;
 
 	if (counter >= app->scene->player1->exp)

@@ -126,6 +126,38 @@ void Enemy::SetUp( SDL_Rect combatCollider, SDL_Rect worldCollider, int xlvl, in
     lvlText->SetString(str);
 }
 
+void Enemy::SetEnemy(int level)
+{
+    lvl = level;
+
+    switch (GetClass())
+    {
+    case EnemyClass::SMALL_WOLF:
+        health = floor((level / 2.0f) + 18);
+        strength = floor((level / 3.0f) + 5);
+        defense = floor((level / 5.0f) + 1);
+        velocity = floor((level / 3.0f) + 5);
+        colliderCombat = { SMALLWOLF_C_X, SMALLWOLF_C_Y, SMALLWOLF_C_W, SMALLWOLF_C_H };
+        break;
+
+    case EnemyClass::BIRD:
+        health = floor((level / 2.0f) + 18);
+        strength = floor((level / 3.0f) + 5);
+        defense = floor((level / 5.0f) + 1);
+        velocity = floor((level / 3.0f) + 5);
+        colliderCombat = { BIRD_C_X, BIRD_C_Y, BIRD_C_W, BIRD_C_H };
+        break;
+
+    case EnemyClass::MANTIS:
+        health = floor((level / 2.0f) + 18);
+        strength = floor((level / 3.0f) + 5);
+        defense = floor((level / 5.0f) + 1);
+        velocity = floor((level / 3.0f) + 5);
+        colliderCombat = { MANTIS_C_X, MANTIS_C_Y, MANTIS_C_W, MANTIS_C_H };
+        break;
+    }
+}
+
 void Enemy::Jump()
 {
     if (jumpTime < 28)

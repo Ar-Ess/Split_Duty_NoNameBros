@@ -58,22 +58,24 @@ bool Scene::Start()
 	app->fontTTF->Load("Assets/Fonts/manaspace.regular.ttf", 14);
 
 	player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
-	player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
+	player1->SetPlayer(10);
 
-	world = new World();
+	//player2 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER2);
+
+	//world = new World();
 
 	combatScene = new Combat();
 
-	world->inventory = new Inventory();
+	//world->inventory = new Inventory();
 
 	levelUpScene = new LevelUp();
 
-	optionsMenu = new OptionsMenu();
+	//optionsMenu = new OptionsMenu();
 
-	endScene = new GameOverScene();
+	//endScene = new GameOverScene();
 
 	combatScene->debugCombat = false;
-	world->debugCollisions = false;
+	//world->debugCollisions = false;
 	app->guiManager->debugGui = false;
 
 	enviroment = GRASSY_LANDS;
@@ -98,7 +100,7 @@ bool Scene::Start()
 	totalIterations = 200;
 	easingActive = false;
 
-	app->render->scale = 1; //Qui toqui aquesta linia de codi, la 107, i m'entero, no viu un dia més :) <3
+	app->render->scale = 1; //Qui toqui aquesta linia de codi, i m'entero, no viu un dia més :) <3
 
 	return true;
 }
@@ -127,7 +129,7 @@ bool Scene::PostUpdate()
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		combatScene->debugCombat = !combatScene->debugCombat;
-		world->debugCollisions = !world->debugCollisions;
+		//world->debugCollisions = !world->debugCollisions;
 		app->guiManager->debugGui = !app->guiManager->debugGui;
 	}
 
@@ -485,7 +487,7 @@ void Scene::SetCombat(Enemy* enemySet)
 	SDL_ShowCursor(0);
 
 	combatScene->enemy = enemySet;
-	if (world->stabActive && player1->stabStat > 0) combatScene->enemy->health -= combatScene->EnemyStabDamage();
+	//if (world->stabActive && player1->stabStat > 0) combatScene->enemy->health -= combatScene->EnemyStabDamage();
 
 	SDL_Rect buttonPrefab = app->guiManager->buttonPrefab;
 
@@ -1213,6 +1215,8 @@ void Scene::SetEndScreen()
 void Scene::UpdateLogoScene()
 {
 	app->render->DrawRectangle(whiteRect, {255, 255, 255, 255});
+	Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+	e->SetEnemy(5);
 
 	if (timer >= 50)
 	{
@@ -1244,7 +1248,7 @@ void Scene::UpdateLogoScene()
 	}
 	else
 	{
-		SetScene(MAIN_MENU);
+		SetScene(COMBAT, e);
 	}
 }
 
@@ -1549,36 +1553,12 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case LEVEL_UP:
 		if (strcmp(control->text.GetString(), "SkipButton") == 0)
 		{
-			if (!world->gameStart)
-			{
-				world->SetInmunityTime(PLAYER_INMUNITY_TIME);
-				SetScene(WORLD, world->place);
-				if (boss2Beat && !lastDialog)
-				{
-					lastDialog = true;
-					if (world->place == GOLEM_STONES)
-					{
-						world->Teleport({ 28 * 36, 20 * 28 });
-						world->RectifyCameraPosition(GOLEM_STONES);
-					}
-					app->dialogueManager->StartDialogue(22);
-				}
-				if (boss3Beat)
-				{
-					SetScene(MAIN_MENU);
-					boss3Beat = false;
-				}
-			}
-			else if (world->gameStart)
-			{
-				world->gameStart = false;
-				SetScene(WORLD, MAIN_VILLAGE);
-				world->Teleport({INIT_PLAYER_WORLD_X, INIT_PLAYER_WORLD_Y});
-				app->SaveGameRequest();
-			}
+			Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, EnemyClass::SMALL_WOLF);
+			e->SetEnemy(10);
+			player1 = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER1);
+			player1->SetPlayer(10);
 
-			if (boss3Beat) world->AlignCameraPosition();
-			iterations = 0;
+			SetScene(COMBAT, e);
 		}
 
 	case END_SCREEN:

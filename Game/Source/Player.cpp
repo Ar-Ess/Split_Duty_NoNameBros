@@ -152,6 +152,28 @@ void Player::SetUp(short int healthx, short int maxHealthx,short int strengthx, 
     exp = expx;
 }
 
+void Player::SetPlayer(int level)
+{
+    lvl = level;
+
+    float mHealth = ceil((level / 2.0f) + 20.0f);
+    if (maxHealth == 0) maxHealth = mHealth;
+    health = (mHealth * health) / maxHealth;
+    maxHealth = mHealth;
+
+    strengthStat = ceil((level / 2.8f) + 6.0f);
+
+    defenseStat = ceil((level / 3.0f) + 3.0f);
+
+    if (luckStat != 0) luckStat = ceil((level / 5.0f));
+
+    if (stabStat != 0) stabStat = ceil(level / 4.0f);
+
+    if (velocityStat != 0) velocityStat = ceil((level / 3.0f) + 5.0f);
+
+    Refill();
+}
+
 void Player::SetTexture(SDL_Texture *tex)
 {
     texture = tex;

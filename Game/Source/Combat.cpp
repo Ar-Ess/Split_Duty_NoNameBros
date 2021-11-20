@@ -215,8 +215,8 @@ void Combat::Restart()
 	app->tex->UnLoad(shieldTex);
 
 	PlayerPosReset();
-	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
-	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
+	//app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+	//app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 }
 
 void Combat::BoolStart()
@@ -276,17 +276,9 @@ void Combat::BoolStart()
 
 void Combat::FirstTurnLogic()
 {
-	if (app->scene->player1->velocityStat < enemy->velocity)
-	{
-		combatState = ENEMY_TURN;
-		turnText->SetString("ENEMY TURN");
-	}
-	else
-	{
-		playerChoice = true;
-		combatState = PLAYER_TURN;
-		turnText->SetString("PLAYER TURN");
-	}
+	playerChoice = true;
+	combatState = PLAYER_TURN;
+	turnText->SetString("PLAYER TURN");
 }
 
 // UPDATE
@@ -335,6 +327,7 @@ void Combat::UpdateButtons()
 
 	s->attackButton->Update(0.0f);
 	s->escapeButton->Update(0.0f);
+	s->splitButton->state = GuiControlState::LOCKED;
 	s->splitButton->Update(0.0f);
 
 	if (combatState != PLAYER_TURN)
@@ -543,8 +536,8 @@ void Combat::CombatLogic()
 		{
 			if (secondPlayerTimeProtection < 25)
 			{
-				app->scene->player2->colliderCombat.x -= 1;
-				app->scene->player2->colliderCombat.y -= 3;
+				/*app->scene->player2->colliderCombat.x -= 1;
+				app->scene->player2->colliderCombat.y -= 3;*/
 				secondPlayerTimeProtection++;
 			}
 			else
@@ -601,7 +594,7 @@ void Combat::CombatLogic()
 		{
 			playerTimeEscape++;
 			app->scene->player1->colliderCombat.x -= 3;
-			if (secondPlayer) app->scene->player2->colliderCombat.x -= 3;
+			/*if (false) app->scene->player2->colliderCombat.x -= 3;*/
 		}
 		else
 		{
@@ -869,7 +862,7 @@ void Combat::DebugDraw()
 	app->render->DrawRectangle(app->scene->player1->colliderCombat, { 100, 3, 56, 150 });
 
 	// SECOND PLAYER
-	if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
+	//if (secondPlayer) app->render->DrawRectangle(app->scene->player2->colliderCombat, { 80, 100, 36, 255 });
 
 	//ENEMY
 	if (enemyBattle)
@@ -913,9 +906,9 @@ void Combat::DebugDraw()
 
 void Combat::DrawSecondPlayer()
 {
-	currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
-	currentSecondPlayerAnim->Update(1.0f);
-	app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
+	//currentSecondPlayerAnim = &app->scene->player2->secIdleAnim;
+	//currentSecondPlayerAnim->Update(1.0f);
+	//app->render->DrawTexture(character2Spritesheet, app->scene->player2->colliderCombat.x, app->scene->player2->colliderCombat.y, 2.0f, &currentSecondPlayerAnim->GetCurrentFrame(), false);
 }
 
 void Combat::DrawEnemy()
@@ -1299,85 +1292,18 @@ void Combat::DrawJumpInstructions()
 
 void Combat::EndBattleSolving()
 {
-	if (playerWin)
+	if (playerWin || playerLose || playerEscaped)
 	{
-		if (enemyBattle) app->questManager->CheckKillQuest(enemy);
-
-		if (enemyBattle) ItemDrop(enemy->enemyClass);
-		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-
-		int experience = 0;
-		if (enemyBattle)
-		{
-			experience = enemy->exp;
-			short int id = app->entityManager->enemies.Find(enemy);
-			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
-		}
-
-		if (app->scene->player2->health <= 0)
-		{
-			app->scene->player2->Refill();
-			secondPlayer = true;
-		}
-		
-		if (bossBattle)
-		{
-			experience = boss->exp;
-			if (boss->bossClass == BOSS_TUTORIAL) app->scene->bossTBeat = true;
-			else if (boss->bossClass == BOSS_I) app->scene->boss1Beat = true;
-			else if (boss->bossClass == BOSS_II) app->scene->boss2Beat = true;
-			else if (boss->bossClass == BOSS_III) app->scene->boss3Beat = true;
-		}
-
-		//TODO DELETE BOSS
-		app->scene->SetScene(LEVEL_UP, experience);
-	}
-	else if (playerLose)
-	{
-		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-
-		if (enemyBattle) enemy->Refill();
-		else if (bossBattle) boss->Refill();
-
-		app->scene->SetScene(END_SCREEN);
-	}
-	else if (playerSplitWin)
-	{
-		app->scene->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
+		app->scene->player1->ItemSetup(1, 1, 1, 1, 0, 0);
+		app->scene->player1->Refill();
 
 		if (enemyBattle)
 		{
 			short int id = app->entityManager->enemies.Find(enemy);
 			app->entityManager->enemies.Del(app->entityManager->enemies.At(id));
 		}
-
-		if (app->scene->player2->health <= 0)
-		{
-			app->scene->player2->Refill();
-			secondPlayer = true;
-		}
-
-		//TODO DELETE BOSS
 
 		app->scene->SetScene(LEVEL_UP);
-	}
-	else if (playerEscaped)
-	{
-		Scene* s = app->scene;
-		s->player1->ItemSetup(smallMeat, largeMeat, feather, mantisLeg, splitedEnemy, money);
-
-		if (enemyBattle) enemy->Refill();
-		else if (bossBattle) boss->Refill();
-
-		if (app->scene->player2->health <= 0)
-		{
-			app->scene->player2->Refill();
-			secondPlayer = true;
-		}
-
-		s->world->SetInmunityTime(PLAYER_INMUNITY_TIME);
-		s->SetScene(WORLD, app->scene->world->GetPlace());
-		s->world->AlignCameraPosition();
 	}
 }
 
@@ -1417,8 +1343,7 @@ void Combat::PlayerChoiceLogic()
 		playerChoice = false;
 		if (enemyBattle)
 		{
-			short int probabilityRange = enemy->lvl - app->scene->player1->lvl;
-			EscapeProbability(probabilityRange);
+			EscapeProbability(-8);
 		}
 		else if (bossBattle) EscapeProbability(-8);
 
@@ -1513,35 +1438,35 @@ int Combat::PlayerDamageLogic()
 
 int Combat::SecondPlayerDamageLogic()
 {
-	int enemyDefense = 0;
-	if (enemyBattle) enemyDefense = enemy->defense;
-	else if (bossBattle) enemyDefense = boss->defense;
+	//int enemyDefense = 0;
+	//if (enemyBattle) enemyDefense = enemy->defense;
+	//else if (bossBattle) enemyDefense = boss->defense;
 
-	int damage = app->scene->player2->strengthStat - enemyDefense;
+	////int damage = app->scene->player2->strengthStat - enemyDefense;
 
-	int variation = rand() % 3;
-	bool negative = (bool)(rand() % 2);
+	//int variation = rand() % 3;
+	//bool negative = (bool)(rand() % 2);
 
-	if (!negative) damage += variation;
-	else if (negative) damage -= variation;
+	//if (!negative) damage += variation;
+	//else if (negative) damage -= variation;
 
-	if (damage <= 0) damage = 1;
+	//if (damage <= 0) damage = 1;
 
-	if (bossBattle)
-	{
-		switch (boss->bossClass)
-		{
-		case(BossClass::BOSS_I):
-			if (steps < shieldStep) return 0;
-			break;
-		case(BossClass::BOSS_II):
-			break;
-		case(BossClass::BOSS_III):
-			break;
-		}
-	}
+	//if (bossBattle)
+	//{
+	//	switch (boss->bossClass)
+	//	{
+	//	case(BossClass::BOSS_I):
+	//		if (steps < shieldStep) return 0;
+	//		break;
+	//	case(BossClass::BOSS_II):
+	//		break;
+	//	case(BossClass::BOSS_III):
+	//		break;
+	//	}
+	//}
 
-	return damage;
+	return 0;
 }
 
 int Combat::EnemyDamageLogic()
@@ -1667,12 +1592,12 @@ void Combat::EnemyAttack(EnemyClass enemyc)
 				if (enemy->birdTimeAttack3 >= 60 && enemy->birdTimeAttack3 < 145)
 				{
 					app->scene->player1->colliderCombat.x -= 2;
-					app->scene->player2->colliderCombat.x -= 2;
+					/*app->scene->player2->colliderCombat.x -= 2;*/
 				}
 				else if (enemy->birdTimeAttack3 == 145)
 				{
 					app->scene->player1->colliderCombat.x -= 1;
-					app->scene->player2->colliderCombat.x -= 1;
+					//app->scene->player2->colliderCombat.x -= 1;
 					steps--;
 				}
 			}
@@ -2616,7 +2541,7 @@ void Combat::BossAttack()
 		else if (boss->attack == 8) //SHIELD FORCE PUSH BACK
 		{
 			Player* p = app->scene->player1;
-			Player* p2 = app->scene->player2;
+			//Player* p2 = app->scene->player2;
 			if (pusher.rect.x + pusher.rect.w > 0) //TODO FUTURE, BEING ABLE TO SHIFT TO ABOID PUSHING
 			{
 				pusher.Move();
@@ -2631,7 +2556,7 @@ void Combat::BossAttack()
 					else
 					{
 						p->colliderCombat.x -= 12;
-						if (secondPlayer) p2->colliderCombat.x -= 12;
+						//if (secondPlayer) p2->colliderCombat.x -= 12;
 					}
 				}
 			}
@@ -2641,7 +2566,7 @@ void Combat::BossAttack()
 				AfterBossAttack();
 			}
 			p = nullptr;
-			p2 = nullptr;
+			//p2 = nullptr;
 		}
 		break;
 	}
@@ -2747,9 +2672,9 @@ void Combat::SecondPlayerAttack()
 	{
 		secondPlayerTimeAttack++;
 
-		app->scene->player2->colliderCombat.x += 6;
+		//app->scene->player2->colliderCombat.x += 6;
 
-		if (app->scene->player2->colliderCombat.x > 1280) app->scene->player2->colliderCombat.x = 0;
+		//if (app->scene->player2->colliderCombat.x > 1280) app->scene->player2->colliderCombat.x = 0;
 	}
 	else
 	{
@@ -2795,7 +2720,7 @@ void Combat::PlayerMove()
 	if (playerTimeMove < 57)
 	{
 		app->scene->player1->colliderCombat.x += 3;
-		app->scene->player2->colliderCombat.x += 3;
+		//app->scene->player2->colliderCombat.x += 3;
 		moveParticle->MoveEmitter(fPoint(app->scene->player1->colliderCombat.x, app->scene->player1->colliderCombat.y + app->scene->player1->colliderCombat.h));
 		playerTimeMove++;
 	}
@@ -2905,8 +2830,8 @@ void Combat::SecondPlayerProtect()
 {
 	if (secondPlayerTimeProtection < 25)
 	{
-		app->scene->player2->colliderCombat.x += 1;
-		app->scene->player2->colliderCombat.y += 3;
+		/*app->scene->player2->colliderCombat.x += 1;
+		app->scene->player2->colliderCombat.y += 3;*/
 		secondPlayerTimeProtection++;
 	}
 	else
@@ -3303,12 +3228,12 @@ void Combat::PlayerResponse()
 		if (wearFeather)
 		{
 			app->scene->player1->FeatherJump();
-			app->scene->player2->FeatherJump();
+			//app->scene->player2->FeatherJump();
 		}
 		else
 		{
 			app->scene->player1->Jump();
-			app->scene->player2->Jump();
+			//app->scene->player2->Jump();
 		}
 	}
 
@@ -3634,8 +3559,8 @@ void Combat::PlayerHitLogic()
 				else if (secondPlayerProtection)
 				{
 					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
-					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
-					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					//app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2);
+					//LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
 
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
@@ -3664,9 +3589,9 @@ void Combat::PlayerWaveHitLogic(int i)
 				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() - waveReduction;
 				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
-					app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
-					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					//app->scene->player1->health -= floor((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					//app->scene->player2->health -= ceil((EnemyDamageLogic() - app->scene->player2->defenseStat) / 2) - waveReduction;
+					//LOG("Second Player Hit - PH: %d", app->scene->player2->health);
 				}
 
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
@@ -3693,9 +3618,9 @@ void Combat::PlayerBigWaveHitLogic()
 				if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic() + 3;
 				else if (secondPlayerProtection)
 				{
-					app->scene->player1->health -= floor((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
+					/*app->scene->player1->health -= floor((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
 					app->scene->player2->health -= ceil((EnemyDamageLogic() + 4 - app->scene->player2->defenseStat) / 2);
-					LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+					LOG("Second Player Hit - PH: %d", app->scene->player2->health);*/
 				}
 
 				LOG("Player Hit - PH: %d", app->scene->player1->health);
@@ -3724,9 +3649,9 @@ void Combat::PlayerBulletHitLogic()
 					if (!secondPlayerProtection) app->scene->player1->health -= EnemyDamageLogic();
 					else if (secondPlayerProtection)
 					{
-						app->scene->player1->health -= floor((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
+						/*app->scene->player1->health -= floor((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
 						app->scene->player2->health -= ceil((EnemyDamageLogic() - (app->scene->player2->defenseStat / 2)) / 2);
-						LOG("Second Player Hit - PH: %d", app->scene->player2->health);
+						LOG("Second Player Hit - PH: %d", app->scene->player2->health);*/
 					}
 
 					LOG("Player Hit - PH: %d", app->scene->player1->health);
@@ -3752,18 +3677,18 @@ void Combat::PlayerPosReset()
 	app->scene->player1->colliderCombat.x = INIT_COMBAT_POSX;
 	app->scene->player1->colliderCombat.y = INIT_COMBAT_POSY;
 
-	if (secondPlayer)
-	{
-		app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
-		app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
-	}
+	//if (secondPlayer)
+	//{
+	//	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX;
+	//	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
+	//}
 	steps = 0;
 }
 
 void Combat::SecondPlayerPosReset()
 {
-	app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX + (171 * steps);
-	app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
+	//app->scene->player2->colliderCombat.x = INIT2_COMBAT_POSX + (171 * steps);
+	//app->scene->player2->colliderCombat.y = INIT2_COMBAT_POSY;
 }
 
 void Combat::ItemDrop(EnemyClass enemy)
@@ -3949,7 +3874,7 @@ void Combat::PlayerTurn()
 
 	once = false;
 
-	if (app->scene->player2->health <= 0) SecondPlayerDie();
+	//if (app->scene->player2->health <= 0) SecondPlayerDie();
 
 	if (steps < 3 && !playerStepDenied) app->scene->moveButton->state = GuiControlState::NORMAL;
 
@@ -3966,7 +3891,7 @@ void Combat::PlayerTurn()
 void Combat::SecondPlayerTurn()
 {
 	LOG("SECOND PLAYER TURN");
-	LOG("Second Player Health: %d", app->scene->player2->health);
+	//LOG("Second Player Health: %d", app->scene->player2->health);
 
 	combatState = SECOND_PLAYER_TURN;
 

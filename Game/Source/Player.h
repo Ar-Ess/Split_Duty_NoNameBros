@@ -141,6 +141,8 @@ public:
 
     void SetUp(short int healthx, short int maxHealthx,short int strengthx, short int defensex, short int luckx, short int velocityx, short int stabx, short int lvlx, short int expx);
 
+    void SetPlayer(int level);
+
     void ItemSetup(int xsmallMeat, int xlargeMeat, int xfeather, int xmantisLeg, int xsplitedEnemy, int xmoney);
 
     void SetTexture(SDL_Texture *tex);
