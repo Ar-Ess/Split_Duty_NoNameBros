@@ -83,7 +83,7 @@ We are NoName Bros, a small team of university students coursing a bachelors deg
 
 Product Owner: [Ramon Santamaria](https://github.com/raysan5)
 
-Project Manager: [Martí Buxeda](https://github.com/BooStarGamer)
+Project Manager: [Martí Buxeda](https://github.com/Ar-Ess)
 
 Game Designers: [Víctor Jara](https://github.com/Kerali), [Juan Ortega](https://github.com/MrPollito), [Martí Buxeda](https://github.com/BooStarGamer), [Martí Daviccino](https://github.com/MartiDavicino), [Adrià Belmonte](https://github.com/Croaco), [Oriol Sabaté](https://github.com/urisabate)
 
