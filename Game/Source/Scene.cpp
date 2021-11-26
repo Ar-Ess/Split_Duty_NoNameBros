@@ -1217,9 +1217,6 @@ void Scene::SetEndScreen()
 void Scene::UpdateLogoScene()
 {
 	app->render->DrawRectangle(whiteRect, {255, 255, 255, 255});
-	EnemyClass eC = app->LoadEnemyClass();
-	Enemy* e = (Enemy*)app->entityManager->CreateEntity(EntityType::ENEMY, eC);
-	app->LoadGame(e);
 
 	if (timer >= 50)
 	{
@@ -1251,7 +1248,7 @@ void Scene::UpdateLogoScene()
 	}
 	else
 	{
-		SetScene(COMBAT, e);
+		SetScene(Scenes::LEVEL_UP);
 	}
 }
 

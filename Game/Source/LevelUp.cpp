@@ -256,7 +256,7 @@ void LevelUp::SetText()
 		winText->bounds = { 600, 180, 300, 100 };
 		winText->SetTextFont(app->fontTTF->defaultFont);
 
-		winText->SetString("Change now the battle settings\n\n     Then click restart", WHITE);
+		winText->SetString("Change now the battle settings\nGo to Output > battle_testing.xml\nand modify the stats\n\nThen click restart", WHITE);
 	}
 
 	if (maxLvlText == nullptr)

@@ -276,9 +276,17 @@ void Combat::BoolStart()
 
 void Combat::FirstTurnLogic()
 {
-	playerChoice = true;
-	combatState = PLAYER_TURN;
-	turnText->SetString("PLAYER TURN");
+	if (app->scene->player1->velocityStat < enemy->velocity)
+	{
+		combatState = ENEMY_TURN;
+		turnText->SetString("ENEMY TURN");
+	}
+	else
+	{
+		playerChoice = true;
+		combatState = PLAYER_TURN;
+		turnText->SetString("PLAYER TURN");
+	}
 }
 
 // UPDATE
@@ -1419,21 +1427,25 @@ int Combat::PlayerDamageLogic()
 	if (damage < 1) //Normal enemy 0 damage, Boss 1 damage (for speedrunners) | To implement
 	{
 		damage = 1;
+		LOG("MINIMAL ATTACK! %d", damage);
 		return damage;
 	}
 
-
 	//Set luck
-	if (pLuck == 0) return damage;
-	else if (pLuck > 0)
+	if (pLuck > 0)
 	{
 		if (pLuck > 25) pLuck = 25;
 		int a = rand() % 100;
-		if (luckArray[a]) return damage + floor(20 * (pDamage - enemyDefense) / 100);
-		else if (!luckArray[a]) return damage;
+		if (luckArray[a])
+		{
+			int d = damage + floor(20 * (pDamage - enemyDefense) / 100);
+			LOG("CRITICAL ATTACK! %d", d);
+			return d;
+		}
 	}
 
-	return 0;
+	LOG("ATTACK! %d", damage);
+	return damage;
 }
 
 int Combat::SecondPlayerDamageLogic()
